@@ -1,0 +1,143 @@
+AC_INIT([src/main.cpp])
+AM_INIT_AUTOMAKE([rdpdesk], [1.0], [src icons])
+AM_CONFIG_HEADER(src/config.hpp)
+
+AC_PROG_CXX
+AC_PROG_LIBTOOL
+PKG_CONFIG=pkg-config
+
+WXCONFIG=wx-config
+AC_ARG_WITH(wx-config,
+[[  --with-wx-config=FILE     Use the given path to wx-config when determining
+                            wxWidgets configuration; defaults to "wx-config"]],
+[
+    if test "$withval" != "yes" -a "$withval" != ""; then
+        WXCONFIG=$withval
+    fi
+])
+STATE=wx_FALSE
+if wxversion=`$WXCONFIG --version`; then
+    wx_ver_1=`echo $wxversion |awk -F. {'print $1'}`
+    wx_ver_2=`echo $wxversion |awk -F. {'print $2'}`
+    wx_ver_3=`echo $wxversion |awk -F. {'print $3'}`
+    if test $wx_ver_1 -ge 2 ; then
+       if test $wx_ver_2 -ge 8 ; then
+       	  if test $wx_ver_3 -ge 9 ; then
+	     STATE=wx_OK
+	  fi
+       fi
+    fi
+else
+    AC_MSG_RESULT([not found])
+    AC_MSG_ERROR([wxWidgets is required. Try --with-wx-config.])
+fi
+
+if test "$STATE" = "wx_OK"; then 
+	AC_MSG_CHECKING([wxWidgets version])
+	AC_MSG_RESULT([$wxversion])
+else
+	AC_MSG_ERROR([Need wxWidgets 2.8.9 or great])
+fi
+
+WX_CPPFLAGS="`$WXCONFIG --cppflags`"
+WX_CXXFLAGS="`$WXCONFIG --cxxflags | sed -e 's/-fno-exceptions//'` "
+WX_LIBS="`$WXCONFIG --libs`"
+AC_SUBST(WX_CXXFLAGS)
+AC_SUBST(WX_LIBS)
+
+
+GTK2_CONFIG="pkg-config gtk+-x11-2.0"
+
+STATE=gtk_FALSE
+if gtk_version=`$GTK2_CONFIG --modversion`; then
+    gtk_ver_1=`echo $gtk_version |awk -F. {'print $1'}`
+    gtk_ver_2=`echo $gtk_version |awk -F. {'print $2'}`
+    if test $gtk_ver_1 -ge 2 ; then
+       if test $gtk_ver_2 -ge 18 ; then
+	     STATE=gtk_OK
+       fi
+    fi
+else
+    AC_MSG_RESULT([not found])
+    AC_MSG_ERROR([GTK2.0 is required.])
+fi
+
+if test "$STATE" = "gtk_OK"; then 
+	AC_MSG_CHECKING([GTK2.0 version])
+	AC_MSG_RESULT([$gtk_version])
+	GTK2_INCLUDE=`$GTK2_CONFIG --cflags `
+else
+	AC_MSG_ERROR([Need GTK2.0 2.18 or great])
+fi
+
+AC_SUBST(GTK2_INCLUDE)
+
+GLIB2_CONFIG="pkg-config glib-2.0"
+STATE=glib_FALSE
+if glib_version=`$GLIB2_CONFIG --modversion`; then
+    glib_ver_1=`echo $glib_version |awk -F. {'print $1'}`
+    glib_ver_2=`echo $glib_version |awk -F. {'print $2'}`
+    if test $glib_ver_1 -ge 2 ; then
+       if test $glib_ver_2 -ge 18 ; then
+	     STATE=glib_OK
+       fi
+    fi
+else
+    AC_MSG_RESULT([not found])
+    AC_MSG_ERROR([GLIB2.0 is required.])
+fi
+
+if test "$STATE" = "glib_OK"; then 
+	AC_MSG_CHECKING([GLIB2.0 version])
+	AC_MSG_RESULT([$glib_version])
+	GTK2_LIBS=`$GLIB2_CONFIG --libs `
+else
+	AC_MSG_ERROR([Need GLIB 2.18 or great])
+fi
+
+
+AC_SUBST(GTK2_LIBS)
+
+SSL_CONFIG="pkg-config libssl"
+STATE=libssl_FALSE
+if libssl_version=`$SSL_CONFIG --modversion`; then
+    libssl_ver_1=`echo $glib_version |awk -F. {'print $1'}`
+    libssl_ver_2=`echo $glib_version |awk -F. {'print $2'}`
+    #if test $libssl_ver_1 -ge 2 ; then
+    #   if test $libssl_ver_2 -ge 18 ; then
+	     STATE=libssl_OK
+    #   fi
+    #fi
+else
+    AC_MSG_RESULT([not found])
+    AC_MSG_ERROR([libssl is required.])
+fi
+
+if test "$STATE" = "libssl_OK"; then 
+	AC_MSG_CHECKING([libssl version])
+	AC_MSG_RESULT([$libssl_version])
+	SSL_LIBS=`$SSL_CONFIG --libs `
+#else
+#	AC_MSG_ERROR([Need GLIB 2.18 or great])
+fi
+
+
+AC_SUBST(SSL_LIBS)
+
+if test "x$GCC" = "xyes"; then
+    if test -z "`echo "$CFLAGS" | grep "\-Wall" 2> /dev/null`" ; then
+        CFLAGS="$CFLAGS -Wall -g -Wunused -Wno-deprecated -Wmissing-prototypes -Wmissing-declarations"
+        CXXFLAGS="$CXXLAGS -Wall -g -Wunused -Wno-deprecated -Wmissing-declarations"
+    fi
+fi
+
+AC_CHECK_HEADERS(X11/Intrinsic.h X11/keysym.h)
+
+AC_OUTPUT([ 
+            Makefile
+            src/Makefile
+            icons/Makefile
+            desktop/Makefile
+          ])
+
+

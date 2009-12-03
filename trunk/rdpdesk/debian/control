@@ -1,0 +1,35 @@
+Source: rdpdesk
+Section: net
+Priority: extra
+Maintainer: RDPDesk <pkolobaev@solovat.net>
+Build-Depends: debhelper (>= 7), autotools-dev, libxt-dev (>=1.0.6-0), libgtk2.0-dev (>= 2.18.0), libglib2.0-dev (>=2.22.0-0), x11proto-core-dev (>= 7.0.15-1), libwxbase2.8-dev (>= 2.8.9), libwxgtk2.8-dev (>= 2.8.9), libssl-dev
+Standards-Version: 3.8.3
+Homepage: http://rdpdesk.com/
+
+Package: rdpdesk
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: The RDPDesk is open source Virtual Desktop Infrastructure management solution
+ RDPDesk delivers the most comprehensive desktop brokering, management, 
+  and application publishing solution. It supports the world...s leading 
+  virtual infrastructure platforms (VMWare Workstation, VMWare ESX and 
+  ESXi servers, Microsoft Hyper-V and Microsoft Virtual PC) and blade 
+  PC implementations to meet the needs of all types of users within the 
+  organization.
+  .
+ The goal of our solution is to enable a user to work even better with a 
+ remote virtual guest from a client machine as with a desktop PC, and 
+ still provide all the advantages that running applications in the 
+ computer center offers.
+ .
+ RDPDesk has all the necessary features and capabilities to work with 
+ the remote computer without physical moving:
+ * Simple administration: account management, groups and permissions management
+ * Hardware consolidation
+ * Green IT, i.e., reduction of electrical use and air conditioning
+ * Simpler backup
+ * Encryption - user account settings are SSL-encrypted
+ * Strong connection security
+ * Creating an instant connection (server name is sufficient)
+ * Supported protocols - RDP
+ * Mulilingual support

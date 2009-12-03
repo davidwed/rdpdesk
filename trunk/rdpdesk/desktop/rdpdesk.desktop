@@ -1,0 +1,12 @@
+[Desktop Entry]
+Version=1.0
+Name=Remote Desktop Protocol Infrastructure 
+Comment=Connect to remote desktops
+TryExec=rdpdesk
+Exec=rdpdesk
+Icon=rdpdesk
+Terminal=false
+Type=Application
+Actions=
+Categories=X-GNOME-NetworkSettings;Network;
+

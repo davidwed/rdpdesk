@@ -1,0 +1,4 @@
+?package(rdpdesk):needs="X11" section="Applications/Networking"\
+  title="rdpdesk" command="/usr/bin/rdpdesk" \
+  hints="Remote Desktop Protocol Infrastructure" \
+  icon="/usr/share/pixmaps/rdpdesk.png
