@@ -344,7 +344,7 @@ BOOL RDPTree::item_already_exists(wxTreeItemId id)
 	 if (rdptreedata->uniq_name == uniq_name)
 	 {
 	    return TRUE;
-	    std::cout << rdptreedata->uniq_name << "==" << uniq_name << std::endl;
+	    //std::cout << rdptreedata->uniq_name << "==" << uniq_name << std::endl;
 	 }
       }
       curr = GetNextChild(base,cookie);
