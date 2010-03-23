@@ -1,3 +1,14 @@
+///////////////////////////////////////////////////////////////////////////////
+// File name:   locale_helper.hpp
+// Version:     0.0
+// Purpose: 
+// Time-stamp:  "2010-03-03 18:25:27" 
+// E-mail:      rdpdesk@rdpdesk.com
+// $Id$ 
+// Copyright:   (c) 2009-2010 RDPDesk <rdpdesk@rdpdesk.com> 
+// Licence:     GPL v3 
+///////////////////////////////////////////////////////////////////////////////
+
 #ifndef LOCALEHELPER
 #define LOCALEHELPER
 

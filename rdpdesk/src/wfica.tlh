@@ -1,0 +1,2585 @@
+﻿// Created by Microsoft (R) C/C++ Compiler Version 14.00.50727.42 (e5e92e33).
+//
+// c:\wxwidgetsactivex\1\11\4\trunk\rdp_clients\src\release\wfica.tlh
+//
+// C++ source equivalent of Win32 type library C:\\Windows\\system32\\Wfica.ocx
+// compiler-generated file created 11/18/09 at 18:13:33 - DO NOT EDIT!
+
+#pragma once
+#pragma pack(push, 8)
+
+#include <comdef.h>
+
+namespace WFICALib {
+
+//
+// Forward references and typedefs
+//
+
+struct __declspec(uuid("238f6f80-b8b4-11cf-8771-00a024541ee3"))
+/* LIBID */ __WFICALib;
+enum ICASessionString;
+enum ICASessionCounter;
+enum ICAEvent;
+enum ICASessionEndAction;
+enum ICAColorDepth;
+enum ICASoundQuality;
+enum ICAScalingMode;
+enum ICAWindowType;
+enum ICAVCDataType;
+enum OutputMode;
+enum MouseButton;
+enum KeyModifier;
+enum WindowStyle;
+enum WindowExStyle;
+struct __declspec(uuid("238f6f82-b8b4-11cf-8771-00a024541ee3"))
+/* dispinterface */ _IICAClientEvents;
+struct /* coclass */ ICAClient;
+struct __declspec(uuid("238f6f81-b8b4-11cf-8771-00a024541ee3"))
+/* dual interface */ IICAClient;
+struct __declspec(uuid("4a502c16-cfae-4bb0-b1f9-93acadda57bb"))
+/* dual interface */ ISession;
+struct __declspec(uuid("9b371833-5e4f-4b72-a8f6-cb8e762999f4"))
+/* dual interface */ IWindows;
+struct __declspec(uuid("4d5d2139-29e2-4cdc-8020-429b35999be6"))
+/* dual interface */ IWindow;
+struct __declspec(uuid("02093274-7b69-4feb-b7fd-3a010561a5f3"))
+/* dual interface */ IMouse;
+struct __declspec(uuid("17bfca0a-c42e-4ac9-a693-29473ff9ba6c"))
+/* dual interface */ IKeyboard;
+struct __declspec(uuid("8f2d9e63-d224-47e4-8111-32dbb016a4c6"))
+/* dual interface */ IScreenShot;
+struct /* coclass */ ICAClientProp;
+struct __declspec(uuid("24013613-ff51-4b50-9832-37fa561594ed"))
+/* dispinterface */ _IMouseEvents;
+struct /* coclass */ Mouse;
+struct __declspec(uuid("8a5961df-314e-4b7c-b57f-aaf35ea33079"))
+/* dispinterface */ _IKeyboardEvents;
+struct /* coclass */ Keyboard;
+struct __declspec(uuid("785a16e9-4e42-4c87-84ad-bfb4a60570a3"))
+/* dispinterface */ _IScreenShotEvents;
+struct /* coclass */ ScreenShot;
+struct __declspec(uuid("49813e6d-17ff-41a1-9a7b-95c3d5b44185"))
+/* dispinterface */ _IWindowEvents;
+struct /* coclass */ window;
+struct __declspec(uuid("24fd31db-3560-4c78-8950-30f03352d830"))
+/* dispinterface */ _ISessionEvents;
+struct /* coclass */ Session;
+struct /* coclass */ Windows;
+
+//
+// Smart pointer typedef declarations
+//
+
+_COM_SMARTPTR_TYPEDEF(_IICAClientEvents, __uuidof(_IICAClientEvents));
+_COM_SMARTPTR_TYPEDEF(IWindow, __uuidof(IWindow));
+_COM_SMARTPTR_TYPEDEF(IWindows, __uuidof(IWindows));
+_COM_SMARTPTR_TYPEDEF(IMouse, __uuidof(IMouse));
+_COM_SMARTPTR_TYPEDEF(IKeyboard, __uuidof(IKeyboard));
+_COM_SMARTPTR_TYPEDEF(IScreenShot, __uuidof(IScreenShot));
+_COM_SMARTPTR_TYPEDEF(ISession, __uuidof(ISession));
+_COM_SMARTPTR_TYPEDEF(IICAClient, __uuidof(IICAClient));
+_COM_SMARTPTR_TYPEDEF(_IMouseEvents, __uuidof(_IMouseEvents));
+_COM_SMARTPTR_TYPEDEF(_IKeyboardEvents, __uuidof(_IKeyboardEvents));
+_COM_SMARTPTR_TYPEDEF(_IScreenShotEvents, __uuidof(_IScreenShotEvents));
+_COM_SMARTPTR_TYPEDEF(_IWindowEvents, __uuidof(_IWindowEvents));
+_COM_SMARTPTR_TYPEDEF(_ISessionEvents, __uuidof(_ISessionEvents));
+
+//
+// Type library items
+//
+
+enum __declspec(uuid("33aec7e1-6ee6-41bf-9368-65126fac8418"))
+ICASessionString
+{
+    SessionServer = 0,
+    SessionUsername = 1,
+    SessionDomain = 2
+};
+
+enum __declspec(uuid("33aec7e2-6ee6-41bf-9368-65126fac8418"))
+ICASessionCounter
+{
+    SessionIncomingBytes = 0,
+    SessionOutgoingBytes = 1,
+    SessionIncomingFrames = 2,
+    SessionOutgoingFrames = 3,
+    SessionIncomingErrors = 4,
+    SessionOutgoingErrors = 5,
+    SessionLastLatency = 6,
+    SessionAverageLatency = 7,
+    SessionLatencyDeviation = 8
+};
+
+enum __declspec(uuid("33aec7e3-6ee6-41bf-9368-65126fac8418"))
+ICAEvent
+{
+    EventNone = 0,
+    EventConnect = 1,
+    EventConnectFail = 2,
+    EventLogin = 3,
+    EventLoginFail = 4,
+    EventDisconnect = 5,
+    EventRunPubishedApp = 6,
+    EventRunPubishedAppFail = 7,
+    EventIcaFilePresent = 8,
+    EventLoadIcaFileFailed = 9,
+    EventInitializing = 10,
+    EventConnecting = 11,
+    EventInitialProp = 12,
+    EventDisconnectFailed = 13,
+    EventLogoffFailed = 14,
+    EventChannelDataReceived = 15,
+    EventWindowSized = 16,
+    EventWindowMoved = 17,
+    EventWindowCreated = 18,
+    EventWindowDestroyed = 19,
+    EventWindowDocked = 20,
+    EventWindowUndocked = 21,
+    EventWindowMinimized = 22,
+    EventWindowMaximized = 23,
+    EventWindowRestored = 24,
+    EventWindowFullscreened = 25,
+    EventWindowHidden = 26,
+    EventWindowDisplayed = 27
+};
+
+enum __declspec(uuid("33aec7e4-6ee6-41bf-9368-65126fac8418"))
+ICASessionEndAction
+{
+    SessionEndDefault = 0,
+    SessionEndRestart = 1
+};
+
+enum __declspec(uuid("33aec7e5-6ee6-41bf-9368-65126fac8418"))
+ICAColorDepth
+{
+    Color16 = 1,
+    Color256 = 2,
+    Color16Bit = 4,
+    Color24Bit = 8
+};
+
+enum __declspec(uuid("33aec7e6-6ee6-41bf-9368-65126fac8418"))
+ICASoundQuality
+{
+    SoundQualityNone = -1,
+    SoundQualityHigh = 0,
+    SoundQualityMedium = 1,
+    SoundQualityLow = 2
+};
+
+enum __declspec(uuid("33aec7e7-6ee6-41bf-9368-65126fac8418"))
+ICAScalingMode
+{
+    ScalingModeDisabled = 0,
+    ScalingModePercent = 1,
+    ScalingModeSize = 2,
+    ScalingModeAutoSize = 3
+};
+
+enum __declspec(uuid("33aec7e8-6ee6-41bf-9368-65126fac8418"))
+ICAWindowType
+{
+    WindowTypeICAClientObject = 0,
+    WindowTypeControl = 1,
+    WindowTypeClient = 2,
+    WindowTypeContainer = 3
+};
+
+enum __declspec(uuid("33aec7e9-6ee6-41bf-9368-65126fac8418"))
+ICAVCDataType
+{
+    DataTypeString = 0,
+    DataTypeBinaryString = 1,
+    DataTypeBinary = 2
+};
+
+enum __declspec(uuid("33aec7ea-6ee6-41bf-9368-65126fac8418"))
+OutputMode
+{
+    OutputModeNonHeadless = 0,
+    OutputModeNormal = 1,
+    OutputModeRenderless = 2,
+    OutputModeWindowless = 3
+};
+
+enum __declspec(uuid("33aec7eb-6ee6-41bf-9368-65126fac8418"))
+MouseButton
+{
+    MouseButtonLeft = 1,
+    MouseButtonRight = 2,
+    MouseButtonMiddle = 4
+};
+
+enum __declspec(uuid("33aec7ec-6ee6-41bf-9368-65126fac8418"))
+KeyModifier
+{
+    KeyModifierShift = 1,
+    KeyModifierControl = 2,
+    KeyModifierAlt = 4,
+    KeyModifierExtended = 8
+};
+
+enum __declspec(uuid("33aec7ed-6ee6-41bf-9368-65126fac8418"))
+WindowStyle
+{
+    WindowStyleOVERLAPPED = 0,
+    WindowStylePOPUP = 0x80000000,
+    WindowStyleCHILD = 1073741824,
+    WindowStyleMINIMIZE = 536870912,
+    WindowStyleVISIBLE = 268435456,
+    WindowStyleDISABLED = 134217728,
+    WindowStyleCLIPSIBLINGS = 67108864,
+    WindowStyleCLIPCHILDREN = 33554432,
+    WindowStyleMAXIMIZE = 16777216,
+    WindowStyleCAPTION = 12582912,
+    WindowStyleBORDER = 8388608,
+    WindowStyleDLGFRAME = 4194304,
+    WindowStyleVSCROLL = 2097152,
+    WindowStyleHSCROLL = 1048576,
+    WindowStyleSYSMENU = 524288,
+    WindowStyleTHICKFRAME = 262144,
+    WindowStyleGROUP = 131072,
+    WindowStyleTABSTOP = 65536,
+    WindowStyleMINIMIZEBOX = 131072,
+    WindowStyleMAXIMIZEBOX = 65536
+};
+
+enum __declspec(uuid("33aec7ee-6ee6-41bf-9368-65126fac8418"))
+WindowExStyle
+{
+    WindowsExStyleDLGMODALFRAME = 1,
+    WindowsExStyleNOPARENTNOTIFY = 4,
+    WindowsExStyleTOPMOST = 8,
+    WindowsExStyleACCEPTFILES = 16,
+    WindowsExStyleTRANSPARENT = 32,
+    WindowsExStyleMDICHILD = 64,
+    WindowsExStyleTOOLWINDOW = 128,
+    WindowsExStyleWINDOWEDGE = 256,
+    WindowsExStyleCLIENTEDGE = 512,
+    WindowsExStyleCONTEXTHELP = 1024,
+    WindowsExStyleRIGHT = 4096,
+    WindowsExStyleLEFT = 0,
+    WindowsExStyleRTLREADING = 8192,
+    WindowsExStyleLTRREADING = 0,
+    WindowsExStyleLEFTSCROLLBAR = 16384,
+    WindowsExStyleRIGHTSCROLLBAR = 0,
+    WindowsExStyleCONTROLPARENT = 65536,
+    WindowsExStyleSTATICEDGE = 131072,
+    WindowsExStyleAPPWINDOW = 262144,
+    WindowsExStyleOVERLAPPEDWINDOW = 768,
+    WindowsExStylePALETTEWINDOW = 392
+};
+
+struct __declspec(uuid("238f6f82-b8b4-11cf-8771-00a024541ee3"))
+_IICAClientEvents : IDispatch
+{
+    //
+    // Wrapper methods for error-handling
+    //
+
+    // Methods:
+    HRESULT OnReadyStateChange (
+        long lReadyState );
+    HRESULT OnClick (
+        long MouseButton,
+        long PosX,
+        long PosY,
+        long KeyMask );
+    HRESULT OnConnect ( );
+    HRESULT OnConnectFailed ( );
+    HRESULT OnLogon ( );
+    HRESULT OnLogonFailed ( );
+    HRESULT OnDisconnect ( );
+    HRESULT OnPublishedApp ( );
+    HRESULT OnPublishedAppFailed ( );
+    HRESULT OnICAFile ( );
+    HRESULT OnICAFileFailed ( );
+    HRESULT OnInitializing ( );
+    HRESULT OnConnecting ( );
+    HRESULT OnInitialProp ( );
+    HRESULT OnDisconnectFailed ( );
+    HRESULT OnLogoffFailed ( );
+    HRESULT OnChannelDataReceived (
+        _bstr_t ChannelName );
+    HRESULT OnWindowSized (
+        long WndType,
+        long Width,
+        long Height );
+    HRESULT OnWindowMoved (
+        long WndType,
+        long XPos,
+        long YPos );
+    HRESULT OnWindowCreated (
+        long WndType,
+        long XPos,
+        long YPos,
+        long Width,
+        long Height );
+    HRESULT OnWindowDestroyed (
+        long WndType );
+    HRESULT OnWindowDocked ( );
+    HRESULT OnWindowUndocked ( );
+    HRESULT OnWindowMinimized ( );
+    HRESULT OnWindowMaximized ( );
+    HRESULT OnWindowRestored ( );
+    HRESULT OnWindowFullscreened ( );
+    HRESULT OnWindowHidden (
+        long WndType );
+    HRESULT OnWindowDisplayed (
+        long WndType );
+    HRESULT OnWindowCloseRequest ( );
+    HRESULT OnDisconnectSessions (
+        long hCommand );
+    HRESULT OnDisconnectSessionsFailed (
+        long hCommand );
+    HRESULT OnLogoffSessions (
+        long hCommand );
+    HRESULT OnLogoffSessionsFailed (
+        long hCommand );
+    HRESULT OnSessionSwitch (
+        long hOldSession,
+        long hNewSession );
+    HRESULT OnSessionEventPending (
+        long hSession,
+        long EventNum );
+    HRESULT OnSessionAttach (
+        long hSession );
+    HRESULT OnSessionDetach (
+        long hSession );
+};
+
+struct __declspec(uuid("238f6f83-b8b4-11cf-8771-00a024541ee3"))
+ICAClient;
+    // [ default ] interface IICAClient
+    // [ default, source ] dispinterface _IICAClientEvents
+
+struct __declspec(uuid("4d5d2139-29e2-4cdc-8020-429b35999be6"))
+IWindow : IDispatch
+{
+    //
+    // Property data
+    //
+
+    __declspec(property(get=GetPositionX))
+    long PositionX;
+    __declspec(property(get=GetPositionY))
+    long PositionY;
+    __declspec(property(get=GetWidth))
+    long Width;
+    __declspec(property(get=GetHeight))
+    long Height;
+    __declspec(property(get=GetStyle))
+    long Style;
+    __declspec(property(get=GetExtendedStyle))
+    long ExtendedStyle;
+    __declspec(property(get=GetCaption))
+    _bstr_t Caption;
+    __declspec(property(get=GetSmallIconHash))
+    _bstr_t SmallIconHash;
+    __declspec(property(get=GetLargeIconHash))
+    _bstr_t LargeIconHash;
+    __declspec(property(get=GetDisposed))
+    VARIANT_BOOL Disposed;
+    __declspec(property(get=GetWindowFlags))
+    long WindowFlags;
+    __declspec(property(get=GetWindowID))
+    long WindowID;
+    __declspec(property(get=GetParentID))
+    long ParentID;
+
+    //
+    // Wrapper methods for error-handling
+    //
+
+    long GetPositionX ( );
+    long GetPositionY ( );
+    long GetWidth ( );
+    long GetHeight ( );
+    long GetStyle ( );
+    long GetExtendedStyle ( );
+    _bstr_t GetCaption ( );
+    _bstr_t GetSmallIconHash ( );
+    _bstr_t GetLargeIconHash ( );
+    VARIANT_BOOL GetDisposed ( );
+    long GetWindowFlags ( );
+    long GetWindowID ( );
+    long GetParentID ( );
+    HRESULT BringToTop ( );
+    HRESULT Move (
+        long XPos,
+        long YPos );
+    HRESULT Resize (
+        long Width,
+        long Height );
+    HRESULT Restore ( );
+
+    //
+    // Raw methods provided by interface
+    //
+
+      virtual HRESULT __stdcall get_PositionX (
+        /*[out,retval]*/ long * pVal ) = 0;
+      virtual HRESULT __stdcall get_PositionY (
+        /*[out,retval]*/ long * pVal ) = 0;
+      virtual HRESULT __stdcall get_Width (
+        /*[out,retval]*/ long * pVal ) = 0;
+      virtual HRESULT __stdcall get_Height (
+        /*[out,retval]*/ long * pVal ) = 0;
+      virtual HRESULT __stdcall get_Style (
+        /*[out,retval]*/ long * pVal ) = 0;
+      virtual HRESULT __stdcall get_ExtendedStyle (
+        /*[out,retval]*/ long * pVal ) = 0;
+      virtual HRESULT __stdcall get_Caption (
+        /*[out,retval]*/ BSTR * pVal ) = 0;
+      virtual HRESULT __stdcall get_SmallIconHash (
+        /*[out,retval]*/ BSTR * pVal ) = 0;
+      virtual HRESULT __stdcall get_LargeIconHash (
+        /*[out,retval]*/ BSTR * pVal ) = 0;
+      virtual HRESULT __stdcall get_Disposed (
+        /*[out,retval]*/ VARIANT_BOOL * pVal ) = 0;
+      virtual HRESULT __stdcall get_WindowFlags (
+        /*[out,retval]*/ long * pVal ) = 0;
+      virtual HRESULT __stdcall get_WindowID (
+        /*[out,retval]*/ long * pVal ) = 0;
+      virtual HRESULT __stdcall get_ParentID (
+        /*[out,retval]*/ long * pVal ) = 0;
+      virtual HRESULT __stdcall raw_BringToTop ( ) = 0;
+      virtual HRESULT __stdcall raw_Move (
+        /*[in]*/ long XPos,
+        /*[in]*/ long YPos ) = 0;
+      virtual HRESULT __stdcall raw_Resize (
+        /*[in]*/ long Width,
+        /*[in]*/ long Height ) = 0;
+      virtual HRESULT __stdcall raw_Restore ( ) = 0;
+};
+
+struct __declspec(uuid("9b371833-5e4f-4b72-a8f6-cb8e762999f4"))
+IWindows : IDispatch
+{
+    //
+    // Property data
+    //
+
+    __declspec(property(get=GetItem))
+    IWindowPtr Item[];
+    __declspec(property(get=GetCount))
+    long Count;
+    __declspec(property(get=Get_NewEnum))
+    IUnknownPtr _NewEnum;
+
+    //
+    // Wrapper methods for error-handling
+    //
+
+    IWindowPtr GetItem (
+        long n );
+    IUnknownPtr Get_NewEnum ( );
+    long GetCount ( );
+
+    //
+    // Raw methods provided by interface
+    //
+
+      virtual HRESULT __stdcall get_Item (
+        /*[in]*/ long n,
+        /*[out,retval]*/ struct IWindow * * window ) = 0;
+      virtual HRESULT __stdcall get__NewEnum (
+        /*[out,retval]*/ IUnknown * * ppEnum ) = 0;
+      virtual HRESULT __stdcall get_Count (
+        /*[out,retval]*/ long * pnCount ) = 0;
+};
+
+struct __declspec(uuid("02093274-7b69-4feb-b7fd-3a010561a5f3"))
+IMouse : IDispatch
+{
+    //
+    // Wrapper methods for error-handling
+    //
+
+    HRESULT SendMouseDown (
+        long buttonId,
+        long modifiers,
+        long XPos,
+        long YPos );
+    HRESULT SendMouseUp (
+        long buttonId,
+        long modifiers,
+        long XPos,
+        long YPos );
+    HRESULT SendMouseMove (
+        long buttonId,
+        long modifiers,
+        long XPos,
+        long YPos );
+
+    //
+    // Raw methods provided by interface
+    //
+
+      virtual HRESULT __stdcall raw_SendMouseDown (
+        /*[in]*/ long buttonId,
+        /*[in]*/ long modifiers,
+        /*[in]*/ long XPos,
+        /*[in]*/ long YPos ) = 0;
+      virtual HRESULT __stdcall raw_SendMouseUp (
+        /*[in]*/ long buttonId,
+        /*[in]*/ long modifiers,
+        /*[in]*/ long XPos,
+        /*[in]*/ long YPos ) = 0;
+      virtual HRESULT __stdcall raw_SendMouseMove (
+        /*[in]*/ long buttonId,
+        /*[in]*/ long modifiers,
+        /*[in]*/ long XPos,
+        /*[in]*/ long YPos ) = 0;
+};
+
+struct __declspec(uuid("17bfca0a-c42e-4ac9-a693-29473ff9ba6c"))
+IKeyboard : IDispatch
+{
+    //
+    // Wrapper methods for error-handling
+    //
+
+    HRESULT SendKeyDown (
+        long keyId );
+    HRESULT SendKeyUp (
+        long keyId );
+
+    //
+    // Raw methods provided by interface
+    //
+
+      virtual HRESULT __stdcall raw_SendKeyDown (
+        /*[in]*/ long keyId ) = 0;
+      virtual HRESULT __stdcall raw_SendKeyUp (
+        /*[in]*/ long keyId ) = 0;
+};
+
+struct __declspec(uuid("8f2d9e63-d224-47e4-8111-32dbb016a4c6"))
+IScreenShot : IDispatch
+{
+    //
+    // Property data
+    //
+
+    __declspec(property(get=GetPositionX,put=PutPositionX))
+    long PositionX;
+    __declspec(property(get=GetPositionY,put=PutPositionY))
+    long PositionY;
+    __declspec(property(get=GetWidth,put=PutWidth))
+    long Width;
+    __declspec(property(get=GetHeight,put=PutHeight))
+    long Height;
+    __declspec(property(get=GetFilename,put=PutFilename))
+    _bstr_t Filename;
+    __declspec(property(get=GetBitmapHash))
+    _bstr_t BitmapHash;
+
+    //
+    // Wrapper methods for error-handling
+    //
+
+    long GetPositionX ( );
+    void PutPositionX (
+        long pVal );
+    long GetPositionY ( );
+    void PutPositionY (
+        long pVal );
+    long GetWidth ( );
+    void PutWidth (
+        long pVal );
+    long GetHeight ( );
+    void PutHeight (
+        long pVal );
+    _bstr_t GetFilename ( );
+    void PutFilename (
+        _bstr_t pVal );
+    _bstr_t GetBitmapHash ( );
+    HRESULT Save ( );
+
+    //
+    // Raw methods provided by interface
+    //
+
+      virtual HRESULT __stdcall get_PositionX (
+        /*[out,retval]*/ long * pVal ) = 0;
+      virtual HRESULT __stdcall put_PositionX (
+        /*[in]*/ long pVal ) = 0;
+      virtual HRESULT __stdcall get_PositionY (
+        /*[out,retval]*/ long * pVal ) = 0;
+      virtual HRESULT __stdcall put_PositionY (
+        /*[in]*/ long pVal ) = 0;
+      virtual HRESULT __stdcall get_Width (
+        /*[out,retval]*/ long * pVal ) = 0;
+      virtual HRESULT __stdcall put_Width (
+        /*[in]*/ long pVal ) = 0;
+      virtual HRESULT __stdcall get_Height (
+        /*[out,retval]*/ long * pVal ) = 0;
+      virtual HRESULT __stdcall put_Height (
+        /*[in]*/ long pVal ) = 0;
+      virtual HRESULT __stdcall get_Filename (
+        /*[out,retval]*/ BSTR * pVal ) = 0;
+      virtual HRESULT __stdcall put_Filename (
+        /*[in]*/ BSTR pVal ) = 0;
+      virtual HRESULT __stdcall get_BitmapHash (
+        /*[out,retval]*/ BSTR * pVal ) = 0;
+      virtual HRESULT __stdcall raw_Save ( ) = 0;
+};
+
+struct __declspec(uuid("4a502c16-cfae-4bb0-b1f9-93acadda57bb"))
+ISession : IDispatch
+{
+    //
+    // Property data
+    //
+
+    __declspec(property(get=GetTopLevelWindows))
+    IWindowsPtr TopLevelWindows;
+    __declspec(property(get=GetMouse))
+    IMousePtr Mouse;
+    __declspec(property(get=GetKeyboard))
+    IKeyboardPtr Keyboard;
+    __declspec(property(get=GetForegroundWindow))
+    IWindowPtr ForegroundWindow;
+    __declspec(property(get=GetReplayMode,put=PutReplayMode))
+    VARIANT_BOOL ReplayMode;
+
+    //
+    // Wrapper methods for error-handling
+    //
+
+    IWindowsPtr GetTopLevelWindows ( );
+    IMousePtr GetMouse ( );
+    IKeyboardPtr GetKeyboard ( );
+    IWindowPtr GetForegroundWindow ( );
+    VARIANT_BOOL GetReplayMode ( );
+    void PutReplayMode (
+        VARIANT_BOOL pVal );
+    IScreenShotPtr CreateFullScreenShot ( );
+    IScreenShotPtr CreateScreenShot (
+        long x,
+        long y,
+        long Width,
+        long Height );
+    HRESULT SendPingRequest (
+        _bstr_t pingInfo );
+
+    //
+    // Raw methods provided by interface
+    //
+
+      virtual HRESULT __stdcall get_TopLevelWindows (
+        /*[out,retval]*/ struct IWindows * * pVal ) = 0;
+      virtual HRESULT __stdcall get_Mouse (
+        /*[out,retval]*/ struct IMouse * * pVal ) = 0;
+      virtual HRESULT __stdcall get_Keyboard (
+        /*[out,retval]*/ struct IKeyboard * * pVal ) = 0;
+      virtual HRESULT __stdcall get_ForegroundWindow (
+        /*[out,retval]*/ struct IWindow * * pVal ) = 0;
+      virtual HRESULT __stdcall get_ReplayMode (
+        /*[out,retval]*/ VARIANT_BOOL * pVal ) = 0;
+      virtual HRESULT __stdcall put_ReplayMode (
+        /*[in]*/ VARIANT_BOOL pVal ) = 0;
+      virtual HRESULT __stdcall raw_CreateFullScreenShot (
+        /*[out,retval]*/ struct IScreenShot * * pVal ) = 0;
+      virtual HRESULT __stdcall raw_CreateScreenShot (
+        /*[in]*/ long x,
+        /*[in]*/ long y,
+        /*[in]*/ long Width,
+        /*[in]*/ long Height,
+        /*[out,retval]*/ struct IScreenShot * * pVal ) = 0;
+      virtual HRESULT __stdcall raw_SendPingRequest (
+        /*[in]*/ BSTR pingInfo ) = 0;
+};
+
+struct __declspec(uuid("238f6f81-b8b4-11cf-8771-00a024541ee3"))
+IICAClient : IDispatch
+{
+    //
+    // Property data
+    //
+
+    __declspec(property(get=GetWinstationDriver,put=PutWinstationDriver))
+    _bstr_t WinstationDriver;
+    __declspec(property(get=GetWorkDirectory,put=PutWorkDirectory))
+    _bstr_t WorkDirectory;
+    __declspec(property(get=GetAppsrvIni,put=PutAppsrvIni))
+    _bstr_t AppsrvIni;
+    __declspec(property(get=GetModuleIni,put=PutModuleIni))
+    _bstr_t ModuleIni;
+    __declspec(property(get=GetWfclientIni,put=PutWfclientIni))
+    _bstr_t WfclientIni;
+    __declspec(property(get=GetClientPath))
+    _bstr_t ClientPath;
+    __declspec(property(get=GetClientVersion))
+    _bstr_t ClientVersion;
+    __declspec(property(get=GetTitle,put=PutTitle))
+    _bstr_t Title;
+    __declspec(property(get=GetLogAppend,put=PutLogAppend))
+    VARIANT_BOOL LogAppend;
+    __declspec(property(get=GetLogConnect,put=PutLogConnect))
+    VARIANT_BOOL LogConnect;
+    __declspec(property(get=GetLogErrors,put=PutLogErrors))
+    VARIANT_BOOL LogErrors;
+    __declspec(property(get=GetLogFile,put=PutLogFile))
+    _bstr_t LogFile;
+    __declspec(property(get=GetLogFlush,put=PutLogFlush))
+    VARIANT_BOOL LogFlush;
+    __declspec(property(get=GetLogKeyboard,put=PutLogKeyboard))
+    VARIANT_BOOL LogKeyboard;
+    __declspec(property(get=GetLogReceive,put=PutLogReceive))
+    VARIANT_BOOL LogReceive;
+    __declspec(property(get=GetLogTransmit,put=PutLogTransmit))
+    VARIANT_BOOL LogTransmit;
+    __declspec(property(get=GetLaunch,put=PutLaunch))
+    VARIANT_BOOL Launch;
+    __declspec(property(get=GetBackgroundColor,put=PutBackgroundColor))
+    OLE_COLOR BackgroundColor;
+    __declspec(property(get=GetBorderColor,put=PutBorderColor))
+    OLE_COLOR BorderColor;
+    __declspec(property(get=GetTextColor,put=PutTextColor))
+    OLE_COLOR TextColor;
+    __declspec(property(get=GetEncryptionLevelSession,put=PutEncryptionLevelSession))
+    _bstr_t EncryptionLevelSession;
+    __declspec(property(get=GetHttpBrowserAddress,put=PutHttpBrowserAddress))
+    _bstr_t HttpBrowserAddress;
+    __declspec(property(get=GetBrowserProtocol,put=PutBrowserProtocol))
+    _bstr_t BrowserProtocol;
+    __declspec(property(get=GetLocHTTPBrowserAddress,put=PutLocHTTPBrowserAddress))
+    _bstr_t LocHTTPBrowserAddress;
+    __declspec(property(get=GetLocIPXBrowserAddress,put=PutLocIPXBrowserAddress))
+    _bstr_t LocIPXBrowserAddress;
+    __declspec(property(get=GetLocNETBIOSBrowserAddress,put=PutLocNETBIOSBrowserAddress))
+    _bstr_t LocNETBIOSBrowserAddress;
+    __declspec(property(get=GetLocTCPBrowserAddress,put=PutLocTCPBrowserAddress))
+    _bstr_t LocTCPBrowserAddress;
+    __declspec(property(get=GetDoNotUseDefaultCSL,put=PutDoNotUseDefaultCSL))
+    VARIANT_BOOL DoNotUseDefaultCSL;
+    __declspec(property(get=GetICAPortNumber,put=PutICAPortNumber))
+    long ICAPortNumber;
+    __declspec(property(get=GetKeyboardTimer,put=PutKeyboardTimer))
+    long KeyboardTimer;
+    __declspec(property(get=GetMouseTimer,put=PutMouseTimer))
+    long MouseTimer;
+    __declspec(property(get=GetScrollbars,put=PutScrollbars))
+    VARIANT_BOOL Scrollbars;
+    __declspec(property(get=GetScalingHeight,put=PutScalingHeight))
+    long ScalingHeight;
+    __declspec(property(get=GetScalingMode,put=PutScalingMode))
+    enum ICAScalingMode ScalingMode;
+    __declspec(property(get=GetScalingPercent,put=PutScalingPercent))
+    long ScalingPercent;
+    __declspec(property(get=GetScalingWidth,put=PutScalingWidth))
+    long ScalingWidth;
+    __declspec(property(get=GetVirtualChannels,put=PutVirtualChannels))
+    _bstr_t VirtualChannels;
+    __declspec(property(get=GetUseAlternateAddress,put=PutUseAlternateAddress))
+    long UseAlternateAddress;
+    __declspec(property(get=GetBrowserRetry,put=PutBrowserRetry))
+    long BrowserRetry;
+    __declspec(property(get=GetBrowserTimeout,put=PutBrowserTimeout))
+    long BrowserTimeout;
+    __declspec(property(get=GetLanaNumber,put=PutLanaNumber))
+    long LanaNumber;
+    __declspec(property(get=GetICASOCKSProtocolVersion,put=PutICASOCKSProtocolVersion))
+    long ICASOCKSProtocolVersion;
+    __declspec(property(get=GetICASOCKSProxyHost,put=PutICASOCKSProxyHost))
+    _bstr_t ICASOCKSProxyHost;
+    __declspec(property(get=GetICASOCKSProxyPortNumber,put=PutICASOCKSProxyPortNumber))
+    long ICASOCKSProxyPortNumber;
+    __declspec(property(get=GetICASOCKSRFC1929Username,put=PutICASOCKSRFC1929Username))
+    _bstr_t ICASOCKSRFC1929Username;
+    __declspec(property(get=GetICASOCKSTimeout,put=PutICASOCKSTimeout))
+    long ICASOCKSTimeout;
+    __declspec(property(get=GetSSLEnable,put=PutSSLEnable))
+    VARIANT_BOOL SSLEnable;
+    __declspec(property(get=GetSSLProxyHost,put=PutSSLProxyHost))
+    _bstr_t SSLProxyHost;
+    __declspec(property(get=GetSSLCiphers,put=PutSSLCiphers))
+    _bstr_t SSLCiphers;
+    __declspec(property(get=GetSSLNoCACerts,put=PutSSLNoCACerts))
+    long SSLNoCACerts;
+    __declspec(property(get=GetSSLCommonName,put=PutSSLCommonName))
+    _bstr_t SSLCommonName;
+    __declspec(property(get=GetAUTHUsername,put=PutAUTHUsername))
+    _bstr_t AUTHUsername;
+    __declspec(property(get=GetXmlAddressResolutionType,put=PutXmlAddressResolutionType))
+    _bstr_t XmlAddressResolutionType;
+    __declspec(property(get=GetAutoScale,put=PutAutoScale))
+    VARIANT_BOOL AutoScale;
+    __declspec(property(get=GetAutoAppResize,put=PutAutoAppResize))
+    VARIANT_BOOL AutoAppResize;
+    __declspec(property(get=GetHotkey1Char,put=PutHotkey1Char))
+    _bstr_t Hotkey1Char;
+    __declspec(property(get=GetHotkey1Shift,put=PutHotkey1Shift))
+    _bstr_t Hotkey1Shift;
+    __declspec(property(get=GetHotkey2Char,put=PutHotkey2Char))
+    _bstr_t Hotkey2Char;
+    __declspec(property(get=GetHotkey2Shift,put=PutHotkey2Shift))
+    _bstr_t Hotkey2Shift;
+    __declspec(property(get=GetHotkey3Char,put=PutHotkey3Char))
+    _bstr_t Hotkey3Char;
+    __declspec(property(get=GetHotkey3Shift,put=PutHotkey3Shift))
+    _bstr_t Hotkey3Shift;
+    __declspec(property(get=GetHotkey4Char,put=PutHotkey4Char))
+    _bstr_t Hotkey4Char;
+    __declspec(property(get=GetHotkey4Shift,put=PutHotkey4Shift))
+    _bstr_t Hotkey4Shift;
+    __declspec(property(get=GetHotkey5Char,put=PutHotkey5Char))
+    _bstr_t Hotkey5Char;
+    __declspec(property(get=GetHotkey5Shift,put=PutHotkey5Shift))
+    _bstr_t Hotkey5Shift;
+    __declspec(property(get=GetHotkey6Char,put=PutHotkey6Char))
+    _bstr_t Hotkey6Char;
+    __declspec(property(get=GetHotkey6Shift,put=PutHotkey6Shift))
+    _bstr_t Hotkey6Shift;
+    __declspec(property(get=GetHotkey7Char,put=PutHotkey7Char))
+    _bstr_t Hotkey7Char;
+    __declspec(property(get=GetHotkey7Shift,put=PutHotkey7Shift))
+    _bstr_t Hotkey7Shift;
+    __declspec(property(get=GetHotkey8Char,put=PutHotkey8Char))
+    _bstr_t Hotkey8Char;
+    __declspec(property(get=GetHotkey8Shift,put=PutHotkey8Shift))
+    _bstr_t Hotkey8Shift;
+    __declspec(property(get=GetHotkey9Char,put=PutHotkey9Char))
+    _bstr_t Hotkey9Char;
+    __declspec(property(get=GetHotkey9Shift,put=PutHotkey9Shift))
+    _bstr_t Hotkey9Shift;
+    __declspec(property(get=GetHotkey10Char,put=PutHotkey10Char))
+    _bstr_t Hotkey10Char;
+    __declspec(property(get=GetHotkey10Shift,put=PutHotkey10Shift))
+    _bstr_t Hotkey10Shift;
+    __declspec(property(get=GetControlWindowText,put=PutControlWindowText))
+    _bstr_t ControlWindowText;
+    __declspec(property(get=GetCacheICAFile,put=PutCacheICAFile))
+    VARIANT_BOOL CacheICAFile;
+    __declspec(property(get=GetScreenPercent,put=PutScreenPercent))
+    long ScreenPercent;
+    __declspec(property(get=GetTWIMode,put=PutTWIMode))
+    VARIANT_BOOL TWIMode;
+    __declspec(property(get=GetTransportReconnectEnabled,put=PutTransportReconnectEnabled))
+    VARIANT_BOOL TransportReconnectEnabled;
+    __declspec(property(get=GetTransportReconnectDelay,put=PutTransportReconnectDelay))
+    long TransportReconnectDelay;
+    __declspec(property(get=GetTransportReconnectRetries,put=PutTransportReconnectRetries))
+    long TransportReconnectRetries;
+    __declspec(property(get=GetAutoLogonAllowed,put=PutAutoLogonAllowed))
+    VARIANT_BOOL AutoLogonAllowed;
+    __declspec(property(get=GetEnableSessionSharingClient,put=PutEnableSessionSharingClient))
+    VARIANT_BOOL EnableSessionSharingClient;
+    __declspec(property(get=GetSessionSharingName,put=PutSessionSharingName))
+    _bstr_t SessionSharingName;
+    __declspec(property(get=GetSessionSharingLaunchOnly,put=PutSessionSharingLaunchOnly))
+    VARIANT_BOOL SessionSharingLaunchOnly;
+    __declspec(property(get=GetReadyState,put=PutReadyState))
+    long ReadyState;
+    __declspec(property(get=GetDisableCtrlAltDel,put=PutDisableCtrlAltDel))
+    VARIANT_BOOL DisableCtrlAltDel;
+    __declspec(property(get=GetSessionCacheEnable,put=PutSessionCacheEnable))
+    VARIANT_BOOL SessionCacheEnable;
+    __declspec(property(get=GetSessionCacheTimeout,put=PutSessionCacheTimeout))
+    long SessionCacheTimeout;
+    __declspec(property(get=GetSession))
+    ISessionPtr Session;
+    __declspec(property(get=GetOutputMode,put=PutOutputMode))
+    enum OutputMode _OutputMode;
+    __declspec(property(get=GetSessionExitTimeout,put=PutSessionExitTimeout))
+    long SessionExitTimeout;
+    __declspec(property(get=GetEnableSessionSharingHost,put=PutEnableSessionSharingHost))
+    VARIANT_BOOL EnableSessionSharingHost;
+    __declspec(property(get=GetTabStop,put=PutTabStop))
+    VARIANT_BOOL TabStop;
+    __declspec(property(get=GetLongCommandLine,put=PutLongCommandLine))
+    _bstr_t LongCommandLine;
+    __declspec(property(get=GetTWIDisableSessionSharing,put=PutTWIDisableSessionSharing))
+    VARIANT_BOOL TWIDisableSessionSharing;
+    __declspec(property(get=GetSessionSharingKey,put=PutSessionSharingKey))
+    _bstr_t SessionSharingKey;
+    __declspec(property(get=GetIPCLaunch,put=PutIPCLaunch))
+    VARIANT_BOOL IPCLaunch;
+    __declspec(property(get=GetAudioDuringDetach,put=PutAudioDuringDetach))
+    VARIANT_BOOL AudioDuringDetach;
+    __declspec(property(get=GetHotkey11Char,put=PutHotkey11Char))
+    _bstr_t Hotkey11Char;
+    __declspec(property(get=GetHotkey11Shift,put=PutHotkey11Shift))
+    _bstr_t Hotkey11Shift;
+    __declspec(property(get=GetVirtualCOMPortEmulation,put=PutVirtualCOMPortEmulation))
+    VARIANT_BOOL VirtualCOMPortEmulation;
+    __declspec(property(get=GetAddress,put=PutAddress))
+    _bstr_t Address;
+    __declspec(property(get=GetApplication,put=PutApplication))
+    _bstr_t Application;
+    __declspec(property(get=GetAudioBandwidthLimit,put=PutAudioBandwidthLimit))
+    enum ICASoundQuality AudioBandwidthLimit;
+    __declspec(property(get=GetBorder,put=PutBorder))
+    long Border;
+    __declspec(property(get=GetCDMAllowed,put=PutCDMAllowed))
+    VARIANT_BOOL CDMAllowed;
+    __declspec(property(get=GetClientAudio,put=PutClientAudio))
+    VARIANT_BOOL ClientAudio;
+    __declspec(property(get=GetClientName,put=PutClientName))
+    _bstr_t ClientName;
+    __declspec(property(get=GetCOMAllowed,put=PutCOMAllowed))
+    VARIANT_BOOL COMAllowed;
+    __declspec(property(get=GetCompress,put=PutCompress))
+    VARIANT_BOOL Compress;
+    __declspec(property(get=GetConnected))
+    VARIANT_BOOL Connected;
+    __declspec(property(get=GetConnectionEntry,put=PutConnectionEntry))
+    _bstr_t ConnectionEntry;
+    __declspec(property(get=GetCPMAllowed,put=PutCPMAllowed))
+    VARIANT_BOOL CPMAllowed;
+    __declspec(property(get=GetCustomMessage,put=PutCustomMessage))
+    _bstr_t CustomMessage;
+    __declspec(property(get=GetDescription,put=PutDescription))
+    _bstr_t Description;
+    __declspec(property(get=GetDesiredColor,put=PutDesiredColor))
+    enum ICAColorDepth DesiredColor;
+    __declspec(property(get=GetDesiredHRes,put=PutDesiredHRes))
+    long DesiredHRes;
+    __declspec(property(get=GetDesiredVRes,put=PutDesiredVRes))
+    long DesiredVRes;
+    __declspec(property(get=GetDomain,put=PutDomain))
+    _bstr_t Domain;
+    __declspec(property(get=GetEncrypt,put=PutEncrypt))
+    VARIANT_BOOL Encrypt;
+    __declspec(property(get=GetHeight))
+    long Height;
+    __declspec(property(get=GetICAFile,put=PutICAFile))
+    _bstr_t ICAFile;
+    __declspec(property(get=GetIconIndex,put=PutIconIndex))
+    long IconIndex;
+    __declspec(property(get=GetIconPath,put=PutIconPath))
+    _bstr_t IconPath;
+    __declspec(property(get=GetInitialProgram,put=PutInitialProgram))
+    _bstr_t InitialProgram;
+    __declspec(property(get=GetIPXBrowserAddress,put=PutIPXBrowserAddress))
+    _bstr_t IPXBrowserAddress;
+    __declspec(property(get=GetNetbiosBrowserAddress,put=PutNetbiosBrowserAddress))
+    _bstr_t NetbiosBrowserAddress;
+    __declspec(property(get=GetNotificationReason))
+    enum ICAEvent NotificationReason;
+    __declspec(property(get=GetPersistentCacheEnabled,put=PutPersistentCacheEnabled))
+    VARIANT_BOOL PersistentCacheEnabled;
+    __declspec(property(get=GetProtocolSupport,put=PutProtocolSupport))
+    _bstr_t ProtocolSupport;
+    __declspec(property(get=GetReliable,put=PutReliable))
+    VARIANT_BOOL Reliable;
+    __declspec(property(get=GetSessionEndAction,put=PutSessionEndAction))
+    enum ICASessionEndAction SessionEndAction;
+    __declspec(property(get=GetStart,put=PutStart))
+    VARIANT_BOOL Start;
+    __declspec(property(get=GetTCPBrowserAddress,put=PutTCPBrowserAddress))
+    _bstr_t TCPBrowserAddress;
+    __declspec(property(get=GetTransportDriver,put=PutTransportDriver))
+    _bstr_t TransportDriver;
+    __declspec(property(get=GetUIActive,put=PutUIActive))
+    VARIANT_BOOL UIActive;
+    __declspec(property(get=GetUpdatesAllowed,put=PutUpdatesAllowed))
+    VARIANT_BOOL UpdatesAllowed;
+    __declspec(property(get=GetUsername,put=PutUsername))
+    _bstr_t Username;
+    __declspec(property(get=GetVersion))
+    _bstr_t Version;
+    __declspec(property(get=GetVSLAllowed,put=PutVSLAllowed))
+    VARIANT_BOOL VSLAllowed;
+    __declspec(property(get=GetWidth))
+    long Width;
+
+    //
+    // Wrapper methods for error-handling
+    //
+
+    void PutTabStop (
+        VARIANT_BOOL pbool );
+    VARIANT_BOOL GetTabStop ( );
+    HRESULT AboutBox ( );
+    HRESULT ClearProps ( );
+    long GetPropCount ( );
+    HRESULT DeleteProp (
+        _bstr_t Name );
+    HRESULT DeletePropByIndex (
+        long Index );
+    _bstr_t GetPropNameByIndex (
+        long Index );
+    HRESULT ResetProps ( );
+    HRESULT SetProp (
+        _bstr_t Name,
+        _bstr_t Value );
+    _bstr_t GetPropValue (
+        _bstr_t Name );
+    _bstr_t GetPropValueByIndex (
+        long Index );
+    HRESULT Connect ( );
+    HRESULT Disconnect ( );
+    HRESULT Logoff ( );
+    HRESULT LoadIcaFile (
+        _bstr_t File );
+    HRESULT RunPublishedApplication (
+        _bstr_t AppName,
+        _bstr_t Arguments );
+    HRESULT SetSessionEndAction (
+        enum ICASessionEndAction Action );
+    VARIANT_BOOL IsConnected ( );
+    _bstr_t GetInterfaceVersion ( );
+    _bstr_t GetClientIdentification ( );
+    _bstr_t GetSessionString (
+        enum ICASessionString Index );
+    long GetSessionCounter (
+        enum ICASessionCounter Index );
+    enum ICAEvent GetNotificationReason ( );
+    HRESULT Startup ( );
+    long GetLastError ( );
+    long GetLastClientError ( );
+    long ScaleEnable ( );
+    long ScaleDisable ( );
+    long ScaleUp ( );
+    long ScaleDown ( );
+    long ScaleSize (
+        long Width,
+        long Height );
+    long ScalePercent (
+        long Percent );
+    long ScaleToFit ( );
+    long ScaleDialog ( );
+    long CreateChannels (
+        _bstr_t ChannelNames );
+    long SendChannelData (
+        _bstr_t ChannelName,
+        _bstr_t Data,
+        long DataSize,
+        enum ICAVCDataType DataType );
+    long GetChannelCount ( );
+    _bstr_t GetChannelName (
+        long ChannelIndex );
+    long GetChannelNumber (
+        _bstr_t ChannelName );
+    long GetGlobalChannelCount ( );
+    _bstr_t GetGlobalChannelName (
+        long ChannelIndex );
+    long GetGlobalChannelNumber (
+        _bstr_t ChannelName );
+    long GetMaxChannelCount ( );
+    long GetMaxChannelWrite ( );
+    long GetMaxChannelRead ( );
+    long SetChannelFlags (
+        _bstr_t ChannelName,
+        long Flags );
+    long GetChannelFlags (
+        _bstr_t ChannelName );
+    long GetChannelDataSize (
+        _bstr_t ChannelName );
+    enum ICAVCDataType GetChannelDataType (
+        _bstr_t ChannelName );
+    _bstr_t GetChannelData (
+        _bstr_t ChannelName,
+        enum ICAVCDataType DataType );
+    long EnumerateServers ( );
+    long EnumerateApplications ( );
+    long EnumerateFarms ( );
+    long GetEnumNameCount (
+        long hndEnum );
+    _bstr_t GetEnumNameByIndex (
+        long hndEnum,
+        long hndIndex );
+    long CloseEnumHandle (
+        long hndEnum );
+    long GetWindowWidth (
+        enum ICAWindowType WndType,
+        long WndFlags );
+    long GetWindowHeight (
+        enum ICAWindowType WndType,
+        long WndFlags );
+    long SetWindowSize (
+        enum ICAWindowType WndType,
+        long Width,
+        long Height,
+        long WndFlags );
+    long GetWindowXPosition (
+        enum ICAWindowType WndType,
+        long WndFlags );
+    long GetWindowYPosition (
+        enum ICAWindowType WndType,
+        long WndFlags );
+    long SetWindowPosition (
+        enum ICAWindowType WndType,
+        long XPos,
+        long YPos,
+        long WndFlags );
+    long DisplayWindow (
+        enum ICAWindowType WndType );
+    long HideWindow (
+        enum ICAWindowType WndType );
+    long UndockWindow ( );
+    long DockWindow ( );
+    long PlaceWindowOnTop ( );
+    long PlaceWindowOnBottom ( );
+    long MinimizeWindow ( );
+    long MaximizeWindow ( );
+    long RestoreWindow ( );
+    long ShowTitleBar ( );
+    long HideTitleBar ( );
+    long EnableSizingBorder ( );
+    long DisableSizingBorder ( );
+    long FullScreenWindow ( );
+    long FocusWindow ( );
+    VARIANT_BOOL IsWindowDocked ( );
+    long GetSessionWidth ( );
+    long GetSessionHeight ( );
+    long GetSessionColorDepth ( );
+    long GetScreenWidth ( );
+    long GetScreenHeight ( );
+    long GetScreenColorDepth ( );
+    long NewWindow (
+        long XPos,
+        long YPos,
+        long Width,
+        long Height,
+        long Flags );
+    long DeleteWindow ( );
+    _bstr_t GetErrorMessage (
+        long ErrCode );
+    _bstr_t GetClientErrorMessage (
+        long ErrCode );
+    long EnableKeyboardInput ( );
+    long DisableKeyboardInput ( );
+    VARIANT_BOOL IsKeyboardInputEnabled ( );
+    long EnableMouseInput ( );
+    long DisableMouseInput ( );
+    VARIANT_BOOL IsMouseInputEnabled ( );
+    _bstr_t GetClientNetworkName ( );
+    long GetClientAddressCount ( );
+    _bstr_t GetClientAddress (
+        long Index );
+    long AttachSession (
+        _bstr_t pSessionId );
+    long DetachSession (
+        _bstr_t pSessionId );
+    long GetCachedSessionCount ( );
+    VARIANT_BOOL IsSessionAttached (
+        _bstr_t pSessionId );
+    VARIANT_BOOL IsSessionDetached (
+        _bstr_t pSessionId );
+    VARIANT_BOOL IsSessionRunning (
+        _bstr_t pSessionId );
+    long SetSessionId (
+        _bstr_t pSessionId );
+    long GetReadyState ( );
+    void PutReadyState (
+        long state );
+    _bstr_t GetAddress ( );
+    void PutAddress (
+        _bstr_t pVal );
+    _bstr_t GetApplication ( );
+    void PutApplication (
+        _bstr_t pVal );
+    enum ICASoundQuality GetAudioBandwidthLimit ( );
+    void PutAudioBandwidthLimit (
+        enum ICASoundQuality pVal );
+    long GetBorder ( );
+    void PutBorder (
+        long pVal );
+    VARIANT_BOOL GetCDMAllowed ( );
+    void PutCDMAllowed (
+        VARIANT_BOOL pVal );
+    VARIANT_BOOL GetClientAudio ( );
+    void PutClientAudio (
+        VARIANT_BOOL pVal );
+    _bstr_t GetClientName ( );
+    void PutClientName (
+        _bstr_t pVal );
+    VARIANT_BOOL GetCOMAllowed ( );
+    void PutCOMAllowed (
+        VARIANT_BOOL pVal );
+    VARIANT_BOOL GetCompress ( );
+    void PutCompress (
+        VARIANT_BOOL pVal );
+    VARIANT_BOOL GetConnected ( );
+    _bstr_t GetConnectionEntry ( );
+    void PutConnectionEntry (
+        _bstr_t pVal );
+    VARIANT_BOOL GetCPMAllowed ( );
+    void PutCPMAllowed (
+        VARIANT_BOOL pVal );
+    _bstr_t GetCustomMessage ( );
+    void PutCustomMessage (
+        _bstr_t pVal );
+    _bstr_t GetDescription ( );
+    void PutDescription (
+        _bstr_t pVal );
+    enum ICAColorDepth GetDesiredColor ( );
+    void PutDesiredColor (
+        enum ICAColorDepth pVal );
+    long GetDesiredHRes ( );
+    void PutDesiredHRes (
+        long pVal );
+    long GetDesiredVRes ( );
+    void PutDesiredVRes (
+        long pVal );
+    _bstr_t GetDomain ( );
+    void PutDomain (
+        _bstr_t pVal );
+    VARIANT_BOOL GetEncrypt ( );
+    void PutEncrypt (
+        VARIANT_BOOL pVal );
+    long GetHeight ( );
+    _bstr_t GetICAFile ( );
+    void PutICAFile (
+        _bstr_t pVal );
+    long GetIconIndex ( );
+    void PutIconIndex (
+        long pVal );
+    _bstr_t GetIconPath ( );
+    void PutIconPath (
+        _bstr_t pVal );
+    _bstr_t GetInitialProgram ( );
+    void PutInitialProgram (
+        _bstr_t pVal );
+    _bstr_t GetIPXBrowserAddress ( );
+    void PutIPXBrowserAddress (
+        _bstr_t pVal );
+    _bstr_t GetNetbiosBrowserAddress ( );
+    void PutNetbiosBrowserAddress (
+        _bstr_t pVal );
+  //  enum ICAEvent GetNotificationReason ( );
+    VARIANT_BOOL GetPersistentCacheEnabled ( );
+    void PutPersistentCacheEnabled (
+        VARIANT_BOOL pVal );
+    _bstr_t GetProtocolSupport ( );
+    void PutProtocolSupport (
+        _bstr_t pVal );
+    VARIANT_BOOL GetReliable ( );
+    void PutReliable (
+        VARIANT_BOOL pVal );
+    enum ICASessionEndAction GetSessionEndAction ( );
+    void PutSessionEndAction (
+        enum ICASessionEndAction pVal );
+    VARIANT_BOOL GetStart ( );
+    void PutStart (
+        VARIANT_BOOL pVal );
+    _bstr_t GetTCPBrowserAddress ( );
+    void PutTCPBrowserAddress (
+        _bstr_t pVal );
+    _bstr_t GetTransportDriver ( );
+    void PutTransportDriver (
+        _bstr_t pVal );
+    VARIANT_BOOL GetUIActive ( );
+    void PutUIActive (
+        VARIANT_BOOL pVal );
+    VARIANT_BOOL GetUpdatesAllowed ( );
+    void PutUpdatesAllowed (
+        VARIANT_BOOL pVal );
+    _bstr_t GetUsername ( );
+    void PutUsername (
+        _bstr_t pVal );
+    _bstr_t GetVersion ( );
+    VARIANT_BOOL GetVSLAllowed ( );
+    void PutVSLAllowed (
+        VARIANT_BOOL pVal );
+    long GetWidth ( );
+    _bstr_t GetWinstationDriver ( );
+    void PutWinstationDriver (
+        _bstr_t pVal );
+    _bstr_t GetWorkDirectory ( );
+    void PutWorkDirectory (
+        _bstr_t pVal );
+    _bstr_t GetAppsrvIni ( );
+    void PutAppsrvIni (
+        _bstr_t pVal );
+    _bstr_t GetModuleIni ( );
+    void PutModuleIni (
+        _bstr_t pVal );
+    _bstr_t GetWfclientIni ( );
+    void PutWfclientIni (
+        _bstr_t pVal );
+    _bstr_t GetClientPath ( );
+    _bstr_t GetClientVersion ( );
+    VARIANT_BOOL GetLogAppend ( );
+    void PutLogAppend (
+        VARIANT_BOOL pVal );
+    VARIANT_BOOL GetLogConnect ( );
+    void PutLogConnect (
+        VARIANT_BOOL pVal );
+    VARIANT_BOOL GetLogErrors ( );
+    void PutLogErrors (
+        VARIANT_BOOL pVal );
+    _bstr_t GetLogFile ( );
+    void PutLogFile (
+        _bstr_t pVal );
+    VARIANT_BOOL GetLogFlush ( );
+    void PutLogFlush (
+        VARIANT_BOOL pVal );
+    VARIANT_BOOL GetLogKeyboard ( );
+    void PutLogKeyboard (
+        VARIANT_BOOL pVal );
+    VARIANT_BOOL GetLogReceive ( );
+    void PutLogReceive (
+        VARIANT_BOOL pVal );
+    VARIANT_BOOL GetLogTransmit ( );
+    void PutLogTransmit (
+        VARIANT_BOOL pVal );
+    _bstr_t GetTitle ( );
+    void PutTitle (
+        _bstr_t pVal );
+    VARIANT_BOOL GetLaunch ( );
+    void PutLaunch (
+        VARIANT_BOOL pVal );
+    OLE_COLOR GetBackgroundColor ( );
+    void PutBackgroundColor (
+        OLE_COLOR pVal );
+    OLE_COLOR GetBorderColor ( );
+    void PutBorderColor (
+        OLE_COLOR pVal );
+    OLE_COLOR GetTextColor ( );
+    void PutTextColor (
+        OLE_COLOR pVal );
+    _bstr_t GetEncryptionLevelSession ( );
+    void PutEncryptionLevelSession (
+        _bstr_t pVal );
+    _bstr_t GetHttpBrowserAddress ( );
+    void PutHttpBrowserAddress (
+        _bstr_t pVal );
+    _bstr_t GetBrowserProtocol ( );
+    void PutBrowserProtocol (
+        _bstr_t pVal );
+    _bstr_t GetLocHTTPBrowserAddress ( );
+    void PutLocHTTPBrowserAddress (
+        _bstr_t pVal );
+    _bstr_t GetLocIPXBrowserAddress ( );
+    void PutLocIPXBrowserAddress (
+        _bstr_t pVal );
+    _bstr_t GetLocNETBIOSBrowserAddress ( );
+    void PutLocNETBIOSBrowserAddress (
+        _bstr_t pVal );
+    _bstr_t GetLocTCPBrowserAddress ( );
+    void PutLocTCPBrowserAddress (
+        _bstr_t pVal );
+    VARIANT_BOOL GetDoNotUseDefaultCSL ( );
+    void PutDoNotUseDefaultCSL (
+        VARIANT_BOOL pVal );
+    long GetICAPortNumber ( );
+    void PutICAPortNumber (
+        long pVal );
+    long GetKeyboardTimer ( );
+    void PutKeyboardTimer (
+        long pVal );
+    long GetMouseTimer ( );
+    void PutMouseTimer (
+        long pVal );
+    VARIANT_BOOL GetScrollbars ( );
+    void PutScrollbars (
+        VARIANT_BOOL pVal );
+    long GetScalingHeight ( );
+    void PutScalingHeight (
+        long pVal );
+    enum ICAScalingMode GetScalingMode ( );
+    void PutScalingMode (
+        enum ICAScalingMode pVal );
+    long GetScalingPercent ( );
+    void PutScalingPercent (
+        long pVal );
+    long GetScalingWidth ( );
+    void PutScalingWidth (
+        long pVal );
+    _bstr_t GetVirtualChannels ( );
+    void PutVirtualChannels (
+        _bstr_t pVal );
+    long GetUseAlternateAddress ( );
+    void PutUseAlternateAddress (
+        long pVal );
+    long GetBrowserRetry ( );
+    void PutBrowserRetry (
+        long pVal );
+    long GetBrowserTimeout ( );
+    void PutBrowserTimeout (
+        long pVal );
+    long GetLanaNumber ( );
+    void PutLanaNumber (
+        long pVal );
+    long GetICASOCKSProtocolVersion ( );
+    void PutICASOCKSProtocolVersion (
+        long pVal );
+    _bstr_t GetICASOCKSProxyHost ( );
+    void PutICASOCKSProxyHost (
+        _bstr_t pVal );
+    long GetICASOCKSProxyPortNumber ( );
+    void PutICASOCKSProxyPortNumber (
+        long pVal );
+    _bstr_t GetICASOCKSRFC1929Username ( );
+    void PutICASOCKSRFC1929Username (
+        _bstr_t pVal );
+    long GetICASOCKSTimeout ( );
+    void PutICASOCKSTimeout (
+        long pVal );
+    VARIANT_BOOL GetSSLEnable ( );
+    void PutSSLEnable (
+        VARIANT_BOOL pVal );
+    _bstr_t GetSSLProxyHost ( );
+    void PutSSLProxyHost (
+        _bstr_t pVal );
+    _bstr_t GetSSLCiphers ( );
+    void PutSSLCiphers (
+        _bstr_t pVal );
+    long GetSSLNoCACerts ( );
+    void PutSSLNoCACerts (
+        long pVal );
+    _bstr_t GetSSLCommonName ( );
+    void PutSSLCommonName (
+        _bstr_t pVal );
+    _bstr_t GetAUTHUsername ( );
+    void PutAUTHUsername (
+        _bstr_t pVal );
+    _bstr_t GetXmlAddressResolutionType ( );
+    void PutXmlAddressResolutionType (
+        _bstr_t pVal );
+    VARIANT_BOOL GetAutoScale ( );
+    void PutAutoScale (
+        VARIANT_BOOL pVal );
+    VARIANT_BOOL GetAutoAppResize ( );
+    void PutAutoAppResize (
+        VARIANT_BOOL pVal );
+    _bstr_t GetHotkey1Char ( );
+    void PutHotkey1Char (
+        _bstr_t pVal );
+    _bstr_t GetHotkey1Shift ( );
+    void PutHotkey1Shift (
+        _bstr_t pVal );
+    _bstr_t GetHotkey2Char ( );
+    void PutHotkey2Char (
+        _bstr_t pVal );
+    _bstr_t GetHotkey2Shift ( );
+    void PutHotkey2Shift (
+        _bstr_t pVal );
+    _bstr_t GetHotkey3Char ( );
+    void PutHotkey3Char (
+        _bstr_t pVal );
+    _bstr_t GetHotkey3Shift ( );
+    void PutHotkey3Shift (
+        _bstr_t pVal );
+    _bstr_t GetHotkey4Char ( );
+    void PutHotkey4Char (
+        _bstr_t pVal );
+    _bstr_t GetHotkey4Shift ( );
+    void PutHotkey4Shift (
+        _bstr_t pVal );
+    _bstr_t GetHotkey5Char ( );
+    void PutHotkey5Char (
+        _bstr_t pVal );
+    _bstr_t GetHotkey5Shift ( );
+    void PutHotkey5Shift (
+        _bstr_t pVal );
+    _bstr_t GetHotkey6Char ( );
+    void PutHotkey6Char (
+        _bstr_t pVal );
+    _bstr_t GetHotkey6Shift ( );
+    void PutHotkey6Shift (
+        _bstr_t pVal );
+    _bstr_t GetHotkey7Char ( );
+    void PutHotkey7Char (
+        _bstr_t pVal );
+    _bstr_t GetHotkey7Shift ( );
+    void PutHotkey7Shift (
+        _bstr_t pVal );
+    _bstr_t GetHotkey8Char ( );
+    void PutHotkey8Char (
+        _bstr_t pVal );
+    _bstr_t GetHotkey8Shift ( );
+    void PutHotkey8Shift (
+        _bstr_t pVal );
+    _bstr_t GetHotkey9Char ( );
+    void PutHotkey9Char (
+        _bstr_t pVal );
+    _bstr_t GetHotkey9Shift ( );
+    void PutHotkey9Shift (
+        _bstr_t pVal );
+    _bstr_t GetHotkey10Char ( );
+    void PutHotkey10Char (
+        _bstr_t pVal );
+    _bstr_t GetHotkey10Shift ( );
+    void PutHotkey10Shift (
+        _bstr_t pVal );
+    _bstr_t GetControlWindowText ( );
+    void PutControlWindowText (
+        _bstr_t pVal );
+    VARIANT_BOOL GetCacheICAFile ( );
+    void PutCacheICAFile (
+        VARIANT_BOOL pVal );
+    long GetScreenPercent ( );
+    void PutScreenPercent (
+        long pVal );
+    VARIANT_BOOL GetTWIMode ( );
+    void PutTWIMode (
+        VARIANT_BOOL pVal );
+    VARIANT_BOOL GetTransportReconnectEnabled ( );
+    void PutTransportReconnectEnabled (
+        VARIANT_BOOL pVal );
+    long GetTransportReconnectDelay ( );
+    void PutTransportReconnectDelay (
+        long pVal );
+    long GetTransportReconnectRetries ( );
+    void PutTransportReconnectRetries (
+        long pVal );
+    VARIANT_BOOL GetAutoLogonAllowed ( );
+    void PutAutoLogonAllowed (
+        VARIANT_BOOL pVal );
+    VARIANT_BOOL GetEnableSessionSharingClient ( );
+    void PutEnableSessionSharingClient (
+        VARIANT_BOOL pVal );
+    _bstr_t GetSessionSharingName ( );
+    void PutSessionSharingName (
+        _bstr_t pVal );
+    VARIANT_BOOL GetSessionSharingLaunchOnly ( );
+    void PutSessionSharingLaunchOnly (
+        VARIANT_BOOL pVal );
+    VARIANT_BOOL GetDisableCtrlAltDel ( );
+    void PutDisableCtrlAltDel (
+        VARIANT_BOOL pVal );
+    VARIANT_BOOL GetSessionCacheEnable ( );
+    void PutSessionCacheEnable (
+        VARIANT_BOOL pVal );
+    long GetSessionCacheTimeout ( );
+    void PutSessionCacheTimeout (
+        long pVal );
+    ISessionPtr GetSession ( );
+    enum OutputMode GetOutputMode ( );
+    void PutOutputMode (
+        enum OutputMode pVal );
+    long GetSessionExitTimeout ( );
+    void PutSessionExitTimeout (
+        long pVal );
+    VARIANT_BOOL GetEnableSessionSharingHost ( );
+    void PutEnableSessionSharingHost (
+        VARIANT_BOOL pVal );
+    _bstr_t GetLongCommandLine ( );
+    void PutLongCommandLine (
+        _bstr_t pVal );
+    VARIANT_BOOL GetTWIDisableSessionSharing ( );
+    void PutTWIDisableSessionSharing (
+        VARIANT_BOOL pVal );
+    _bstr_t GetSessionSharingKey ( );
+    void PutSessionSharingKey (
+        _bstr_t pVal );
+    long DisconnectSessions (
+        _bstr_t pGroupId );
+    long LogoffSessions (
+        _bstr_t pGroupId );
+    long SetSessionGroupId (
+        _bstr_t pGroupId );
+    long GetSessionHandle ( );
+    long SwitchSession (
+        long hSession );
+    long GetSessionCount ( );
+    long GetSessionHandleByIndex (
+        long Index );
+    long GetSessionGroupCount (
+        _bstr_t pGroupId );
+    VARIANT_BOOL GetIPCLaunch ( );
+    void PutIPCLaunch (
+        VARIANT_BOOL pVal );
+    VARIANT_BOOL GetAudioDuringDetach ( );
+    void PutAudioDuringDetach (
+        VARIANT_BOOL pVal );
+    _bstr_t GetHotkey11Char ( );
+    void PutHotkey11Char (
+        _bstr_t pVal );
+    _bstr_t GetHotkey11Shift ( );
+    void PutHotkey11Shift (
+        _bstr_t pVal );
+    VARIANT_BOOL IsPassThrough ( );
+    VARIANT_BOOL GetVirtualCOMPortEmulation ( );
+    void PutVirtualCOMPortEmulation (
+        VARIANT_BOOL pVal );
+
+    //
+    // Raw methods provided by interface
+    //
+
+      virtual HRESULT __stdcall put_TabStop (
+        /*[in]*/ VARIANT_BOOL pbool ) = 0;
+      virtual HRESULT __stdcall get_TabStop (
+        /*[out,retval]*/ VARIANT_BOOL * pbool ) = 0;
+      virtual HRESULT __stdcall raw_AboutBox ( ) = 0;
+      virtual HRESULT __stdcall raw_ClearProps ( ) = 0;
+      virtual HRESULT __stdcall raw_GetPropCount (
+        /*[out,retval]*/ long * Count ) = 0;
+      virtual HRESULT __stdcall raw_DeleteProp (
+        /*[in]*/ BSTR Name ) = 0;
+      virtual HRESULT __stdcall raw_DeletePropByIndex (
+        /*[in]*/ long Index ) = 0;
+      virtual HRESULT __stdcall raw_GetPropNameByIndex (
+        /*[in]*/ long Index,
+        /*[out,retval]*/ BSTR * Name ) = 0;
+      virtual HRESULT __stdcall raw_ResetProps ( ) = 0;
+      virtual HRESULT __stdcall raw_SetProp (
+        /*[in]*/ BSTR Name,
+        /*[in]*/ BSTR Value ) = 0;
+      virtual HRESULT __stdcall raw_GetPropValue (
+        /*[in]*/ BSTR Name,
+        /*[out,retval]*/ BSTR * Value ) = 0;
+      virtual HRESULT __stdcall raw_GetPropValueByIndex (
+        /*[in]*/ long Index,
+        /*[out,retval]*/ BSTR * Value ) = 0;
+      virtual HRESULT __stdcall raw_Connect ( ) = 0;
+      virtual HRESULT __stdcall raw_Disconnect ( ) = 0;
+      virtual HRESULT __stdcall raw_Logoff ( ) = 0;
+      virtual HRESULT __stdcall raw_LoadIcaFile (
+        /*[in]*/ BSTR File ) = 0;
+      virtual HRESULT __stdcall raw_RunPublishedApplication (
+        /*[in]*/ BSTR AppName,
+        /*[in]*/ BSTR Arguments ) = 0;
+      virtual HRESULT __stdcall raw_SetSessionEndAction (
+        /*[in]*/ enum ICASessionEndAction Action ) = 0;
+      virtual HRESULT __stdcall raw_IsConnected (
+        /*[out,retval]*/ VARIANT_BOOL * Connected ) = 0;
+      virtual HRESULT __stdcall raw_GetInterfaceVersion (
+        /*[out,retval]*/ BSTR * Version ) = 0;
+      virtual HRESULT __stdcall raw_GetClientIdentification (
+        /*[out,retval]*/ BSTR * Identification ) = 0;
+      virtual HRESULT __stdcall raw_GetSessionString (
+        /*[in]*/ enum ICASessionString Index,
+        /*[out,retval]*/ BSTR * SessionStr ) = 0;
+      virtual HRESULT __stdcall raw_GetSessionCounter (
+        /*[in]*/ enum ICASessionCounter Index,
+        /*[out,retval]*/ long * Counter ) = 0;
+      virtual HRESULT __stdcall raw_GetNotificationReason (
+        /*[out,retval]*/ enum ICAEvent * Reason ) = 0;
+      virtual HRESULT __stdcall raw_Startup ( ) = 0;
+      virtual HRESULT __stdcall raw_GetLastError (
+        /*[out,retval]*/ long * LastError ) = 0;
+      virtual HRESULT __stdcall raw_GetLastClientError (
+        /*[out,retval]*/ long * LastClientError ) = 0;
+      virtual HRESULT __stdcall raw_ScaleEnable (
+        /*[out,retval]*/ long * pRetCode ) = 0;
+      virtual HRESULT __stdcall raw_ScaleDisable (
+        /*[out,retval]*/ long * pRetCode ) = 0;
+      virtual HRESULT __stdcall raw_ScaleUp (
+        /*[out,retval]*/ long * pRetCode ) = 0;
+      virtual HRESULT __stdcall raw_ScaleDown (
+        /*[out,retval]*/ long * pRetCode ) = 0;
+      virtual HRESULT __stdcall raw_ScaleSize (
+        /*[in]*/ long Width,
+        /*[in]*/ long Height,
+        /*[out,retval]*/ long * pRetCode ) = 0;
+      virtual HRESULT __stdcall raw_ScalePercent (
+        /*[in]*/ long Percent,
+        /*[out,retval]*/ long * pRetCode ) = 0;
+      virtual HRESULT __stdcall raw_ScaleToFit (
+        /*[out,retval]*/ long * pRetCode ) = 0;
+      virtual HRESULT __stdcall raw_ScaleDialog (
+        /*[out,retval]*/ long * pRetCode ) = 0;
+      virtual HRESULT __stdcall raw_CreateChannels (
+        /*[in]*/ BSTR ChannelNames,
+        /*[out,retval]*/ long * pRetCode ) = 0;
+      virtual HRESULT __stdcall raw_SendChannelData (
+        /*[in]*/ BSTR ChannelName,
+        /*[in]*/ BSTR Data,
+        /*[in]*/ long DataSize,
+        /*[in]*/ enum ICAVCDataType DataType,
+        /*[out,retval]*/ long * pRetCode ) = 0;
+      virtual HRESULT __stdcall raw_GetChannelCount (
+        /*[out,retval]*/ long * pCount ) = 0;
+      virtual HRESULT __stdcall raw_GetChannelName (
+        /*[in]*/ long ChannelIndex,
+        /*[out,retval]*/ BSTR * pName ) = 0;
+      virtual HRESULT __stdcall raw_GetChannelNumber (
+        /*[in]*/ BSTR ChannelName,
+        /*[out,retval]*/ long * pNumber ) = 0;
+      virtual HRESULT __stdcall raw_GetGlobalChannelCount (
+        /*[out,retval]*/ long * pCount ) = 0;
+      virtual HRESULT __stdcall raw_GetGlobalChannelName (
+        /*[in]*/ long ChannelIndex,
+        /*[out,retval]*/ BSTR * pName ) = 0;
+      virtual HRESULT __stdcall raw_GetGlobalChannelNumber (
+        /*[in]*/ BSTR ChannelName,
+        /*[out,retval]*/ long * pNumber ) = 0;
+      virtual HRESULT __stdcall raw_GetMaxChannelCount (
+        /*[out,retval]*/ long * pCount ) = 0;
+      virtual HRESULT __stdcall raw_GetMaxChannelWrite (
+        /*[out,retval]*/ long * pWrite ) = 0;
+      virtual HRESULT __stdcall raw_GetMaxChannelRead (
+        /*[out,retval]*/ long * pRead ) = 0;
+      virtual HRESULT __stdcall raw_SetChannelFlags (
+        /*[in]*/ BSTR ChannelName,
+        /*[in]*/ long Flags,
+        /*[out,retval]*/ long * pRetCode ) = 0;
+      virtual HRESULT __stdcall raw_GetChannelFlags (
+        /*[in]*/ BSTR ChannelName,
+        /*[out,retval]*/ long * pFlags ) = 0;
+      virtual HRESULT __stdcall raw_GetChannelDataSize (
+        /*[in]*/ BSTR ChannelName,
+        /*[out,retval]*/ long * pSize ) = 0;
+      virtual HRESULT __stdcall raw_GetChannelDataType (
+        /*[in]*/ BSTR ChannelName,
+        /*[out,retval]*/ enum ICAVCDataType * pDataType ) = 0;
+      virtual HRESULT __stdcall raw_GetChannelData (
+        /*[in]*/ BSTR ChannelName,
+        /*[in]*/ enum ICAVCDataType DataType,
+        /*[out,retval]*/ BSTR * pData ) = 0;
+      virtual HRESULT __stdcall raw_EnumerateServers (
+        /*[out,retval]*/ long * phEnum ) = 0;
+      virtual HRESULT __stdcall raw_EnumerateApplications (
+        /*[out,retval]*/ long * phEnum ) = 0;
+      virtual HRESULT __stdcall raw_EnumerateFarms (
+        /*[out,retval]*/ long * phEnum ) = 0;
+      virtual HRESULT __stdcall raw_GetEnumNameCount (
+        /*[in]*/ long hndEnum,
+        /*[out,retval]*/ long * pCount ) = 0;
+      virtual HRESULT __stdcall raw_GetEnumNameByIndex (
+        /*[in]*/ long hndEnum,
+        /*[in]*/ long hndIndex,
+        /*[out,retval]*/ BSTR * ppName ) = 0;
+      virtual HRESULT __stdcall raw_CloseEnumHandle (
+        /*[in]*/ long hndEnum,
+        /*[out,retval]*/ long * pRetCode ) = 0;
+      virtual HRESULT __stdcall raw_GetWindowWidth (
+        /*[in]*/ enum ICAWindowType WndType,
+        /*[in]*/ long WndFlags,
+        /*[out,retval]*/ long * pWidth ) = 0;
+      virtual HRESULT __stdcall raw_GetWindowHeight (
+        /*[in]*/ enum ICAWindowType WndType,
+        /*[in]*/ long WndFlags,
+        /*[out,retval]*/ long * pHeight ) = 0;
+      virtual HRESULT __stdcall raw_SetWindowSize (
+        /*[in]*/ enum ICAWindowType WndType,
+        /*[in]*/ long Width,
+        /*[in]*/ long Height,
+        /*[in]*/ long WndFlags,
+        /*[out,retval]*/ long * pRetCode ) = 0;
+      virtual HRESULT __stdcall raw_GetWindowXPosition (
+        /*[in]*/ enum ICAWindowType WndType,
+        /*[in]*/ long WndFlags,
+        /*[out,retval]*/ long * pXPos ) = 0;
+      virtual HRESULT __stdcall raw_GetWindowYPosition (
+        /*[in]*/ enum ICAWindowType WndType,
+        /*[in]*/ long WndFlags,
+        /*[out,retval]*/ long * pYPos ) = 0;
+      virtual HRESULT __stdcall raw_SetWindowPosition (
+        /*[in]*/ enum ICAWindowType WndType,
+        /*[in]*/ long XPos,
+        /*[in]*/ long YPos,
+        /*[in]*/ long WndFlags,
+        /*[out,retval]*/ long * pRetCode ) = 0;
+      virtual HRESULT __stdcall raw_DisplayWindow (
+        /*[in]*/ enum ICAWindowType WndType,
+        /*[out,retval]*/ long * pRetCode ) = 0;
+      virtual HRESULT __stdcall raw_HideWindow (
+        /*[in]*/ enum ICAWindowType WndType,
+        /*[out,retval]*/ long * pRetCode ) = 0;
+      virtual HRESULT __stdcall raw_UndockWindow (
+        /*[out,retval]*/ long * pRetCode ) = 0;
+      virtual HRESULT __stdcall raw_DockWindow (
+        /*[out,retval]*/ long * pRetCode ) = 0;
+      virtual HRESULT __stdcall raw_PlaceWindowOnTop (
+        /*[out,retval]*/ long * pRetCode ) = 0;
+      virtual HRESULT __stdcall raw_PlaceWindowOnBottom (
+        /*[out,retval]*/ long * pRetCode ) = 0;
+      virtual HRESULT __stdcall raw_MinimizeWindow (
+        /*[out,retval]*/ long * pRetCode ) = 0;
+      virtual HRESULT __stdcall raw_MaximizeWindow (
+        /*[out,retval]*/ long * pRetCode ) = 0;
+      virtual HRESULT __stdcall raw_RestoreWindow (
+        /*[out,retval]*/ long * pRetCode ) = 0;
+      virtual HRESULT __stdcall raw_ShowTitleBar (
+        /*[out,retval]*/ long * pRetCode ) = 0;
+      virtual HRESULT __stdcall raw_HideTitleBar (
+        /*[out,retval]*/ long * pRetCode ) = 0;
+      virtual HRESULT __stdcall raw_EnableSizingBorder (
+        /*[out,retval]*/ long * pRetCode ) = 0;
+      virtual HRESULT __stdcall raw_DisableSizingBorder (
+        /*[out,retval]*/ long * pRetCode ) = 0;
+      virtual HRESULT __stdcall raw_FullScreenWindow (
+        /*[out,retval]*/ long * pRetCode ) = 0;
+      virtual HRESULT __stdcall raw_FocusWindow (
+        /*[out,retval]*/ long * pRetCode ) = 0;
+      virtual HRESULT __stdcall raw_IsWindowDocked (
+        /*[out,retval]*/ VARIANT_BOOL * Docked ) = 0;
+      virtual HRESULT __stdcall raw_GetSessionWidth (
+        /*[out,retval]*/ long * pWidth ) = 0;
+      virtual HRESULT __stdcall raw_GetSessionHeight (
+        /*[out,retval]*/ long * pHeight ) = 0;
+      virtual HRESULT __stdcall raw_GetSessionColorDepth (
+        /*[out,retval]*/ long * pColorDepth ) = 0;
+      virtual HRESULT __stdcall raw_GetScreenWidth (
+        /*[out,retval]*/ long * pWidth ) = 0;
+      virtual HRESULT __stdcall raw_GetScreenHeight (
+        /*[out,retval]*/ long * pHeight ) = 0;
+      virtual HRESULT __stdcall raw_GetScreenColorDepth (
+        /*[out,retval]*/ long * pColorDepth ) = 0;
+      virtual HRESULT __stdcall raw_NewWindow (
+        /*[in]*/ long XPos,
+        /*[in]*/ long YPos,
+        /*[in]*/ long Width,
+        /*[in]*/ long Height,
+        /*[in]*/ long Flags,
+        /*[out,retval]*/ long * pRetCode ) = 0;
+      virtual HRESULT __stdcall raw_DeleteWindow (
+        /*[out,retval]*/ long * pRetCode ) = 0;
+      virtual HRESULT __stdcall raw_GetErrorMessage (
+        /*[in]*/ long ErrCode,
+        /*[out,retval]*/ BSTR * ppErrMsg ) = 0;
+      virtual HRESULT __stdcall raw_GetClientErrorMessage (
+        /*[in]*/ long ErrCode,
+        /*[out,retval]*/ BSTR * ppErrMsg ) = 0;
+      virtual HRESULT __stdcall raw_EnableKeyboardInput (
+        /*[out,retval]*/ long * pRetCode ) = 0;
+      virtual HRESULT __stdcall raw_DisableKeyboardInput (
+        /*[out,retval]*/ long * pRetCode ) = 0;
+      virtual HRESULT __stdcall raw_IsKeyboardInputEnabled (
+        /*[out,retval]*/ VARIANT_BOOL * pEnabled ) = 0;
+      virtual HRESULT __stdcall raw_EnableMouseInput (
+        /*[out,retval]*/ long * pRetCode ) = 0;
+      virtual HRESULT __stdcall raw_DisableMouseInput (
+        /*[out,retval]*/ long * pRetCode ) = 0;
+      virtual HRESULT __stdcall raw_IsMouseInputEnabled (
+        /*[out,retval]*/ VARIANT_BOOL * pEnabled ) = 0;
+      virtual HRESULT __stdcall raw_GetClientNetworkName (
+        /*[out,retval]*/ BSTR * ppClientNetworkName ) = 0;
+      virtual HRESULT __stdcall raw_GetClientAddressCount (
+        /*[out,retval]*/ long * pnAddress ) = 0;
+      virtual HRESULT __stdcall raw_GetClientAddress (
+        /*[in]*/ long Index,
+        /*[out,retval]*/ BSTR * ppClientAddress ) = 0;
+      virtual HRESULT __stdcall raw_AttachSession (
+        /*[in]*/ BSTR pSessionId,
+        /*[out,retval]*/ long * pRetCode ) = 0;
+      virtual HRESULT __stdcall raw_DetachSession (
+        /*[in]*/ BSTR pSessionId,
+        /*[out,retval]*/ long * pRetCode ) = 0;
+      virtual HRESULT __stdcall raw_GetCachedSessionCount (
+        /*[out,retval]*/ long * pSessionCount ) = 0;
+      virtual HRESULT __stdcall raw_IsSessionAttached (
+        /*[in]*/ BSTR pSessionId,
+        /*[out,retval]*/ VARIANT_BOOL * pAttached ) = 0;
+      virtual HRESULT __stdcall raw_IsSessionDetached (
+        /*[in]*/ BSTR pSessionId,
+        /*[out,retval]*/ VARIANT_BOOL * pDetached ) = 0;
+      virtual HRESULT __stdcall raw_IsSessionRunning (
+        /*[in]*/ BSTR pSessionId,
+        /*[out,retval]*/ VARIANT_BOOL * pRunning ) = 0;
+      virtual HRESULT __stdcall raw_SetSessionId (
+        /*[in]*/ BSTR pSessionId,
+        /*[out,retval]*/ long * pRetCode ) = 0;
+      virtual HRESULT __stdcall get_ReadyState (
+        /*[out,retval]*/ long * state ) = 0;
+      virtual HRESULT __stdcall put_ReadyState (
+        /*[in]*/ long state ) = 0;
+      virtual HRESULT __stdcall get_Address (
+        /*[out,retval]*/ BSTR * pVal ) = 0;
+      virtual HRESULT __stdcall put_Address (
+        /*[in]*/ BSTR pVal ) = 0;
+      virtual HRESULT __stdcall get_Application (
+        /*[out,retval]*/ BSTR * pVal ) = 0;
+      virtual HRESULT __stdcall put_Application (
+        /*[in]*/ BSTR pVal ) = 0;
+      virtual HRESULT __stdcall get_AudioBandwidthLimit (
+        /*[out,retval]*/ enum ICASoundQuality * pVal ) = 0;
+      virtual HRESULT __stdcall put_AudioBandwidthLimit (
+        /*[in]*/ enum ICASoundQuality pVal ) = 0;
+      virtual HRESULT __stdcall get_Border (
+        /*[out,retval]*/ long * pVal ) = 0;
+      virtual HRESULT __stdcall put_Border (
+        /*[in]*/ long pVal ) = 0;
+      virtual HRESULT __stdcall get_CDMAllowed (
+        /*[out,retval]*/ VARIANT_BOOL * pVal ) = 0;
+      virtual HRESULT __stdcall put_CDMAllowed (
+        /*[in]*/ VARIANT_BOOL pVal ) = 0;
+      virtual HRESULT __stdcall get_ClientAudio (
+        /*[out,retval]*/ VARIANT_BOOL * pVal ) = 0;
+      virtual HRESULT __stdcall put_ClientAudio (
+        /*[in]*/ VARIANT_BOOL pVal ) = 0;
+      virtual HRESULT __stdcall get_ClientName (
+        /*[out,retval]*/ BSTR * pVal ) = 0;
+      virtual HRESULT __stdcall put_ClientName (
+        /*[in]*/ BSTR pVal ) = 0;
+      virtual HRESULT __stdcall get_COMAllowed (
+        /*[out,retval]*/ VARIANT_BOOL * pVal ) = 0;
+      virtual HRESULT __stdcall put_COMAllowed (
+        /*[in]*/ VARIANT_BOOL pVal ) = 0;
+      virtual HRESULT __stdcall get_Compress (
+        /*[out,retval]*/ VARIANT_BOOL * pVal ) = 0;
+      virtual HRESULT __stdcall put_Compress (
+        /*[in]*/ VARIANT_BOOL pVal ) = 0;
+      virtual HRESULT __stdcall get_Connected (
+        /*[out,retval]*/ VARIANT_BOOL * pVal ) = 0;
+      virtual HRESULT __stdcall get_ConnectionEntry (
+        /*[out,retval]*/ BSTR * pVal ) = 0;
+      virtual HRESULT __stdcall put_ConnectionEntry (
+        /*[in]*/ BSTR pVal ) = 0;
+      virtual HRESULT __stdcall get_CPMAllowed (
+        /*[out,retval]*/ VARIANT_BOOL * pVal ) = 0;
+      virtual HRESULT __stdcall put_CPMAllowed (
+        /*[in]*/ VARIANT_BOOL pVal ) = 0;
+      virtual HRESULT __stdcall get_CustomMessage (
+        /*[out,retval]*/ BSTR * pVal ) = 0;
+      virtual HRESULT __stdcall put_CustomMessage (
+        /*[in]*/ BSTR pVal ) = 0;
+      virtual HRESULT __stdcall get_Description (
+        /*[out,retval]*/ BSTR * pVal ) = 0;
+      virtual HRESULT __stdcall put_Description (
+        /*[in]*/ BSTR pVal ) = 0;
+      virtual HRESULT __stdcall get_DesiredColor (
+        /*[out,retval]*/ enum ICAColorDepth * pVal ) = 0;
+      virtual HRESULT __stdcall put_DesiredColor (
+        /*[in]*/ enum ICAColorDepth pVal ) = 0;
+      virtual HRESULT __stdcall get_DesiredHRes (
+        /*[out,retval]*/ long * pVal ) = 0;
+      virtual HRESULT __stdcall put_DesiredHRes (
+        /*[in]*/ long pVal ) = 0;
+      virtual HRESULT __stdcall get_DesiredVRes (
+        /*[out,retval]*/ long * pVal ) = 0;
+      virtual HRESULT __stdcall put_DesiredVRes (
+        /*[in]*/ long pVal ) = 0;
+      virtual HRESULT __stdcall get_Domain (
+        /*[out,retval]*/ BSTR * pVal ) = 0;
+      virtual HRESULT __stdcall put_Domain (
+        /*[in]*/ BSTR pVal ) = 0;
+      virtual HRESULT __stdcall get_Encrypt (
+        /*[out,retval]*/ VARIANT_BOOL * pVal ) = 0;
+      virtual HRESULT __stdcall put_Encrypt (
+        /*[in]*/ VARIANT_BOOL pVal ) = 0;
+      virtual HRESULT __stdcall get_Height (
+        /*[out,retval]*/ long * pVal ) = 0;
+      virtual HRESULT __stdcall get_ICAFile (
+        /*[out,retval]*/ BSTR * pVal ) = 0;
+      virtual HRESULT __stdcall put_ICAFile (
+        /*[in]*/ BSTR pVal ) = 0;
+      virtual HRESULT __stdcall get_IconIndex (
+        /*[out,retval]*/ long * pVal ) = 0;
+      virtual HRESULT __stdcall put_IconIndex (
+        /*[in]*/ long pVal ) = 0;
+      virtual HRESULT __stdcall get_IconPath (
+        /*[out,retval]*/ BSTR * pVal ) = 0;
+      virtual HRESULT __stdcall put_IconPath (
+        /*[in]*/ BSTR pVal ) = 0;
+      virtual HRESULT __stdcall get_InitialProgram (
+        /*[out,retval]*/ BSTR * pVal ) = 0;
+      virtual HRESULT __stdcall put_InitialProgram (
+        /*[in]*/ BSTR pVal ) = 0;
+      virtual HRESULT __stdcall get_IPXBrowserAddress (
+        /*[out,retval]*/ BSTR * pVal ) = 0;
+      virtual HRESULT __stdcall put_IPXBrowserAddress (
+        /*[in]*/ BSTR pVal ) = 0;
+      virtual HRESULT __stdcall get_NetbiosBrowserAddress (
+        /*[out,retval]*/ BSTR * pVal ) = 0;
+      virtual HRESULT __stdcall put_NetbiosBrowserAddress (
+        /*[in]*/ BSTR pVal ) = 0;
+      virtual HRESULT __stdcall get_NotificationReason (
+        /*[out,retval]*/ enum ICAEvent * pVal ) = 0;
+      virtual HRESULT __stdcall get_PersistentCacheEnabled (
+        /*[out,retval]*/ VARIANT_BOOL * pVal ) = 0;
+      virtual HRESULT __stdcall put_PersistentCacheEnabled (
+        /*[in]*/ VARIANT_BOOL pVal ) = 0;
+      virtual HRESULT __stdcall get_ProtocolSupport (
+        /*[out,retval]*/ BSTR * pVal ) = 0;
+      virtual HRESULT __stdcall put_ProtocolSupport (
+        /*[in]*/ BSTR pVal ) = 0;
+      virtual HRESULT __stdcall get_Reliable (
+        /*[out,retval]*/ VARIANT_BOOL * pVal ) = 0;
+      virtual HRESULT __stdcall put_Reliable (
+        /*[in]*/ VARIANT_BOOL pVal ) = 0;
+      virtual HRESULT __stdcall get_SessionEndAction (
+        /*[out,retval]*/ enum ICASessionEndAction * pVal ) = 0;
+      virtual HRESULT __stdcall put_SessionEndAction (
+        /*[in]*/ enum ICASessionEndAction pVal ) = 0;
+      virtual HRESULT __stdcall get_Start (
+        /*[out,retval]*/ VARIANT_BOOL * pVal ) = 0;
+      virtual HRESULT __stdcall put_Start (
+        /*[in]*/ VARIANT_BOOL pVal ) = 0;
+      virtual HRESULT __stdcall get_TCPBrowserAddress (
+        /*[out,retval]*/ BSTR * pVal ) = 0;
+      virtual HRESULT __stdcall put_TCPBrowserAddress (
+        /*[in]*/ BSTR pVal ) = 0;
+      virtual HRESULT __stdcall get_TransportDriver (
+        /*[out,retval]*/ BSTR * pVal ) = 0;
+      virtual HRESULT __stdcall put_TransportDriver (
+        /*[in]*/ BSTR pVal ) = 0;
+      virtual HRESULT __stdcall get_UIActive (
+        /*[out,retval]*/ VARIANT_BOOL * pVal ) = 0;
+      virtual HRESULT __stdcall put_UIActive (
+        /*[in]*/ VARIANT_BOOL pVal ) = 0;
+      virtual HRESULT __stdcall get_UpdatesAllowed (
+        /*[out,retval]*/ VARIANT_BOOL * pVal ) = 0;
+      virtual HRESULT __stdcall put_UpdatesAllowed (
+        /*[in]*/ VARIANT_BOOL pVal ) = 0;
+      virtual HRESULT __stdcall get_Username (
+        /*[out,retval]*/ BSTR * pVal ) = 0;
+      virtual HRESULT __stdcall put_Username (
+        /*[in]*/ BSTR pVal ) = 0;
+      virtual HRESULT __stdcall get_Version (
+        /*[out,retval]*/ BSTR * pVal ) = 0;
+      virtual HRESULT __stdcall get_VSLAllowed (
+        /*[out,retval]*/ VARIANT_BOOL * pVal ) = 0;
+      virtual HRESULT __stdcall put_VSLAllowed (
+        /*[in]*/ VARIANT_BOOL pVal ) = 0;
+      virtual HRESULT __stdcall get_Width (
+        /*[out,retval]*/ long * pVal ) = 0;
+      virtual HRESULT __stdcall get_WinstationDriver (
+        /*[out,retval]*/ BSTR * pVal ) = 0;
+      virtual HRESULT __stdcall put_WinstationDriver (
+        /*[in]*/ BSTR pVal ) = 0;
+      virtual HRESULT __stdcall get_WorkDirectory (
+        /*[out,retval]*/ BSTR * pVal ) = 0;
+      virtual HRESULT __stdcall put_WorkDirectory (
+        /*[in]*/ BSTR pVal ) = 0;
+      virtual HRESULT __stdcall get_AppsrvIni (
+        /*[out,retval]*/ BSTR * pVal ) = 0;
+      virtual HRESULT __stdcall put_AppsrvIni (
+        /*[in]*/ BSTR pVal ) = 0;
+      virtual HRESULT __stdcall get_ModuleIni (
+        /*[out,retval]*/ BSTR * pVal ) = 0;
+      virtual HRESULT __stdcall put_ModuleIni (
+        /*[in]*/ BSTR pVal ) = 0;
+      virtual HRESULT __stdcall get_WfclientIni (
+        /*[out,retval]*/ BSTR * pVal ) = 0;
+      virtual HRESULT __stdcall put_WfclientIni (
+        /*[in]*/ BSTR pVal ) = 0;
+      virtual HRESULT __stdcall get_ClientPath (
+        /*[out,retval]*/ BSTR * pVal ) = 0;
+      virtual HRESULT __stdcall get_ClientVersion (
+        /*[out,retval]*/ BSTR * pVal ) = 0;
+      virtual HRESULT __stdcall get_LogAppend (
+        /*[out,retval]*/ VARIANT_BOOL * pVal ) = 0;
+      virtual HRESULT __stdcall put_LogAppend (
+        /*[in]*/ VARIANT_BOOL pVal ) = 0;
+      virtual HRESULT __stdcall get_LogConnect (
+        /*[out,retval]*/ VARIANT_BOOL * pVal ) = 0;
+      virtual HRESULT __stdcall put_LogConnect (
+        /*[in]*/ VARIANT_BOOL pVal ) = 0;
+      virtual HRESULT __stdcall get_LogErrors (
+        /*[out,retval]*/ VARIANT_BOOL * pVal ) = 0;
+      virtual HRESULT __stdcall put_LogErrors (
+        /*[in]*/ VARIANT_BOOL pVal ) = 0;
+      virtual HRESULT __stdcall get_LogFile (
+        /*[out,retval]*/ BSTR * pVal ) = 0;
+      virtual HRESULT __stdcall put_LogFile (
+        /*[in]*/ BSTR pVal ) = 0;
+      virtual HRESULT __stdcall get_LogFlush (
+        /*[out,retval]*/ VARIANT_BOOL * pVal ) = 0;
+      virtual HRESULT __stdcall put_LogFlush (
+        /*[in]*/ VARIANT_BOOL pVal ) = 0;
+      virtual HRESULT __stdcall get_LogKeyboard (
+        /*[out,retval]*/ VARIANT_BOOL * pVal ) = 0;
+      virtual HRESULT __stdcall put_LogKeyboard (
+        /*[in]*/ VARIANT_BOOL pVal ) = 0;
+      virtual HRESULT __stdcall get_LogReceive (
+        /*[out,retval]*/ VARIANT_BOOL * pVal ) = 0;
+      virtual HRESULT __stdcall put_LogReceive (
+        /*[in]*/ VARIANT_BOOL pVal ) = 0;
+      virtual HRESULT __stdcall get_LogTransmit (
+        /*[out,retval]*/ VARIANT_BOOL * pVal ) = 0;
+      virtual HRESULT __stdcall put_LogTransmit (
+        /*[in]*/ VARIANT_BOOL pVal ) = 0;
+      virtual HRESULT __stdcall get_Title (
+        /*[out,retval]*/ BSTR * pVal ) = 0;
+      virtual HRESULT __stdcall put_Title (
+        /*[in]*/ BSTR pVal ) = 0;
+      virtual HRESULT __stdcall get_Launch (
+        /*[out,retval]*/ VARIANT_BOOL * pVal ) = 0;
+      virtual HRESULT __stdcall put_Launch (
+        /*[in]*/ VARIANT_BOOL pVal ) = 0;
+      virtual HRESULT __stdcall get_BackgroundColor (
+        /*[out,retval]*/ OLE_COLOR * pVal ) = 0;
+      virtual HRESULT __stdcall put_BackgroundColor (
+        /*[in]*/ OLE_COLOR pVal ) = 0;
+      virtual HRESULT __stdcall get_BorderColor (
+        /*[out,retval]*/ OLE_COLOR * pVal ) = 0;
+      virtual HRESULT __stdcall put_BorderColor (
+        /*[in]*/ OLE_COLOR pVal ) = 0;
+      virtual HRESULT __stdcall get_TextColor (
+        /*[out,retval]*/ OLE_COLOR * pVal ) = 0;
+      virtual HRESULT __stdcall put_TextColor (
+        /*[in]*/ OLE_COLOR pVal ) = 0;
+      virtual HRESULT __stdcall get_EncryptionLevelSession (
+        /*[out,retval]*/ BSTR * pVal ) = 0;
+      virtual HRESULT __stdcall put_EncryptionLevelSession (
+        /*[in]*/ BSTR pVal ) = 0;
+      virtual HRESULT __stdcall get_HttpBrowserAddress (
+        /*[out,retval]*/ BSTR * pVal ) = 0;
+      virtual HRESULT __stdcall put_HttpBrowserAddress (
+        /*[in]*/ BSTR pVal ) = 0;
+      virtual HRESULT __stdcall get_BrowserProtocol (
+        /*[out,retval]*/ BSTR * pVal ) = 0;
+      virtual HRESULT __stdcall put_BrowserProtocol (
+        /*[in]*/ BSTR pVal ) = 0;
+      virtual HRESULT __stdcall get_LocHTTPBrowserAddress (
+        /*[out,retval]*/ BSTR * pVal ) = 0;
+      virtual HRESULT __stdcall put_LocHTTPBrowserAddress (
+        /*[in]*/ BSTR pVal ) = 0;
+      virtual HRESULT __stdcall get_LocIPXBrowserAddress (
+        /*[out,retval]*/ BSTR * pVal ) = 0;
+      virtual HRESULT __stdcall put_LocIPXBrowserAddress (
+        /*[in]*/ BSTR pVal ) = 0;
+      virtual HRESULT __stdcall get_LocNETBIOSBrowserAddress (
+        /*[out,retval]*/ BSTR * pVal ) = 0;
+      virtual HRESULT __stdcall put_LocNETBIOSBrowserAddress (
+        /*[in]*/ BSTR pVal ) = 0;
+      virtual HRESULT __stdcall get_LocTCPBrowserAddress (
+        /*[out,retval]*/ BSTR * pVal ) = 0;
+      virtual HRESULT __stdcall put_LocTCPBrowserAddress (
+        /*[in]*/ BSTR pVal ) = 0;
+      virtual HRESULT __stdcall get_DoNotUseDefaultCSL (
+        /*[out,retval]*/ VARIANT_BOOL * pVal ) = 0;
+      virtual HRESULT __stdcall put_DoNotUseDefaultCSL (
+        /*[in]*/ VARIANT_BOOL pVal ) = 0;
+      virtual HRESULT __stdcall get_ICAPortNumber (
+        /*[out,retval]*/ long * pVal ) = 0;
+      virtual HRESULT __stdcall put_ICAPortNumber (
+        /*[in]*/ long pVal ) = 0;
+      virtual HRESULT __stdcall get_KeyboardTimer (
+        /*[out,retval]*/ long * pVal ) = 0;
+      virtual HRESULT __stdcall put_KeyboardTimer (
+        /*[in]*/ long pVal ) = 0;
+      virtual HRESULT __stdcall get_MouseTimer (
+        /*[out,retval]*/ long * pVal ) = 0;
+      virtual HRESULT __stdcall put_MouseTimer (
+        /*[in]*/ long pVal ) = 0;
+      virtual HRESULT __stdcall get_Scrollbars (
+        /*[out,retval]*/ VARIANT_BOOL * pVal ) = 0;
+      virtual HRESULT __stdcall put_Scrollbars (
+        /*[in]*/ VARIANT_BOOL pVal ) = 0;
+      virtual HRESULT __stdcall get_ScalingHeight (
+        /*[out,retval]*/ long * pVal ) = 0;
+      virtual HRESULT __stdcall put_ScalingHeight (
+        /*[in]*/ long pVal ) = 0;
+      virtual HRESULT __stdcall get_ScalingMode (
+        /*[out,retval]*/ enum ICAScalingMode * pVal ) = 0;
+      virtual HRESULT __stdcall put_ScalingMode (
+        /*[in]*/ enum ICAScalingMode pVal ) = 0;
+      virtual HRESULT __stdcall get_ScalingPercent (
+        /*[out,retval]*/ long * pVal ) = 0;
+      virtual HRESULT __stdcall put_ScalingPercent (
+        /*[in]*/ long pVal ) = 0;
+      virtual HRESULT __stdcall get_ScalingWidth (
+        /*[out,retval]*/ long * pVal ) = 0;
+      virtual HRESULT __stdcall put_ScalingWidth (
+        /*[in]*/ long pVal ) = 0;
+      virtual HRESULT __stdcall get_VirtualChannels (
+        /*[out,retval]*/ BSTR * pVal ) = 0;
+      virtual HRESULT __stdcall put_VirtualChannels (
+        /*[in]*/ BSTR pVal ) = 0;
+      virtual HRESULT __stdcall get_UseAlternateAddress (
+        /*[out,retval]*/ long * pVal ) = 0;
+      virtual HRESULT __stdcall put_UseAlternateAddress (
+        /*[in]*/ long pVal ) = 0;
+      virtual HRESULT __stdcall get_BrowserRetry (
+        /*[out,retval]*/ long * pVal ) = 0;
+      virtual HRESULT __stdcall put_BrowserRetry (
+        /*[in]*/ long pVal ) = 0;
+      virtual HRESULT __stdcall get_BrowserTimeout (
+        /*[out,retval]*/ long * pVal ) = 0;
+      virtual HRESULT __stdcall put_BrowserTimeout (
+        /*[in]*/ long pVal ) = 0;
+      virtual HRESULT __stdcall get_LanaNumber (
+        /*[out,retval]*/ long * pVal ) = 0;
+      virtual HRESULT __stdcall put_LanaNumber (
+        /*[in]*/ long pVal ) = 0;
+      virtual HRESULT __stdcall get_ICASOCKSProtocolVersion (
+        /*[out,retval]*/ long * pVal ) = 0;
+      virtual HRESULT __stdcall put_ICASOCKSProtocolVersion (
+        /*[in]*/ long pVal ) = 0;
+      virtual HRESULT __stdcall get_ICASOCKSProxyHost (
+        /*[out,retval]*/ BSTR * pVal ) = 0;
+      virtual HRESULT __stdcall put_ICASOCKSProxyHost (
+        /*[in]*/ BSTR pVal ) = 0;
+      virtual HRESULT __stdcall get_ICASOCKSProxyPortNumber (
+        /*[out,retval]*/ long * pVal ) = 0;
+      virtual HRESULT __stdcall put_ICASOCKSProxyPortNumber (
+        /*[in]*/ long pVal ) = 0;
+      virtual HRESULT __stdcall get_ICASOCKSRFC1929Username (
+        /*[out,retval]*/ BSTR * pVal ) = 0;
+      virtual HRESULT __stdcall put_ICASOCKSRFC1929Username (
+        /*[in]*/ BSTR pVal ) = 0;
+      virtual HRESULT __stdcall get_ICASOCKSTimeout (
+        /*[out,retval]*/ long * pVal ) = 0;
+      virtual HRESULT __stdcall put_ICASOCKSTimeout (
+        /*[in]*/ long pVal ) = 0;
+      virtual HRESULT __stdcall get_SSLEnable (
+        /*[out,retval]*/ VARIANT_BOOL * pVal ) = 0;
+      virtual HRESULT __stdcall put_SSLEnable (
+        /*[in]*/ VARIANT_BOOL pVal ) = 0;
+      virtual HRESULT __stdcall get_SSLProxyHost (
+        /*[out,retval]*/ BSTR * pVal ) = 0;
+      virtual HRESULT __stdcall put_SSLProxyHost (
+        /*[in]*/ BSTR pVal ) = 0;
+      virtual HRESULT __stdcall get_SSLCiphers (
+        /*[out,retval]*/ BSTR * pVal ) = 0;
+      virtual HRESULT __stdcall put_SSLCiphers (
+        /*[in]*/ BSTR pVal ) = 0;
+      virtual HRESULT __stdcall get_SSLNoCACerts (
+        /*[out,retval]*/ long * pVal ) = 0;
+      virtual HRESULT __stdcall put_SSLNoCACerts (
+        /*[in]*/ long pVal ) = 0;
+      virtual HRESULT __stdcall get_SSLCommonName (
+        /*[out,retval]*/ BSTR * pVal ) = 0;
+      virtual HRESULT __stdcall put_SSLCommonName (
+        /*[in]*/ BSTR pVal ) = 0;
+      virtual HRESULT __stdcall get_AUTHUsername (
+        /*[out,retval]*/ BSTR * pVal ) = 0;
+      virtual HRESULT __stdcall put_AUTHUsername (
+        /*[in]*/ BSTR pVal ) = 0;
+      virtual HRESULT __stdcall get_XmlAddressResolutionType (
+        /*[out,retval]*/ BSTR * pVal ) = 0;
+      virtual HRESULT __stdcall put_XmlAddressResolutionType (
+        /*[in]*/ BSTR pVal ) = 0;
+      virtual HRESULT __stdcall get_AutoScale (
+        /*[out,retval]*/ VARIANT_BOOL * pVal ) = 0;
+      virtual HRESULT __stdcall put_AutoScale (
+        /*[in]*/ VARIANT_BOOL pVal ) = 0;
+      virtual HRESULT __stdcall get_AutoAppResize (
+        /*[out,retval]*/ VARIANT_BOOL * pVal ) = 0;
+      virtual HRESULT __stdcall put_AutoAppResize (
+        /*[in]*/ VARIANT_BOOL pVal ) = 0;
+      virtual HRESULT __stdcall get_Hotkey1Char (
+        /*[out,retval]*/ BSTR * pVal ) = 0;
+      virtual HRESULT __stdcall put_Hotkey1Char (
+        /*[in]*/ BSTR pVal ) = 0;
+      virtual HRESULT __stdcall get_Hotkey1Shift (
+        /*[out,retval]*/ BSTR * pVal ) = 0;
+      virtual HRESULT __stdcall put_Hotkey1Shift (
+        /*[in]*/ BSTR pVal ) = 0;
+      virtual HRESULT __stdcall get_Hotkey2Char (
+        /*[out,retval]*/ BSTR * pVal ) = 0;
+      virtual HRESULT __stdcall put_Hotkey2Char (
+        /*[in]*/ BSTR pVal ) = 0;
+      virtual HRESULT __stdcall get_Hotkey2Shift (
+        /*[out,retval]*/ BSTR * pVal ) = 0;
+      virtual HRESULT __stdcall put_Hotkey2Shift (
+        /*[in]*/ BSTR pVal ) = 0;
+      virtual HRESULT __stdcall get_Hotkey3Char (
+        /*[out,retval]*/ BSTR * pVal ) = 0;
+      virtual HRESULT __stdcall put_Hotkey3Char (
+        /*[in]*/ BSTR pVal ) = 0;
+      virtual HRESULT __stdcall get_Hotkey3Shift (
+        /*[out,retval]*/ BSTR * pVal ) = 0;
+      virtual HRESULT __stdcall put_Hotkey3Shift (
+        /*[in]*/ BSTR pVal ) = 0;
+      virtual HRESULT __stdcall get_Hotkey4Char (
+        /*[out,retval]*/ BSTR * pVal ) = 0;
+      virtual HRESULT __stdcall put_Hotkey4Char (
+        /*[in]*/ BSTR pVal ) = 0;
+      virtual HRESULT __stdcall get_Hotkey4Shift (
+        /*[out,retval]*/ BSTR * pVal ) = 0;
+      virtual HRESULT __stdcall put_Hotkey4Shift (
+        /*[in]*/ BSTR pVal ) = 0;
+      virtual HRESULT __stdcall get_Hotkey5Char (
+        /*[out,retval]*/ BSTR * pVal ) = 0;
+      virtual HRESULT __stdcall put_Hotkey5Char (
+        /*[in]*/ BSTR pVal ) = 0;
+      virtual HRESULT __stdcall get_Hotkey5Shift (
+        /*[out,retval]*/ BSTR * pVal ) = 0;
+      virtual HRESULT __stdcall put_Hotkey5Shift (
+        /*[in]*/ BSTR pVal ) = 0;
+      virtual HRESULT __stdcall get_Hotkey6Char (
+        /*[out,retval]*/ BSTR * pVal ) = 0;
+      virtual HRESULT __stdcall put_Hotkey6Char (
+        /*[in]*/ BSTR pVal ) = 0;
+      virtual HRESULT __stdcall get_Hotkey6Shift (
+        /*[out,retval]*/ BSTR * pVal ) = 0;
+      virtual HRESULT __stdcall put_Hotkey6Shift (
+        /*[in]*/ BSTR pVal ) = 0;
+      virtual HRESULT __stdcall get_Hotkey7Char (
+        /*[out,retval]*/ BSTR * pVal ) = 0;
+      virtual HRESULT __stdcall put_Hotkey7Char (
+        /*[in]*/ BSTR pVal ) = 0;
+      virtual HRESULT __stdcall get_Hotkey7Shift (
+        /*[out,retval]*/ BSTR * pVal ) = 0;
+      virtual HRESULT __stdcall put_Hotkey7Shift (
+        /*[in]*/ BSTR pVal ) = 0;
+      virtual HRESULT __stdcall get_Hotkey8Char (
+        /*[out,retval]*/ BSTR * pVal ) = 0;
+      virtual HRESULT __stdcall put_Hotkey8Char (
+        /*[in]*/ BSTR pVal ) = 0;
+      virtual HRESULT __stdcall get_Hotkey8Shift (
+        /*[out,retval]*/ BSTR * pVal ) = 0;
+      virtual HRESULT __stdcall put_Hotkey8Shift (
+        /*[in]*/ BSTR pVal ) = 0;
+      virtual HRESULT __stdcall get_Hotkey9Char (
+        /*[out,retval]*/ BSTR * pVal ) = 0;
+      virtual HRESULT __stdcall put_Hotkey9Char (
+        /*[in]*/ BSTR pVal ) = 0;
+      virtual HRESULT __stdcall get_Hotkey9Shift (
+        /*[out,retval]*/ BSTR * pVal ) = 0;
+      virtual HRESULT __stdcall put_Hotkey9Shift (
+        /*[in]*/ BSTR pVal ) = 0;
+      virtual HRESULT __stdcall get_Hotkey10Char (
+        /*[out,retval]*/ BSTR * pVal ) = 0;
+      virtual HRESULT __stdcall put_Hotkey10Char (
+        /*[in]*/ BSTR pVal ) = 0;
+      virtual HRESULT __stdcall get_Hotkey10Shift (
+        /*[out,retval]*/ BSTR * pVal ) = 0;
+      virtual HRESULT __stdcall put_Hotkey10Shift (
+        /*[in]*/ BSTR pVal ) = 0;
+      virtual HRESULT __stdcall get_ControlWindowText (
+        /*[out,retval]*/ BSTR * pVal ) = 0;
+      virtual HRESULT __stdcall put_ControlWindowText (
+        /*[in]*/ BSTR pVal ) = 0;
+      virtual HRESULT __stdcall get_CacheICAFile (
+        /*[out,retval]*/ VARIANT_BOOL * pVal ) = 0;
+      virtual HRESULT __stdcall put_CacheICAFile (
+        /*[in]*/ VARIANT_BOOL pVal ) = 0;
+      virtual HRESULT __stdcall get_ScreenPercent (
+        /*[out,retval]*/ long * pVal ) = 0;
+      virtual HRESULT __stdcall put_ScreenPercent (
+        /*[in]*/ long pVal ) = 0;
+      virtual HRESULT __stdcall get_TWIMode (
+        /*[out,retval]*/ VARIANT_BOOL * pVal ) = 0;
+      virtual HRESULT __stdcall put_TWIMode (
+        /*[in]*/ VARIANT_BOOL pVal ) = 0;
+      virtual HRESULT __stdcall get_TransportReconnectEnabled (
+        /*[out,retval]*/ VARIANT_BOOL * pVal ) = 0;
+      virtual HRESULT __stdcall put_TransportReconnectEnabled (
+        /*[in]*/ VARIANT_BOOL pVal ) = 0;
+      virtual HRESULT __stdcall get_TransportReconnectDelay (
+        /*[out,retval]*/ long * pVal ) = 0;
+      virtual HRESULT __stdcall put_TransportReconnectDelay (
+        /*[in]*/ long pVal ) = 0;
+      virtual HRESULT __stdcall get_TransportReconnectRetries (
+        /*[out,retval]*/ long * pVal ) = 0;
+      virtual HRESULT __stdcall put_TransportReconnectRetries (
+        /*[in]*/ long pVal ) = 0;
+      virtual HRESULT __stdcall get_AutoLogonAllowed (
+        /*[out,retval]*/ VARIANT_BOOL * pVal ) = 0;
+      virtual HRESULT __stdcall put_AutoLogonAllowed (
+        /*[in]*/ VARIANT_BOOL pVal ) = 0;
+      virtual HRESULT __stdcall get_EnableSessionSharingClient (
+        /*[out,retval]*/ VARIANT_BOOL * pVal ) = 0;
+      virtual HRESULT __stdcall put_EnableSessionSharingClient (
+        /*[in]*/ VARIANT_BOOL pVal ) = 0;
+      virtual HRESULT __stdcall get_SessionSharingName (
+        /*[out,retval]*/ BSTR * pVal ) = 0;
+      virtual HRESULT __stdcall put_SessionSharingName (
+        /*[in]*/ BSTR pVal ) = 0;
+      virtual HRESULT __stdcall get_SessionSharingLaunchOnly (
+        /*[out,retval]*/ VARIANT_BOOL * pVal ) = 0;
+      virtual HRESULT __stdcall put_SessionSharingLaunchOnly (
+        /*[in]*/ VARIANT_BOOL pVal ) = 0;
+      virtual HRESULT __stdcall get_DisableCtrlAltDel (
+        /*[out,retval]*/ VARIANT_BOOL * pVal ) = 0;
+      virtual HRESULT __stdcall put_DisableCtrlAltDel (
+        /*[in]*/ VARIANT_BOOL pVal ) = 0;
+      virtual HRESULT __stdcall get_SessionCacheEnable (
+        /*[out,retval]*/ VARIANT_BOOL * pVal ) = 0;
+      virtual HRESULT __stdcall put_SessionCacheEnable (
+        /*[in]*/ VARIANT_BOOL pVal ) = 0;
+      virtual HRESULT __stdcall get_SessionCacheTimeout (
+        /*[out,retval]*/ long * pVal ) = 0;
+      virtual HRESULT __stdcall put_SessionCacheTimeout (
+        /*[in]*/ long pVal ) = 0;
+      virtual HRESULT __stdcall get_Session (
+        /*[out,retval]*/ struct ISession * * pVal ) = 0;
+      virtual HRESULT __stdcall get_OutputMode (
+        /*[out,retval]*/ enum OutputMode * pVal ) = 0;
+      virtual HRESULT __stdcall put_OutputMode (
+        /*[in]*/ enum OutputMode pVal ) = 0;
+      virtual HRESULT __stdcall get_SessionExitTimeout (
+        /*[out,retval]*/ long * pVal ) = 0;
+      virtual HRESULT __stdcall put_SessionExitTimeout (
+        /*[in]*/ long pVal ) = 0;
+      virtual HRESULT __stdcall get_EnableSessionSharingHost (
+        /*[out,retval]*/ VARIANT_BOOL * pVal ) = 0;
+      virtual HRESULT __stdcall put_EnableSessionSharingHost (
+        /*[in]*/ VARIANT_BOOL pVal ) = 0;
+      virtual HRESULT __stdcall get_LongCommandLine (
+        /*[out,retval]*/ BSTR * pVal ) = 0;
+      virtual HRESULT __stdcall put_LongCommandLine (
+        /*[in]*/ BSTR pVal ) = 0;
+      virtual HRESULT __stdcall get_TWIDisableSessionSharing (
+        /*[out,retval]*/ VARIANT_BOOL * pVal ) = 0;
+      virtual HRESULT __stdcall put_TWIDisableSessionSharing (
+        /*[in]*/ VARIANT_BOOL pVal ) = 0;
+      virtual HRESULT __stdcall get_SessionSharingKey (
+        /*[out,retval]*/ BSTR * pVal ) = 0;
+      virtual HRESULT __stdcall put_SessionSharingKey (
+        /*[in]*/ BSTR pVal ) = 0;
+      virtual HRESULT __stdcall raw_DisconnectSessions (
+        /*[in]*/ BSTR pGroupId,
+        /*[out,retval]*/ long * phCommand ) = 0;
+      virtual HRESULT __stdcall raw_LogoffSessions (
+        /*[in]*/ BSTR pGroupId,
+        /*[out,retval]*/ long * phCommand ) = 0;
+      virtual HRESULT __stdcall raw_SetSessionGroupId (
+        /*[in]*/ BSTR pGroupId,
+        /*[out,retval]*/ long * pRetCode ) = 0;
+      virtual HRESULT __stdcall raw_GetSessionHandle (
+        /*[out,retval]*/ long * phSession ) = 0;
+      virtual HRESULT __stdcall raw_SwitchSession (
+        /*[in]*/ long hSession,
+        /*[out,retval]*/ long * pRetCode ) = 0;
+      virtual HRESULT __stdcall raw_GetSessionCount (
+        /*[out,retval]*/ long * pSessionCount ) = 0;
+      virtual HRESULT __stdcall raw_GetSessionHandleByIndex (
+        /*[in]*/ long Index,
+        /*[out,retval]*/ long * phSession ) = 0;
+      virtual HRESULT __stdcall raw_GetSessionGroupCount (
+        /*[in]*/ BSTR pGroupId,
+        /*[out,retval]*/ long * pSessionCount ) = 0;
+      virtual HRESULT __stdcall get_IPCLaunch (
+        /*[out,retval]*/ VARIANT_BOOL * pVal ) = 0;
+      virtual HRESULT __stdcall put_IPCLaunch (
+        /*[in]*/ VARIANT_BOOL pVal ) = 0;
+      virtual HRESULT __stdcall get_AudioDuringDetach (
+        /*[out,retval]*/ VARIANT_BOOL * pVal ) = 0;
+      virtual HRESULT __stdcall put_AudioDuringDetach (
+        /*[in]*/ VARIANT_BOOL pVal ) = 0;
+      virtual HRESULT __stdcall get_Hotkey11Char (
+        /*[out,retval]*/ BSTR * pVal ) = 0;
+      virtual HRESULT __stdcall put_Hotkey11Char (
+        /*[in]*/ BSTR pVal ) = 0;
+      virtual HRESULT __stdcall get_Hotkey11Shift (
+        /*[out,retval]*/ BSTR * pVal ) = 0;
+      virtual HRESULT __stdcall put_Hotkey11Shift (
+        /*[in]*/ BSTR pVal ) = 0;
+      virtual HRESULT __stdcall raw_IsPassThrough (
+        /*[out,retval]*/ VARIANT_BOOL * pPassThrough ) = 0;
+      virtual HRESULT __stdcall get_VirtualCOMPortEmulation (
+        /*[out,retval]*/ VARIANT_BOOL * pVal ) = 0;
+      virtual HRESULT __stdcall put_VirtualCOMPortEmulation (
+        /*[in]*/ VARIANT_BOOL pVal ) = 0;
+};
+
+struct __declspec(uuid("238f6f85-b8b4-11cf-8771-00a024541ee3"))
+ICAClientProp;
+    // [ default ] interface IUnknown
+
+struct __declspec(uuid("24013613-ff51-4b50-9832-37fa561594ed"))
+_IMouseEvents : IDispatch
+{
+    //
+    // Wrapper methods for error-handling
+    //
+
+    // Methods:
+    HRESULT OnMove (
+        long buttonState,
+        long modifierState,
+        long XPos,
+        long YPos );
+    HRESULT OnMouseDown (
+        long buttonState,
+        long modifierState,
+        long XPos,
+        long YPos );
+    HRESULT OnMouseUp (
+        long buttonState,
+        long modifierState,
+        long XPos,
+        long YPos );
+    HRESULT OnDoubleClick ( );
+};
+
+struct __declspec(uuid("901591f7-7aca-477a-9119-c75198e74f72"))
+Mouse;
+    // [ default ] interface IMouse
+    // [ default, source ] dispinterface _IMouseEvents
+
+struct __declspec(uuid("8a5961df-314e-4b7c-b57f-aaf35ea33079"))
+_IKeyboardEvents : IDispatch
+{
+    //
+    // Wrapper methods for error-handling
+    //
+
+    // Methods:
+    HRESULT OnKeyUp (
+        long keyId,
+        long modifierState );
+    HRESULT OnKeyDown (
+        long keyId,
+        long modifierState );
+};
+
+struct __declspec(uuid("b5d6ed13-edaa-4c2c-b2e2-26fd9bc1c710"))
+Keyboard;
+    // [ default ] interface IKeyboard
+    // [ default, source ] dispinterface _IKeyboardEvents
+
+struct __declspec(uuid("785a16e9-4e42-4c87-84ad-bfb4a60570a3"))
+_IScreenShotEvents : IDispatch
+{
+    //
+    // Wrapper methods for error-handling
+    //
+
+    // Methods:
+    HRESULT OnUpdate (
+        _bstr_t BitmapHash );
+};
+
+struct __declspec(uuid("1f26df05-9e90-4156-b58b-44632b0dc461"))
+ScreenShot;
+    // [ default ] interface IScreenShot
+    // [ default, source ] dispinterface _IScreenShotEvents
+
+struct __declspec(uuid("49813e6d-17ff-41a1-9a7b-95c3d5b44185"))
+_IWindowEvents : IDispatch
+{
+    //
+    // Wrapper methods for error-handling
+    //
+
+    // Methods:
+    HRESULT OnMove (
+        long XPos,
+        long YPos );
+    HRESULT OnSize (
+        long Width,
+        long Height );
+    HRESULT OnActivate ( );
+    HRESULT OnDeactivate ( );
+    HRESULT OnMinimize ( );
+    HRESULT OnCaptionChange (
+        _bstr_t Caption );
+    HRESULT OnStyleChange (
+        long Style,
+        long ExtendedStyle );
+    HRESULT OnSmallIconChange (
+        _bstr_t SmallIconHash );
+    HRESULT OnLargeIconChange (
+        _bstr_t LargeIconHash );
+    HRESULT OnDestroy ( );
+};
+
+struct __declspec(uuid("cbc0a3c6-7f47-4f70-b0fc-307688e5eab2"))
+window;
+    // [ default ] interface IWindow
+    // [ default, source ] dispinterface _IWindowEvents
+
+struct __declspec(uuid("24fd31db-3560-4c78-8950-30f03352d830"))
+_ISessionEvents : IDispatch
+{
+    //
+    // Wrapper methods for error-handling
+    //
+
+    // Methods:
+    HRESULT OnWindowCreate (
+        struct IWindow * window );
+    HRESULT OnWindowDestroy (
+        struct IWindow * window );
+    HRESULT OnPingAck (
+        _bstr_t pingInfo,
+        long roundTripTime );
+    HRESULT OnWindowForeground (
+        long WindowID );
+};
+
+struct __declspec(uuid("1da5fbd9-3ed4-4617-9a95-334789a2b52a"))
+Session;
+    // [ default ] interface ISession
+    // [ default, source ] dispinterface _ISessionEvents
+
+struct __declspec(uuid("30dbf909-6147-46c8-b02c-96b460712ed3"))
+Windows;
+    // [ default ] interface IWindows
+
+//
+// Wrapper method implementations
+//
+
+#include "wfica.tli"
+
+} // namespace WFICALib
+
+#pragma pack(pop)

@@ -1,35 +1,37 @@
 ///////////////////////////////////////////////////////////////////////////////
-// File name: bencoded.cpp
-// Date create: Mon Sep 14 17:59:16 2009
-// Version: 0.0
-// Time-stamp: "2009-11-05 12:30:23" 
-// E-mail: 
-// Content-Type: text/plain; charset=utf8
+// File name:   bencoded.cpp
+// Version:     0.0
+// Purpose: 
+// Time-stamp:  "2010-03-10 19:17:27" 
+// E-mail:      rdpdesk@rdpdesk.com
 // $Id$ 
-// Description: 
-// 
-// 
-// 
+// Copyright:   (c) 2009-2010 RDPDesk <rdpdesk@rdpdesk.com> 
+// Licence:     GPL v3 
 ///////////////////////////////////////////////////////////////////////////////
 
 #include "bencoded.hpp"
 
 WX_DEFINE_OBJARRAY(base_conn);
+WX_DEFINE_OBJARRAY(GeneralOptionsArray);
+WX_DEFINE_OBJARRAY(OptionsArray);
+WX_DEFINE_OBJARRAY(Connections_List);
+
+
 ////////////////////////////////////////////////////// 
 
 CryptSettings::CryptSettings()
 {
-	long lt = wxGetLocalTime();
-	srand((unsigned)time(NULL));
+   long lt = wxGetLocalTime();
+   srand((unsigned)time(NULL));
 	
-	char random;
-	for (int i = 0; i < 256; i ++)
-	{	
-		random = (char)(rand() % 256);
-		random ^= (lt*(i+1) % 128);
-		base_key.Append(random);
-	}
-	state = false;
+   char random;
+   for (int i = 0; i < 256; i ++)
+   {	
+      random = (char)(rand() % 256);
+      random ^= (lt*(i+1) % 128);
+      base_key.Append(random);
+   }
+   state = false;
 }
 
 CryptSettings::CryptSettings(wxString Path)
@@ -171,7 +173,11 @@ int Benc::generate_uniq_name(base_conn * bc)
 			wxDateTime dt = wxDateTime::UNow() ;
 			srand((unsigned)time(0));
 			int temp = dt.GetTicks() + (rand());
-			
+			if (temp <= 0)
+			{
+				ok = FALSE;
+				continue;
+			}
 			int lc = Count(bc);
 			for (int i = 0; i < lc ; i++)
 			{
@@ -189,6 +195,12 @@ int Benc::generate_uniq_name(base_conn * bc)
 		}
 		return -1;
 	}
+}
+int Benc::generate_uniq_name()
+{
+   wxDateTime dt = wxDateTime::UNow() ;
+   srand((unsigned)time(0));
+   return dt.GetTicks() + (rand()) ;
 }
 
 void Benc::Add(base_conn * bc, const RDPConn rdpconn)
@@ -275,6 +287,35 @@ bool Benc::Save(base_conn * bc)
 	return true;
 }
 
+bool Benc::Save(Connections_List *all_connection_records)
+{
+   //std::cout << __LINE__ <<  " "<< __func__ << std::endl;
+   if (!all_connection_records) return FALSE;
+
+   programsettings ps = load_main_settings();
+   if (!ps.bAutosave)
+   {
+      wxMessageDialog dialog(NULL, wxT("Rewrite base?"),wxT("Program closing..."),
+			     wxNO_DEFAULT|wxYES_NO|wxICON_INFORMATION);
+      if (dialog.ShowModal() != wxID_YES) return false; 
+   }
+
+   wxBusyInfo wait(wxT("Please wait"));
+   GETBASEPATH();
+   wxString filename = BASEPATH;
+   wxFile * ftemp = new wxFile();
+   ftemp->Create(filename,true);
+   ftemp->Close();
+   ftemp->Detach();
+   delete ftemp;
+   for (int i = 0; i < all_connection_records->Count(); i++)
+   {
+
+      wxString str = GetString(&(all_connection_records->Item(i)));
+   }
+   return true;
+}
+
 
 
 bool Benc::Load(base_conn * bc)
@@ -308,6 +349,13 @@ bool Benc::Load(base_conn * bc)
 	{
 		wxString temp = FileGetString(filename,i);
 		RDPConn rdpc = GetRDPConn(temp);
+		//GeneralOptionsArray all_options = Get_String_Options (temp);
+		//wxMessageBox(temp);
+		if (rdpc.uniq_name == 0)
+		{
+			//	wxMessageBox(wxT("load = 0"));
+			rdpc.uniq_name = generate_uniq_name(bc);
+		}
 		Add(bc,rdpc);
 	}
 	return true;
@@ -453,44 +501,42 @@ wxString Benc::FileGetString(wxString filename, int num)
 
 int Benc::FileCount(wxString filename)
 {
-	int iResult = 0;
+   int iResult = 0;
 
-	wxFile fBase;
-	fBase.Open(filename);
-	fBase.SeekEnd();
-	DWORD dwFileSize = fBase.Tell();
-	if ((dwFileSize == 0) || (dwFileSize == wxInvalidOffset))
-	{
-		return -1;
-	}
-	
-	fBase.Seek(0);
-	char buff[8];
-	
-	for (int i = 0; i < (int)dwFileSize; i++)
-	{
-		fBase.Seek(i);
-		fBase.Read(buff,1);
-		if (buff[0] == 'k')
-		{
-			if (isNormalLine(&fBase,i))
-			{
-				iResult ++;
-			}
-			else
-			{
-				continue;
-			}
-		}
-	}
+   wxFile fBase;
+   fBase.Open(filename);
+   fBase.SeekEnd();
+   DWORD dwFileSize = fBase.Tell();
+   if ((dwFileSize == 0) || (dwFileSize == wxInvalidOffset))
+   {
+      return -1;
+   }
+   fBase.Seek(0);
+   char buff[8];
+   for (int i = 0; i < (int)dwFileSize; i++)
+   {
+      fBase.Seek(i);
+      fBase.Read(buff,1);
+      if (buff[0] == 'k')
+      {
+	 if (isNormalLine(&fBase,i))
+	 {
+	    iResult ++;
+	 }
+	 else
+	 {
+	    continue;
+	 }
+      }
+   }
 
-	if (fBase.IsOpened())
-	{
-		fBase.Close();
+   if (fBase.IsOpened())
+   {
+      fBase.Close();
 		 
-	}
-	fBase.Detach();
-	return iResult;
+   }
+   fBase.Detach();
+   return iResult;
 }
 
 BOOL Benc::isNormalLine(wxFile * fBase, int pos)
@@ -595,6 +641,28 @@ wxString Benc::GetString(const RDPConn rdpc)
 	result += GetParamInt (wxT("SoundType"), (int)(rdpc.SoundType));
 	result += GetParamStr (wxT("linux_devices"), (rdpc.redirect_devices_nix));
 
+	result += GetParamInt (wxT("Protocol"), (int)(rdpc.conn_type));
+
+	// ICA Citrix
+	result += GetParamStr (wxT("ica_server_ini"), (rdpc.server_ini));
+	result += GetParamStr (wxT("ica_client_ini"), (rdpc.client_ini));
+	result += GetParamInt (wxT("ICASound"), (int)(rdpc.bIcaSound));
+	result += GetParamInt (wxT("ICASoundType"), (int)(rdpc.bIcaSoundType));
+	result += GetParamInt (wxT("ICAEncryption"), (int)(rdpc.bIcaEncryption));
+	result += GetParamInt (wxT("ICAEncryptionType"), (int)(rdpc.ica_encryption));
+
+	result += GetParamStr (wxT("ica_connection_file"), (rdpc.ica_file));
+	result += GetParamInt (wxT("bUseApplication"), (int)(rdpc.bUseApplication));
+	result += GetParamStr (wxT("ICAApplication"), (rdpc.IcaApplication));
+
+	result += GetParamInt (wxT("bProxyType"), (int)(rdpc.bProxyType));
+	result += GetParamStr (wxT("ProxyAddr"), (rdpc.ProxyAddr));
+	result += GetParamStr (wxT("ProxyPort"), (rdpc.ProxyPort));
+	result += GetParamStr (wxT("ProxyUserId"), (rdpc.ProxyUserId));
+	result += GetParamStr (wxT("ProxyPassword"), (rdpc.ProxyPassword));
+
+
+
 	char * buff_for_write = new char [iCurrSize];
 	strncpy(buff_for_write,result.To8BitData(),iCurrSize);
 
@@ -631,7 +699,7 @@ wxString Benc::GetString(const RDPConn rdpc)
 
 	GETBASEPATH()
 	wxFile fBase(BASEPATH);
-	fBase.Open(BASEPATH,wxFile::write_append);	
+	fBase.Open(BASEPATH,wxFile::write_append);
 
 	char str_temp[128];
 	memset(str_temp,0,128);
@@ -661,6 +729,94 @@ wxString Benc::GetString(const RDPConn rdpc)
 	wxString main_result = wxT("");
 	return main_result;
 }
+
+wxString Benc::GetString(const Options_HashMap *all_options)
+{
+//   std::cout << __LINE__ <<  " "<< __func__ << std::endl;
+   
+   wxString result;
+   wxString temp;
+   Options_HashMap local_options;
+   
+   Options_HashMap::iterator it;
+
+   local_options = *all_options;
+   
+   iCurrSize = 0;
+   result.Empty();
+   
+   for (it = local_options.begin(); it != local_options.end(); ++it)
+   {
+      wxString key = it->first, value = it->second;
+      result += GetParamStr (key, value);
+   }
+
+   char * buff_for_write = new char [iCurrSize];
+   strncpy(buff_for_write,result.To8BitData(),iCurrSize);
+
+   char * encrypt_data = NULL;
+   int crypt_len = iCurrSize;
+
+   CryptSettings * cr = NULL;
+   programsettings ps = load_main_settings();
+   if (ps.bUseCrypt)
+   {
+      GETKEYPATH()
+	 if (!wxFileExists(KEYPATH))
+	 {
+	    cr = new CryptSettings();
+	    cr->WriteKey(KEYPATH);
+	    delete cr;
+	 }
+	 else
+	 {
+	    cr = new CryptSettings(KEYPATH);
+	    if (ps.iTypeCrypt == 0)
+	    {
+	       cr->create_context_simple();
+	       encrypt_data = cr->SimpleCryptData((char *)buff_for_write,&crypt_len);
+	    }
+	    else if (ps.iTypeCrypt == 1)
+	    {
+	       cr->create_context_aes();
+	       encrypt_data = cr->AESEncryptData((char *)buff_for_write,&crypt_len);
+	    }
+	    delete cr;
+	 }
+   }
+
+   GETBASEPATH()
+      wxFile fBase(BASEPATH);
+   fBase.Open(BASEPATH,wxFile::write_append);	
+
+   char str_temp[128];
+   memset(str_temp,0,128);
+   if (encrypt_data != NULL)
+   {
+      sprintf(str_temp,"k%d:",crypt_len);
+      fBase.Write(str_temp,NumberCount(crypt_len) + 2);
+      fBase.Write(encrypt_data,crypt_len);
+   }
+   else
+   {
+      sprintf(str_temp,"k%d:",iCurrSize);
+      fBase.Write(str_temp,NumberCount(iCurrSize) + 2);
+      fBase.Write(buff_for_write,iCurrSize);
+   }
+
+   fBase.Write("zz",2);
+   fBase.Flush();
+   fBase.Close();
+   fBase.Detach();
+   delete buff_for_write;
+   if (encrypt_data != NULL)
+   {
+      free(encrypt_data);
+   }
+   wxString main_result = wxT("");
+   return main_result;
+}
+
 
 int Benc::ByteLen(wxString str)
 {
@@ -748,6 +904,8 @@ wxString Benc::GetParamStr(wxString name, wxString param)
 	int iParamSize = ByteLen(temp_param);
 	iCurrSize += (NumberCount(iNameSize) + iNameSize + NumberCount(iParamSize) + iParamSize + 6);
 	result = wxString::Format(wxT("d%i:%ss%i:%see"),iNameSize,temp_name.data(),iParamSize,temp_param.data()); 
+	//wxMessageBox(result);
+	
 	return result;
 	
 }
@@ -770,553 +928,668 @@ wxString Benc::GetParamInt(wxString name, int param)
 
 BOOL Benc::GetOptions(wxString str, int pos, RDPConn * rdp_conn)
 {
-	wxString strSize;
-	strSize.Empty();
-	int iCurrPos = pos + 1;
-	wxChar tmp;
-	wxString temp;
-	temp.Empty();
-	char buff[8];
-	memset(buff,0,8);
-	BOOL read = TRUE;
-	while(read)
-	{
-		temp.Empty(); 
-		tmp = str.GetChar(iCurrPos); 
-		temp += tmp;  
-		if (temp.IsNumber())
-		{
-			strSize += temp;
-			iCurrPos ++;
-		}
-		else
-		{
-			read = FALSE;
-		}
-	}
-	if (strSize.IsEmpty()) 
-	{
-		return FALSE;
-	}
-			
-	int iSize = wxAtoi(strSize);
-	int iSize_ = iSize;	
+   wxString strSize;
+   strSize.Empty();
+   int iCurrPos = pos + 1;
+   wxChar tmp;
+   wxString temp;
+   temp.Empty();
+   char buff[8];
+   memset(buff,0,8);
+   BOOL read = TRUE;
+   while(read)
+   {
+      temp.Empty(); 
+      tmp = str.GetChar(iCurrPos); 
+      temp += tmp;  
+      if (temp.IsNumber())
+      {
+	 strSize += temp;
+	 iCurrPos ++;
+      }
+      else
+      {
+	 read = FALSE;
+      }
+   }
+   if (strSize.IsEmpty()) 
+   {
+      return FALSE;
+   }
+   int iSize = wxAtoi(strSize);
+   int iSize_ = iSize;	
 
-	wxString param_name = str.Mid(pos + 2 + NumberCount(iSize),iSize); 
+   wxString param_name = str.Mid(pos + 2 + NumberCount(iSize),iSize); 
 	
-	iSize_ = iSize;		
-	int iEndPos = pos + 2 + NumberCount(iSize) + iSize;
-	strSize.Empty(); 
-	iCurrPos = iEndPos + 1;
-	read = TRUE;
-	while(read)
-	{
-		temp = str.GetChar(iCurrPos); 
-		if (temp.IsNumber())
-		{
-			strSize += temp;
-			iCurrPos ++;
-		}
-		else
-		{
-			read = FALSE;
-		}
-	}
-	if (strSize.IsEmpty()) 
-	{
-		return FALSE;
-	}
+   iSize_ = iSize;		
+   int iEndPos = pos + 2 + NumberCount(iSize) + iSize;
+   strSize.Empty(); 
+   iCurrPos = iEndPos + 1;
+   read = TRUE;
+   while(read)
+   {
+      temp = str.GetChar(iCurrPos); 
+      if (temp.IsNumber())
+      {
+	 strSize += temp;
+	 iCurrPos ++;
+      }
+      else
+      {
+	 read = FALSE;
+      }
+   }
+   if (strSize.IsEmpty()) 
+   {
+      return FALSE;
+   }
 
-	iSize = wxAtoi(strSize);
+   iSize = wxAtoi(strSize);
 
-	iCurrPos = iEndPos + 2 + NumberCount(iSize);
-	wxString param_value = str.Mid(iCurrPos,iSize);
+   iCurrPos = iEndPos + 2 + NumberCount(iSize);
+   wxString param_value = str.Mid(iCurrPos,iSize);
 
-	bool status = false;
-		
-	if (param_name == wxT("hostname"))
-	{
-		rdp_conn->hostname = ConvertFromUTF8(param_value.To8BitData());
-		status = true;
-	}
-	else if (param_name == wxT("username")) 
-	{
-		rdp_conn->username = ConvertFromUTF8(param_value.To8BitData());
-		status = true;
-	} 
-	else if (param_name == wxT("password"))	
-	{
-		rdp_conn->password = ConvertFromUTF8(param_value.To8BitData());
-		status = true;
-	}
-	else if (param_name == wxT("domain"))
-	{
-		rdp_conn->domain = ConvertFromUTF8(param_value.To8BitData());
-		status = true;
-	}
-	else if (param_name == wxT("port")) 
-	{
-		rdp_conn->port = ConvertFromUTF8(param_value.To8BitData());
-		status = true;
-	} 
-	else if (param_name == wxT("attach_to_console")) 
-	{
-		if (param_value == wxT("0"))
-		{
-			rdp_conn->attach_to_console = FALSE;
-			status = true;
-		}
-		else if (param_value == wxT("1"))
-		{
-			rdp_conn->attach_to_console = TRUE;
-			status = true;
-		}
-	}
-	else if (param_name == wxT("width")) 
-	{
-		rdp_conn->width = wxAtoi(param_value);
-		if (rdp_conn->width <= 0 )
-		{
-			rdp_conn->width = 800;
-		}
-		status = true;
-	}
-	else if (param_name == wxT("heigth")) 
-	{
-		rdp_conn->heigth = wxAtoi(param_value);
-		if (rdp_conn->heigth <= 0 )
-		{
-			rdp_conn->heigth = 600;
-		}
-		status = true;
-	}
-	else if (param_name == wxT("color_depth")) 
-	{
-		rdp_conn->color_depth = wxAtoi(param_value);
-		if ((rdp_conn->color_depth != 8 ) && (rdp_conn->color_depth != 15 ) && (rdp_conn->color_depth != 16 ) &&
-				(rdp_conn->color_depth != 24 ))
-		{
-			rdp_conn->color_depth = 16;
-		}
-	status = true;
-	}
-	else if (param_name == wxT("bSmartSizing")) 
-	{
-		if (param_value == wxT("0"))
-		{
-			rdp_conn->bSmartSizing = FALSE;
-			status = true;
-		}
-		else if (param_value == wxT("1"))
-		{
-			rdp_conn->bSmartSizing = TRUE;
-			status = true;
-		}
-	}
-	else if (param_name == wxT("bControlSize"))
-	{
-		if (param_value == wxT("0"))
-		{
-			rdp_conn->bControlSize = FALSE;
-			status = true;
-		}
-		else if (param_value == wxT("1"))
-		{
-			rdp_conn->bControlSize = TRUE;
-			status = true;
-		}
-	}
-	else if (param_name == wxT("bFullScreen")) 
-	{
-		if (param_value == wxT("0"))
-		{
-			rdp_conn->bFullScreen = FALSE;
-			status = true;
-		}
-		else if (param_value == wxT("1"))
-		{
-			rdp_conn->bFullScreen = TRUE;
-			status = true;
-		}
-	}
-	else if (param_name == wxT("force_update_screen")) 
-	{
-		if (param_value == wxT("0"))
-		{
-			rdp_conn->force_update_screen = FALSE;
-			status = true;
-		}
-		else if (param_value == wxT("1"))
-		{
-			rdp_conn->force_update_screen = TRUE;
-			status = true;
-		}
-	}
-	else if (param_name == wxT("shell")) 
-	{
-		rdp_conn->shell = ConvertFromUTF8(param_value.To8BitData());
-		status = true;
-	}
-	else if (param_name == wxT("directory")) 
-	{
-		rdp_conn->directory = ConvertFromUTF8(param_value.To8BitData());
-		status = true;
-	}
-	else if (param_name == wxT("bUseProgram")) 
-	{
-		if (param_value == wxT("0"))
-		{
-			rdp_conn->bUseProgram = FALSE;
-			status = true;
-		} 
-		else if (param_value == wxT("1"))
-		{
-			rdp_conn->bUseProgram = TRUE;
-			status = true;
-		}
-	}
-	else if (param_name == wxT("bProgramMaximized")) 
-	{
-		if (param_value == wxT("0"))
-		{
-			rdp_conn->bProgramMaximized = FALSE;
-			status = true;
-		}
-		else if (param_value == wxT("1"))
-		{
-			rdp_conn->bProgramMaximized = TRUE;
-			status = true;
-		}
-	}
-	else if (param_name == wxT("keyboard_map")) 
-	{
-		rdp_conn->keyboard_map = ConvertFromUTF8(param_value.To8BitData());
-		status = true;
-	}
-	else if (param_name == wxT("keyboard")) 
-	{
-		if (param_value == wxT("0"))
-		{
-			rdp_conn->keyboard = 0;
-			status = true;
-		}
-		else if (param_value == wxT("1"))
-		{
-			rdp_conn->keyboard = 1;
-			status = true;
-		}
-		else if (param_value == 2)
-		{
-			rdp_conn->keyboard = 2;
-			status = true;
-		}
-	}
-	else if (param_name == wxT("bEnableBitmapCaching")) 
-	{
-		if (param_value == wxT("0"))
-		{
-			rdp_conn->bEnableBitmapCaching = FALSE;
-			status = true;
-		}
-		else if (param_value == wxT("1"))
-		{
-			rdp_conn->bEnableBitmapCaching = TRUE;
-			status = true;
-		}
-	}
-	else if (param_name == wxT("bEnableWallpaper")) 
-	{
-		if (param_value == wxT("0"))
-		{
-			rdp_conn->bEnableWallpaper = FALSE;
-			status = true;
-		}
-		else if (param_value == wxT("1"))
-		{
-			rdp_conn->bEnableWallpaper = TRUE;
-			status = true;
-		}
-	}
-	else if (param_name == wxT("bEnableFullWindowDrag")) 
-	{
-		if (param_value == wxT("0"))
-		{
-			rdp_conn->bEnableFullWindowDrag = FALSE;
-			status = true;
-		}
-		else if (param_value == wxT("1"))
-		{
-			rdp_conn->bEnableFullWindowDrag = TRUE;
-			status = true;
-		}
-	}
-	else if (param_name == wxT("bEnableAnimation")) 
-	{
-		if (param_value == wxT("0"))
-		{
-			rdp_conn->bEnableAnimation = FALSE;
-			status = true;
-		}
-		else if (param_value == wxT("1"))
-		{
-			rdp_conn->bEnableAnimation = TRUE;
-			status = true;
-		}
-	}
-	else if (param_name == wxT("bEnableThemes")) 
-	{
-		if (param_value == wxT("0"))
-		{
-			rdp_conn->bEnableThemes = FALSE;
-			status = true;
-		} 
-		else if (param_value == wxT("1"))
-		{
-			rdp_conn->bEnableThemes = TRUE;
-			status = true;
-		}
-	} 
-	else if (param_name == wxT("bShareDrives"))
-	{
-		
-			if (param_value == wxT("0"))
-			{
-				rdp_conn->bShareDrives = FALSE;
-				status = true;
-			} 
-			else if (param_value == wxT("1"))
-			{
-				rdp_conn->bShareDrives = TRUE;
-				status = true;
-			}
-		
-	} 
-	else if (param_name == wxT("bSharePrinters"))
-	{
-		
-			if (param_value == wxT("0"))
-			{
-				rdp_conn->bSharePrinters = FALSE;
-				status = true;
-			} 
-			else if (param_value == wxT("1"))
-			{
-				rdp_conn->bSharePrinters = TRUE;
-				status = true;
-			}
-		
-	} 
-	else if (param_name == wxT("bShareComPorts")) 
-	{
-		
-			if (param_value == wxT("0"))
-			{
-				rdp_conn->bShareComPorts = FALSE;
-				status = true;
-			}
-			else if (param_value == wxT("1"))
-			{
-				rdp_conn->bShareComPorts = TRUE;
-				status = true;
-			}
-		
-	}
-	else if (param_name == wxT("bShareSmartCards")) 
-	{
-		
-			if (param_value == wxT("0"))
-			{
-				rdp_conn->bShareSmartCards = FALSE;
-				status = true;
-			}
-			else if (param_value == wxT("1"))
-			{
-				rdp_conn->bShareSmartCards = TRUE;
-				status = true;
-			}
-		
-	}
-	else if (param_name == wxT("SoundType")) 
-	{
-		
-			if (param_value == wxT("0"))
-			{
-				rdp_conn->SoundType = 0;
-				status = true;
-			}
-			else if (param_value == wxT("1"))
-			{
-				rdp_conn->SoundType = 1;
-				status = true;
-			}
-			else if (param_value == wxT("2"))
-			{
-				rdp_conn->SoundType = 2;
-				status = true;
-			}
-			else 
-			{
-				status = false;
-			}
-		
-	}
-	else if (param_name == wxT("bandwidth")) 
-	{
-		rdp_conn->bandwidth = wxAtoi(param_value);
-		if (rdp_conn->bandwidth <= 0 )
-		{
-			rdp_conn->bandwidth = 1;
-		}
-		status = true;
-	}
-	else if (param_name == wxT("backing_store")) 
-	{
-		if (param_value == wxT("0"))
-		{
-			rdp_conn->backing_store = FALSE;
-			status = true;
-		} 
-		else if (param_value == wxT("1"))
-		{
-			rdp_conn->backing_store = TRUE;
-			status = true;
-		}
-	} 
-	else if (param_name == wxT("encription_enable_french"))
-	{
-		if (param_value == wxT("0"))
-		{
-			rdp_conn->encription_enable_french = FALSE;
-			status = true;
-		} 
-		else if (param_value == wxT("1"))
-		{
-			rdp_conn->encription_enable_french = TRUE;
-			status = true;
-		}
-	} 
-	else if (param_name == wxT("encription_enable_new"))
-	{
-		if (param_value == wxT("0"))
-		{
-			rdp_conn->encription_enable_new = FALSE;
-			status = true;
-		}
-		else if (param_value == wxT("1"))
-		{
-			rdp_conn->encription_enable_new = TRUE;
-			status = true;
-		}
-	}
-	else if (param_name == wxT("use_rdp_version")) 
-	{
-		rdp_conn->use_rdp_version = wxAtoi(param_value);
-		if ((rdp_conn->use_rdp_version != 0 ) && (rdp_conn->use_rdp_version != 1 ) && (rdp_conn->use_rdp_version != 2 ))
-		{
-			rdp_conn->use_rdp_version = 1;
-			status = true;
-		}
-	}
-	else if (param_name == wxT("send_mouse_event")) 
-	{
-		if (param_value == wxT("0"))
-		{
-			rdp_conn->send_mouse_event = FALSE;
-			status = true;
-		}
-		else if (param_value == wxT("1"))
-		{
-			rdp_conn->send_mouse_event = TRUE;
-			status = true;
-		}
-	}
-	else if (param_name == wxT("private_color_map")) 
-	{
-		if (param_value == wxT("0"))
-		{
-			rdp_conn->private_color_map = FALSE;
-			status = true;
-		}
-		else if (param_value == wxT("1"))
-		{
-			rdp_conn->private_color_map = TRUE;
-			status = true;
-		}
+   bool status = false;
 
-	}
-	else if (param_name == wxT("single_mode")) 
-	{
-		rdp_conn->single_mode = wxAtoi(param_value);
-		if ((rdp_conn->single_mode <= 0 ) && (rdp_conn->single_mode >= 255 ))
-		{
-			rdp_conn->single_mode = 16;
-			status = true;
-		}
-	}
-	else if (param_name == wxT("numlock_sync")) 
-	{
-		if (param_value == wxT("0"))
-		{
-			rdp_conn->numlock_sync = FALSE;
-			status = true;
-		}
-		else if (param_value == wxT("1"))
-		{
-			rdp_conn->numlock_sync = TRUE;
-			status = true;
-		}
-	}
-	else if (param_name == wxT("enable_compres")) 
-	{
-		if (param_value == wxT("0"))
-		{
-			rdp_conn->enable_compres = FALSE;
-			status = true;
-		} 
-		else if (param_value == wxT("1"))
-		{
-			rdp_conn->enable_compres = TRUE;
-			status = true;
-		}
-	} 
-	else if (param_name == wxT("uniq_name"))
-	{
-		rdp_conn->uniq_name = wxAtoi(param_value);
-		if (rdp_conn->uniq_name > 0)
-		{
-			status = true;
-		} 
-		else 
-		{
-			status = false;
-		}
-	} 
-	else if (param_name == wxT("group_name"))
-	{
-		rdp_conn->group_name = ConvertFromUTF8(param_value.To8BitData());
-		status = true;
-	}
-	else if (param_name == wxT("connection_name"))
-	{
-		rdp_conn->connection_name = ConvertFromUTF8(param_value.To8BitData());
-		status = true;
-	} 
-	else if (param_name == wxT("connection_count"))
-	{
-		rdp_conn->dwConnectionCount = wxAtoi(param_value);
-		status = true;
-	}	
-	else if (param_name == wxT("linux_devices")) 
-	{
-		rdp_conn->redirect_devices_nix = ConvertFromUTF8(param_value.To8BitData());
-		status = true;
-	}
-	else
-	{
-		status = false;
-	}
-	
-	return TRUE;
+   if (param_name == wxT("hostname"))
+   {
+      rdp_conn->hostname = ConvertFromUTF8(param_value.To8BitData());
+      status = true;
+   }
+   else if (param_name == wxT("username")) 
+   {
+      rdp_conn->username = ConvertFromUTF8(param_value.To8BitData());
+      status = true;
+   } 
+   else if (param_name == wxT("password"))	
+   {
+      rdp_conn->password = ConvertFromUTF8(param_value.To8BitData());
+      status = true;
+   }
+   else if (param_name == wxT("domain"))
+   {
+      rdp_conn->domain = ConvertFromUTF8(param_value.To8BitData());
+      status = true;
+   }
+   else if (param_name == wxT("port")) 
+   {
+      rdp_conn->port = ConvertFromUTF8(param_value.To8BitData());
+      status = true;
+   } 
+   else if (param_name == wxT("attach_to_console")) 
+   {
+      if (param_value == wxT("0"))
+      {
+	 rdp_conn->attach_to_console = FALSE;
+	 status = true;
+      }
+      else if (param_value == wxT("1"))
+      {
+	 rdp_conn->attach_to_console = TRUE;
+	 status = true;
+      }
+   }
+   else if (param_name == wxT("width")) 
+   {
+      rdp_conn->width = wxAtoi(param_value);
+      if (rdp_conn->width <= 0 )
+      {
+	 rdp_conn->width = 800;
+      }
+      status = true;
+   }
+   else if (param_name == wxT("heigth")) 
+   {
+      rdp_conn->heigth = wxAtoi(param_value);
+      if (rdp_conn->heigth <= 0 )
+      {
+	 rdp_conn->heigth = 600;
+      }
+      status = true;
+   }
+   else if (param_name == wxT("color_depth")) 
+   {
+      rdp_conn->color_depth = wxAtoi(param_value);
+      if ((rdp_conn->color_depth != 8 ) && (rdp_conn->color_depth != 15 ) && (rdp_conn->color_depth != 16 ) &&
+	  (rdp_conn->color_depth != 24 ))
+      {
+	 rdp_conn->color_depth = 16;
+      }
+      status = true;
+   }
+   else if (param_name == wxT("bSmartSizing")) 
+   {
+      if (param_value == wxT("0"))
+      {
+	 rdp_conn->bSmartSizing = FALSE;
+	 status = true;
+      }
+      else if (param_value == wxT("1"))
+      {
+	 rdp_conn->bSmartSizing = TRUE;
+	 status = true;
+      }
+   }
+   else if (param_name == wxT("bControlSize"))
+   {
+      if (param_value == wxT("0"))
+      {
+	 rdp_conn->bControlSize = FALSE;
+	 status = true;
+      }
+      else if (param_value == wxT("1"))
+      {
+	 rdp_conn->bControlSize = TRUE;
+	 status = true;
+      }
+   }
+   else if (param_name == wxT("bFullScreen")) 
+   {
+      if (param_value == wxT("0"))
+      {
+	 rdp_conn->bFullScreen = FALSE;
+	 status = true;
+      }
+      else if (param_value == wxT("1"))
+      {
+	 rdp_conn->bFullScreen = TRUE;
+	 status = true;
+      }
+   }
+   else if (param_name == wxT("force_update_screen")) 
+   {
+      if (param_value == wxT("0"))
+      {
+	 rdp_conn->force_update_screen = FALSE;
+	 status = true;
+      }
+      else if (param_value == wxT("1"))
+      {
+	 rdp_conn->force_update_screen = TRUE;
+	 status = true;
+      }
+   }
+   else if (param_name == wxT("shell")) 
+   {
+      rdp_conn->shell = ConvertFromUTF8(param_value.To8BitData());
+      status = true;
+   }
+   else if (param_name == wxT("directory")) 
+   {
+      rdp_conn->directory = ConvertFromUTF8(param_value.To8BitData());
+      status = true;
+   }
+   else if (param_name == wxT("bUseProgram")) 
+   {
+      if (param_value == wxT("0"))
+      {
+	 rdp_conn->bUseProgram = FALSE;
+	 status = true;
+      } 
+      else if (param_value == wxT("1"))
+      {
+	 rdp_conn->bUseProgram = TRUE;
+	 status = true;
+      }
+   }
+   else if (param_name == wxT("bProgramMaximized")) 
+   {
+      if (param_value == wxT("0"))
+      {
+	 rdp_conn->bProgramMaximized = FALSE;
+	 status = true;
+      }
+      else if (param_value == wxT("1"))
+      {
+	 rdp_conn->bProgramMaximized = TRUE;
+	 status = true;
+      }
+   }
+   else if (param_name == wxT("keyboard_map")) 
+   {
+      rdp_conn->keyboard_map = ConvertFromUTF8(param_value.To8BitData());
+      status = true;
+   }
+   else if (param_name == wxT("keyboard")) 
+   {
+      if (param_value == wxT("0"))
+      {
+	 rdp_conn->keyboard = 0;
+	 status = true;
+      }
+      else if (param_value == wxT("1"))
+      {
+	 rdp_conn->keyboard = 1;
+	 status = true;
+      }
+      else if (param_value == 2)
+      {
+	 rdp_conn->keyboard = 2;
+	 status = true;
+      }
+   }
+   else if (param_name == wxT("bEnableBitmapCaching")) 
+   {
+      if (param_value == wxT("0"))
+      {
+	 rdp_conn->bEnableBitmapCaching = FALSE;
+	 status = true;
+      }
+      else if (param_value == wxT("1"))
+      {
+	 rdp_conn->bEnableBitmapCaching = TRUE;
+	 status = true;
+      }
+   }
+   else if (param_name == wxT("bEnableWallpaper")) 
+   {
+      if (param_value == wxT("0"))
+      {
+	 rdp_conn->bEnableWallpaper = FALSE;
+	 status = true;
+      }
+      else if (param_value == wxT("1"))
+      {
+	 rdp_conn->bEnableWallpaper = TRUE;
+	 status = true;
+      }
+   }
+   else if (param_name == wxT("bEnableFullWindowDrag")) 
+   {
+      if (param_value == wxT("0"))
+      {
+	 rdp_conn->bEnableFullWindowDrag = FALSE;
+	 status = true;
+      }
+      else if (param_value == wxT("1"))
+      {
+	 rdp_conn->bEnableFullWindowDrag = TRUE;
+	 status = true;
+      }
+   }
+   else if (param_name == wxT("bEnableAnimation")) 
+   {
+      if (param_value == wxT("0"))
+      {
+	 rdp_conn->bEnableAnimation = FALSE;
+	 status = true;
+      }
+      else if (param_value == wxT("1"))
+      {
+	 rdp_conn->bEnableAnimation = TRUE;
+	 status = true;
+      }
+   }
+   else if (param_name == wxT("bEnableThemes")) 
+   {
+      if (param_value == wxT("0"))
+      {
+	 rdp_conn->bEnableThemes = FALSE;
+	 status = true;
+      } 
+      else if (param_value == wxT("1"))
+      {
+	 rdp_conn->bEnableThemes = TRUE;
+	 status = true;
+      }
+   } 
+   else if (param_name == wxT("bShareDrives"))
+   {
+		
+      if (param_value == wxT("0"))
+      {
+	 rdp_conn->bShareDrives = FALSE;
+	 status = true;
+      } 
+      else if (param_value == wxT("1"))
+      {
+	 rdp_conn->bShareDrives = TRUE;
+	 status = true;
+      }
+		
+   } 
+   else if (param_name == wxT("bSharePrinters"))
+   {
+		
+      if (param_value == wxT("0"))
+      {
+	 rdp_conn->bSharePrinters = FALSE;
+	 status = true;
+      } 
+      else if (param_value == wxT("1"))
+      {
+	 rdp_conn->bSharePrinters = TRUE;
+	 status = true;
+      }
+		
+   } 
+   else if (param_name == wxT("bShareComPorts")) 
+   {
+		
+      if (param_value == wxT("0"))
+      {
+	 rdp_conn->bShareComPorts = FALSE;
+	 status = true;
+      }
+      else if (param_value == wxT("1"))
+      {
+	 rdp_conn->bShareComPorts = TRUE;
+	 status = true;
+      }
+		
+   }
+   else if (param_name == wxT("bShareSmartCards")) 
+   {
+		
+      if (param_value == wxT("0"))
+      {
+	 rdp_conn->bShareSmartCards = FALSE;
+	 status = true;
+      }
+      else if (param_value == wxT("1"))
+      {
+	 rdp_conn->bShareSmartCards = TRUE;
+	 status = true;
+      }
+		
+   }
+   else if (param_name == wxT("SoundType")) 
+   {
+		
+      if (param_value == wxT("0"))
+      {
+	 rdp_conn->SoundType = 0;
+	 status = true;
+      }
+      else if (param_value == wxT("1"))
+      {
+	 rdp_conn->SoundType = 1;
+	 status = true;
+      }
+      else if (param_value == wxT("2"))
+      {
+	 rdp_conn->SoundType = 2;
+	 status = true;
+      }
+      else 
+      {
+	 status = false;
+      }
+		
+   }
+   else if (param_name == wxT("bandwidth")) 
+   {
+      rdp_conn->bandwidth = wxAtoi(param_value);
+      if (rdp_conn->bandwidth <= 0 )
+      {
+	 rdp_conn->bandwidth = 1;
+      }
+      status = true;
+   }
+   else if (param_name == wxT("backing_store")) 
+   {
+      if (param_value == wxT("0"))
+      {
+	 rdp_conn->backing_store = FALSE;
+	 status = true;
+      } 
+      else if (param_value == wxT("1"))
+      {
+	 rdp_conn->backing_store = TRUE;
+	 status = true;
+      }
+   } 
+   else if (param_name == wxT("encription_enable_french"))
+   {
+      if (param_value == wxT("0"))
+      {
+	 rdp_conn->encription_enable_french = FALSE;
+	 status = true;
+      } 
+      else if (param_value == wxT("1"))
+      {
+	 rdp_conn->encription_enable_french = TRUE;
+	 status = true;
+      }
+   } 
+   else if (param_name == wxT("encription_enable_new"))
+   {
+      if (param_value == wxT("0"))
+      {
+	 rdp_conn->encription_enable_new = FALSE;
+	 status = true;
+      }
+      else if (param_value == wxT("1"))
+      {
+	 rdp_conn->encription_enable_new = TRUE;
+	 status = true;
+      }
+   }
+   else if (param_name == wxT("use_rdp_version")) 
+   {
+      rdp_conn->use_rdp_version = wxAtoi(param_value);
+      if ((rdp_conn->use_rdp_version != 0 ) && (rdp_conn->use_rdp_version != 1 ) && (rdp_conn->use_rdp_version != 2 ))
+      {
+	 rdp_conn->use_rdp_version = 1;
+	 status = true;
+      }
+   }
+   else if (param_name == wxT("send_mouse_event")) 
+   {
+      if (param_value == wxT("0"))
+      {
+	 rdp_conn->send_mouse_event = FALSE;
+	 status = true;
+      }
+      else if (param_value == wxT("1"))
+      {
+	 rdp_conn->send_mouse_event = TRUE;
+	 status = true;
+      }
+   }
+   else if (param_name == wxT("private_color_map")) 
+   {
+      if (param_value == wxT("0"))
+      {
+	 rdp_conn->private_color_map = FALSE;
+	 status = true;
+      }
+      else if (param_value == wxT("1"))
+      {
+	 rdp_conn->private_color_map = TRUE;
+	 status = true;
+      }
+
+   }
+   else if (param_name == wxT("single_mode")) 
+   {
+      rdp_conn->single_mode = wxAtoi(param_value);
+      if ((rdp_conn->single_mode <= 0 ) && (rdp_conn->single_mode >= 255 ))
+      {
+	 rdp_conn->single_mode = 16;
+	 status = true;
+      }
+   }
+   else if (param_name == wxT("numlock_sync")) 
+   {
+      if (param_value == wxT("0"))
+      {
+	 rdp_conn->numlock_sync = FALSE;
+	 status = true;
+      }
+      else if (param_value == wxT("1"))
+      {
+	 rdp_conn->numlock_sync = TRUE;
+	 status = true;
+      }
+   }
+   else if (param_name == wxT("enable_compres")) 
+   {
+      if (param_value == wxT("0"))
+      {
+	 rdp_conn->enable_compres = FALSE;
+	 status = true;
+      } 
+      else if (param_value == wxT("1"))
+      {
+	 rdp_conn->enable_compres = TRUE;
+	 status = true;
+      }
+   } 
+   else if (param_name == wxT("uniq_name"))
+   {
+      rdp_conn->uniq_name = wxAtoi(param_value);
+      if (rdp_conn->uniq_name > 0)
+      {
+	 status = true;
+      } 
+      else 
+      {
+	 status = false;
+      }
+   } 
+   else if (param_name == wxT("group_name"))
+   {
+      rdp_conn->group_name = ConvertFromUTF8(param_value.To8BitData());
+      status = true;
+   }
+   else if (param_name == wxT("connection_name"))
+   {
+      rdp_conn->connection_name = ConvertFromUTF8(param_value.To8BitData());
+      status = true;
+   } 
+   else if (param_name == wxT("connection_count"))
+   {
+      rdp_conn->dwConnectionCount = wxAtoi(param_value);
+      status = true;
+   }	
+   else if (param_name == wxT("linux_devices")) 
+   {
+      rdp_conn->redirect_devices_nix = ConvertFromUTF8(param_value.To8BitData());
+      status = true;
+   }
+   else if (param_name == wxT("ica_server_ini")) 
+   {
+      rdp_conn->server_ini = ConvertFromUTF8(param_value.To8BitData());
+      status = true;
+   }
+   else if (param_name == wxT("ica_client_ini")) 
+   {
+      rdp_conn->client_ini = ConvertFromUTF8(param_value.To8BitData());
+      status = true;
+   }
+   else if (param_name == wxT("ICASound")) 
+   {
+      if (param_value == wxT("0"))
+      {
+	 rdp_conn->bIcaSound = FALSE;
+	 status = true;
+      } 
+      else if (param_value == wxT("1"))
+      {
+	 rdp_conn->bIcaSound = TRUE;
+	 status = true;
+      }
+   }
+   else if (param_name == wxT("ICASoundType")) 
+   {
+      rdp_conn->bIcaSoundType = wxAtoi(param_value);
+      if ((rdp_conn->bIcaSoundType < 0 ) && (rdp_conn->bIcaSoundType >= 3 ))
+      {
+	 rdp_conn->bIcaSoundType = 1;
+	 status = true;
+      }
+   }
+   else if (param_name == wxT("ICAEncryption")) 
+   {
+      if (param_value == wxT("0"))
+      {
+	 rdp_conn->bIcaEncryption = FALSE;
+	 status = true;
+      } 
+      else if (param_value == wxT("1"))
+      {
+	 rdp_conn->bIcaEncryption = TRUE;
+	 status = true;
+      }
+   }
+   else if (param_name == wxT("ICAEncryptionType")) 
+   {
+      rdp_conn->ica_encryption = wxAtoi(param_value);
+      if ((rdp_conn->ica_encryption < 0 ) || (rdp_conn->ica_encryption >= 5 ))
+      {
+	 rdp_conn->ica_encryption = 0;
+	 status = true;
+      }
+   }
+   else if (param_name == wxT("ica_connection_file")) 
+   {
+      rdp_conn->ica_file = ConvertFromUTF8(param_value.To8BitData());
+      status = true;
+   }
+   else if (param_name == wxT("bUseApplication")) 
+   {
+      if (param_value == wxT("0"))
+      {
+	 rdp_conn->bUseApplication = FALSE;
+	 status = true;
+      } 
+      else if (param_value == wxT("1"))
+      {
+	 rdp_conn->bUseApplication = TRUE;
+	 status = true;
+      }
+   }
+   else if (param_name == wxT("ICAApplication")) 
+   {
+      rdp_conn->IcaApplication = ConvertFromUTF8(param_value.To8BitData());
+      status = true;
+   }
+   else if (param_name == wxT("bProxyType")) 
+   {
+      rdp_conn->bProxyType = wxAtoi(param_value);
+      if ((rdp_conn->bProxyType < 0 ) && (rdp_conn->bProxyType >= 2 ))
+      {
+	 rdp_conn->bProxyType = 0;
+	 status = true;
+      }
+   }
+   else if (param_name == wxT("ProxyAddr")) 
+   {
+      rdp_conn->ProxyAddr = ConvertFromUTF8(param_value.To8BitData());
+      status = true;
+   }
+   else if (param_name == wxT("ProxyPort")) 
+   {
+      rdp_conn->ProxyPort = ConvertFromUTF8(param_value.To8BitData());
+      status = true;
+   }
+   else if (param_name == wxT("ProxyUserId")) 
+   {
+      rdp_conn->ProxyUserId = ConvertFromUTF8(param_value.To8BitData());
+      status = true;
+   }
+   else if (param_name == wxT("ProxyPassword")) 
+   {
+      rdp_conn->ProxyPassword = ConvertFromUTF8(param_value.To8BitData());
+      status = true;
+   }
+   else if (param_name == wxT("Protocol")) 
+   {
+      //rdp_conn->conn_type = wxAtoi(param_value);
+      int conn_type_int = wxAtoi(param_value);
+      if (conn_type_int < 0 || conn_type_int > 2) conn_type_int = 1;
+      if (conn_type_int == 0) rdp_conn->conn_type = ConnectionType_Unknown;
+      else if (conn_type_int == 1) rdp_conn->conn_type = ConnectionType_RDP;
+      else if (conn_type_int == 2) rdp_conn->conn_type = ConnectionType_ICA;
+      status = true;
+   }
+   else
+   {
+      status = false;
+   }
+
+   return TRUE;
 }
 
 BOOL Benc::isNormalParam(wxString str, int pos)
@@ -1410,375 +1683,385 @@ RDPConn Benc::GetRDPConn(wxString str)
 
 BOOL Benc::LoadProgramSettings(programsettings * ps)
 {
-	if (!ps) return FALSE;
+   if (!ps) return FALSE;
 
-	wxString settings_path;
+   wxString settings_path;
 #ifdef __WXMSW__
-	wxGetEnv(wxT("APPDATA"),&settings_path);
+   wxGetEnv(wxT("APPDATA"),&settings_path);
 #endif
 
 #ifdef __WXGTK__
-	wxGetEnv(STANDARD_LINUX_ENV,&settings_path);
+   wxGetEnv(STANDARD_LINUX_ENV,&settings_path);
 #endif
 
-	if (settings_path.IsEmpty())
-	{
-		ps->rdpbasepath = settings_path;
-		ps->rdpkeypath = settings_path;
-		ps->rdesktoppath = STANDARD_RDESKTOP_PATH;
-		ps->rdesktop_key_path = STANDARD_RDESKTOP_KEY_PATH;
-		ps->bIcon = TRUE;
-		ps->favorites_count = STANDARD_FAVORITES_COUNT;
-		ps->favorites_max = STANDARD_FAVORITES_MAX;
-		ps->bShowFrame = FALSE;
-		ps->bUseCrypt = TRUE;
-		ps->iTypeCrypt = 1;
-		ps->bFocusPage = TRUE;
-		ps->bAutosave = TRUE;
-		ps->lang = wxT("Default");
-		return FALSE;
-	}
+   if (settings_path.IsEmpty())
+   {
+      ps->rdpbasepath = settings_path;
+      ps->rdpkeypath = settings_path;
+      ps->rdesktoppath = STANDARD_RDESKTOP_PATH;
+      ps->rdesktop_key_path = STANDARD_RDESKTOP_KEY_PATH;
+      ps->bIcon = TRUE;
+      ps->favorites_count = STANDARD_FAVORITES_COUNT;
+      ps->favorites_max = STANDARD_FAVORITES_MAX;
+      ps->bShowFrame = FALSE;
+      ps->bUseCrypt = TRUE;
+      ps->iTypeCrypt = 1;
+      ps->bFocusPage = TRUE;
+      ps->bAutosave = TRUE;
+      ps->lang = wxT("Default");
+      return FALSE;
+   }
 	
 #ifdef __WXMSW__
-	settings_path += wxT("\\");
+   settings_path += wxT("\\");
 #endif	
 #ifdef __WXGTK__
-	settings_path += wxT("/.");
+   settings_path += wxT("/.");
 #endif
-	settings_path += STANDARD_RDP_PATH;
-	if (!wxDirExists(settings_path.data()))
-	{
-		wxMkdir(settings_path);
-	}
-	wxString file_path;
-	file_path.Empty(); 
-	file_path = settings_path;
+   settings_path += STANDARD_RDP_PATH;
+   if (!wxDirExists(settings_path.data()))
+   {
+      wxMkdir(settings_path);
+   }
+   wxString file_path;
+   file_path.Empty(); 
+   file_path = settings_path;
 #ifdef __WXMSW__
-	file_path += wxT("\\");
+   file_path += wxT("\\");
 #endif
 #ifdef __WXGTK__
-	file_path += wxT("/");
+   file_path += wxT("/");
 #endif
-	file_path += STANDARD_RDPCONF_NAME;
-	wxFile fset;
-	if (!wxFileExists(file_path.data()))
-	{
-		ps->rdpbasepath = settings_path;
-		ps->rdpkeypath = settings_path;
-		ps->rdesktoppath = STANDARD_RDESKTOP_PATH;
-		ps->rdesktop_key_path = STANDARD_RDESKTOP_KEY_PATH;
-		ps->bIcon = TRUE;
-		ps->favorites_count = STANDARD_FAVORITES_COUNT;
-		ps->favorites_max = STANDARD_FAVORITES_MAX;
-		ps->bShowFrame = FALSE;
-		ps->bUseCrypt = TRUE;
-		ps->iTypeCrypt = 1;
-		ps->bFocusPage = TRUE;
-		ps->bAutosave = TRUE;
-		ps->lang = wxT("Default");
-		
-		SaveProgramSettings(ps);
-		return TRUE;
-	}
+   file_path += STANDARD_RDPCONF_NAME;
+   wxFile fset;
+   if (!wxFileExists(file_path.data()))
+   {
+      ps->rdpbasepath = settings_path;
+      ps->rdpkeypath = settings_path;
+      ps->rdesktoppath = STANDARD_RDESKTOP_PATH;
+      ps->rdesktop_key_path = STANDARD_RDESKTOP_KEY_PATH;
+      ps->bIcon = TRUE;
+      ps->favorites_count = STANDARD_FAVORITES_COUNT;
+      ps->favorites_max = STANDARD_FAVORITES_MAX;
+      ps->bShowFrame = FALSE;
+      ps->bUseCrypt = TRUE;
+      ps->iTypeCrypt = 1;
+      ps->bFocusPage = TRUE;
+      ps->bAutosave = TRUE;
+      ps->lang = wxT("Default");
+      SaveProgramSettings(ps);
+      return TRUE;
+   }
 
-	fset.Open(file_path);
-	if (!fset.IsOpened()) return FALSE;
+   fset.Open(file_path);
+   if (!fset.IsOpened()) return FALSE;
 	
-	fset.SeekEnd();
-	DWORD dwFileSize = fset.Tell();
-	fset.Seek(0);
-	if ((dwFileSize == wxInvalidOffset) || (dwFileSize == 0)) 
-	{
-		fset.Detach();
-		ps->rdpbasepath = settings_path;
-		ps->rdpkeypath = settings_path;
-		ps->rdesktoppath = STANDARD_RDESKTOP_PATH;
-		ps->rdesktop_key_path = STANDARD_RDESKTOP_KEY_PATH;
-		ps->bIcon = TRUE;
-		ps->favorites_count = STANDARD_FAVORITES_COUNT;
-		ps->favorites_max = STANDARD_FAVORITES_MAX;
-		ps->bShowFrame = FALSE;
-		ps->bUseCrypt = TRUE;
-		ps->iTypeCrypt = 1;
-		ps->bFocusPage = TRUE;
-		ps->bAutosave = TRUE;
-		ps->lang = wxT("Default");
+   fset.SeekEnd();
+   DWORD dwFileSize = fset.Tell();
+   fset.Seek(0);
+   if ((dwFileSize == wxInvalidOffset) || (dwFileSize == 0)) 
+   {
+      fset.Detach();
+      ps->rdpbasepath = settings_path;
+      ps->rdpkeypath = settings_path;
+      ps->rdesktoppath = STANDARD_RDESKTOP_PATH;
+      ps->rdesktop_key_path = STANDARD_RDESKTOP_KEY_PATH;
+      ps->bIcon = TRUE;
+      ps->favorites_count = STANDARD_FAVORITES_COUNT;
+      ps->favorites_max = STANDARD_FAVORITES_MAX;
+      ps->bShowFrame = FALSE;
+      ps->bUseCrypt = TRUE;
+      ps->iTypeCrypt = 1;
+      ps->bFocusPage = TRUE;
+      ps->bAutosave = TRUE;
+      ps->lang = wxT("Default");
 		
-		SaveProgramSettings(ps);
-		return TRUE;
-	}
+      SaveProgramSettings(ps);
+      return TRUE;
+   }
 
-	char * tempbuff = new char [dwFileSize + 1];
-	memset(tempbuff,0,(dwFileSize + 1));
-	fset.Read(tempbuff,dwFileSize);
-	wxString str_set;
-	str_set.Empty();
+   char * tempbuff = new char [dwFileSize + 1];
+   memset(tempbuff,0,(dwFileSize + 1));
+   fset.Read(tempbuff,dwFileSize);
+   wxString str_set;
+   str_set.Empty();
 	
-	for (int i = 0; i < (int)dwFileSize; i ++)
-	{
-		str_set += tempbuff[i];
+   for (int i = 0; i < (int)dwFileSize; i ++)
+   {
+      str_set += tempbuff[i];
 		
-	}
+   }
 	
-	BOOL read = GetProgramSettings(str_set, ps);
-	if(!read)
-	{
-		ps->rdpbasepath = settings_path;
-		ps->rdpkeypath = settings_path;
-		ps->rdesktoppath = STANDARD_RDESKTOP_PATH;
-		ps->rdesktop_key_path = STANDARD_RDESKTOP_KEY_PATH;
-		ps->bIcon = TRUE;
-		ps->favorites_count = STANDARD_FAVORITES_COUNT;
-		ps->favorites_max = STANDARD_FAVORITES_MAX;
-		ps->bShowFrame = FALSE;
-		ps->bUseCrypt = TRUE;
-		ps->iTypeCrypt = 1;
-		ps->bFocusPage = TRUE;
-		ps->bAutosave = TRUE;
-		ps->lang = wxT("Default");
+   BOOL read = GetProgramSettings(str_set, ps);
+   if(!read)
+   {
+      ps->rdpbasepath = settings_path;
+      ps->rdpkeypath = settings_path;
+      ps->rdesktoppath = STANDARD_RDESKTOP_PATH;
+      ps->rdesktop_key_path = STANDARD_RDESKTOP_KEY_PATH;
+      ps->bIcon = TRUE;
+      ps->favorites_count = STANDARD_FAVORITES_COUNT;
+      ps->favorites_max = STANDARD_FAVORITES_MAX;
+      ps->bShowFrame = FALSE;
+      ps->bUseCrypt = TRUE;
+      ps->iTypeCrypt = 1;
+      ps->bFocusPage = TRUE;
+      ps->bAutosave = TRUE;
+      ps->lang = wxT("Default");
 		
-		SaveProgramSettings(ps);
-		return TRUE;
-	}
+      SaveProgramSettings(ps);
+      return TRUE;
+   }
 
-	if (fset.IsOpened())
-	{
-		fset.Close();
-	}
-	fset.Detach();
+   if (fset.IsOpened())
+   {
+      fset.Close();
+   }
+   fset.Detach();
 
-	return TRUE;
+   return TRUE;
 }
 
 BOOL Benc::GetProgramSettings(const wxString str_set, programsettings * ps)
 {
 
-	wxChar tmp = str_set.GetChar(0);
-	
-	if (tmp != wxT('k')) return FALSE;
-	BOOL read = TRUE;
-	int iCurrPos = 1;
-	wxString temp;
-	wxString strSize;
-	strSize.Empty(); 
-	
-	while(read)
-	{
-		wxChar t;
-		wxString str_t;
-		str_t.Empty(); 
-		t = str_set.GetChar(iCurrPos); 	
-		str_t.assign(1,t); 
-		
-		if (str_t.IsNumber())
-		{
-			strSize += str_t;
-			iCurrPos ++;
-		}
-		else
-		{
-			read = FALSE;
-		}
-	}
-	if (strSize.IsEmpty()) return FALSE; 
-	
-	int lc = wxAtoi(strSize);
-	iCurrPos = lc + 2 + NumberCount(lc);
+   wxChar tmp = str_set.GetChar(0);
+   if (tmp != wxT('k')) return FALSE;
+   BOOL read = TRUE;
+   int iCurrPos = 1;
+   wxString temp;
+   wxString strSize;
+   strSize.Empty();
+   while(read)
+   {
+      wxChar t;
+      wxString str_t;
+      str_t.Empty(); 
+      t = str_set.GetChar(iCurrPos);
+      str_t.assign(1,t);
+      if (str_t.IsNumber())
+      {
+	 strSize += str_t;
+	 iCurrPos ++;
+      }
+      else
+      {
+	 read = FALSE;
+      }
+   }
+   if (strSize.IsEmpty())
+   {
+      return FALSE;
+   }
+   
+   int lc = wxAtoi(strSize);
+   iCurrPos = lc + 2 + NumberCount(lc);
 
-	wxString str_zz = str_set.Mid(iCurrPos,2);
-	if (str_zz != wxT("zz")) return FALSE;
+   wxString str_zz = str_set.Mid(iCurrPos,2);
+   if (str_zz != wxT("zz"))
+   {
+      return FALSE;
+   }
+   
+   wxString res = str_set.Mid(2 + NumberCount(lc),lc);
+   for (int i = 0; i < lc; i ++)
+   {
+      wxChar t = res.GetChar(i);
+      if (t == wxT('d'))
+      {
+	 if (isNormalParam(res,i))
+	 {
+	    if (!GetProgramOptions(res,i,ps))
+	    {
+	       return FALSE;
+	    }
+	    
+	 }
+      }
+   }
 
-	wxString res = str_set.Mid(2 + NumberCount(lc),lc);
-	
-	for (int i = 0; i < lc; i ++)
-	{
-		wxChar t = res.GetChar(i);
-		if (t == wxT('d'))
-		{
-			if (isNormalParam(res,i))
-			{
-				if (!GetProgramOptions(res,i,ps)) return FALSE;
-			}
-		}
-	}
-
-	return TRUE;
+   return TRUE;
 }
 
 BOOL Benc::GetProgramOptions(wxString str, int pos, programsettings * ps)
 {
-	wxString strSize;
-	strSize.Empty();
-	int iCurrPos = pos + 1;
-	wxChar tmp;
-	wxString temp;
-	temp.Empty();
-	char buff[8];
-	memset(buff,0,8);
-	BOOL read = TRUE;
-	while(read)
-	{
-		temp.Empty(); 
-		tmp = str.GetChar(iCurrPos); 
-		temp += tmp;  
-		if (temp.IsNumber())
-		{
-			strSize += temp;
-			iCurrPos ++;
-		}
-		else
-		{
-			read = FALSE;
-		}
-	}
-	if (strSize.IsEmpty()) 
-	{
-		return FALSE;
-	}
-	
-	int iSize = wxAtoi(strSize);
-	int iSize_ = iSize;	
-	wxString param_name = str.Mid(pos + 2 + NumberCount(iSize),iSize); 
+   wxString strSize;
+   strSize.Empty();
+   int iCurrPos = pos + 1;
+   wxChar tmp;
+   wxString temp;
+   temp.Empty();
+   char buff[8];
+   memset(buff,0,8);
+   BOOL read = TRUE;
+   while(read)
+   {
+      temp.Empty(); 
+      tmp = str.GetChar(iCurrPos); 
+      temp += tmp;  
+      if (temp.IsNumber())
+      {
+	 strSize += temp;
+	 iCurrPos ++;
+      }
+      else
+      {
+	 read = FALSE;
+      }
+   }
+   if (strSize.IsEmpty()) 
+   {
+      return FALSE;
+   }
 
-	iSize_ = iSize;		
-	int iEndPos = pos + 2 + NumberCount(iSize) + iSize;
-	strSize.Empty(); 
-	iCurrPos = iEndPos + 1;
-	read = TRUE;
-	while(read)
-	{
-		temp = str.GetChar(iCurrPos); 
-		if (temp.IsNumber())
-		{
-			strSize += temp;
-			iCurrPos ++;
-		}
-		else
-		{
-			read = FALSE;
-		}
-	}
-	if (strSize.IsEmpty()) 
-	{
-		return FALSE;
-	}
+   int iSize = wxAtoi(strSize);
+   int iSize_ = iSize;	
+   wxString param_name = str.Mid(pos + 2 + NumberCount(iSize),iSize); 
 
-	iSize = wxAtoi(strSize);
-	iCurrPos = iEndPos + 2 + NumberCount(iSize);
-	wxString param_value = str.Mid(iCurrPos,iSize);
-	
-	bool status = false;
-	if (param_name == wxT("rdpbase"))
-	{
-		ps->rdpbasepath = ConvertFromUTF8(param_value.To8BitData()) ;
-		status = true;
-	}
-	else if (param_name == wxT("rdpkey")) 
-	{
-		ps->rdpkeypath =  ConvertFromUTF8(param_value.To8BitData());
-		status = true;
-	} 
-	else if (param_name == wxT("rdesktop"))	
-	{
-		ps->rdesktoppath =  ConvertFromUTF8(param_value.To8BitData());
-		status = true;
-	}
-	else if (param_name == wxT("rdesktop_keymap"))	
-	{
-		ps->rdesktop_key_path =  ConvertFromUTF8(param_value.To8BitData());
-		status = true;
-	}
-	else if (param_name == wxT("language"))	
-	{
-		ps->lang =  ConvertFromUTF8(param_value.To8BitData());
-		status = true;
-	}
-	else if (param_name == wxT("showicon")) 
-	{
-		if (param_value == wxT("0"))
-		{
-			ps->bIcon = FALSE;
-			status = true;
-		}
-		else if (param_value == wxT("1"))
-		{
-			ps->bIcon = TRUE;
-			status = true;
-		}
-	}
-	else if (param_name == wxT("showframe")) 
-	{
-		if (param_value == wxT("0"))
-		{
-			ps->bShowFrame = FALSE;
-			status = true;
-		}
-		else if (param_value == wxT("1"))
-		{
-			ps->bShowFrame = TRUE;
-			status = true;
-		}
-	}
-	else if (param_name == wxT("usecrypt")) 
-	{
-		if (param_value == wxT("0"))
-		{
-			ps->bUseCrypt = FALSE;
-			status = true;
-		}
-		else if (param_value == wxT("1"))
-		{
-			ps->bUseCrypt = TRUE;
-			status = true;
-		}
-	}
-	else if (param_name == wxT("focuspage")) 
-	{
-		if (param_value == wxT("0"))
-		{
-			ps->bFocusPage = FALSE;
-			status = true;
-		}
-		else if (param_value == wxT("1"))
-		{
-			ps->bFocusPage = TRUE;
-			status = true;
-		}
-	}
-	else if (param_name == wxT("autosave")) 
-	{
-		if (param_value == wxT("0"))
-		{
-			ps->bAutosave = FALSE;
-			status = true;
-		}
-		else if (param_value == wxT("1"))
-		{
-			ps->bAutosave = TRUE;
-			status = true;
-		}
-	}
-	else if (param_name == wxT("fcount")) 
-	{
-		ps->favorites_count = wxAtoi(ConvertFromUTF8(param_value.To8BitData()));
-		status = true;
-	}
-	else if (param_name == wxT("fmax")) 
-	{
-		ps->favorites_max = wxAtoi(ConvertFromUTF8(param_value.To8BitData()));
-		status = true;
-	}
-	else if (param_name == wxT("typecrypt")) 
-	{
-		ps->iTypeCrypt = wxAtoi(ConvertFromUTF8(param_value.To8BitData()));
-		status = true;
-	}
-	else
-	{
-		status = false;
-	}
+   iSize_ = iSize;
+   int iEndPos = pos + 2 + NumberCount(iSize) + iSize;
+   strSize.Empty(); 
+   iCurrPos = iEndPos + 1;
+   read = TRUE;
+   while(read)
+   {
+      temp = str.GetChar(iCurrPos); 
+      if (temp.IsNumber())
+      {
+	 strSize += temp;
+	 iCurrPos ++;
+      }
+      else
+      {
+	 read = FALSE;
+      }
+   }
+   if (strSize.IsEmpty()) 
+   {
+      return FALSE;
+   }
 
-	return status;
+   iSize = wxAtoi(strSize);
+   iCurrPos = iEndPos + 2 + NumberCount(iSize);
+   wxString param_value = str.Mid(iCurrPos,iSize);
+   bool status = true;
+   if (param_name == wxT("rdpbase"))
+   {
+      ps->rdpbasepath = ConvertFromUTF8(param_value.To8BitData()) ;
+      status = true;
+   }
+   else if (param_name == wxT("rdpkey")) 
+   {
+      ps->rdpkeypath =  ConvertFromUTF8(param_value.To8BitData());
+      status = true;
+   } 
+   else if (param_name == wxT("rdesktop"))	
+   {
+      ps->rdesktoppath =  ConvertFromUTF8(param_value.To8BitData());
+      status = true;
+   }
+   else if (param_name == wxT("rdesktop_keymap"))	
+   {
+      ps->rdesktop_key_path =  ConvertFromUTF8(param_value.To8BitData());
+      status = true;
+   }
+   else if (param_name == wxT("language"))	
+   {
+      ps->lang =  ConvertFromUTF8(param_value.To8BitData());
+      status = true;
+   }
+   else if (param_name == wxT("showicon")) 
+   {
+      if (param_value == wxT("0"))
+      {
+	 ps->bIcon = FALSE;
+	 status = true;
+      }
+      else if (param_value == wxT("0"))
+      {
+	 ps->bIcon = TRUE;
+	 status = true;
+      }
+   }
+   else if (param_name == wxT("showframe")) 
+   {
+      if (param_value == wxT("0"))
+      {
+	 ps->bShowFrame = FALSE;
+	 status = true;
+      }
+      else if (param_value == wxT("1"))
+      {
+	 ps->bShowFrame = TRUE;
+	 status = true;
+      }
+   }
+   else if (param_name == wxT("usecrypt")) 
+   {
+      if (param_value == wxT("0"))
+      {
+	 ps->bUseCrypt = FALSE;
+	 status = true;
+      }
+      else if (param_value == wxT("1"))
+      {
+	 ps->bUseCrypt = TRUE;
+	 status = true;
+      }
+   }
+   else if (param_name == wxT("focuspage")) 
+   {
+      if (param_value == wxT("0"))
+      {
+	 ps->bFocusPage = FALSE;
+	 status = true;
+      }
+      else if (param_value == wxT("1"))
+      {
+	 ps->bFocusPage = TRUE;
+	 status = true;
+      }
+   }
+   else if (param_name == wxT("autosave")) 
+   {
+      if (param_value == wxT("0"))
+      {
+	 ps->bAutosave = FALSE;
+	 status = true;
+      }
+      else if (param_value == wxT("1"))
+      {
+	 ps->bAutosave = TRUE;
+	 status = true;
+      }
+   }
+   else if (param_name == wxT("fcount")) 
+   {
+      ps->favorites_count = wxAtoi(ConvertFromUTF8(param_value.To8BitData()));
+      status = true;
+   }
+   else if (param_name == wxT("fmax")) 
+   {
+      ps->favorites_max = wxAtoi(ConvertFromUTF8(param_value.To8BitData()));
+      status = true;
+   }
+   else if (param_name == wxT("typecrypt")) 
+   {
+      ps->iTypeCrypt = wxAtoi(ConvertFromUTF8(param_value.To8BitData()));
+      status = true;
+   }
+   else if (param_name == wxT("grabkbd")) 
+   {
+      ps->grabkbd = wxAtoi(ConvertFromUTF8(param_value.To8BitData()));
+      status = true;
+   }
+
+   else
+   {
+      //status = false;
+   }
+
+   return status;
 }
 
 BOOL Benc::SaveProgramSettings(programsettings * ps)
@@ -1800,6 +2083,7 @@ BOOL Benc::SaveProgramSettings(programsettings * ps)
 	str_set += GetParamInt (wxT("fcount"), (int)(ps->favorites_count));
 	str_set += GetParamInt (wxT("fmax"), (int)(ps->favorites_max));
 	str_set += GetParamStr (wxT("language"), (ps->lang));
+	str_set += GetParamInt (wxT("grabkbd"), (int)(ps->grabkbd));
 	
 	wxString main_result;
 	main_result = wxString::Format(wxT("k%i:%szz"),iCurrSize,str_set.data()); 
@@ -1852,3 +2136,195 @@ BOOL Benc::SaveProgramSettings(programsettings * ps)
 
 
 
+Options_HashMap Benc::Get_Options(Options_HashMap *all_options, int line_number)
+{
+
+}
+
+Options_HashMap Benc::Get_Tree_Options(wxString str)
+{
+   Options_HashMap options;
+   Options_HashMap options_str;
+   Options_HashMap::iterator it;
+   //options_str.Clear();
+   options.clear();
+   int strSize = ByteLen(str);
+   for (int i = 0; i < strSize; i ++)
+   {
+      wxChar curr = str.GetChar(i);
+      if (curr == 'd')
+      {
+	 if (isNormalParam(str,i))
+	 {
+	    //GetOptions(str,i,&options);
+	    options_str = Get_Parsed_Options(str,i);
+	    //wxMessageBox (Get_Parsed_Options(str,i).Index(0).value);
+	    if (options_str.size() > 0 )
+	    {
+	       for( it = options_str.begin(); it != options_str.end(); ++it )
+	       {
+		  wxString key = it->first, value = it->second;
+		  options[key] = value;
+		  
+		  // do something useful with key and value
+	       }
+	       //options.find
+	       //
+	       //options.Add(options_str);
+	       //wxMessageBox(options_str.Item(0).name, options_str.Item(0).value);
+	    }
+	 }
+      }
+      options_str.clear();
+   }
+   //std::cout << options_str.GetCount() << std::endl;
+   //std::cout << options.size() << std::endl; 
+   return options;
+}
+
+Options_HashMap Benc::Get_Parsed_Options(wxString str, int pos)
+{
+   Options_HashMap local_options;
+   // options_struct temp_options;
+   // GeneralOptionsArray temp_options_array;
+   // temp_options.type.Clear();
+   // temp_options_array.Clear();
+   wxString key, value;
+   wxString strSize;
+   strSize.Empty();
+   int iCurrPos = pos + 1;
+   wxChar tmp;
+   wxString temp;
+   temp.Empty();
+   char buff[8];
+   memset(buff,0,8);
+   BOOL read = TRUE;
+   local_options.clear();
+   
+   while(read)
+   {
+      temp.Empty(); 
+      tmp = str.GetChar(iCurrPos); 
+      temp += tmp;  
+      if (temp.IsNumber())
+      {
+	 strSize += temp;
+	 iCurrPos ++;
+      }
+      else
+      {
+	 read = FALSE;
+      }
+   }
+   if (strSize.IsEmpty()) 
+   {
+      return local_options;
+   }
+   int iSize = wxAtoi(strSize);
+   int iSize_ = iSize;
+   key.Clear();
+   value.Clear();
+   
+   //temp_options.name.Clear();
+   //temp_options.name = str.Mid(pos + 2 + NumberCount(iSize),iSize);
+   key = str.Mid(pos + 2 + NumberCount(iSize),iSize);
+   iSize_ = iSize;
+   int iEndPos = pos + 2 + NumberCount(iSize) + iSize;
+   strSize.Empty();
+   iCurrPos = iEndPos + 1;
+   read = TRUE;
+   while(read)
+   {
+      temp = str.GetChar(iCurrPos);
+      if (temp.IsNumber())
+      {
+	 strSize += temp;
+	 iCurrPos ++;
+      }
+      else
+      {
+	 read = FALSE;
+      }
+   }
+   if (strSize.IsEmpty())
+   {
+      return local_options;
+   }
+   
+   iSize = wxAtoi(strSize);
+
+   iCurrPos = iEndPos + 2 + NumberCount(iSize);
+   wxString param_value = str.Mid(iCurrPos,iSize);
+
+///   bool status = false;
+
+   //if (param_name == wxT("hostname"))
+   //{
+//   temp_options.value.Clear();
+   
+   value = ConvertFromUTF8(param_value.To8BitData());
+   //wxMessageBox(temp_options.value);
+   
+   //	status = true;
+   //}
+   //temp_options_array.Index(0).type = wxT("s");
+   //temp_options_array.Index(0).name = temp_options.name;
+   //temp_options_array.Index(0).Add( &temp_options);
+   //temp_options_array.Add(temp_options);
+   //std::cout << temp_options_array.GetCount() << std::endl;
+   //wxMessageBox(key, local_options[key]);
+   local_options[key] = value;
+   
+   return local_options;
+}
+
+Connections_List Benc::Load()
+{
+   wxBusyInfo wait(wxT("Please wait"));
+   Connections_List connections_lst;
+   Options_HashMap local_options;
+   connections_lst.Clear();
+   programsettings ps = load_main_settings();
+
+   if (ps.bUseCrypt) 
+   {
+      GETKEYPATH()
+	 if (!wxFileExists(KEYPATH))
+	 {
+	    CryptSettings * cr = new CryptSettings();
+	    cr->WriteKey(KEYPATH);
+	    delete cr;
+	 }
+   }
+
+   GETBASEPATH();
+   wxString filename = BASEPATH;
+
+   if (!wxFileExists(filename))
+   {
+      return connections_lst;
+   }
+
+   int lc = FileCount(filename);
+   //std::cout << __func__  << " " << lc << std::endl;
+   if (lc > 0)
+   {
+      for (int i = 0; i < lc ; i++)
+      {
+
+	 wxString temp = FileGetString(filename,i);
+	 local_options.clear();
+	 local_options = Get_Tree_Options (temp);
+	 if (local_options.size() > 0)
+	 {
+	    connections_lst.Add (local_options);
+	 }
+      }
+   }
+   return connections_lst;
+}
+
+void Benc::Add(Connections_List *all_connection_records, const OptionsArray options)
+{
+
+}
