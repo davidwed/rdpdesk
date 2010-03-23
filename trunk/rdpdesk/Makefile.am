@@ -1,6 +1,4 @@
 AUTOMAKE_OPTIONS = foreign
-EXTRA_DIST = config.rpath m4/ChangeLog  
+EXTRA_DIST = 
 
-SUBDIRS = src icons desktop
-
-ACLOCAL_AMFLAGS = -I m4
+SUBDIRS =  src icons desktop 
