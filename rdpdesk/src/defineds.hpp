@@ -91,7 +91,7 @@ typedef USHORT ushort;
 
 #define TS_DESCRIPTION wxT("Remote Desktop Protocol Infrastructure")
 
-#define TS_COPYRIGHT wxT("SolveITLabs, 2009. All rights reserved.")
+#define TS_COPYRIGHT wxT("SolveITLabs, 2009-2010. All rights reserved.")
 
 #define TS_NORMAL_VERSION
 

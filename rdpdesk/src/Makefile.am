@@ -12,13 +12,19 @@ rdpdesk_SOURCES=main.cpp \
     gui/small_shoot.cpp \
     gui/tree_group.cpp \
     proto/network_helper.cpp \
-    proto/wxRDP_nix.cpp
-#rdp_clients_LDADD = 
+    proto/RDPConnection_nix.cpp \
+    proto/RDPOptionsDialog.cpp \
+    proto/BasicConnection.cpp \
+    proto/ICAConnection_nix.cpp \
+    proto/ICAOptionsDialog.cpp
+
+
+#rdpdesk_LDADD = 
 #$(WX_LIBS) $(SSL_LIBS) @LIBS@
-#rdp_clients_LDADD = 
+#rdpdesk_LDADD = 
 rdpdesk_CXXFLAGS = @CXXFLAGS@ $(WX_CXXFLAGS) $(LOCAL_INCLUDES) $(GTK2_INCLUDE)
 #-lconfig_dialog $(WX_LIBS)
 #
-INCLUDES = -Igui -Igui/config -Iproto
+INCLUDES = -Igui -Igui/config -Iproto -Iinclude
 rdpdesk_LDADD = $(WX_LIBS) $(GTK2_LIBS) $(SSL_LIBS)
 #AM_LDFLAGS = `wx-config --libs`
