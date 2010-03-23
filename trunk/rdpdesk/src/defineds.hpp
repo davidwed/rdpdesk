@@ -1,3 +1,14 @@
+///////////////////////////////////////////////////////////////////////////////
+// File name:   defineds.hpp
+// Version:     0.0
+// Purpose: 
+// Time-stamp:  "2010-03-03 18:25:13" 
+// E-mail:      rdpdesk@rdpdesk.com
+// $Id$ 
+// Copyright:   (c) 2009-2010 RDPDesk <rdpdesk@rdpdesk.com> 
+// Licence:     GPL v3 
+///////////////////////////////////////////////////////////////////////////////
+
 #ifndef DEFINED_HPP
 #define DEFINED_HPP
 
@@ -35,6 +46,12 @@ typedef USHORT ushort;
 #define STANDARD_FAVORITES_COUNT 2
 #define STANDARD_FAVORITES_MAX 3
 
+//#define STANDARD_RDPBASE_NAME wxT("RDPBase.txt") 
+//#define STANDARD_RDPKEY_NAME  wxT("rdpkey.txt") 
+//#define STANDARD_RDPCONF_NAME wxT("rdpset.conf")
+//#define STANDARD_RDP_PATH wxT("TerminalClients")
+//#define STANDARD_LINUX_ENV wxT("HOME")
+
 #define STANDARD_RDPBASE_NAME wxT("RDPBase.db") 
 #define STANDARD_RDPKEY_NAME  wxT("rdpkey.key") 
 #define STANDARD_RDPCONF_NAME wxT("rdpset.conf")
@@ -61,7 +78,14 @@ typedef USHORT ushort;
 
 #define APPLICATION_LANG_NAME wxT("terminal_clients")
 
-#define TS_VERSION wxT("1.0")
+/*
+#define TS_VERSION wxT("2.0")
+#define TS_NAME wxT("RDPDesk")
+#define TS_DESCRIPTION wxT("Description terminal clients")
+#define TS_COPYRIGHT wxT("Copyright terminal clients")
+*/
+
+#define TS_VERSION wxT("2.0")
 
 #define TS_NAME wxT("RDPDesk")
 

@@ -1,0 +1,3177 @@
+﻿// Created by Microsoft (R) C/C++ Compiler Version 14.00.50727.42 (e5e92e33).
+//
+// c:\wxwidgetsactivex\1\11\4\trunk\rdp_clients\src\release\wfica.tli
+//
+// Wrapper implementations for Win32 type library C:\\Windows\\system32\\Wfica.ocx
+// compiler-generated file created 11/18/09 at 18:13:33 - DO NOT EDIT!
+
+#pragma once
+
+//
+// dispinterface _IICAClientEvents wrapper method implementations
+//
+
+inline HRESULT _IICAClientEvents::OnReadyStateChange ( long lReadyState ) {
+    return _com_dispatch_method(this, DISPID_READYSTATECHANGE, DISPATCH_METHOD, VT_EMPTY, NULL, 
+        L"\x0003", lReadyState);
+}
+
+inline HRESULT _IICAClientEvents::OnClick ( long MouseButton, long PosX, long PosY, long KeyMask ) {
+    HRESULT _result = 0;
+    _com_dispatch_method(this, 0x2, DISPATCH_METHOD, VT_ERROR, (void*)&_result, 
+        L"\x0003\x0003\x0003\x0003", MouseButton, PosX, PosY, KeyMask);
+    return _result;
+}
+
+inline HRESULT _IICAClientEvents::OnConnect ( ) {
+    HRESULT _result = 0;
+    _com_dispatch_method(this, 0x3, DISPATCH_METHOD, VT_ERROR, (void*)&_result, NULL);
+    return _result;
+}
+
+inline HRESULT _IICAClientEvents::OnConnectFailed ( ) {
+    HRESULT _result = 0;
+    _com_dispatch_method(this, 0x4, DISPATCH_METHOD, VT_ERROR, (void*)&_result, NULL);
+    return _result;
+}
+
+inline HRESULT _IICAClientEvents::OnLogon ( ) {
+    HRESULT _result = 0;
+    _com_dispatch_method(this, 0x5, DISPATCH_METHOD, VT_ERROR, (void*)&_result, NULL);
+    return _result;
+}
+
+inline HRESULT _IICAClientEvents::OnLogonFailed ( ) {
+    HRESULT _result = 0;
+    _com_dispatch_method(this, 0x6, DISPATCH_METHOD, VT_ERROR, (void*)&_result, NULL);
+    return _result;
+}
+
+inline HRESULT _IICAClientEvents::OnDisconnect ( ) {
+    HRESULT _result = 0;
+    _com_dispatch_method(this, 0x7, DISPATCH_METHOD, VT_ERROR, (void*)&_result, NULL);
+    return _result;
+}
+
+inline HRESULT _IICAClientEvents::OnPublishedApp ( ) {
+    HRESULT _result = 0;
+    _com_dispatch_method(this, 0x8, DISPATCH_METHOD, VT_ERROR, (void*)&_result, NULL);
+    return _result;
+}
+
+inline HRESULT _IICAClientEvents::OnPublishedAppFailed ( ) {
+    HRESULT _result = 0;
+    _com_dispatch_method(this, 0x9, DISPATCH_METHOD, VT_ERROR, (void*)&_result, NULL);
+    return _result;
+}
+
+inline HRESULT _IICAClientEvents::OnICAFile ( ) {
+    HRESULT _result = 0;
+    _com_dispatch_method(this, 0xa, DISPATCH_METHOD, VT_ERROR, (void*)&_result, NULL);
+    return _result;
+}
+
+inline HRESULT _IICAClientEvents::OnICAFileFailed ( ) {
+    HRESULT _result = 0;
+    _com_dispatch_method(this, 0xb, DISPATCH_METHOD, VT_ERROR, (void*)&_result, NULL);
+    return _result;
+}
+
+inline HRESULT _IICAClientEvents::OnInitializing ( ) {
+    HRESULT _result = 0;
+    _com_dispatch_method(this, 0xc, DISPATCH_METHOD, VT_ERROR, (void*)&_result, NULL);
+    return _result;
+}
+
+inline HRESULT _IICAClientEvents::OnConnecting ( ) {
+    HRESULT _result = 0;
+    _com_dispatch_method(this, 0xd, DISPATCH_METHOD, VT_ERROR, (void*)&_result, NULL);
+    return _result;
+}
+
+inline HRESULT _IICAClientEvents::OnInitialProp ( ) {
+    HRESULT _result = 0;
+    _com_dispatch_method(this, 0xe, DISPATCH_METHOD, VT_ERROR, (void*)&_result, NULL);
+    return _result;
+}
+
+inline HRESULT _IICAClientEvents::OnDisconnectFailed ( ) {
+    HRESULT _result = 0;
+    _com_dispatch_method(this, 0xf, DISPATCH_METHOD, VT_ERROR, (void*)&_result, NULL);
+    return _result;
+}
+
+inline HRESULT _IICAClientEvents::OnLogoffFailed ( ) {
+    HRESULT _result = 0;
+    _com_dispatch_method(this, 0x10, DISPATCH_METHOD, VT_ERROR, (void*)&_result, NULL);
+    return _result;
+}
+
+inline HRESULT _IICAClientEvents::OnChannelDataReceived ( _bstr_t ChannelName ) {
+    HRESULT _result = 0;
+    _com_dispatch_method(this, 0x11, DISPATCH_METHOD, VT_ERROR, (void*)&_result, 
+        L"\x0008", (BSTR)ChannelName);
+    return _result;
+}
+
+inline HRESULT _IICAClientEvents::OnWindowSized ( long WndType, long Width, long Height ) {
+    HRESULT _result = 0;
+    _com_dispatch_method(this, 0x12, DISPATCH_METHOD, VT_ERROR, (void*)&_result, 
+        L"\x0003\x0003\x0003", WndType, Width, Height);
+    return _result;
+}
+
+inline HRESULT _IICAClientEvents::OnWindowMoved ( long WndType, long XPos, long YPos ) {
+    HRESULT _result = 0;
+    _com_dispatch_method(this, 0x13, DISPATCH_METHOD, VT_ERROR, (void*)&_result, 
+        L"\x0003\x0003\x0003", WndType, XPos, YPos);
+    return _result;
+}
+
+inline HRESULT _IICAClientEvents::OnWindowCreated ( long WndType, long XPos, long YPos, long Width, long Height ) {
+    HRESULT _result = 0;
+    _com_dispatch_method(this, 0x14, DISPATCH_METHOD, VT_ERROR, (void*)&_result, 
+        L"\x0003\x0003\x0003\x0003\x0003", WndType, XPos, YPos, Width, Height);
+    return _result;
+}
+
+inline HRESULT _IICAClientEvents::OnWindowDestroyed ( long WndType ) {
+    HRESULT _result = 0;
+    _com_dispatch_method(this, 0x15, DISPATCH_METHOD, VT_ERROR, (void*)&_result, 
+        L"\x0003", WndType);
+    return _result;
+}
+
+inline HRESULT _IICAClientEvents::OnWindowDocked ( ) {
+    HRESULT _result = 0;
+    _com_dispatch_method(this, 0x16, DISPATCH_METHOD, VT_ERROR, (void*)&_result, NULL);
+    return _result;
+}
+
+inline HRESULT _IICAClientEvents::OnWindowUndocked ( ) {
+    HRESULT _result = 0;
+    _com_dispatch_method(this, 0x17, DISPATCH_METHOD, VT_ERROR, (void*)&_result, NULL);
+    return _result;
+}
+
+inline HRESULT _IICAClientEvents::OnWindowMinimized ( ) {
+    HRESULT _result = 0;
+    _com_dispatch_method(this, 0x18, DISPATCH_METHOD, VT_ERROR, (void*)&_result, NULL);
+    return _result;
+}
+
+inline HRESULT _IICAClientEvents::OnWindowMaximized ( ) {
+    HRESULT _result = 0;
+    _com_dispatch_method(this, 0x19, DISPATCH_METHOD, VT_ERROR, (void*)&_result, NULL);
+    return _result;
+}
+
+inline HRESULT _IICAClientEvents::OnWindowRestored ( ) {
+    HRESULT _result = 0;
+    _com_dispatch_method(this, 0x1a, DISPATCH_METHOD, VT_ERROR, (void*)&_result, NULL);
+    return _result;
+}
+
+inline HRESULT _IICAClientEvents::OnWindowFullscreened ( ) {
+    HRESULT _result = 0;
+    _com_dispatch_method(this, 0x1b, DISPATCH_METHOD, VT_ERROR, (void*)&_result, NULL);
+    return _result;
+}
+
+inline HRESULT _IICAClientEvents::OnWindowHidden ( long WndType ) {
+    HRESULT _result = 0;
+    _com_dispatch_method(this, 0x1c, DISPATCH_METHOD, VT_ERROR, (void*)&_result, 
+        L"\x0003", WndType);
+    return _result;
+}
+
+inline HRESULT _IICAClientEvents::OnWindowDisplayed ( long WndType ) {
+    HRESULT _result = 0;
+    _com_dispatch_method(this, 0x1d, DISPATCH_METHOD, VT_ERROR, (void*)&_result, 
+        L"\x0003", WndType);
+    return _result;
+}
+
+inline HRESULT _IICAClientEvents::OnWindowCloseRequest ( ) {
+    HRESULT _result = 0;
+    _com_dispatch_method(this, 0x1e, DISPATCH_METHOD, VT_ERROR, (void*)&_result, NULL);
+    return _result;
+}
+
+inline HRESULT _IICAClientEvents::OnDisconnectSessions ( long hCommand ) {
+    HRESULT _result = 0;
+    _com_dispatch_method(this, 0x1f, DISPATCH_METHOD, VT_ERROR, (void*)&_result, 
+        L"\x0003", hCommand);
+    return _result;
+}
+
+inline HRESULT _IICAClientEvents::OnDisconnectSessionsFailed ( long hCommand ) {
+    HRESULT _result = 0;
+    _com_dispatch_method(this, 0x20, DISPATCH_METHOD, VT_ERROR, (void*)&_result, 
+        L"\x0003", hCommand);
+    return _result;
+}
+
+inline HRESULT _IICAClientEvents::OnLogoffSessions ( long hCommand ) {
+    HRESULT _result = 0;
+    _com_dispatch_method(this, 0x21, DISPATCH_METHOD, VT_ERROR, (void*)&_result, 
+        L"\x0003", hCommand);
+    return _result;
+}
+
+inline HRESULT _IICAClientEvents::OnLogoffSessionsFailed ( long hCommand ) {
+    HRESULT _result = 0;
+    _com_dispatch_method(this, 0x22, DISPATCH_METHOD, VT_ERROR, (void*)&_result, 
+        L"\x0003", hCommand);
+    return _result;
+}
+
+inline HRESULT _IICAClientEvents::OnSessionSwitch ( long hOldSession, long hNewSession ) {
+    HRESULT _result = 0;
+    _com_dispatch_method(this, 0x23, DISPATCH_METHOD, VT_ERROR, (void*)&_result, 
+        L"\x0003\x0003", hOldSession, hNewSession);
+    return _result;
+}
+
+inline HRESULT _IICAClientEvents::OnSessionEventPending ( long hSession, long EventNum ) {
+    HRESULT _result = 0;
+    _com_dispatch_method(this, 0x24, DISPATCH_METHOD, VT_ERROR, (void*)&_result, 
+        L"\x0003\x0003", hSession, EventNum);
+    return _result;
+}
+
+inline HRESULT _IICAClientEvents::OnSessionAttach ( long hSession ) {
+    HRESULT _result = 0;
+    _com_dispatch_method(this, 0x25, DISPATCH_METHOD, VT_ERROR, (void*)&_result, 
+        L"\x0003", hSession);
+    return _result;
+}
+
+inline HRESULT _IICAClientEvents::OnSessionDetach ( long hSession ) {
+    HRESULT _result = 0;
+    _com_dispatch_method(this, 0x26, DISPATCH_METHOD, VT_ERROR, (void*)&_result, 
+        L"\x0003", hSession);
+    return _result;
+}
+
+//
+// interface IWindow wrapper method implementations
+//
+
+inline long IWindow::GetPositionX ( ) {
+    long _result = 0;
+    HRESULT _hr = get_PositionX(&_result);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _result;
+}
+
+inline long IWindow::GetPositionY ( ) {
+    long _result = 0;
+    HRESULT _hr = get_PositionY(&_result);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _result;
+}
+
+inline long IWindow::GetWidth ( ) {
+    long _result = 0;
+    HRESULT _hr = get_Width(&_result);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _result;
+}
+
+inline long IWindow::GetHeight ( ) {
+    long _result = 0;
+    HRESULT _hr = get_Height(&_result);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _result;
+}
+
+inline long IWindow::GetStyle ( ) {
+    long _result = 0;
+    HRESULT _hr = get_Style(&_result);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _result;
+}
+
+inline long IWindow::GetExtendedStyle ( ) {
+    long _result = 0;
+    HRESULT _hr = get_ExtendedStyle(&_result);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _result;
+}
+
+inline _bstr_t IWindow::GetCaption ( ) {
+    BSTR _result = 0;
+    HRESULT _hr = get_Caption(&_result);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _bstr_t(_result, false);
+}
+
+inline _bstr_t IWindow::GetSmallIconHash ( ) {
+    BSTR _result = 0;
+    HRESULT _hr = get_SmallIconHash(&_result);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _bstr_t(_result, false);
+}
+
+inline _bstr_t IWindow::GetLargeIconHash ( ) {
+    BSTR _result = 0;
+    HRESULT _hr = get_LargeIconHash(&_result);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _bstr_t(_result, false);
+}
+
+inline VARIANT_BOOL IWindow::GetDisposed ( ) {
+    VARIANT_BOOL _result = 0;
+    HRESULT _hr = get_Disposed(&_result);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _result;
+}
+
+inline long IWindow::GetWindowFlags ( ) {
+    long _result = 0;
+    HRESULT _hr = get_WindowFlags(&_result);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _result;
+}
+
+inline long IWindow::GetWindowID ( ) {
+    long _result = 0;
+    HRESULT _hr = get_WindowID(&_result);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _result;
+}
+
+inline long IWindow::GetParentID ( ) {
+    long _result = 0;
+    HRESULT _hr = get_ParentID(&_result);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _result;
+}
+
+inline HRESULT IWindow::BringToTop ( ) {
+    HRESULT _hr = raw_BringToTop();
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _hr;
+}
+
+inline HRESULT IWindow::Move ( long XPos, long YPos ) {
+    HRESULT _hr = raw_Move(XPos, YPos);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _hr;
+}
+
+inline HRESULT IWindow::Resize ( long Width, long Height ) {
+    HRESULT _hr = raw_Resize(Width, Height);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _hr;
+}
+
+inline HRESULT IWindow::Restore ( ) {
+    HRESULT _hr = raw_Restore();
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _hr;
+}
+
+//
+// interface IWindows wrapper method implementations
+//
+
+inline IWindowPtr IWindows::GetItem ( long n ) {
+    struct IWindow * _result = 0;
+    HRESULT _hr = get_Item(n, &_result);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return IWindowPtr(_result, false);
+}
+
+inline IUnknownPtr IWindows::Get_NewEnum ( ) {
+    IUnknown * _result = 0;
+    HRESULT _hr = get__NewEnum(&_result);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return IUnknownPtr(_result, false);
+}
+
+inline long IWindows::GetCount ( ) {
+    long _result = 0;
+    HRESULT _hr = get_Count(&_result);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _result;
+}
+
+//
+// interface IMouse wrapper method implementations
+//
+
+inline HRESULT IMouse::SendMouseDown ( long buttonId, long modifiers, long XPos, long YPos ) {
+    HRESULT _hr = raw_SendMouseDown(buttonId, modifiers, XPos, YPos);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _hr;
+}
+
+inline HRESULT IMouse::SendMouseUp ( long buttonId, long modifiers, long XPos, long YPos ) {
+    HRESULT _hr = raw_SendMouseUp(buttonId, modifiers, XPos, YPos);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _hr;
+}
+
+inline HRESULT IMouse::SendMouseMove ( long buttonId, long modifiers, long XPos, long YPos ) {
+    HRESULT _hr = raw_SendMouseMove(buttonId, modifiers, XPos, YPos);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _hr;
+}
+
+//
+// interface IKeyboard wrapper method implementations
+//
+
+inline HRESULT IKeyboard::SendKeyDown ( long keyId ) {
+    HRESULT _hr = raw_SendKeyDown(keyId);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _hr;
+}
+
+inline HRESULT IKeyboard::SendKeyUp ( long keyId ) {
+    HRESULT _hr = raw_SendKeyUp(keyId);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _hr;
+}
+
+//
+// interface IScreenShot wrapper method implementations
+//
+
+inline long IScreenShot::GetPositionX ( ) {
+    long _result = 0;
+    HRESULT _hr = get_PositionX(&_result);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _result;
+}
+
+inline void IScreenShot::PutPositionX ( long pVal ) {
+    HRESULT _hr = put_PositionX(pVal);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+}
+
+inline long IScreenShot::GetPositionY ( ) {
+    long _result = 0;
+    HRESULT _hr = get_PositionY(&_result);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _result;
+}
+
+inline void IScreenShot::PutPositionY ( long pVal ) {
+    HRESULT _hr = put_PositionY(pVal);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+}
+
+inline long IScreenShot::GetWidth ( ) {
+    long _result = 0;
+    HRESULT _hr = get_Width(&_result);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _result;
+}
+
+inline void IScreenShot::PutWidth ( long pVal ) {
+    HRESULT _hr = put_Width(pVal);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+}
+
+inline long IScreenShot::GetHeight ( ) {
+    long _result = 0;
+    HRESULT _hr = get_Height(&_result);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _result;
+}
+
+inline void IScreenShot::PutHeight ( long pVal ) {
+    HRESULT _hr = put_Height(pVal);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+}
+
+inline _bstr_t IScreenShot::GetFilename ( ) {
+    BSTR _result = 0;
+    HRESULT _hr = get_Filename(&_result);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _bstr_t(_result, false);
+}
+
+inline void IScreenShot::PutFilename ( _bstr_t pVal ) {
+    HRESULT _hr = put_Filename(pVal);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+}
+
+inline _bstr_t IScreenShot::GetBitmapHash ( ) {
+    BSTR _result = 0;
+    HRESULT _hr = get_BitmapHash(&_result);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _bstr_t(_result, false);
+}
+
+inline HRESULT IScreenShot::Save ( ) {
+    HRESULT _hr = raw_Save();
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _hr;
+}
+
+//
+// interface ISession wrapper method implementations
+//
+
+inline IWindowsPtr ISession::GetTopLevelWindows ( ) {
+    struct IWindows * _result = 0;
+    HRESULT _hr = get_TopLevelWindows(&_result);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return IWindowsPtr(_result, false);
+}
+
+inline IMousePtr ISession::GetMouse ( ) {
+    struct IMouse * _result = 0;
+    HRESULT _hr = get_Mouse(&_result);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return IMousePtr(_result, false);
+}
+
+inline IKeyboardPtr ISession::GetKeyboard ( ) {
+    struct IKeyboard * _result = 0;
+    HRESULT _hr = get_Keyboard(&_result);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return IKeyboardPtr(_result, false);
+}
+
+inline IWindowPtr ISession::GetForegroundWindow ( ) {
+    struct IWindow * _result = 0;
+    HRESULT _hr = get_ForegroundWindow(&_result);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return IWindowPtr(_result, false);
+}
+
+inline VARIANT_BOOL ISession::GetReplayMode ( ) {
+    VARIANT_BOOL _result = 0;
+    HRESULT _hr = get_ReplayMode(&_result);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _result;
+}
+
+inline void ISession::PutReplayMode ( VARIANT_BOOL pVal ) {
+    HRESULT _hr = put_ReplayMode(pVal);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+}
+
+inline IScreenShotPtr ISession::CreateFullScreenShot ( ) {
+    struct IScreenShot * _result = 0;
+    HRESULT _hr = raw_CreateFullScreenShot(&_result);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return IScreenShotPtr(_result, false);
+}
+
+inline IScreenShotPtr ISession::CreateScreenShot ( long x, long y, long Width, long Height ) {
+    struct IScreenShot * _result = 0;
+    HRESULT _hr = raw_CreateScreenShot(x, y, Width, Height, &_result);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return IScreenShotPtr(_result, false);
+}
+
+inline HRESULT ISession::SendPingRequest ( _bstr_t pingInfo ) {
+    HRESULT _hr = raw_SendPingRequest(pingInfo);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _hr;
+}
+
+//
+// interface IICAClient wrapper method implementations
+//
+
+inline void IICAClient::PutTabStop ( VARIANT_BOOL pbool ) {
+    HRESULT _hr = put_TabStop(pbool);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+}
+
+inline VARIANT_BOOL IICAClient::GetTabStop ( ) {
+    VARIANT_BOOL _result = 0;
+    HRESULT _hr = get_TabStop(&_result);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _result;
+}
+
+inline HRESULT IICAClient::AboutBox ( ) {
+    HRESULT _hr = raw_AboutBox();
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _hr;
+}
+
+inline HRESULT IICAClient::ClearProps ( ) {
+    HRESULT _hr = raw_ClearProps();
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _hr;
+}
+
+inline long IICAClient::GetPropCount ( ) {
+    long _result = 0;
+    HRESULT _hr = raw_GetPropCount(&_result);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _result;
+}
+
+inline HRESULT IICAClient::DeleteProp ( _bstr_t Name ) {
+    HRESULT _hr = raw_DeleteProp(Name);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _hr;
+}
+
+inline HRESULT IICAClient::DeletePropByIndex ( long Index ) {
+    HRESULT _hr = raw_DeletePropByIndex(Index);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _hr;
+}
+
+inline _bstr_t IICAClient::GetPropNameByIndex ( long Index ) {
+    BSTR _result = 0;
+    HRESULT _hr = raw_GetPropNameByIndex(Index, &_result);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _bstr_t(_result, false);
+}
+
+inline HRESULT IICAClient::ResetProps ( ) {
+    HRESULT _hr = raw_ResetProps();
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _hr;
+}
+
+inline HRESULT IICAClient::SetProp ( _bstr_t Name, _bstr_t Value ) {
+    HRESULT _hr = raw_SetProp(Name, Value);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _hr;
+}
+
+inline _bstr_t IICAClient::GetPropValue ( _bstr_t Name ) {
+    BSTR _result = 0;
+    HRESULT _hr = raw_GetPropValue(Name, &_result);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _bstr_t(_result, false);
+}
+
+inline _bstr_t IICAClient::GetPropValueByIndex ( long Index ) {
+    BSTR _result = 0;
+    HRESULT _hr = raw_GetPropValueByIndex(Index, &_result);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _bstr_t(_result, false);
+}
+
+inline HRESULT IICAClient::Connect ( ) {
+    HRESULT _hr = raw_Connect();
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _hr;
+}
+
+inline HRESULT IICAClient::Disconnect ( ) {
+    HRESULT _hr = raw_Disconnect();
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _hr;
+}
+
+inline HRESULT IICAClient::Logoff ( ) {
+    HRESULT _hr = raw_Logoff();
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _hr;
+}
+
+inline HRESULT IICAClient::LoadIcaFile ( _bstr_t File ) {
+    HRESULT _hr = raw_LoadIcaFile(File);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _hr;
+}
+
+inline HRESULT IICAClient::RunPublishedApplication ( _bstr_t AppName, _bstr_t Arguments ) {
+    HRESULT _hr = raw_RunPublishedApplication(AppName, Arguments);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _hr;
+}
+
+inline HRESULT IICAClient::SetSessionEndAction ( enum ICASessionEndAction Action ) {
+    HRESULT _hr = raw_SetSessionEndAction(Action);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _hr;
+}
+
+inline VARIANT_BOOL IICAClient::IsConnected ( ) {
+    VARIANT_BOOL _result = 0;
+    HRESULT _hr = raw_IsConnected(&_result);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _result;
+}
+
+inline _bstr_t IICAClient::GetInterfaceVersion ( ) {
+    BSTR _result = 0;
+    HRESULT _hr = raw_GetInterfaceVersion(&_result);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _bstr_t(_result, false);
+}
+
+inline _bstr_t IICAClient::GetClientIdentification ( ) {
+    BSTR _result = 0;
+    HRESULT _hr = raw_GetClientIdentification(&_result);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _bstr_t(_result, false);
+}
+
+inline _bstr_t IICAClient::GetSessionString ( enum ICASessionString Index ) {
+    BSTR _result = 0;
+    HRESULT _hr = raw_GetSessionString(Index, &_result);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _bstr_t(_result, false);
+}
+
+inline long IICAClient::GetSessionCounter ( enum ICASessionCounter Index ) {
+    long _result = 0;
+    HRESULT _hr = raw_GetSessionCounter(Index, &_result);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _result;
+}
+
+inline enum ICAEvent IICAClient::GetNotificationReason ( ) {
+    enum ICAEvent _result;
+    HRESULT _hr = raw_GetNotificationReason(&_result);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _result;
+}
+
+inline HRESULT IICAClient::Startup ( ) {
+    HRESULT _hr = raw_Startup();
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _hr;
+}
+
+inline long IICAClient::GetLastError ( ) {
+    long _result = 0;
+    HRESULT _hr = raw_GetLastError(&_result);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _result;
+}
+
+inline long IICAClient::GetLastClientError ( ) {
+    long _result = 0;
+    HRESULT _hr = raw_GetLastClientError(&_result);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _result;
+}
+
+inline long IICAClient::ScaleEnable ( ) {
+    long _result = 0;
+    HRESULT _hr = raw_ScaleEnable(&_result);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _result;
+}
+
+inline long IICAClient::ScaleDisable ( ) {
+    long _result = 0;
+    HRESULT _hr = raw_ScaleDisable(&_result);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _result;
+}
+
+inline long IICAClient::ScaleUp ( ) {
+    long _result = 0;
+    HRESULT _hr = raw_ScaleUp(&_result);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _result;
+}
+
+inline long IICAClient::ScaleDown ( ) {
+    long _result = 0;
+    HRESULT _hr = raw_ScaleDown(&_result);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _result;
+}
+
+inline long IICAClient::ScaleSize ( long Width, long Height ) {
+    long _result = 0;
+    HRESULT _hr = raw_ScaleSize(Width, Height, &_result);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _result;
+}
+
+inline long IICAClient::ScalePercent ( long Percent ) {
+    long _result = 0;
+    HRESULT _hr = raw_ScalePercent(Percent, &_result);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _result;
+}
+
+inline long IICAClient::ScaleToFit ( ) {
+    long _result = 0;
+    HRESULT _hr = raw_ScaleToFit(&_result);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _result;
+}
+
+inline long IICAClient::ScaleDialog ( ) {
+    long _result = 0;
+    HRESULT _hr = raw_ScaleDialog(&_result);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _result;
+}
+
+inline long IICAClient::CreateChannels ( _bstr_t ChannelNames ) {
+    long _result = 0;
+    HRESULT _hr = raw_CreateChannels(ChannelNames, &_result);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _result;
+}
+
+inline long IICAClient::SendChannelData ( _bstr_t ChannelName, _bstr_t Data, long DataSize, enum ICAVCDataType DataType ) {
+    long _result = 0;
+    HRESULT _hr = raw_SendChannelData(ChannelName, Data, DataSize, DataType, &_result);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _result;
+}
+
+inline long IICAClient::GetChannelCount ( ) {
+    long _result = 0;
+    HRESULT _hr = raw_GetChannelCount(&_result);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _result;
+}
+
+inline _bstr_t IICAClient::GetChannelName ( long ChannelIndex ) {
+    BSTR _result = 0;
+    HRESULT _hr = raw_GetChannelName(ChannelIndex, &_result);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _bstr_t(_result, false);
+}
+
+inline long IICAClient::GetChannelNumber ( _bstr_t ChannelName ) {
+    long _result = 0;
+    HRESULT _hr = raw_GetChannelNumber(ChannelName, &_result);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _result;
+}
+
+inline long IICAClient::GetGlobalChannelCount ( ) {
+    long _result = 0;
+    HRESULT _hr = raw_GetGlobalChannelCount(&_result);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _result;
+}
+
+inline _bstr_t IICAClient::GetGlobalChannelName ( long ChannelIndex ) {
+    BSTR _result = 0;
+    HRESULT _hr = raw_GetGlobalChannelName(ChannelIndex, &_result);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _bstr_t(_result, false);
+}
+
+inline long IICAClient::GetGlobalChannelNumber ( _bstr_t ChannelName ) {
+    long _result = 0;
+    HRESULT _hr = raw_GetGlobalChannelNumber(ChannelName, &_result);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _result;
+}
+
+inline long IICAClient::GetMaxChannelCount ( ) {
+    long _result = 0;
+    HRESULT _hr = raw_GetMaxChannelCount(&_result);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _result;
+}
+
+inline long IICAClient::GetMaxChannelWrite ( ) {
+    long _result = 0;
+    HRESULT _hr = raw_GetMaxChannelWrite(&_result);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _result;
+}
+
+inline long IICAClient::GetMaxChannelRead ( ) {
+    long _result = 0;
+    HRESULT _hr = raw_GetMaxChannelRead(&_result);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _result;
+}
+
+inline long IICAClient::SetChannelFlags ( _bstr_t ChannelName, long Flags ) {
+    long _result = 0;
+    HRESULT _hr = raw_SetChannelFlags(ChannelName, Flags, &_result);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _result;
+}
+
+inline long IICAClient::GetChannelFlags ( _bstr_t ChannelName ) {
+    long _result = 0;
+    HRESULT _hr = raw_GetChannelFlags(ChannelName, &_result);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _result;
+}
+
+inline long IICAClient::GetChannelDataSize ( _bstr_t ChannelName ) {
+    long _result = 0;
+    HRESULT _hr = raw_GetChannelDataSize(ChannelName, &_result);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _result;
+}
+
+inline enum ICAVCDataType IICAClient::GetChannelDataType ( _bstr_t ChannelName ) {
+    enum ICAVCDataType _result;
+    HRESULT _hr = raw_GetChannelDataType(ChannelName, &_result);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _result;
+}
+
+inline _bstr_t IICAClient::GetChannelData ( _bstr_t ChannelName, enum ICAVCDataType DataType ) {
+    BSTR _result = 0;
+    HRESULT _hr = raw_GetChannelData(ChannelName, DataType, &_result);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _bstr_t(_result, false);
+}
+
+inline long IICAClient::EnumerateServers ( ) {
+    long _result = 0;
+    HRESULT _hr = raw_EnumerateServers(&_result);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _result;
+}
+
+inline long IICAClient::EnumerateApplications ( ) {
+    long _result = 0;
+    HRESULT _hr = raw_EnumerateApplications(&_result);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _result;
+}
+
+inline long IICAClient::EnumerateFarms ( ) {
+    long _result = 0;
+    HRESULT _hr = raw_EnumerateFarms(&_result);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _result;
+}
+
+inline long IICAClient::GetEnumNameCount ( long hndEnum ) {
+    long _result = 0;
+    HRESULT _hr = raw_GetEnumNameCount(hndEnum, &_result);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _result;
+}
+
+inline _bstr_t IICAClient::GetEnumNameByIndex ( long hndEnum, long hndIndex ) {
+    BSTR _result = 0;
+    HRESULT _hr = raw_GetEnumNameByIndex(hndEnum, hndIndex, &_result);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _bstr_t(_result, false);
+}
+
+inline long IICAClient::CloseEnumHandle ( long hndEnum ) {
+    long _result = 0;
+    HRESULT _hr = raw_CloseEnumHandle(hndEnum, &_result);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _result;
+}
+
+inline long IICAClient::GetWindowWidth ( enum ICAWindowType WndType, long WndFlags ) {
+    long _result = 0;
+    HRESULT _hr = raw_GetWindowWidth(WndType, WndFlags, &_result);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _result;
+}
+
+inline long IICAClient::GetWindowHeight ( enum ICAWindowType WndType, long WndFlags ) {
+    long _result = 0;
+    HRESULT _hr = raw_GetWindowHeight(WndType, WndFlags, &_result);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _result;
+}
+
+inline long IICAClient::SetWindowSize ( enum ICAWindowType WndType, long Width, long Height, long WndFlags ) {
+    long _result = 0;
+    HRESULT _hr = raw_SetWindowSize(WndType, Width, Height, WndFlags, &_result);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _result;
+}
+
+inline long IICAClient::GetWindowXPosition ( enum ICAWindowType WndType, long WndFlags ) {
+    long _result = 0;
+    HRESULT _hr = raw_GetWindowXPosition(WndType, WndFlags, &_result);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _result;
+}
+
+inline long IICAClient::GetWindowYPosition ( enum ICAWindowType WndType, long WndFlags ) {
+    long _result = 0;
+    HRESULT _hr = raw_GetWindowYPosition(WndType, WndFlags, &_result);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _result;
+}
+
+inline long IICAClient::SetWindowPosition ( enum ICAWindowType WndType, long XPos, long YPos, long WndFlags ) {
+    long _result = 0;
+    HRESULT _hr = raw_SetWindowPosition(WndType, XPos, YPos, WndFlags, &_result);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _result;
+}
+
+inline long IICAClient::DisplayWindow ( enum ICAWindowType WndType ) {
+    long _result = 0;
+    HRESULT _hr = raw_DisplayWindow(WndType, &_result);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _result;
+}
+
+inline long IICAClient::HideWindow ( enum ICAWindowType WndType ) {
+    long _result = 0;
+    HRESULT _hr = raw_HideWindow(WndType, &_result);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _result;
+}
+
+inline long IICAClient::UndockWindow ( ) {
+    long _result = 0;
+    HRESULT _hr = raw_UndockWindow(&_result);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _result;
+}
+
+inline long IICAClient::DockWindow ( ) {
+    long _result = 0;
+    HRESULT _hr = raw_DockWindow(&_result);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _result;
+}
+
+inline long IICAClient::PlaceWindowOnTop ( ) {
+    long _result = 0;
+    HRESULT _hr = raw_PlaceWindowOnTop(&_result);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _result;
+}
+
+inline long IICAClient::PlaceWindowOnBottom ( ) {
+    long _result = 0;
+    HRESULT _hr = raw_PlaceWindowOnBottom(&_result);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _result;
+}
+
+inline long IICAClient::MinimizeWindow ( ) {
+    long _result = 0;
+    HRESULT _hr = raw_MinimizeWindow(&_result);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _result;
+}
+
+inline long IICAClient::MaximizeWindow ( ) {
+    long _result = 0;
+    HRESULT _hr = raw_MaximizeWindow(&_result);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _result;
+}
+
+inline long IICAClient::RestoreWindow ( ) {
+    long _result = 0;
+    HRESULT _hr = raw_RestoreWindow(&_result);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _result;
+}
+
+inline long IICAClient::ShowTitleBar ( ) {
+    long _result = 0;
+    HRESULT _hr = raw_ShowTitleBar(&_result);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _result;
+}
+
+inline long IICAClient::HideTitleBar ( ) {
+    long _result = 0;
+    HRESULT _hr = raw_HideTitleBar(&_result);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _result;
+}
+
+inline long IICAClient::EnableSizingBorder ( ) {
+    long _result = 0;
+    HRESULT _hr = raw_EnableSizingBorder(&_result);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _result;
+}
+
+inline long IICAClient::DisableSizingBorder ( ) {
+    long _result = 0;
+    HRESULT _hr = raw_DisableSizingBorder(&_result);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _result;
+}
+
+inline long IICAClient::FullScreenWindow ( ) {
+    long _result = 0;
+    HRESULT _hr = raw_FullScreenWindow(&_result);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _result;
+}
+
+inline long IICAClient::FocusWindow ( ) {
+    long _result = 0;
+    HRESULT _hr = raw_FocusWindow(&_result);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _result;
+}
+
+inline VARIANT_BOOL IICAClient::IsWindowDocked ( ) {
+    VARIANT_BOOL _result = 0;
+    HRESULT _hr = raw_IsWindowDocked(&_result);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _result;
+}
+
+inline long IICAClient::GetSessionWidth ( ) {
+    long _result = 0;
+    HRESULT _hr = raw_GetSessionWidth(&_result);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _result;
+}
+
+inline long IICAClient::GetSessionHeight ( ) {
+    long _result = 0;
+    HRESULT _hr = raw_GetSessionHeight(&_result);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _result;
+}
+
+inline long IICAClient::GetSessionColorDepth ( ) {
+    long _result = 0;
+    HRESULT _hr = raw_GetSessionColorDepth(&_result);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _result;
+}
+
+inline long IICAClient::GetScreenWidth ( ) {
+    long _result = 0;
+    HRESULT _hr = raw_GetScreenWidth(&_result);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _result;
+}
+
+inline long IICAClient::GetScreenHeight ( ) {
+    long _result = 0;
+    HRESULT _hr = raw_GetScreenHeight(&_result);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _result;
+}
+
+inline long IICAClient::GetScreenColorDepth ( ) {
+    long _result = 0;
+    HRESULT _hr = raw_GetScreenColorDepth(&_result);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _result;
+}
+
+inline long IICAClient::NewWindow ( long XPos, long YPos, long Width, long Height, long Flags ) {
+    long _result = 0;
+    HRESULT _hr = raw_NewWindow(XPos, YPos, Width, Height, Flags, &_result);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _result;
+}
+
+inline long IICAClient::DeleteWindow ( ) {
+    long _result = 0;
+    HRESULT _hr = raw_DeleteWindow(&_result);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _result;
+}
+
+inline _bstr_t IICAClient::GetErrorMessage ( long ErrCode ) {
+    BSTR _result = 0;
+    HRESULT _hr = raw_GetErrorMessage(ErrCode, &_result);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _bstr_t(_result, false);
+}
+
+inline _bstr_t IICAClient::GetClientErrorMessage ( long ErrCode ) {
+    BSTR _result = 0;
+    HRESULT _hr = raw_GetClientErrorMessage(ErrCode, &_result);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _bstr_t(_result, false);
+}
+
+inline long IICAClient::EnableKeyboardInput ( ) {
+    long _result = 0;
+    HRESULT _hr = raw_EnableKeyboardInput(&_result);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _result;
+}
+
+inline long IICAClient::DisableKeyboardInput ( ) {
+    long _result = 0;
+    HRESULT _hr = raw_DisableKeyboardInput(&_result);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _result;
+}
+
+inline VARIANT_BOOL IICAClient::IsKeyboardInputEnabled ( ) {
+    VARIANT_BOOL _result = 0;
+    HRESULT _hr = raw_IsKeyboardInputEnabled(&_result);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _result;
+}
+
+inline long IICAClient::EnableMouseInput ( ) {
+    long _result = 0;
+    HRESULT _hr = raw_EnableMouseInput(&_result);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _result;
+}
+
+inline long IICAClient::DisableMouseInput ( ) {
+    long _result = 0;
+    HRESULT _hr = raw_DisableMouseInput(&_result);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _result;
+}
+
+inline VARIANT_BOOL IICAClient::IsMouseInputEnabled ( ) {
+    VARIANT_BOOL _result = 0;
+    HRESULT _hr = raw_IsMouseInputEnabled(&_result);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _result;
+}
+
+inline _bstr_t IICAClient::GetClientNetworkName ( ) {
+    BSTR _result = 0;
+    HRESULT _hr = raw_GetClientNetworkName(&_result);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _bstr_t(_result, false);
+}
+
+inline long IICAClient::GetClientAddressCount ( ) {
+    long _result = 0;
+    HRESULT _hr = raw_GetClientAddressCount(&_result);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _result;
+}
+
+inline _bstr_t IICAClient::GetClientAddress ( long Index ) {
+    BSTR _result = 0;
+    HRESULT _hr = raw_GetClientAddress(Index, &_result);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _bstr_t(_result, false);
+}
+
+inline long IICAClient::AttachSession ( _bstr_t pSessionId ) {
+    long _result = 0;
+    HRESULT _hr = raw_AttachSession(pSessionId, &_result);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _result;
+}
+
+inline long IICAClient::DetachSession ( _bstr_t pSessionId ) {
+    long _result = 0;
+    HRESULT _hr = raw_DetachSession(pSessionId, &_result);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _result;
+}
+
+inline long IICAClient::GetCachedSessionCount ( ) {
+    long _result = 0;
+    HRESULT _hr = raw_GetCachedSessionCount(&_result);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _result;
+}
+
+inline VARIANT_BOOL IICAClient::IsSessionAttached ( _bstr_t pSessionId ) {
+    VARIANT_BOOL _result = 0;
+    HRESULT _hr = raw_IsSessionAttached(pSessionId, &_result);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _result;
+}
+
+inline VARIANT_BOOL IICAClient::IsSessionDetached ( _bstr_t pSessionId ) {
+    VARIANT_BOOL _result = 0;
+    HRESULT _hr = raw_IsSessionDetached(pSessionId, &_result);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _result;
+}
+
+inline VARIANT_BOOL IICAClient::IsSessionRunning ( _bstr_t pSessionId ) {
+    VARIANT_BOOL _result = 0;
+    HRESULT _hr = raw_IsSessionRunning(pSessionId, &_result);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _result;
+}
+
+inline long IICAClient::SetSessionId ( _bstr_t pSessionId ) {
+    long _result = 0;
+    HRESULT _hr = raw_SetSessionId(pSessionId, &_result);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _result;
+}
+
+inline long IICAClient::GetReadyState ( ) {
+    long _result = 0;
+    HRESULT _hr = get_ReadyState(&_result);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _result;
+}
+
+inline void IICAClient::PutReadyState ( long state ) {
+    HRESULT _hr = put_ReadyState(state);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+}
+
+inline _bstr_t IICAClient::GetAddress ( ) {
+    BSTR _result = 0;
+    HRESULT _hr = get_Address(&_result);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _bstr_t(_result, false);
+}
+
+inline void IICAClient::PutAddress ( _bstr_t pVal ) {
+    HRESULT _hr = put_Address(pVal);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+}
+
+inline _bstr_t IICAClient::GetApplication ( ) {
+    BSTR _result = 0;
+    HRESULT _hr = get_Application(&_result);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _bstr_t(_result, false);
+}
+
+inline void IICAClient::PutApplication ( _bstr_t pVal ) {
+    HRESULT _hr = put_Application(pVal);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+}
+
+inline enum ICASoundQuality IICAClient::GetAudioBandwidthLimit ( ) {
+    enum ICASoundQuality _result;
+    HRESULT _hr = get_AudioBandwidthLimit(&_result);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _result;
+}
+
+inline void IICAClient::PutAudioBandwidthLimit ( enum ICASoundQuality pVal ) {
+    HRESULT _hr = put_AudioBandwidthLimit(pVal);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+}
+
+inline long IICAClient::GetBorder ( ) {
+    long _result = 0;
+    HRESULT _hr = get_Border(&_result);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _result;
+}
+
+inline void IICAClient::PutBorder ( long pVal ) {
+    HRESULT _hr = put_Border(pVal);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+}
+
+inline VARIANT_BOOL IICAClient::GetCDMAllowed ( ) {
+    VARIANT_BOOL _result = 0;
+    HRESULT _hr = get_CDMAllowed(&_result);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _result;
+}
+
+inline void IICAClient::PutCDMAllowed ( VARIANT_BOOL pVal ) {
+    HRESULT _hr = put_CDMAllowed(pVal);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+}
+
+inline VARIANT_BOOL IICAClient::GetClientAudio ( ) {
+    VARIANT_BOOL _result = 0;
+    HRESULT _hr = get_ClientAudio(&_result);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _result;
+}
+
+inline void IICAClient::PutClientAudio ( VARIANT_BOOL pVal ) {
+    HRESULT _hr = put_ClientAudio(pVal);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+}
+
+inline _bstr_t IICAClient::GetClientName ( ) {
+    BSTR _result = 0;
+    HRESULT _hr = get_ClientName(&_result);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _bstr_t(_result, false);
+}
+
+inline void IICAClient::PutClientName ( _bstr_t pVal ) {
+    HRESULT _hr = put_ClientName(pVal);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+}
+
+inline VARIANT_BOOL IICAClient::GetCOMAllowed ( ) {
+    VARIANT_BOOL _result = 0;
+    HRESULT _hr = get_COMAllowed(&_result);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _result;
+}
+
+inline void IICAClient::PutCOMAllowed ( VARIANT_BOOL pVal ) {
+    HRESULT _hr = put_COMAllowed(pVal);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+}
+
+inline VARIANT_BOOL IICAClient::GetCompress ( ) {
+    VARIANT_BOOL _result = 0;
+    HRESULT _hr = get_Compress(&_result);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _result;
+}
+
+inline void IICAClient::PutCompress ( VARIANT_BOOL pVal ) {
+    HRESULT _hr = put_Compress(pVal);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+}
+
+inline VARIANT_BOOL IICAClient::GetConnected ( ) {
+    VARIANT_BOOL _result = 0;
+    HRESULT _hr = get_Connected(&_result);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _result;
+}
+
+inline _bstr_t IICAClient::GetConnectionEntry ( ) {
+    BSTR _result = 0;
+    HRESULT _hr = get_ConnectionEntry(&_result);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _bstr_t(_result, false);
+}
+
+inline void IICAClient::PutConnectionEntry ( _bstr_t pVal ) {
+    HRESULT _hr = put_ConnectionEntry(pVal);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+}
+
+inline VARIANT_BOOL IICAClient::GetCPMAllowed ( ) {
+    VARIANT_BOOL _result = 0;
+    HRESULT _hr = get_CPMAllowed(&_result);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _result;
+}
+
+inline void IICAClient::PutCPMAllowed ( VARIANT_BOOL pVal ) {
+    HRESULT _hr = put_CPMAllowed(pVal);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+}
+
+inline _bstr_t IICAClient::GetCustomMessage ( ) {
+    BSTR _result = 0;
+    HRESULT _hr = get_CustomMessage(&_result);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _bstr_t(_result, false);
+}
+
+inline void IICAClient::PutCustomMessage ( _bstr_t pVal ) {
+    HRESULT _hr = put_CustomMessage(pVal);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+}
+
+inline _bstr_t IICAClient::GetDescription ( ) {
+    BSTR _result = 0;
+    HRESULT _hr = get_Description(&_result);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _bstr_t(_result, false);
+}
+
+inline void IICAClient::PutDescription ( _bstr_t pVal ) {
+    HRESULT _hr = put_Description(pVal);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+}
+
+inline enum ICAColorDepth IICAClient::GetDesiredColor ( ) {
+    enum ICAColorDepth _result;
+    HRESULT _hr = get_DesiredColor(&_result);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _result;
+}
+
+inline void IICAClient::PutDesiredColor ( enum ICAColorDepth pVal ) {
+    HRESULT _hr = put_DesiredColor(pVal);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+}
+
+inline long IICAClient::GetDesiredHRes ( ) {
+    long _result = 0;
+    HRESULT _hr = get_DesiredHRes(&_result);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _result;
+}
+
+inline void IICAClient::PutDesiredHRes ( long pVal ) {
+    HRESULT _hr = put_DesiredHRes(pVal);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+}
+
+inline long IICAClient::GetDesiredVRes ( ) {
+    long _result = 0;
+    HRESULT _hr = get_DesiredVRes(&_result);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _result;
+}
+
+inline void IICAClient::PutDesiredVRes ( long pVal ) {
+    HRESULT _hr = put_DesiredVRes(pVal);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+}
+
+inline _bstr_t IICAClient::GetDomain ( ) {
+    BSTR _result = 0;
+    HRESULT _hr = get_Domain(&_result);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _bstr_t(_result, false);
+}
+
+inline void IICAClient::PutDomain ( _bstr_t pVal ) {
+    HRESULT _hr = put_Domain(pVal);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+}
+
+inline VARIANT_BOOL IICAClient::GetEncrypt ( ) {
+    VARIANT_BOOL _result = 0;
+    HRESULT _hr = get_Encrypt(&_result);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _result;
+}
+
+inline void IICAClient::PutEncrypt ( VARIANT_BOOL pVal ) {
+    HRESULT _hr = put_Encrypt(pVal);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+}
+
+inline long IICAClient::GetHeight ( ) {
+    long _result = 0;
+    HRESULT _hr = get_Height(&_result);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _result;
+}
+
+inline _bstr_t IICAClient::GetICAFile ( ) {
+    BSTR _result = 0;
+    HRESULT _hr = get_ICAFile(&_result);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _bstr_t(_result, false);
+}
+
+inline void IICAClient::PutICAFile ( _bstr_t pVal ) {
+    HRESULT _hr = put_ICAFile(pVal);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+}
+
+inline long IICAClient::GetIconIndex ( ) {
+    long _result = 0;
+    HRESULT _hr = get_IconIndex(&_result);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _result;
+}
+
+inline void IICAClient::PutIconIndex ( long pVal ) {
+    HRESULT _hr = put_IconIndex(pVal);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+}
+
+inline _bstr_t IICAClient::GetIconPath ( ) {
+    BSTR _result = 0;
+    HRESULT _hr = get_IconPath(&_result);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _bstr_t(_result, false);
+}
+
+inline void IICAClient::PutIconPath ( _bstr_t pVal ) {
+    HRESULT _hr = put_IconPath(pVal);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+}
+
+inline _bstr_t IICAClient::GetInitialProgram ( ) {
+    BSTR _result = 0;
+    HRESULT _hr = get_InitialProgram(&_result);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _bstr_t(_result, false);
+}
+
+inline void IICAClient::PutInitialProgram ( _bstr_t pVal ) {
+    HRESULT _hr = put_InitialProgram(pVal);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+}
+
+inline _bstr_t IICAClient::GetIPXBrowserAddress ( ) {
+    BSTR _result = 0;
+    HRESULT _hr = get_IPXBrowserAddress(&_result);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _bstr_t(_result, false);
+}
+
+inline void IICAClient::PutIPXBrowserAddress ( _bstr_t pVal ) {
+    HRESULT _hr = put_IPXBrowserAddress(pVal);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+}
+
+inline _bstr_t IICAClient::GetNetbiosBrowserAddress ( ) {
+    BSTR _result = 0;
+    HRESULT _hr = get_NetbiosBrowserAddress(&_result);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _bstr_t(_result, false);
+}
+
+inline void IICAClient::PutNetbiosBrowserAddress ( _bstr_t pVal ) {
+    HRESULT _hr = put_NetbiosBrowserAddress(pVal);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+}
+
+//inline enum ICAEvent IICAClient::GetNotificationReason ( ) {
+//    enum ICAEvent _result;
+//    HRESULT _hr = get_NotificationReason(&_result);
+//    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+//    return _result;
+//}
+
+inline VARIANT_BOOL IICAClient::GetPersistentCacheEnabled ( ) {
+    VARIANT_BOOL _result = 0;
+    HRESULT _hr = get_PersistentCacheEnabled(&_result);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _result;
+}
+
+inline void IICAClient::PutPersistentCacheEnabled ( VARIANT_BOOL pVal ) {
+    HRESULT _hr = put_PersistentCacheEnabled(pVal);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+}
+
+inline _bstr_t IICAClient::GetProtocolSupport ( ) {
+    BSTR _result = 0;
+    HRESULT _hr = get_ProtocolSupport(&_result);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _bstr_t(_result, false);
+}
+
+inline void IICAClient::PutProtocolSupport ( _bstr_t pVal ) {
+    HRESULT _hr = put_ProtocolSupport(pVal);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+}
+
+inline VARIANT_BOOL IICAClient::GetReliable ( ) {
+    VARIANT_BOOL _result = 0;
+    HRESULT _hr = get_Reliable(&_result);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _result;
+}
+
+inline void IICAClient::PutReliable ( VARIANT_BOOL pVal ) {
+    HRESULT _hr = put_Reliable(pVal);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+}
+
+inline enum ICASessionEndAction IICAClient::GetSessionEndAction ( ) {
+    enum ICASessionEndAction _result;
+    HRESULT _hr = get_SessionEndAction(&_result);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _result;
+}
+
+inline void IICAClient::PutSessionEndAction ( enum ICASessionEndAction pVal ) {
+    HRESULT _hr = put_SessionEndAction(pVal);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+}
+
+inline VARIANT_BOOL IICAClient::GetStart ( ) {
+    VARIANT_BOOL _result = 0;
+    HRESULT _hr = get_Start(&_result);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _result;
+}
+
+inline void IICAClient::PutStart ( VARIANT_BOOL pVal ) {
+    HRESULT _hr = put_Start(pVal);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+}
+
+inline _bstr_t IICAClient::GetTCPBrowserAddress ( ) {
+    BSTR _result = 0;
+    HRESULT _hr = get_TCPBrowserAddress(&_result);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _bstr_t(_result, false);
+}
+
+inline void IICAClient::PutTCPBrowserAddress ( _bstr_t pVal ) {
+    HRESULT _hr = put_TCPBrowserAddress(pVal);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+}
+
+inline _bstr_t IICAClient::GetTransportDriver ( ) {
+    BSTR _result = 0;
+    HRESULT _hr = get_TransportDriver(&_result);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _bstr_t(_result, false);
+}
+
+inline void IICAClient::PutTransportDriver ( _bstr_t pVal ) {
+    HRESULT _hr = put_TransportDriver(pVal);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+}
+
+inline VARIANT_BOOL IICAClient::GetUIActive ( ) {
+    VARIANT_BOOL _result = 0;
+    HRESULT _hr = get_UIActive(&_result);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _result;
+}
+
+inline void IICAClient::PutUIActive ( VARIANT_BOOL pVal ) {
+    HRESULT _hr = put_UIActive(pVal);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+}
+
+inline VARIANT_BOOL IICAClient::GetUpdatesAllowed ( ) {
+    VARIANT_BOOL _result = 0;
+    HRESULT _hr = get_UpdatesAllowed(&_result);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _result;
+}
+
+inline void IICAClient::PutUpdatesAllowed ( VARIANT_BOOL pVal ) {
+    HRESULT _hr = put_UpdatesAllowed(pVal);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+}
+
+inline _bstr_t IICAClient::GetUsername ( ) {
+    BSTR _result = 0;
+    HRESULT _hr = get_Username(&_result);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _bstr_t(_result, false);
+}
+
+inline void IICAClient::PutUsername ( _bstr_t pVal ) {
+    HRESULT _hr = put_Username(pVal);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+}
+
+inline _bstr_t IICAClient::GetVersion ( ) {
+    BSTR _result = 0;
+    HRESULT _hr = get_Version(&_result);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _bstr_t(_result, false);
+}
+
+inline VARIANT_BOOL IICAClient::GetVSLAllowed ( ) {
+    VARIANT_BOOL _result = 0;
+    HRESULT _hr = get_VSLAllowed(&_result);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _result;
+}
+
+inline void IICAClient::PutVSLAllowed ( VARIANT_BOOL pVal ) {
+    HRESULT _hr = put_VSLAllowed(pVal);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+}
+
+inline long IICAClient::GetWidth ( ) {
+    long _result = 0;
+    HRESULT _hr = get_Width(&_result);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _result;
+}
+
+inline _bstr_t IICAClient::GetWinstationDriver ( ) {
+    BSTR _result = 0;
+    HRESULT _hr = get_WinstationDriver(&_result);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _bstr_t(_result, false);
+}
+
+inline void IICAClient::PutWinstationDriver ( _bstr_t pVal ) {
+    HRESULT _hr = put_WinstationDriver(pVal);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+}
+
+inline _bstr_t IICAClient::GetWorkDirectory ( ) {
+    BSTR _result = 0;
+    HRESULT _hr = get_WorkDirectory(&_result);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _bstr_t(_result, false);
+}
+
+inline void IICAClient::PutWorkDirectory ( _bstr_t pVal ) {
+    HRESULT _hr = put_WorkDirectory(pVal);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+}
+
+inline _bstr_t IICAClient::GetAppsrvIni ( ) {
+    BSTR _result = 0;
+    HRESULT _hr = get_AppsrvIni(&_result);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _bstr_t(_result, false);
+}
+
+inline void IICAClient::PutAppsrvIni ( _bstr_t pVal ) {
+    HRESULT _hr = put_AppsrvIni(pVal);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+}
+
+inline _bstr_t IICAClient::GetModuleIni ( ) {
+    BSTR _result = 0;
+    HRESULT _hr = get_ModuleIni(&_result);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _bstr_t(_result, false);
+}
+
+inline void IICAClient::PutModuleIni ( _bstr_t pVal ) {
+    HRESULT _hr = put_ModuleIni(pVal);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+}
+
+inline _bstr_t IICAClient::GetWfclientIni ( ) {
+    BSTR _result = 0;
+    HRESULT _hr = get_WfclientIni(&_result);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _bstr_t(_result, false);
+}
+
+inline void IICAClient::PutWfclientIni ( _bstr_t pVal ) {
+    HRESULT _hr = put_WfclientIni(pVal);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+}
+
+inline _bstr_t IICAClient::GetClientPath ( ) {
+    BSTR _result = 0;
+    HRESULT _hr = get_ClientPath(&_result);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _bstr_t(_result, false);
+}
+
+inline _bstr_t IICAClient::GetClientVersion ( ) {
+    BSTR _result = 0;
+    HRESULT _hr = get_ClientVersion(&_result);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _bstr_t(_result, false);
+}
+
+inline VARIANT_BOOL IICAClient::GetLogAppend ( ) {
+    VARIANT_BOOL _result = 0;
+    HRESULT _hr = get_LogAppend(&_result);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _result;
+}
+
+inline void IICAClient::PutLogAppend ( VARIANT_BOOL pVal ) {
+    HRESULT _hr = put_LogAppend(pVal);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+}
+
+inline VARIANT_BOOL IICAClient::GetLogConnect ( ) {
+    VARIANT_BOOL _result = 0;
+    HRESULT _hr = get_LogConnect(&_result);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _result;
+}
+
+inline void IICAClient::PutLogConnect ( VARIANT_BOOL pVal ) {
+    HRESULT _hr = put_LogConnect(pVal);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+}
+
+inline VARIANT_BOOL IICAClient::GetLogErrors ( ) {
+    VARIANT_BOOL _result = 0;
+    HRESULT _hr = get_LogErrors(&_result);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _result;
+}
+
+inline void IICAClient::PutLogErrors ( VARIANT_BOOL pVal ) {
+    HRESULT _hr = put_LogErrors(pVal);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+}
+
+inline _bstr_t IICAClient::GetLogFile ( ) {
+    BSTR _result = 0;
+    HRESULT _hr = get_LogFile(&_result);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _bstr_t(_result, false);
+}
+
+inline void IICAClient::PutLogFile ( _bstr_t pVal ) {
+    HRESULT _hr = put_LogFile(pVal);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+}
+
+inline VARIANT_BOOL IICAClient::GetLogFlush ( ) {
+    VARIANT_BOOL _result = 0;
+    HRESULT _hr = get_LogFlush(&_result);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _result;
+}
+
+inline void IICAClient::PutLogFlush ( VARIANT_BOOL pVal ) {
+    HRESULT _hr = put_LogFlush(pVal);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+}
+
+inline VARIANT_BOOL IICAClient::GetLogKeyboard ( ) {
+    VARIANT_BOOL _result = 0;
+    HRESULT _hr = get_LogKeyboard(&_result);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _result;
+}
+
+inline void IICAClient::PutLogKeyboard ( VARIANT_BOOL pVal ) {
+    HRESULT _hr = put_LogKeyboard(pVal);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+}
+
+inline VARIANT_BOOL IICAClient::GetLogReceive ( ) {
+    VARIANT_BOOL _result = 0;
+    HRESULT _hr = get_LogReceive(&_result);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _result;
+}
+
+inline void IICAClient::PutLogReceive ( VARIANT_BOOL pVal ) {
+    HRESULT _hr = put_LogReceive(pVal);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+}
+
+inline VARIANT_BOOL IICAClient::GetLogTransmit ( ) {
+    VARIANT_BOOL _result = 0;
+    HRESULT _hr = get_LogTransmit(&_result);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _result;
+}
+
+inline void IICAClient::PutLogTransmit ( VARIANT_BOOL pVal ) {
+    HRESULT _hr = put_LogTransmit(pVal);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+}
+
+inline _bstr_t IICAClient::GetTitle ( ) {
+    BSTR _result = 0;
+    HRESULT _hr = get_Title(&_result);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _bstr_t(_result, false);
+}
+
+inline void IICAClient::PutTitle ( _bstr_t pVal ) {
+    HRESULT _hr = put_Title(pVal);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+}
+
+inline VARIANT_BOOL IICAClient::GetLaunch ( ) {
+    VARIANT_BOOL _result = 0;
+    HRESULT _hr = get_Launch(&_result);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _result;
+}
+
+inline void IICAClient::PutLaunch ( VARIANT_BOOL pVal ) {
+    HRESULT _hr = put_Launch(pVal);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+}
+
+inline OLE_COLOR IICAClient::GetBackgroundColor ( ) {
+    OLE_COLOR _result;
+    HRESULT _hr = get_BackgroundColor(&_result);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _result;
+}
+
+inline void IICAClient::PutBackgroundColor ( OLE_COLOR pVal ) {
+    HRESULT _hr = put_BackgroundColor(pVal);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+}
+
+inline OLE_COLOR IICAClient::GetBorderColor ( ) {
+    OLE_COLOR _result;
+    HRESULT _hr = get_BorderColor(&_result);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _result;
+}
+
+inline void IICAClient::PutBorderColor ( OLE_COLOR pVal ) {
+    HRESULT _hr = put_BorderColor(pVal);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+}
+
+inline OLE_COLOR IICAClient::GetTextColor ( ) {
+    OLE_COLOR _result;
+    HRESULT _hr = get_TextColor(&_result);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _result;
+}
+
+inline void IICAClient::PutTextColor ( OLE_COLOR pVal ) {
+    HRESULT _hr = put_TextColor(pVal);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+}
+
+inline _bstr_t IICAClient::GetEncryptionLevelSession ( ) {
+    BSTR _result = 0;
+    HRESULT _hr = get_EncryptionLevelSession(&_result);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _bstr_t(_result, false);
+}
+
+inline void IICAClient::PutEncryptionLevelSession ( _bstr_t pVal ) {
+    HRESULT _hr = put_EncryptionLevelSession(pVal);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+}
+
+inline _bstr_t IICAClient::GetHttpBrowserAddress ( ) {
+    BSTR _result = 0;
+    HRESULT _hr = get_HttpBrowserAddress(&_result);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _bstr_t(_result, false);
+}
+
+inline void IICAClient::PutHttpBrowserAddress ( _bstr_t pVal ) {
+    HRESULT _hr = put_HttpBrowserAddress(pVal);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+}
+
+inline _bstr_t IICAClient::GetBrowserProtocol ( ) {
+    BSTR _result = 0;
+    HRESULT _hr = get_BrowserProtocol(&_result);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _bstr_t(_result, false);
+}
+
+inline void IICAClient::PutBrowserProtocol ( _bstr_t pVal ) {
+    HRESULT _hr = put_BrowserProtocol(pVal);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+}
+
+inline _bstr_t IICAClient::GetLocHTTPBrowserAddress ( ) {
+    BSTR _result = 0;
+    HRESULT _hr = get_LocHTTPBrowserAddress(&_result);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _bstr_t(_result, false);
+}
+
+inline void IICAClient::PutLocHTTPBrowserAddress ( _bstr_t pVal ) {
+    HRESULT _hr = put_LocHTTPBrowserAddress(pVal);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+}
+
+inline _bstr_t IICAClient::GetLocIPXBrowserAddress ( ) {
+    BSTR _result = 0;
+    HRESULT _hr = get_LocIPXBrowserAddress(&_result);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _bstr_t(_result, false);
+}
+
+inline void IICAClient::PutLocIPXBrowserAddress ( _bstr_t pVal ) {
+    HRESULT _hr = put_LocIPXBrowserAddress(pVal);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+}
+
+inline _bstr_t IICAClient::GetLocNETBIOSBrowserAddress ( ) {
+    BSTR _result = 0;
+    HRESULT _hr = get_LocNETBIOSBrowserAddress(&_result);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _bstr_t(_result, false);
+}
+
+inline void IICAClient::PutLocNETBIOSBrowserAddress ( _bstr_t pVal ) {
+    HRESULT _hr = put_LocNETBIOSBrowserAddress(pVal);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+}
+
+inline _bstr_t IICAClient::GetLocTCPBrowserAddress ( ) {
+    BSTR _result = 0;
+    HRESULT _hr = get_LocTCPBrowserAddress(&_result);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _bstr_t(_result, false);
+}
+
+inline void IICAClient::PutLocTCPBrowserAddress ( _bstr_t pVal ) {
+    HRESULT _hr = put_LocTCPBrowserAddress(pVal);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+}
+
+inline VARIANT_BOOL IICAClient::GetDoNotUseDefaultCSL ( ) {
+    VARIANT_BOOL _result = 0;
+    HRESULT _hr = get_DoNotUseDefaultCSL(&_result);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _result;
+}
+
+inline void IICAClient::PutDoNotUseDefaultCSL ( VARIANT_BOOL pVal ) {
+    HRESULT _hr = put_DoNotUseDefaultCSL(pVal);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+}
+
+inline long IICAClient::GetICAPortNumber ( ) {
+    long _result = 0;
+    HRESULT _hr = get_ICAPortNumber(&_result);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _result;
+}
+
+inline void IICAClient::PutICAPortNumber ( long pVal ) {
+    HRESULT _hr = put_ICAPortNumber(pVal);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+}
+
+inline long IICAClient::GetKeyboardTimer ( ) {
+    long _result = 0;
+    HRESULT _hr = get_KeyboardTimer(&_result);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _result;
+}
+
+inline void IICAClient::PutKeyboardTimer ( long pVal ) {
+    HRESULT _hr = put_KeyboardTimer(pVal);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+}
+
+inline long IICAClient::GetMouseTimer ( ) {
+    long _result = 0;
+    HRESULT _hr = get_MouseTimer(&_result);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _result;
+}
+
+inline void IICAClient::PutMouseTimer ( long pVal ) {
+    HRESULT _hr = put_MouseTimer(pVal);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+}
+
+inline VARIANT_BOOL IICAClient::GetScrollbars ( ) {
+    VARIANT_BOOL _result = 0;
+    HRESULT _hr = get_Scrollbars(&_result);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _result;
+}
+
+inline void IICAClient::PutScrollbars ( VARIANT_BOOL pVal ) {
+    HRESULT _hr = put_Scrollbars(pVal);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+}
+
+inline long IICAClient::GetScalingHeight ( ) {
+    long _result = 0;
+    HRESULT _hr = get_ScalingHeight(&_result);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _result;
+}
+
+inline void IICAClient::PutScalingHeight ( long pVal ) {
+    HRESULT _hr = put_ScalingHeight(pVal);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+}
+
+inline enum ICAScalingMode IICAClient::GetScalingMode ( ) {
+    enum ICAScalingMode _result;
+    HRESULT _hr = get_ScalingMode(&_result);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _result;
+}
+
+inline void IICAClient::PutScalingMode ( enum ICAScalingMode pVal ) {
+    HRESULT _hr = put_ScalingMode(pVal);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+}
+
+inline long IICAClient::GetScalingPercent ( ) {
+    long _result = 0;
+    HRESULT _hr = get_ScalingPercent(&_result);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _result;
+}
+
+inline void IICAClient::PutScalingPercent ( long pVal ) {
+    HRESULT _hr = put_ScalingPercent(pVal);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+}
+
+inline long IICAClient::GetScalingWidth ( ) {
+    long _result = 0;
+    HRESULT _hr = get_ScalingWidth(&_result);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _result;
+}
+
+inline void IICAClient::PutScalingWidth ( long pVal ) {
+    HRESULT _hr = put_ScalingWidth(pVal);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+}
+
+inline _bstr_t IICAClient::GetVirtualChannels ( ) {
+    BSTR _result = 0;
+    HRESULT _hr = get_VirtualChannels(&_result);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _bstr_t(_result, false);
+}
+
+inline void IICAClient::PutVirtualChannels ( _bstr_t pVal ) {
+    HRESULT _hr = put_VirtualChannels(pVal);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+}
+
+inline long IICAClient::GetUseAlternateAddress ( ) {
+    long _result = 0;
+    HRESULT _hr = get_UseAlternateAddress(&_result);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _result;
+}
+
+inline void IICAClient::PutUseAlternateAddress ( long pVal ) {
+    HRESULT _hr = put_UseAlternateAddress(pVal);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+}
+
+inline long IICAClient::GetBrowserRetry ( ) {
+    long _result = 0;
+    HRESULT _hr = get_BrowserRetry(&_result);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _result;
+}
+
+inline void IICAClient::PutBrowserRetry ( long pVal ) {
+    HRESULT _hr = put_BrowserRetry(pVal);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+}
+
+inline long IICAClient::GetBrowserTimeout ( ) {
+    long _result = 0;
+    HRESULT _hr = get_BrowserTimeout(&_result);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _result;
+}
+
+inline void IICAClient::PutBrowserTimeout ( long pVal ) {
+    HRESULT _hr = put_BrowserTimeout(pVal);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+}
+
+inline long IICAClient::GetLanaNumber ( ) {
+    long _result = 0;
+    HRESULT _hr = get_LanaNumber(&_result);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _result;
+}
+
+inline void IICAClient::PutLanaNumber ( long pVal ) {
+    HRESULT _hr = put_LanaNumber(pVal);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+}
+
+inline long IICAClient::GetICASOCKSProtocolVersion ( ) {
+    long _result = 0;
+    HRESULT _hr = get_ICASOCKSProtocolVersion(&_result);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _result;
+}
+
+inline void IICAClient::PutICASOCKSProtocolVersion ( long pVal ) {
+    HRESULT _hr = put_ICASOCKSProtocolVersion(pVal);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+}
+
+inline _bstr_t IICAClient::GetICASOCKSProxyHost ( ) {
+    BSTR _result = 0;
+    HRESULT _hr = get_ICASOCKSProxyHost(&_result);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _bstr_t(_result, false);
+}
+
+inline void IICAClient::PutICASOCKSProxyHost ( _bstr_t pVal ) {
+    HRESULT _hr = put_ICASOCKSProxyHost(pVal);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+}
+
+inline long IICAClient::GetICASOCKSProxyPortNumber ( ) {
+    long _result = 0;
+    HRESULT _hr = get_ICASOCKSProxyPortNumber(&_result);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _result;
+}
+
+inline void IICAClient::PutICASOCKSProxyPortNumber ( long pVal ) {
+    HRESULT _hr = put_ICASOCKSProxyPortNumber(pVal);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+}
+
+inline _bstr_t IICAClient::GetICASOCKSRFC1929Username ( ) {
+    BSTR _result = 0;
+    HRESULT _hr = get_ICASOCKSRFC1929Username(&_result);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _bstr_t(_result, false);
+}
+
+inline void IICAClient::PutICASOCKSRFC1929Username ( _bstr_t pVal ) {
+    HRESULT _hr = put_ICASOCKSRFC1929Username(pVal);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+}
+
+inline long IICAClient::GetICASOCKSTimeout ( ) {
+    long _result = 0;
+    HRESULT _hr = get_ICASOCKSTimeout(&_result);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _result;
+}
+
+inline void IICAClient::PutICASOCKSTimeout ( long pVal ) {
+    HRESULT _hr = put_ICASOCKSTimeout(pVal);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+}
+
+inline VARIANT_BOOL IICAClient::GetSSLEnable ( ) {
+    VARIANT_BOOL _result = 0;
+    HRESULT _hr = get_SSLEnable(&_result);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _result;
+}
+
+inline void IICAClient::PutSSLEnable ( VARIANT_BOOL pVal ) {
+    HRESULT _hr = put_SSLEnable(pVal);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+}
+
+inline _bstr_t IICAClient::GetSSLProxyHost ( ) {
+    BSTR _result = 0;
+    HRESULT _hr = get_SSLProxyHost(&_result);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _bstr_t(_result, false);
+}
+
+inline void IICAClient::PutSSLProxyHost ( _bstr_t pVal ) {
+    HRESULT _hr = put_SSLProxyHost(pVal);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+}
+
+inline _bstr_t IICAClient::GetSSLCiphers ( ) {
+    BSTR _result = 0;
+    HRESULT _hr = get_SSLCiphers(&_result);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _bstr_t(_result, false);
+}
+
+inline void IICAClient::PutSSLCiphers ( _bstr_t pVal ) {
+    HRESULT _hr = put_SSLCiphers(pVal);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+}
+
+inline long IICAClient::GetSSLNoCACerts ( ) {
+    long _result = 0;
+    HRESULT _hr = get_SSLNoCACerts(&_result);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _result;
+}
+
+inline void IICAClient::PutSSLNoCACerts ( long pVal ) {
+    HRESULT _hr = put_SSLNoCACerts(pVal);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+}
+
+inline _bstr_t IICAClient::GetSSLCommonName ( ) {
+    BSTR _result = 0;
+    HRESULT _hr = get_SSLCommonName(&_result);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _bstr_t(_result, false);
+}
+
+inline void IICAClient::PutSSLCommonName ( _bstr_t pVal ) {
+    HRESULT _hr = put_SSLCommonName(pVal);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+}
+
+inline _bstr_t IICAClient::GetAUTHUsername ( ) {
+    BSTR _result = 0;
+    HRESULT _hr = get_AUTHUsername(&_result);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _bstr_t(_result, false);
+}
+
+inline void IICAClient::PutAUTHUsername ( _bstr_t pVal ) {
+    HRESULT _hr = put_AUTHUsername(pVal);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+}
+
+inline _bstr_t IICAClient::GetXmlAddressResolutionType ( ) {
+    BSTR _result = 0;
+    HRESULT _hr = get_XmlAddressResolutionType(&_result);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _bstr_t(_result, false);
+}
+
+inline void IICAClient::PutXmlAddressResolutionType ( _bstr_t pVal ) {
+    HRESULT _hr = put_XmlAddressResolutionType(pVal);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+}
+
+inline VARIANT_BOOL IICAClient::GetAutoScale ( ) {
+    VARIANT_BOOL _result = 0;
+    HRESULT _hr = get_AutoScale(&_result);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _result;
+}
+
+inline void IICAClient::PutAutoScale ( VARIANT_BOOL pVal ) {
+    HRESULT _hr = put_AutoScale(pVal);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+}
+
+inline VARIANT_BOOL IICAClient::GetAutoAppResize ( ) {
+    VARIANT_BOOL _result = 0;
+    HRESULT _hr = get_AutoAppResize(&_result);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _result;
+}
+
+inline void IICAClient::PutAutoAppResize ( VARIANT_BOOL pVal ) {
+    HRESULT _hr = put_AutoAppResize(pVal);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+}
+
+inline _bstr_t IICAClient::GetHotkey1Char ( ) {
+    BSTR _result = 0;
+    HRESULT _hr = get_Hotkey1Char(&_result);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _bstr_t(_result, false);
+}
+
+inline void IICAClient::PutHotkey1Char ( _bstr_t pVal ) {
+    HRESULT _hr = put_Hotkey1Char(pVal);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+}
+
+inline _bstr_t IICAClient::GetHotkey1Shift ( ) {
+    BSTR _result = 0;
+    HRESULT _hr = get_Hotkey1Shift(&_result);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _bstr_t(_result, false);
+}
+
+inline void IICAClient::PutHotkey1Shift ( _bstr_t pVal ) {
+    HRESULT _hr = put_Hotkey1Shift(pVal);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+}
+
+inline _bstr_t IICAClient::GetHotkey2Char ( ) {
+    BSTR _result = 0;
+    HRESULT _hr = get_Hotkey2Char(&_result);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _bstr_t(_result, false);
+}
+
+inline void IICAClient::PutHotkey2Char ( _bstr_t pVal ) {
+    HRESULT _hr = put_Hotkey2Char(pVal);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+}
+
+inline _bstr_t IICAClient::GetHotkey2Shift ( ) {
+    BSTR _result = 0;
+    HRESULT _hr = get_Hotkey2Shift(&_result);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _bstr_t(_result, false);
+}
+
+inline void IICAClient::PutHotkey2Shift ( _bstr_t pVal ) {
+    HRESULT _hr = put_Hotkey2Shift(pVal);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+}
+
+inline _bstr_t IICAClient::GetHotkey3Char ( ) {
+    BSTR _result = 0;
+    HRESULT _hr = get_Hotkey3Char(&_result);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _bstr_t(_result, false);
+}
+
+inline void IICAClient::PutHotkey3Char ( _bstr_t pVal ) {
+    HRESULT _hr = put_Hotkey3Char(pVal);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+}
+
+inline _bstr_t IICAClient::GetHotkey3Shift ( ) {
+    BSTR _result = 0;
+    HRESULT _hr = get_Hotkey3Shift(&_result);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _bstr_t(_result, false);
+}
+
+inline void IICAClient::PutHotkey3Shift ( _bstr_t pVal ) {
+    HRESULT _hr = put_Hotkey3Shift(pVal);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+}
+
+inline _bstr_t IICAClient::GetHotkey4Char ( ) {
+    BSTR _result = 0;
+    HRESULT _hr = get_Hotkey4Char(&_result);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _bstr_t(_result, false);
+}
+
+inline void IICAClient::PutHotkey4Char ( _bstr_t pVal ) {
+    HRESULT _hr = put_Hotkey4Char(pVal);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+}
+
+inline _bstr_t IICAClient::GetHotkey4Shift ( ) {
+    BSTR _result = 0;
+    HRESULT _hr = get_Hotkey4Shift(&_result);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _bstr_t(_result, false);
+}
+
+inline void IICAClient::PutHotkey4Shift ( _bstr_t pVal ) {
+    HRESULT _hr = put_Hotkey4Shift(pVal);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+}
+
+inline _bstr_t IICAClient::GetHotkey5Char ( ) {
+    BSTR _result = 0;
+    HRESULT _hr = get_Hotkey5Char(&_result);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _bstr_t(_result, false);
+}
+
+inline void IICAClient::PutHotkey5Char ( _bstr_t pVal ) {
+    HRESULT _hr = put_Hotkey5Char(pVal);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+}
+
+inline _bstr_t IICAClient::GetHotkey5Shift ( ) {
+    BSTR _result = 0;
+    HRESULT _hr = get_Hotkey5Shift(&_result);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _bstr_t(_result, false);
+}
+
+inline void IICAClient::PutHotkey5Shift ( _bstr_t pVal ) {
+    HRESULT _hr = put_Hotkey5Shift(pVal);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+}
+
+inline _bstr_t IICAClient::GetHotkey6Char ( ) {
+    BSTR _result = 0;
+    HRESULT _hr = get_Hotkey6Char(&_result);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _bstr_t(_result, false);
+}
+
+inline void IICAClient::PutHotkey6Char ( _bstr_t pVal ) {
+    HRESULT _hr = put_Hotkey6Char(pVal);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+}
+
+inline _bstr_t IICAClient::GetHotkey6Shift ( ) {
+    BSTR _result = 0;
+    HRESULT _hr = get_Hotkey6Shift(&_result);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _bstr_t(_result, false);
+}
+
+inline void IICAClient::PutHotkey6Shift ( _bstr_t pVal ) {
+    HRESULT _hr = put_Hotkey6Shift(pVal);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+}
+
+inline _bstr_t IICAClient::GetHotkey7Char ( ) {
+    BSTR _result = 0;
+    HRESULT _hr = get_Hotkey7Char(&_result);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _bstr_t(_result, false);
+}
+
+inline void IICAClient::PutHotkey7Char ( _bstr_t pVal ) {
+    HRESULT _hr = put_Hotkey7Char(pVal);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+}
+
+inline _bstr_t IICAClient::GetHotkey7Shift ( ) {
+    BSTR _result = 0;
+    HRESULT _hr = get_Hotkey7Shift(&_result);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _bstr_t(_result, false);
+}
+
+inline void IICAClient::PutHotkey7Shift ( _bstr_t pVal ) {
+    HRESULT _hr = put_Hotkey7Shift(pVal);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+}
+
+inline _bstr_t IICAClient::GetHotkey8Char ( ) {
+    BSTR _result = 0;
+    HRESULT _hr = get_Hotkey8Char(&_result);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _bstr_t(_result, false);
+}
+
+inline void IICAClient::PutHotkey8Char ( _bstr_t pVal ) {
+    HRESULT _hr = put_Hotkey8Char(pVal);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+}
+
+inline _bstr_t IICAClient::GetHotkey8Shift ( ) {
+    BSTR _result = 0;
+    HRESULT _hr = get_Hotkey8Shift(&_result);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _bstr_t(_result, false);
+}
+
+inline void IICAClient::PutHotkey8Shift ( _bstr_t pVal ) {
+    HRESULT _hr = put_Hotkey8Shift(pVal);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+}
+
+inline _bstr_t IICAClient::GetHotkey9Char ( ) {
+    BSTR _result = 0;
+    HRESULT _hr = get_Hotkey9Char(&_result);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _bstr_t(_result, false);
+}
+
+inline void IICAClient::PutHotkey9Char ( _bstr_t pVal ) {
+    HRESULT _hr = put_Hotkey9Char(pVal);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+}
+
+inline _bstr_t IICAClient::GetHotkey9Shift ( ) {
+    BSTR _result = 0;
+    HRESULT _hr = get_Hotkey9Shift(&_result);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _bstr_t(_result, false);
+}
+
+inline void IICAClient::PutHotkey9Shift ( _bstr_t pVal ) {
+    HRESULT _hr = put_Hotkey9Shift(pVal);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+}
+
+inline _bstr_t IICAClient::GetHotkey10Char ( ) {
+    BSTR _result = 0;
+    HRESULT _hr = get_Hotkey10Char(&_result);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _bstr_t(_result, false);
+}
+
+inline void IICAClient::PutHotkey10Char ( _bstr_t pVal ) {
+    HRESULT _hr = put_Hotkey10Char(pVal);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+}
+
+inline _bstr_t IICAClient::GetHotkey10Shift ( ) {
+    BSTR _result = 0;
+    HRESULT _hr = get_Hotkey10Shift(&_result);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _bstr_t(_result, false);
+}
+
+inline void IICAClient::PutHotkey10Shift ( _bstr_t pVal ) {
+    HRESULT _hr = put_Hotkey10Shift(pVal);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+}
+
+inline _bstr_t IICAClient::GetControlWindowText ( ) {
+    BSTR _result = 0;
+    HRESULT _hr = get_ControlWindowText(&_result);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _bstr_t(_result, false);
+}
+
+inline void IICAClient::PutControlWindowText ( _bstr_t pVal ) {
+    HRESULT _hr = put_ControlWindowText(pVal);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+}
+
+inline VARIANT_BOOL IICAClient::GetCacheICAFile ( ) {
+    VARIANT_BOOL _result = 0;
+    HRESULT _hr = get_CacheICAFile(&_result);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _result;
+}
+
+inline void IICAClient::PutCacheICAFile ( VARIANT_BOOL pVal ) {
+    HRESULT _hr = put_CacheICAFile(pVal);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+}
+
+inline long IICAClient::GetScreenPercent ( ) {
+    long _result = 0;
+    HRESULT _hr = get_ScreenPercent(&_result);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _result;
+}
+
+inline void IICAClient::PutScreenPercent ( long pVal ) {
+    HRESULT _hr = put_ScreenPercent(pVal);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+}
+
+inline VARIANT_BOOL IICAClient::GetTWIMode ( ) {
+    VARIANT_BOOL _result = 0;
+    HRESULT _hr = get_TWIMode(&_result);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _result;
+}
+
+inline void IICAClient::PutTWIMode ( VARIANT_BOOL pVal ) {
+    HRESULT _hr = put_TWIMode(pVal);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+}
+
+inline VARIANT_BOOL IICAClient::GetTransportReconnectEnabled ( ) {
+    VARIANT_BOOL _result = 0;
+    HRESULT _hr = get_TransportReconnectEnabled(&_result);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _result;
+}
+
+inline void IICAClient::PutTransportReconnectEnabled ( VARIANT_BOOL pVal ) {
+    HRESULT _hr = put_TransportReconnectEnabled(pVal);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+}
+
+inline long IICAClient::GetTransportReconnectDelay ( ) {
+    long _result = 0;
+    HRESULT _hr = get_TransportReconnectDelay(&_result);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _result;
+}
+
+inline void IICAClient::PutTransportReconnectDelay ( long pVal ) {
+    HRESULT _hr = put_TransportReconnectDelay(pVal);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+}
+
+inline long IICAClient::GetTransportReconnectRetries ( ) {
+    long _result = 0;
+    HRESULT _hr = get_TransportReconnectRetries(&_result);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _result;
+}
+
+inline void IICAClient::PutTransportReconnectRetries ( long pVal ) {
+    HRESULT _hr = put_TransportReconnectRetries(pVal);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+}
+
+inline VARIANT_BOOL IICAClient::GetAutoLogonAllowed ( ) {
+    VARIANT_BOOL _result = 0;
+    HRESULT _hr = get_AutoLogonAllowed(&_result);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _result;
+}
+
+inline void IICAClient::PutAutoLogonAllowed ( VARIANT_BOOL pVal ) {
+    HRESULT _hr = put_AutoLogonAllowed(pVal);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+}
+
+inline VARIANT_BOOL IICAClient::GetEnableSessionSharingClient ( ) {
+    VARIANT_BOOL _result = 0;
+    HRESULT _hr = get_EnableSessionSharingClient(&_result);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _result;
+}
+
+inline void IICAClient::PutEnableSessionSharingClient ( VARIANT_BOOL pVal ) {
+    HRESULT _hr = put_EnableSessionSharingClient(pVal);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+}
+
+inline _bstr_t IICAClient::GetSessionSharingName ( ) {
+    BSTR _result = 0;
+    HRESULT _hr = get_SessionSharingName(&_result);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _bstr_t(_result, false);
+}
+
+inline void IICAClient::PutSessionSharingName ( _bstr_t pVal ) {
+    HRESULT _hr = put_SessionSharingName(pVal);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+}
+
+inline VARIANT_BOOL IICAClient::GetSessionSharingLaunchOnly ( ) {
+    VARIANT_BOOL _result = 0;
+    HRESULT _hr = get_SessionSharingLaunchOnly(&_result);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _result;
+}
+
+inline void IICAClient::PutSessionSharingLaunchOnly ( VARIANT_BOOL pVal ) {
+    HRESULT _hr = put_SessionSharingLaunchOnly(pVal);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+}
+
+inline VARIANT_BOOL IICAClient::GetDisableCtrlAltDel ( ) {
+    VARIANT_BOOL _result = 0;
+    HRESULT _hr = get_DisableCtrlAltDel(&_result);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _result;
+}
+
+inline void IICAClient::PutDisableCtrlAltDel ( VARIANT_BOOL pVal ) {
+    HRESULT _hr = put_DisableCtrlAltDel(pVal);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+}
+
+inline VARIANT_BOOL IICAClient::GetSessionCacheEnable ( ) {
+    VARIANT_BOOL _result = 0;
+    HRESULT _hr = get_SessionCacheEnable(&_result);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _result;
+}
+
+inline void IICAClient::PutSessionCacheEnable ( VARIANT_BOOL pVal ) {
+    HRESULT _hr = put_SessionCacheEnable(pVal);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+}
+
+inline long IICAClient::GetSessionCacheTimeout ( ) {
+    long _result = 0;
+    HRESULT _hr = get_SessionCacheTimeout(&_result);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _result;
+}
+
+inline void IICAClient::PutSessionCacheTimeout ( long pVal ) {
+    HRESULT _hr = put_SessionCacheTimeout(pVal);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+}
+
+inline ISessionPtr IICAClient::GetSession ( ) {
+    struct ISession * _result = 0;
+    HRESULT _hr = get_Session(&_result);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return ISessionPtr(_result, false);
+}
+
+inline enum OutputMode IICAClient::GetOutputMode ( ) {
+    enum OutputMode _result;
+    HRESULT _hr = get_OutputMode(&_result);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _result;
+}
+
+inline void IICAClient::PutOutputMode ( enum OutputMode pVal ) {
+    HRESULT _hr = put_OutputMode(pVal);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+}
+
+inline long IICAClient::GetSessionExitTimeout ( ) {
+    long _result = 0;
+    HRESULT _hr = get_SessionExitTimeout(&_result);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _result;
+}
+
+inline void IICAClient::PutSessionExitTimeout ( long pVal ) {
+    HRESULT _hr = put_SessionExitTimeout(pVal);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+}
+
+inline VARIANT_BOOL IICAClient::GetEnableSessionSharingHost ( ) {
+    VARIANT_BOOL _result = 0;
+    HRESULT _hr = get_EnableSessionSharingHost(&_result);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _result;
+}
+
+inline void IICAClient::PutEnableSessionSharingHost ( VARIANT_BOOL pVal ) {
+    HRESULT _hr = put_EnableSessionSharingHost(pVal);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+}
+
+inline _bstr_t IICAClient::GetLongCommandLine ( ) {
+    BSTR _result = 0;
+    HRESULT _hr = get_LongCommandLine(&_result);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _bstr_t(_result, false);
+}
+
+inline void IICAClient::PutLongCommandLine ( _bstr_t pVal ) {
+    HRESULT _hr = put_LongCommandLine(pVal);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+}
+
+inline VARIANT_BOOL IICAClient::GetTWIDisableSessionSharing ( ) {
+    VARIANT_BOOL _result = 0;
+    HRESULT _hr = get_TWIDisableSessionSharing(&_result);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _result;
+}
+
+inline void IICAClient::PutTWIDisableSessionSharing ( VARIANT_BOOL pVal ) {
+    HRESULT _hr = put_TWIDisableSessionSharing(pVal);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+}
+
+inline _bstr_t IICAClient::GetSessionSharingKey ( ) {
+    BSTR _result = 0;
+    HRESULT _hr = get_SessionSharingKey(&_result);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _bstr_t(_result, false);
+}
+
+inline void IICAClient::PutSessionSharingKey ( _bstr_t pVal ) {
+    HRESULT _hr = put_SessionSharingKey(pVal);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+}
+
+inline long IICAClient::DisconnectSessions ( _bstr_t pGroupId ) {
+    long _result = 0;
+    HRESULT _hr = raw_DisconnectSessions(pGroupId, &_result);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _result;
+}
+
+inline long IICAClient::LogoffSessions ( _bstr_t pGroupId ) {
+    long _result = 0;
+    HRESULT _hr = raw_LogoffSessions(pGroupId, &_result);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _result;
+}
+
+inline long IICAClient::SetSessionGroupId ( _bstr_t pGroupId ) {
+    long _result = 0;
+    HRESULT _hr = raw_SetSessionGroupId(pGroupId, &_result);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _result;
+}
+
+inline long IICAClient::GetSessionHandle ( ) {
+    long _result = 0;
+    HRESULT _hr = raw_GetSessionHandle(&_result);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _result;
+}
+
+inline long IICAClient::SwitchSession ( long hSession ) {
+    long _result = 0;
+    HRESULT _hr = raw_SwitchSession(hSession, &_result);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _result;
+}
+
+inline long IICAClient::GetSessionCount ( ) {
+    long _result = 0;
+    HRESULT _hr = raw_GetSessionCount(&_result);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _result;
+}
+
+inline long IICAClient::GetSessionHandleByIndex ( long Index ) {
+    long _result = 0;
+    HRESULT _hr = raw_GetSessionHandleByIndex(Index, &_result);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _result;
+}
+
+inline long IICAClient::GetSessionGroupCount ( _bstr_t pGroupId ) {
+    long _result = 0;
+    HRESULT _hr = raw_GetSessionGroupCount(pGroupId, &_result);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _result;
+}
+
+inline VARIANT_BOOL IICAClient::GetIPCLaunch ( ) {
+    VARIANT_BOOL _result = 0;
+    HRESULT _hr = get_IPCLaunch(&_result);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _result;
+}
+
+inline void IICAClient::PutIPCLaunch ( VARIANT_BOOL pVal ) {
+    HRESULT _hr = put_IPCLaunch(pVal);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+}
+
+inline VARIANT_BOOL IICAClient::GetAudioDuringDetach ( ) {
+    VARIANT_BOOL _result = 0;
+    HRESULT _hr = get_AudioDuringDetach(&_result);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _result;
+}
+
+inline void IICAClient::PutAudioDuringDetach ( VARIANT_BOOL pVal ) {
+    HRESULT _hr = put_AudioDuringDetach(pVal);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+}
+
+inline _bstr_t IICAClient::GetHotkey11Char ( ) {
+    BSTR _result = 0;
+    HRESULT _hr = get_Hotkey11Char(&_result);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _bstr_t(_result, false);
+}
+
+inline void IICAClient::PutHotkey11Char ( _bstr_t pVal ) {
+    HRESULT _hr = put_Hotkey11Char(pVal);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+}
+
+inline _bstr_t IICAClient::GetHotkey11Shift ( ) {
+    BSTR _result = 0;
+    HRESULT _hr = get_Hotkey11Shift(&_result);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _bstr_t(_result, false);
+}
+
+inline void IICAClient::PutHotkey11Shift ( _bstr_t pVal ) {
+    HRESULT _hr = put_Hotkey11Shift(pVal);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+}
+
+inline VARIANT_BOOL IICAClient::IsPassThrough ( ) {
+    VARIANT_BOOL _result = 0;
+    HRESULT _hr = raw_IsPassThrough(&_result);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _result;
+}
+
+inline VARIANT_BOOL IICAClient::GetVirtualCOMPortEmulation ( ) {
+    VARIANT_BOOL _result = 0;
+    HRESULT _hr = get_VirtualCOMPortEmulation(&_result);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _result;
+}
+
+inline void IICAClient::PutVirtualCOMPortEmulation ( VARIANT_BOOL pVal ) {
+    HRESULT _hr = put_VirtualCOMPortEmulation(pVal);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+}
+
+//
+// dispinterface _IMouseEvents wrapper method implementations
+//
+
+inline HRESULT _IMouseEvents::OnMove ( long buttonState, long modifierState, long XPos, long YPos ) {
+    return _com_dispatch_method(this, 0x1, DISPATCH_METHOD, VT_EMPTY, NULL, 
+        L"\x0003\x0003\x0003\x0003", buttonState, modifierState, XPos, YPos);
+}
+
+inline HRESULT _IMouseEvents::OnMouseDown ( long buttonState, long modifierState, long XPos, long YPos ) {
+    return _com_dispatch_method(this, 0x3, DISPATCH_METHOD, VT_EMPTY, NULL, 
+        L"\x0003\x0003\x0003\x0003", buttonState, modifierState, XPos, YPos);
+}
+
+inline HRESULT _IMouseEvents::OnMouseUp ( long buttonState, long modifierState, long XPos, long YPos ) {
+    return _com_dispatch_method(this, 0x2, DISPATCH_METHOD, VT_EMPTY, NULL, 
+        L"\x0003\x0003\x0003\x0003", buttonState, modifierState, XPos, YPos);
+}
+
+inline HRESULT _IMouseEvents::OnDoubleClick ( ) {
+    return _com_dispatch_method(this, 0x4, DISPATCH_METHOD, VT_EMPTY, NULL, NULL);
+}
+
+//
+// dispinterface _IKeyboardEvents wrapper method implementations
+//
+
+inline HRESULT _IKeyboardEvents::OnKeyUp ( long keyId, long modifierState ) {
+    return _com_dispatch_method(this, 0x1, DISPATCH_METHOD, VT_EMPTY, NULL, 
+        L"\x0003\x0003", keyId, modifierState);
+}
+
+inline HRESULT _IKeyboardEvents::OnKeyDown ( long keyId, long modifierState ) {
+    return _com_dispatch_method(this, 0x2, DISPATCH_METHOD, VT_EMPTY, NULL, 
+        L"\x0003\x0003", keyId, modifierState);
+}
+
+//
+// dispinterface _IScreenShotEvents wrapper method implementations
+//
+
+inline HRESULT _IScreenShotEvents::OnUpdate ( _bstr_t BitmapHash ) {
+    return _com_dispatch_method(this, 0x1, DISPATCH_METHOD, VT_EMPTY, NULL, 
+        L"\x0008", (BSTR)BitmapHash);
+}
+
+//
+// dispinterface _IWindowEvents wrapper method implementations
+//
+
+inline HRESULT _IWindowEvents::OnMove ( long XPos, long YPos ) {
+    HRESULT _result = 0;
+    _com_dispatch_method(this, 0x1, DISPATCH_METHOD, VT_ERROR, (void*)&_result, 
+        L"\x0003\x0003", XPos, YPos);
+    return _result;
+}
+
+inline HRESULT _IWindowEvents::OnSize ( long Width, long Height ) {
+    HRESULT _result = 0;
+    _com_dispatch_method(this, 0x2, DISPATCH_METHOD, VT_ERROR, (void*)&_result, 
+        L"\x0003\x0003", Width, Height);
+    return _result;
+}
+
+inline HRESULT _IWindowEvents::OnActivate ( ) {
+    HRESULT _result = 0;
+    _com_dispatch_method(this, 0x3, DISPATCH_METHOD, VT_ERROR, (void*)&_result, NULL);
+    return _result;
+}
+
+inline HRESULT _IWindowEvents::OnDeactivate ( ) {
+    HRESULT _result = 0;
+    _com_dispatch_method(this, 0x4, DISPATCH_METHOD, VT_ERROR, (void*)&_result, NULL);
+    return _result;
+}
+
+inline HRESULT _IWindowEvents::OnMinimize ( ) {
+    HRESULT _result = 0;
+    _com_dispatch_method(this, 0x5, DISPATCH_METHOD, VT_ERROR, (void*)&_result, NULL);
+    return _result;
+}
+
+inline HRESULT _IWindowEvents::OnCaptionChange ( _bstr_t Caption ) {
+    HRESULT _result = 0;
+    _com_dispatch_method(this, 0x6, DISPATCH_METHOD, VT_ERROR, (void*)&_result, 
+        L"\x0008", (BSTR)Caption);
+    return _result;
+}
+
+inline HRESULT _IWindowEvents::OnStyleChange ( long Style, long ExtendedStyle ) {
+    HRESULT _result = 0;
+    _com_dispatch_method(this, 0x7, DISPATCH_METHOD, VT_ERROR, (void*)&_result, 
+        L"\x0003\x0003", Style, ExtendedStyle);
+    return _result;
+}
+
+inline HRESULT _IWindowEvents::OnSmallIconChange ( _bstr_t SmallIconHash ) {
+    HRESULT _result = 0;
+    _com_dispatch_method(this, 0x8, DISPATCH_METHOD, VT_ERROR, (void*)&_result, 
+        L"\x0008", (BSTR)SmallIconHash);
+    return _result;
+}
+
+inline HRESULT _IWindowEvents::OnLargeIconChange ( _bstr_t LargeIconHash ) {
+    HRESULT _result = 0;
+    _com_dispatch_method(this, 0x9, DISPATCH_METHOD, VT_ERROR, (void*)&_result, 
+        L"\x0008", (BSTR)LargeIconHash);
+    return _result;
+}
+
+inline HRESULT _IWindowEvents::OnDestroy ( ) {
+    HRESULT _result = 0;
+    _com_dispatch_method(this, 0xa, DISPATCH_METHOD, VT_ERROR, (void*)&_result, NULL);
+    return _result;
+}
+
+//
+// dispinterface _ISessionEvents wrapper method implementations
+//
+
+inline HRESULT _ISessionEvents::OnWindowCreate ( struct IWindow * window ) {
+    HRESULT _result = 0;
+    _com_dispatch_method(this, 0x1, DISPATCH_METHOD, VT_ERROR, (void*)&_result, 
+        L"\x0009", window);
+    return _result;
+}
+
+inline HRESULT _ISessionEvents::OnWindowDestroy ( struct IWindow * window ) {
+    HRESULT _result = 0;
+    _com_dispatch_method(this, 0x2, DISPATCH_METHOD, VT_ERROR, (void*)&_result, 
+        L"\x0009", window);
+    return _result;
+}
+
+inline HRESULT _ISessionEvents::OnPingAck ( _bstr_t pingInfo, long roundTripTime ) {
+    HRESULT _result = 0;
+    _com_dispatch_method(this, 0x4, DISPATCH_METHOD, VT_ERROR, (void*)&_result, 
+        L"\x0008\x0003", (BSTR)pingInfo, roundTripTime);
+    return _result;
+}
+
+inline HRESULT _ISessionEvents::OnWindowForeground ( long WindowID ) {
+    HRESULT _result = 0;
+    _com_dispatch_method(this, 0x5, DISPATCH_METHOD, VT_ERROR, (void*)&_result, 
+        L"\x0003", WindowID);
+    return _result;
+}
