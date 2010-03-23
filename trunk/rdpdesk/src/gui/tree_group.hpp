@@ -1,8 +1,19 @@
+///////////////////////////////////////////////////////////////////////////////
+// File name:   tree_group.hpp
+// Version:     0.0
+// Purpose: 
+// Time-stamp:  "2010-03-07 23:31:12" 
+// E-mail:      rdpdesk@rdpdesk.com
+// $Id$ 
+// Copyright:   (c) 2009-2010 RDPDesk <rdpdesk@rdpdesk.com> 
+// Licence:     GPL v3 
+///////////////////////////////////////////////////////////////////////////////
+
 #ifndef TREEGROUP
 #define TREEGROUP
 
-#include "fastconn_dialog.hpp"
-
+//#include "fastconn_dialog.hpp"
+/*
 #ifdef __WXMSW__
 #include "wxRDP_win.hpp"
 #endif
@@ -10,6 +21,13 @@
 #ifdef __WXGTK__
 #include "wxRDP_nix.hpp"
 #endif
+*/
+
+#include <wx/wx.h>
+#include <wx/artprov.h>
+#include <wx/imaglist.h>
+
+#include "main_window.hpp"
 
 const int ID_RDPTREE = 170;
 const int ID_FAVORITESTREE = 170;
@@ -48,7 +66,7 @@ public:
 		dwConnCount = 0;
 		uniq_name = 0;
 	}
-    
+
 	DWORD dwObjCount;
 	DWORD dwConnCount;
 	int uniq_name;
@@ -61,80 +79,81 @@ class RDPTree : public wxTreeCtrl
 {
 public:
 
-	RDPTree(Main_Frame * main, wxWindow *parent, const wxWindowID id,
-               const wxPoint& pos, const wxSize& size,
-               long style);
+   RDPTree(Main_Frame * main, wxWindow *parent, const wxWindowID id,
+	   const wxPoint& pos, const wxSize& size,
+	   long style);
 
-	virtual ~RDPTree(){};
+   virtual ~RDPTree(){};
 		
-	wxArrayTreeItemIds items;
-	wxTreeItemId root;
-	wxTreeItemId base;
-	void LoadSettings();
-	void ReloadSettings();
+   wxArrayTreeItemIds items;
+   wxTreeItemId root;
+   
+   wxTreeItemId base;
+   void LoadSettings();
+   void ReloadSettings();
 
-	Main_Frame * main_frame;
-	wxString * string_server_list;
-	int lineCount;
-	wxString currstring;
-	int curr_uniq_name;
+   Main_Frame * main_frame;
+   wxString * string_server_list;
+   int lineCount;
+   wxString currstring;
+   int curr_uniq_name;
 
-	BOOL IsFavorites;
+   BOOL IsFavorites;
 
-	int fcount;
-	int fmax;
+   int fcount;
+   int fmax;
 
-	void on_dleft_click(wxMouseEvent& event);
-	void on_right_click(wxMouseEvent& event);
+   void on_dleft_click(wxMouseEvent& event);
+   void on_right_click(wxMouseEvent& event);
 
 
-	wxTreeItemId curr_drag;
-	void on_begin_drag(wxTreeEvent& event);
-	void on_end_drag(wxTreeEvent& event);
+   wxTreeItemId curr_drag;
+   void on_begin_drag(wxTreeEvent& event);
+   void on_end_drag(wxTreeEvent& event);
 
-	void createmenu(wxTreeEvent& event);
+   void createmenu(wxTreeEvent& event);
 	
-	void on_event_from_wxrdp(wxCommandEvent& event);
-	void from_wxrdp(wxString info, int type);
-	void from_wxrdp(int info_uniq_name, int type);
+   void on_event_from_wxrdp(wxCommandEvent& event);
+   void from_wxrdp(wxString info, int type);
+   void from_wxrdp(int info_uniq_name, int type);
 	
-	void on_deleting_item(wxTreeEvent& event);
-	void on_activated(wxTreeEvent& event);
-	void on_key_down(wxTreeEvent& event);
-	void on_tree_connect(wxCommandEvent& event);
-	void on_tree_delete(wxCommandEvent& event);
-	void on_tree_change(wxCommandEvent& event);
-	void on_tree_clone(wxCommandEvent& event);
-	void on_add_group(wxCommandEvent& event);
-	void on_tree_delete_from_favorites(wxCommandEvent& event);
-	void on_tree_set_credentials(wxCommandEvent& event);
-	void on_kill_focus(wxFocusEvent& event);
+   void on_deleting_item(wxTreeEvent& event);
+   void on_activated(wxTreeEvent& event);
+   void on_key_down(wxTreeEvent& event);
+   void on_tree_connect(wxCommandEvent& event);
+   void on_tree_delete(wxCommandEvent& event);
+   void on_tree_change(wxCommandEvent& event);
+   void on_tree_clone(wxCommandEvent& event);
+   void on_add_group(wxCommandEvent& event);
+   void on_tree_delete_from_favorites(wxCommandEvent& event);
+   void on_tree_set_credentials(wxCommandEvent& event);
+   void on_kill_focus(wxFocusEvent& event);
 private:
-	int find_min_favorites(int * un);
-	BOOL IsFavoritesFull();
+   int find_min_favorites(int * un);
+   BOOL IsFavoritesFull();
 
-	void sort_group(wxTreeItemId group);
-	BOOL IsGroup(wxTreeItemId item);
-	BOOL IsRDPConn(wxTreeItemId item);
-	wxTreeItemId create_new_group();
-	void delete_item(wxTreeItemId id);
-	void delete_this_item(wxString item_text);
-	wxTreeItemId find_this_item(wxString item_text);
-	wxTreeItemId find_item_by_uniq_name(int uniq_name);
-	wxTreeItemId find_this_group(wxString group_name);
+   void sort_group(wxTreeItemId group);
+   BOOL IsGroup(wxTreeItemId item);
+   BOOL IsRDPConn(wxTreeItemId item);
+   wxTreeItemId create_new_group();
+   void delete_item(wxTreeItemId id);
+   void delete_this_item(wxString item_text);
+   wxTreeItemId find_this_item(wxString item_text);
+   wxTreeItemId find_item_by_uniq_name(int uniq_name);
+   wxTreeItemId find_this_group(wxString group_name);
 
-	void redraw(wxTreeItemId item);
-	void move_item(wxTreeItemId item, wxTreeItemId group);
+   void redraw(wxTreeItemId item);
+   void move_item(wxTreeItemId item, wxTreeItemId group);
 
-	void get_rdpbase_item(wxTreeItemId item, RDPConn * rdpconn);
-	void refresh_rdpbase_item(RDPConn * rdpconn);
+   void get_rdpbase_item(wxTreeItemId item, RDPConn * rdpconn);
+   void refresh_rdpbase_item(RDPConn * rdpconn);
 	
-	BOOL item_already_exists(wxTreeItemId id);
-	BOOL group_already_exists(wxString group_name);
+   BOOL item_already_exists(wxTreeItemId id);
+   BOOL group_already_exists(wxString group_name);
 
-	void add_to_favorites(wxTreeItemId id, DWORD dwCurrentConnectionCount);
+   void add_to_favorites(wxTreeItemId id,  Options_HashMap local_options);
 
-	DECLARE_EVENT_TABLE()
+   DECLARE_EVENT_TABLE()
 
 };
 
@@ -167,6 +186,8 @@ private:
 	DECLARE_EVENT_TABLE()
   
 };
+
+#define TREEPANEL(ptr) ((TreePanel *)ptr)
 
 const int ID_CREDSDIALOG_OK = 185;
 const int ID_CREDSDIALOG_CANCEL = 186;

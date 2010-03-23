@@ -1,15 +1,12 @@
 ///////////////////////////////////////////////////////////////////////////////
-// File name: small_shoot.hpp
-// Date create: Fri Sep 25 13:35:48 2009
-// Version: 0.0
-// Time-stamp: "2009-10-09 13:12:33" 
-// E-mail: 
-// Content-Type: text/plain; charset=utf8
+// File name:   small_shoot.hpp
+// Version:     0.0
+// Purpose: 
+// Time-stamp:  "2010-03-03 18:23:47" 
+// E-mail:      rdpdesk@rdpdesk.com
 // $Id$ 
-// Description: 
-// 
-// 
-// 
+// Copyright:   (c) 2009-2010 RDPDesk <rdpdesk@rdpdesk.com> 
+// Licence:     GPL v3 
 ///////////////////////////////////////////////////////////////////////////////
 
 #ifndef SMALL_SHOOT_HPP
@@ -17,9 +14,9 @@
 
 #include <wx/wx.h>
 #include "rdpbasedefs.hpp"
-#ifdef __WXGTK__
-#include "main_window.hpp"
-#endif
+//#ifdef __WXGTK__
+//#include "main_window.hpp"
+//#endif
 
 const int ID_CONNECT_FROM_SCREENSHOT = 142;
 
