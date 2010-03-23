@@ -1,3 +1,12 @@
+rdpdesk (2.0-1) unstable; urgency=low
+
+  * Add support Citrix ICA client
+  * Rebuld configurations dialogs
+  * Now every backands have personal configuration dialog.
+  * Fix errors.
+
+ -- rdpdesk <rdpdesk@rdpdesk.com>  Tue, 23 Mar 2010 12:25:31 +0400
+
 rdpdesk (1.0-1) unstable; urgency=low
 
   * Initial release
