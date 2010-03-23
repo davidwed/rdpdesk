@@ -1,130 +1,179 @@
 ///////////////////////////////////////////////////////////////////////////////
-// File name: splitter.cpp
-// Date create: Fri Sep 25 13:39:02 2009
-// Version: 0.0
-// Time-stamp: "2009-11-13 17:43:53" 
-// E-mail: 
-// Content-Type: text/plain; charset=utf8
+// File name:   splitter.cpp
+// Version:     0.0
+// Purpose: 
+// Time-stamp:  "2010-03-21 21:36:06" 
+// E-mail:      rdpdesk@rdpdesk.com
 // $Id$ 
-// Description: 
-// 
-// 
-// 
+// Copyright:   (c) 2009-2010 RDPDesk <rdpdesk@rdpdesk.com> 
+// Licence:     GPL v3 
 ///////////////////////////////////////////////////////////////////////////////
 
 #include "splitter.hpp"
-#include "main_window.hpp"
+//#include "BasicConnection.hpp"
+#include "small_shoot.hpp"
 
 #ifdef __WXGTK__
-void wxSplitterRDP::init()
+#include "RDPConnection_nix.hpp"
+#include "ICAConnection_nix.hpp"
+#endif
+
+#ifdef __WXMSW__
+#include "RDPConnection_win.hpp"
+#include "ICAConnection_win.hpp"
+#endif
+//#include "main_window.hpp"
+
+#ifdef __WXGTK__
+///////////////////////////////////////////////////////////////////////////////
+//! \brief Initialise main spliter
+///////////////////////////////////////////////////////////////////////////////
+void ConnSplitter::init()
 {
-	//bool local_status = false;
-	wxSize szRDP = GetClientSize();
-	this->rdp = new wxRDP(main_frame,rdpc,this,wxID_ANY,wxPoint(0,0),szRDP,0,wxT("Test"));
-	if (rdp != NULL)
-	{
-		this->screenshot = new PanelBitmapBtn(this,-1,wxDefaultPosition,wxDefaultSize,0);
-		screenshot->main_frame = main_frame;
-	
-		this->screenshot->Hide();
-		this->Initialize(rdp);
-		this->SetSashGravity(0.3);
-		this->SetSashSize(1);
-		m_timer_screenshot.SetOwner(this,ID_TIMER_SCREENSHOT);
-	}
-	
+   //bool local_status = false;
+   wxSize szRDP = GetClientSize();
+   // if (rdpc.conn_type == ConnectionType_RDP)
+   // {
+   //    this->conn = new RDPConnection(main_frame,rdpc,this,wxID_ANY,wxPoint(0,0),szRDP,0,wxT("Test"));
+   // }
+   // else if (rdpc.conn_type == ConnectionType_ICA)
+   // {
+   //    this->conn = new ICAConnection(main_frame,rdpc,this,wxID_ANY,wxPoint(0,0),szRDP,0,wxT("Test"));
+   // }
+   // else
+   // {
+   //    this->conn = new RDPConnection(main_frame,rdpc,this,wxID_ANY,wxPoint(0,0),szRDP,0,wxT("Test"));
+   // }
+   if (options[wxT("proto")] == wxT("rdp"))
+   {
+      this->conn = new RDPConnection(main_frame,options,this,wxID_ANY,wxPoint(0,0),szRDP,0,wxT("Test"));
+   }
+   else if (options[wxT("proto")] == wxT("ica"))
+   {
+      this->conn = new ICAConnection(main_frame,options,this,wxID_ANY,wxPoint(0,0),szRDP,0,wxT("Test"));
+   }
+   else
+   {
+      this->conn = new RDPConnection(main_frame,options,this,wxID_ANY,wxPoint(0,0),szRDP,0,wxT("Test"));
+   }
+
+   if (conn != NULL)
+   {
+      this->screenshot = new PanelBitmapBtn(this,-1,wxDefaultPosition,wxDefaultSize,0);
+      screenshot->main_frame = main_frame;
+
+      this->screenshot->Hide();
+      this->Initialize(conn);
+      this->SetSashGravity(0.3);
+      this->SetSashSize(1);
+      m_timer_screenshot.SetOwner(this,ID_TIMER_SCREENSHOT);
+   }
 }
 #endif
 
 #ifdef __WXGTK__
-void wxSplitterRDP::switch_to_on()
+void ConnSplitter::switch_to_on()
 {
-	screenshot->SetPosition(wxPoint(0,0));
-	screenshot->SetSize(this->GetClientSize());
-	screenshot->bmpbtn->SetPosition(wxPoint(0,0));
-	screenshot->bmpbtn->SetSize(screenshot->GetClientSize()); 
+   screenshot->SetPosition(wxPoint(0,0));
+   screenshot->SetSize(this->GetClientSize());
+   screenshot->bmpbtn->SetPosition(wxPoint(0,0));
+   screenshot->bmpbtn->SetSize(screenshot->GetClientSize()); 
 
-	screenshot->bmpbtn->SetBitmapFocus(bmp_screenshot);  
-	screenshot->bmpbtn->SetBitmapSelected(bmp_screenshot); 
-	screenshot->bmpbtn->SetBitmapDisabled(bmp_screenshot);  
-	screenshot->bmpbtn->SetBitmapHover(bmp_screenshot);  
-	screenshot->bmpbtn->SetBitmapLabel(bmp_screenshot);  
+   screenshot->bmpbtn->SetBitmapFocus(bmp_screenshot);  
+   screenshot->bmpbtn->SetBitmapSelected(bmp_screenshot); 
+   screenshot->bmpbtn->SetBitmapDisabled(bmp_screenshot);  
+   screenshot->bmpbtn->SetBitmapHover(bmp_screenshot);  
+   screenshot->bmpbtn->SetBitmapLabel(bmp_screenshot);  
 
-	main_frame->nb->Refresh();
-	main_frame->nb->Update();
+   main_frame->nb->Refresh();
+   main_frame->nb->Update();
 
-	Initialize(screenshot);
-	Unsplit(rdp);
-	screenshot->Show(true);
-	rdp->Hide();
+   Initialize(screenshot);
+   Unsplit(conn);
+   screenshot->Show(true);
+   conn->Hide();
 
-	state = FALSE;
+   state = FALSE;
 
 }
 
-void wxSplitterRDP::switch_to_off()
+void ConnSplitter::switch_to_off()
 {
-	Initialize(rdp);
-	Unsplit(screenshot);
-	screenshot->Hide();
-	rdp->Show(true);
-	rdp->SetFocus();
-	state = TRUE;
+   Initialize(conn);
+   Unsplit(screenshot);
+   screenshot->Hide();
+   conn->Show(true);
+   conn->SetFocus();
+   state = TRUE;
 
 }
 
 
-void wxSplitterRDP::switch_state()
+void ConnSplitter::switch_state()
 {
-	if (state)
-	{
-		switch_to_on();
-	}
-	else
-	{
-		switch_to_off();
-	}
+   if (state)
+   {
+      switch_to_on();
+   }
+   else
+   {
+      switch_to_off();
+   }
 }
 #endif
 
-
-
-
-wxSplitterRDP::wxSplitterRDP(Main_Frame * main,RDPConn rdpsettings ,wxWindow * parent, wxWindowID id,
-        const wxPoint& pos, const wxSize& size,long style ,	const wxString& name):
-wxSplitterWindow(parent,-1,pos,size,wxSP_3D),
-rdp(NULL),
-screenshot(NULL)
+ConnSplitter::ConnSplitter(Main_Frame * main,Options_HashMap local_options ,wxWindow * parent,
+			   wxWindowID id, const wxPoint& pos, const wxSize& size,
+			   long style, const wxString& name):
+   wxSplitterWindow(parent,-1,pos,size,wxSP_3D),
+   conn(NULL),
+   screenshot(NULL)
 {
-	main_frame = main;
-	state = FALSE;
-	rdpc = rdpsettings;
+   main_frame = main;
+   state = FALSE;
+   options = local_options;
+}
+
+BOOL ConnSplitter::check_conn()
+{
+   if (conn == NULL) return false;
+   return conn->bObjectOk;
 }
 
 #ifdef __WXMSW__
-void wxSplitterRDP::init()
+void ConnSplitter::init()
 {
+   if (options[wxT("proto")] == wxT("rdp"))
+   {
+      this->conn = new RDPConnection(main_frame,options,this,/*__uuidof(MSTSCLib::MsRdpClient) ,*/this->GetId() ,wxPoint(0,0),GetClientSize(),WS_VISIBLE ,wxT("Test"));
+   }
+   else if (options[wxT("proto")] == wxT("ica"))
+   {
+      this->conn = new ICAConnection(main_frame,options,this,/*__uuidof(MSTSCLib::MsRdpClient) ,*/this->GetId() ,wxPoint(0,0),GetClientSize(),WS_VISIBLE ,wxT("Test"));
+   }
+   else  // TEST 
+   {
+      this->conn = new RDPConnection(main_frame,options,this,/*__uuidof(MSTSCLib::MsRdpClient) ,*/this->GetId() ,wxPoint(0,0),GetClientSize(),WS_VISIBLE ,wxT("Test"));
+   }
+   this->conn->conn_splitter = this;
 	
-	this->rdp = new wxRDP(main_frame,rdpc,this,__uuidof(MSTSCLib::MsRdpClient) ,this->GetId() ,wxPoint(0,0),GetClientSize(),WS_VISIBLE ,wxT("Test"));
-	this->rdp->splitter_rdp = this;
+   this->screenshot = new PanelBitmapBtn(this,-1,wxDefaultPosition,wxDefaultSize,WS_VISIBLE);
+   screenshot->main_frame = main_frame;
 	
-	this->screenshot = new PanelBitmapBtn(this,-1,wxDefaultPosition,wxDefaultSize,WS_VISIBLE);
-	screenshot->main_frame = main_frame;
-	
-	this->screenshot->Hide(); 
-	this->Initialize( rdp);
-	this->SetSashGravity(0.3);
-	this->SetSashSize(1);
+   this->screenshot->Hide(); 
+   this->Initialize( conn);
+   this->SetSashGravity(0.3);
+   this->SetSashSize(1);
 
-	m_timer_screenshot.SetOwner(this,ID_TIMER_SCREENSHOT);
+   m_timer_screenshot.SetOwner(this,ID_TIMER_SCREENSHOT);
 }
 #endif
-wxSplitterRDP::~wxSplitterRDP()
+ConnSplitter::~ConnSplitter()
 {
-	if (rdp) 
+	if (conn) 
 	{
-		rdp->Destroy(); //delete rdp; 
-		rdp = NULL;
+		conn->Destroy(); //delete conn; 
+		conn = NULL;
 	}
 	if (screenshot) 
 	{
@@ -133,9 +182,9 @@ wxSplitterRDP::~wxSplitterRDP()
 	}
 }
 
-void wxSplitterRDP::on_timer_screenshot(wxTimerEvent& event)
+void ConnSplitter::on_timer_screenshot(wxTimerEvent& event)
 {
-	if (rdp && screenshot)
+	if (conn && screenshot)
 	{
 		if (state)
 		{
@@ -144,9 +193,9 @@ void wxSplitterRDP::on_timer_screenshot(wxTimerEvent& event)
 	}
 }
 
-void wxSplitterRDP::on_enter_focus(wxFocusEvent& event)
+void ConnSplitter::on_enter_focus(wxFocusEvent& event)
 {
-	if (rdp && screenshot)
+	if (conn && screenshot)
 	{
 		if (!m_timer_screenshot.IsRunning())
 		{
@@ -162,7 +211,7 @@ void wxSplitterRDP::on_enter_focus(wxFocusEvent& event)
 	event.Skip(); 
 }
 
-void wxSplitterRDP::on_kill_focus(wxFocusEvent& event)
+void ConnSplitter::on_kill_focus(wxFocusEvent& event)
 {
 	if (screenshot)
 	{
@@ -174,7 +223,7 @@ void wxSplitterRDP::on_kill_focus(wxFocusEvent& event)
 	event.Skip(); 
 }
 
-void wxSplitterRDP::on_activate(wxActivateEvent& event)
+void ConnSplitter::on_activate(wxActivateEvent& event)
 {
 	if (screenshot)
 	{
@@ -202,9 +251,9 @@ void wxSplitterRDP::on_activate(wxActivateEvent& event)
 	event.Skip();
 }
 
-void wxSplitterRDP::create_screenshot()
+void ConnSplitter::create_screenshot()
 {
-	wxClientDC client_dc(this->rdp);
+	wxClientDC client_dc(this->conn);
 	wxBitmap bmp(client_dc.GetSize().GetWidth(), client_dc.GetSize().GetHeight()); 
 	wxMemoryDC mdc(bmp); 
 	int x_bmp = bmp.GetWidth();
@@ -220,9 +269,9 @@ void wxSplitterRDP::create_screenshot()
 	bmp_screenshot = bmp;
 }
 #ifdef __WXMSW__
-void wxSplitterRDP::switch_state()
+void ConnSplitter::switch_state()
 {
-	if (rdp && screenshot)
+	if (conn && screenshot)
 	{
 		if (state)
 		{
@@ -240,26 +289,26 @@ void wxSplitterRDP::switch_state()
 			main_frame->nb->Update();
 	
 			Initialize(screenshot);
-			Unsplit(rdp);
+			Unsplit(conn);
 	
 			screenshot->CenterOnParent();
 			screenshot->bmpbtn->CenterOnParent();
 			screenshot->Show(true);
-			rdp->Hide();
+			conn->Hide();
 
 			state = FALSE;
 		}
 		else
 		{
-			Initialize(rdp);
+			Initialize(conn);
 			Unsplit(screenshot);
 			screenshot->CenterOnParent();
 			screenshot->bmpbtn->CenterOnParent();
 			screenshot->Hide();
-			rdp->Show(true);
-			if ((wxSplitterRDP *)main_frame->nb->GetPage(main_frame->nb->GetSelection()) == this)
+			conn->Show(true);
+			if ((ConnSplitter *)main_frame->nb->GetPage(main_frame->nb->GetSelection()) == this)
 			{
-				rdp->SetFocus();
+				conn->SetFocus();
 			}
 			state = TRUE;
 		}

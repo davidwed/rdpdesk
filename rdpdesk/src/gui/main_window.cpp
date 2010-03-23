@@ -1,222 +1,24 @@
 ///////////////////////////////////////////////////////////////////////////////
-// File name: main_window.cpp
-// Date create: Tue Jul 21 22:04:48 2009
-// Version: 0.0
-// Time-stamp: "2009-11-20 12:51:10"
-// E-mail: 
-// Content-Type: text/plain; charset=utf8
+// File name:   main_window.cpp
+// Version:     0.0
+// Purpose: 
+// Time-stamp:  "2010-03-21 21:14:55" 
+// E-mail:      rdpdesk@rdpdesk.com
 // $Id$ 
-// Description: 
-//
-//
-//
+// Copyright:   (c) 2009-2010 RDPDesk <rdpdesk@rdpdesk.com> 
+// Licence:     GPL v3 
 ///////////////////////////////////////////////////////////////////////////////
 
 #include "main_window.hpp"
 
+#include "fastconn_dialog.hpp"
+#include "rdp_dialogs.hpp"
+#include "settings_dialog.hpp"
+#include "splitter.hpp"
+#include "BasicConnection.hpp"
+#include "tree_group.hpp"
+#include "small_shoot.hpp"
 
-
-#ifdef __WXMSW__
-MSTSCLib::IMsRdpClient* pInterfaceRDP;
-MSTSCLib::IMsTscAxEvents * pEvtRdp;
-#include <wincrypt.h>
-#pragma comment (lib,"crypt32.lib")
-#endif
-
-
-BOOL bTestScreen = TRUE;
-
-MainSplitter::MainSplitter(Main_Frame * parent, wxWindowID id, const wxPoint& pos,const wxSize& size,long style, const wxString& name)
-:wxSplitterWindow(parent,-1,pos,size,wxSP_3D)
-{
-	
-}
-
-
-
-#include "res/main.xpm"
-
-void Main_Frame::on_about(wxCommandEvent& event)
-{
-	wxAboutDialogInfo about;
-	about.SetVersion(TS_VERSION);
-	about.SetName(TS_NAME);
-	about.SetDescription(TS_DESCRIPTION);
-	about.SetCopyright(TS_COPYRIGHT);
-	wxIcon icon;
-	icon.CopyFromBitmap(LOAD_XPM(utilities_terminal32));
-	about.SetIcon(icon);
-	wxAboutBox(about);
-}
-
-void Main_Frame::on_quit(wxCommandEvent& event)
-{
-	wxWindowUpdateLocker frame_lock(this);
-	
-    int iCount = (int)this->nb->GetPageCount();
-	wxCommandEvent evt;
-	evt.SetId(0);
-/*	for (int i = 0; i < iCount; i ++)
-	{
-		this->nb->SetSelection(i);
-		this->on_closepage(evt);
-	}
-*/
-	for (int i = 0; i < iCount; i++)
-	{
-		wxSplitterRDP * splitter_rdp;
-		splitter_rdp = (wxSplitterRDP *)nb->GetPage(i);
-		if (!splitter_rdp) continue;
-
-		wxRDP * rdp = splitter_rdp->rdp;
-		if (!rdp) continue;
-#ifdef __WXMSW__	
-		if (rdp->bConnected)
-		{
-			rdp->Disconnect(); 
-		}
-
-#endif
-#ifdef __WXGTK__
-		rdp->request_close(FALSE);
-#endif
-	}
-	Close();
-}
-
-void Main_Frame::on_closing(wxCloseEvent& event)
-{
-	Show(false);
-	Destroy();
-}
-
-void Main_Frame::AddRDP(RDPConn rdpconn, int info_uniq_name)
-{
-#ifdef __WXGTK__
-	// Check for rdesktop
-	if (!wxFileExists(wxT("/usr/bin/rdesktop")))
-	{
-		wxMessageBox(wxT("rdesktop (RDP client for Linux) not found.\nPlease install rdesktop (www.rdesktop.org)"),wxT("Error"),wxICON_ERROR);
-		return;
-	}
-
-#endif
-
-#ifdef __WXMSW__
-	wxSplitterRDP * splitter_rdp = new wxSplitterRDP(this,rdpconn,nb,nb->GetId() ,wxPoint(220,10),wxSize(770,640),WS_VISIBLE ,wxString("Test",4));
-#endif
-
-#ifdef __WXGTK__
-	wxSplitterRDP * splitter_rdp = new wxSplitterRDP(this,rdpconn,nb,nb->GetId(),wxPoint(220,10),wxSize(770,640),0,wxT("Test"));
-	splitter_rdp->init();
-	
-#endif
-
-	if (splitter_rdp == NULL) 
-	{
-		return;
-	}
-
-	info_uniq_name = rdpconn.uniq_name;
-	
-
-	this->nb->AddPage(splitter_rdp,wxT("Please wait"));
-#ifdef __WXMSW__
-
-	splitter_rdp->init();
-#endif
-	wxRDP * rdp = splitter_rdp->rdp; 
-	if (info_uniq_name > 0)
-	{
-		rdp->info_uniq_name = info_uniq_name;
-		rdp->main_frame->m_panel_tree->rdptree->from_wxrdp(rdp->info_uniq_name,TREEDATA_INC_OBJCOUNT);
-	}
-		
-	if (this->bFocusNewPage) 
-	{
-		this->nb->SetSelection(this->nb->GetPageCount() - 1 );
-	}
-	if (!rdp->DoRdp())
-	{
-		if (bFocusNewPage)
-		{
-			this->nb->SetSelection(0);
-		}
-		int pc = nb->GetPageCount();
-		if (pc > 0) nb->DeletePage(pc - 1);
-		
-		
-		if (this->nb->GetPageCount() > 0) 
-		{
-			EnableConnectionMenu();
-			CheckCurrentConnectionMenu();
-		}
-		else 
-		{
-			DisableConnectionMenu();
-			this->SetStatusText(wxT("No connections"),1);
-		}
-	}
-	else
-	{
-#ifdef __WXGTK__
-		int pc = nb->GetPageCount();
-		if (pc > 0)
-		{
-			if (rdpconn.connection_name != wxT(""))
-				nb->SetPageText(pc - 1,rdpconn.connection_name);
-			else
-				nb->SetPageText(pc - 1,rdpconn.hostname);
-		}
-		
-		EnableConnectionMenu();
-		CheckCurrentConnectionMenu();
-
-#endif
-
-	}
-
-	FocusCurrentPage();
-}
-
-void Main_Frame::on_config(wxCommandEvent& event)
-{
-	RDPConn rdpconn;
-	clear_rdpconn(&rdpconn);
-	
-	RDPDialog dialog(this,wxCAPTION,&rdpconn,this->BaseFile,&base,TRUE);
-	int iRes;
-	iRes = dialog.ShowModal();
-			
-	if (iRes == 0) return;
-	if (iRes == 2)
-	{
-		m_panel_tree->rdptree->ReloadSettings();
-		return;
-	}
-	
-	AddRDP(rdpconn);
-}
-
-
-void HideFrame::on_double_left_click(wxTaskBarIconEvent& event)
-{
-	if (!main_frame->bIconized)
-	{
-		wxCommandEvent evt;
-		evt.SetId(1);
-		main_frame->settingsMenu->Check(ID_HIDEFRAME,true); 
-		main_frame->on_hideframe(evt);
-		return;
-	}
-	else
-	{
-		wxCommandEvent evt;
-		evt.SetId(1);
-		on_menu_restore(evt);
-	}
-	return;
-}
 
 #include "res/document-save.xpm"
 #ifdef __WXMSW__
@@ -241,196 +43,603 @@ void HideFrame::on_double_left_click(wxTaskBarIconEvent& event)
 #endif
 #include "res/go-down.xpm"	
 
+#include "res/main.xpm"
 
-Main_Frame::Main_Frame(const wxString& title, const wxPoint& pos, const wxSize& size, long style)
-	: wxFrame((wxFrame *)NULL, -1, title, pos, size, style),
-	tree(NULL),
-	FrameOK(FALSE)
-{
-	bMaximizeEvent = FALSE;
-	bNeedHideFrame = FALSE;
-
-	GETBASEPATH();
-	wxString temp = BASEPATH;
-
-	Benc bc;
-	if(!bc.Load(&base))
-	{
-		wxMessageBox(wxT("Error read from base"),wxT("Closing application..."),wxICON_ERROR);
-		Close();
-	}
-
-	programsettings ps = load_main_settings();
-#ifdef TS_NORMAL_VERSION
-	bShowFrame = ps.bShowFrame;
-#else
-	bShowFrame = TRUE;
+/*
+#ifdef __WXGTK__
+#include "RDPConnection_nix.hpp"
+#include "ICAConnection_nix.hpp"
 #endif
-	bFocusNewPage = ps.bFocusPage;
-	bUseHideFrame = ps.bIcon;
-	if (!bUseHideFrame)
-	{
-		bShowFrame = TRUE;
-	}
-	
-	bUseCrypt = ps.bUseCrypt; 
 
-	m_hideframe = NULL;
-
-	wxIcon icon_main;
-	icon_main.CopyFromBitmap(LOAD_XPM(utilities_terminal32));
-	SetIcon(icon_main);
-	
-	file_menu = new wxMenu;
-	file_menu->Append(ID_NEWCONNECTION,wxT("&New connection...\tCtrl-N"),_("Create new connection"));
-	file_menu->Append(ID_FASTCONN,wxT("&Fast connection...\tCtrl-F"),_("Fast connection or open saved connection")); 
 #ifdef __WXMSW__
-	file_menu->Append(ID_USERDPFILE,wxT("&Load RDP File...\tCtrl-O"),_("Use saved connection settings"));
-	file_menu->Append(ID_EXPORTRDPFILE,wxT("&Export RDP File...\tCtrl-E"),_("Export WinRDP connection settings"));
+#include "RDPConnection_win.hpp"
+#include "ICAConnection_win.hpp"
 #endif
-	file_menu->AppendSeparator();
-	file_menu->Append(ID_EXITPROGRAM, wxT("E&xit\tAlt-X"),wxT("Quit this program"));
+*/
 
-	settingsMenu = new wxMenu;
-	settingsMenu->AppendCheckItem(ID_SHOWTREE, wxT("&Connections tree...\tCtrl-T"), _("Enable / disable connections tree")); 
-	settingsMenu->AppendCheckItem(ID_HIDEFRAME, wxT("&Hide frame...\tCtrl-H"), _("Hide frame")); 
-	settingsMenu->Append(ID_SETTINGSDIALOG,wxT("&Options...\tAlt-O"),_("Program settings"));
+#ifdef __WXMSW__
+//MSTSCLib::IMsRdpClient* pInterfaceRDP;
+//MSTSCLib::IMsTscAxEvents * pEvtRdp;
+#include <wincrypt.h>
+#pragma comment (lib,"crypt32.lib")
+#endif
 
-	currentConnMenu = new wxMenu;
-	currentConnMenu->Append(ID_CONNECT,wxT("&Connect...\tAlt-C"),_("Connection with current settings"));
-	currentConnMenu->Append(ID_DISCONNECT,wxT("&Disconnect...\tAlt-D"),_("Disconnect  from server or reconnect"));
 
-	currentConnMenu->Append(ID_FULLSCREEN,wxT("&Full screen...\tAlt-F"),_("Create full screen RDP window"));
+BOOL bTestScreen = TRUE;
 
-	currentConnMenu->Append(ID_SAVECONNECTED,wxT("&Save this...\tAlt-S"),_("Save this connection settings"));
-	currentConnMenu->Append(ID_SCREENPHOTO,wxT("&Make screenshot...\tAlt-H"),_("Create screenshot and save this"));
+MainSplitter::MainSplitter(Main_Frame * parent, wxWindowID id, const wxPoint& pos,const wxSize& size,long style, const wxString& name)
+:wxSplitterWindow(parent,-1,pos,size,wxSP_3D)
+{
+}
+
+
+///////////////////////////////////////////////////////////////////////////////
+//! \brief About dialog
+///////////////////////////////////////////////////////////////////////////////
+void Main_Frame::on_about(wxCommandEvent& event)
+{
+    wxAboutDialogInfo about;
+    about.SetVersion(TS_VERSION);
+    about.SetName(TS_NAME);
+    about.SetDescription(TS_DESCRIPTION);
+    about.SetCopyright(TS_COPYRIGHT);
+    wxIcon icon;
+    icon.CopyFromBitmap(LOAD_XPM(utilities_terminal32));
+    about.SetIcon(icon);
+    wxAboutBox(about);
+}
+
+///////////////////////////////////////////////////////////////////////////////
+//! \brief processe Quit event
+///////////////////////////////////////////////////////////////////////////////
+void Main_Frame::on_quit(wxCommandEvent& event)
+{
+	wxWindowUpdateLocker frame_lock(this);
+	
+    int iCount = (int)this->nb->GetPageCount();
+	wxCommandEvent evt;
+	evt.SetId(0);
+/*	for (int i = 0; i < iCount; i ++)
+	{
+		this->nb->SetSelection(i);
+		this->on_closepage(evt);
+	}
+*/
+	for (int i = 0; i < iCount; i++)
+	{
+		ConnSplitter * conn_splitter;
+		conn_splitter = (ConnSplitter *)nb->GetPage(i);
+		if (!conn_splitter) continue;
+
+		/*wxRDP * */ BasicConnection * conn = conn_splitter->conn;
+		if (!conn) continue;
+
+		if (conn->bConnected)
+		{
+			conn->DisconnectClose();
+		}
+		
+/*		
+#ifdef __WXMSW__	
+		if (rdp->bConnected)
+		{
+			rdp->Disconnect(); 
+		}
+
+#endif
+#ifdef __WXGTK__
+		rdp->request_close(FALSE);
+#endif
+*/
+	}
+	Close();
+}
+
+///////////////////////////////////////////////////////////////////////////////
+//! \brief Process Copy event
+///////////////////////////////////////////////////////////////////////////////
+void Main_Frame::on_closing(wxCloseEvent& event)
+{
+	Show(false);
+	Destroy();
+}
+
+///////////////////////////////////////////////////////////////////////////////
+//! \brief Add connections to form
+//! \param RDPConn rdpconn - config
+//! \param int info_uniq_name - uniq number
+///////////////////////////////////////////////////////////////////////////////
+// void Main_Frame::AddRDP(RDPConn rdpconn, int info_uniq_name)
+// {
+// /*
+//   #ifdef __WXGTK__
+//   // Check for rdesktop
+//   if (!wxFileExists(wxT("/usr/bin/rdesktop")))
+//   {
+//   wxMessageBox(wxT("rdesktop (RDP client for Linux) not found.\nPlease
+//   install rdesktop
+//   (www.rdesktop.org)"),wxT("Error"),wxICON_ERROR);
+//   return;
+//   }
+
+//   #endif
+// */	
+//    //rdpconn.conn_type = ConnectionType_RDP;
+
+
+// //	std::cout << "add connection, uniq name = " << info_uniq_name
+// //	<<
+// //   " real uniq name = "<< rdpconn.uniq_name <<  std::endl;
+
+// #ifdef __WXMSW__
+//    ConnSplitter * conn_splitter = new ConnSplitter(this,rdpconn,nb,nb->GetId() ,
+// 						   wxPoint(220,10),wxSize(770,640),WS_VISIBLE ,
+// 						   wxString("Test",4));
+// #endif
+
+// #ifdef __WXGTK__
+//    ConnSplitter * conn_splitter = new ConnSplitter(this,,nb,nb->GetId(),
+// 						   wxPoint(220,10),wxSize(770,640),0,wxT("Test"));
+//    conn_splitter->init();
+//    if (!conn_splitter->check_conn()) 
+//    {
+//       conn_splitter->Destroy();
+//       return;
+//    }
+// #endif
+
+//    if (conn_splitter == NULL) 
+//    {
+//       return;
+//    }
+
+//    if (rdpconn.uniq_name == 0){ wxMessageBox(wxT("0"));
+//    }
+//    info_uniq_name = rdpconn.uniq_name;
+
+//    this->nb->AddPage(conn_splitter,wxT("Please wait"));
+// #ifdef __WXMSW__
+
+//    conn_splitter->init();
+// #endif
+
+   
+//    if (!conn_splitter->check_conn())
+//    {
+//       on_closepage_ne();
+//       return;
+//    }
+
+//    /*wxRDP * */ BasicConnection * conn = conn_splitter->conn; 
+//    if (info_uniq_name > 0)
+//    {
+//       conn->info_uniq_name = info_uniq_name;
+//       TREEPANEL(conn->main_frame->m_panel_tree)->rdptree->from_wxrdp(conn->info_uniq_name,
+// 								     TREEDATA_INC_OBJCOUNT);
+//    }
+
+//    if (this->bFocusNewPage) 
+//    {
+//       this->nb->SetSelection(this->nb->GetPageCount() - 1 );
+//    }
+//    if (!conn->DoConnection())
+//    {
+//       if (bFocusNewPage)
+//       {
+// 	 this->nb->SetSelection(0);
+//       }
+//       int pc = nb->GetPageCount();
+//       if (pc > 0) nb->DeletePage(pc - 1);
+//       if (this->nb->GetPageCount() > 0) 
+//       {
+// 	 EnableConnectionMenu();
+// 	 CheckCurrentConnectionMenu();
+//       }
+//       else 
+//       {
+// 	 DisableConnectionMenu();
+// 	 this->SetStatusText(wxT("No connections"),1);
+//       }
+//    }
+//    else
+//    {
+// #ifdef __WXGTK__
+//       int pc = nb->GetPageCount();
+//       if (pc > 0)
+//       {
+// 	 if (rdpconn.connection_name != wxT(""))
+// 	    nb->SetPageText(pc - 1,rdpconn.connection_name);
+// 	 else
+// 	    nb->SetPageText(pc - 1,rdpconn.hostname);
+//       }
+//       EnableConnectionMenu();
+//       CheckCurrentConnectionMenu();
+
+// #endif
+
+//    }
+
+//    FocusCurrentPage();
+// }
+
+///////////////////////////////////////////////////////////////////////////////
+//! \brief Add connections to form
+//! \param Options_HashMap local_options - options array
+//! \param int info_uniq_name - uniq number
+///////////////////////////////////////////////////////////////////////////////
+void Main_Frame::AddRDP(Options_HashMap local_options, int info_uniq_name)
+{
+/*
+  #ifdef __WXGTK__
+  // Check for rdesktop
+  if (!wxFileExists(wxT("/usr/bin/rdesktop")))
+  {
+  wxMessageBox(wxT("rdesktop (RDP client for Linux) not found.\nPlease
+  install rdesktop
+  (www.rdesktop.org)"),wxT("Error"),wxICON_ERROR);
+  return;
+  }
+
+  #endif
+*/	
+   //rdpconn.conn_type = ConnectionType_RDP;
+
+
+//	std::cout << "add connection, uniq name = " << info_uniq_name
+//	<<
+//   " real uniq name = "<< rdpconn.uniq_name <<  std::endl;
+
+#ifdef __WXMSW__
+   ConnSplitter * conn_splitter = new ConnSplitter(this,local_options,nb,nb->GetId() ,
+						   wxPoint(220,10),wxSize(770,640),WS_VISIBLE ,
+						   wxString("Test",4));
+#endif
 
 #ifdef __WXGTK__
-	currentConnMenu->AppendCheckItem(ID_GRABINPUT,wxT("&Grab input...\tAlt-G"),_("Grab keyboard input"));
+   ConnSplitter * conn_splitter = new ConnSplitter(this,local_options,nb,nb->GetId(),
+						   wxPoint(220,10),wxSize(770,640),0,wxT("Test"));
+   conn_splitter->init();
+   if (!conn_splitter->check_conn()) 
+   {
+      conn_splitter->Destroy();
+//      std::cout << __LINE__ << " " << __func__ << std::endl;
+      return;
+   }
+#endif
+   //std::cout << __LINE__ << " " << __func__ << std::endl;
+
+   
+   if (conn_splitter == NULL) 
+   {
+
+      return;
+   }
+
+   // if (rdpconn.uniq_name == 0)
+   // {
+   //    wxMessageBox(wxT("0"));
+   // }
+   info_uniq_name = wxAtoi(local_options[wxT("uniq_name")]);
+   this->nb->AddPage(conn_splitter,wxT("Please wait"));
+#ifdef __WXMSW__
+
+   conn_splitter->init();
+#endif
+ 
+   if (!conn_splitter->check_conn())
+   {
+      on_closepage_ne();
+      // std::cout << __LINE__ << " " << __func__ << std::endl;
+      return;
+   }
+
+   BasicConnection * conn = conn_splitter->conn; 
+   if (info_uniq_name > 0)
+   {
+      conn->info_uniq_name = info_uniq_name;
+      TREEPANEL(conn->main_frame->m_panel_tree)->rdptree->from_wxrdp(conn->info_uniq_name,
+								     TREEDATA_INC_OBJCOUNT);
+   }
+
+   if (this->bFocusNewPage) 
+   {
+      this->nb->SetSelection(this->nb->GetPageCount() - 1 );
+   }
+   //std::cout << __LINE__ << " " << __func__ << std::endl;
+   //wxMessageBox(local_options[wxT("hostname")]);
+   
+   if (!conn->DoConnection())
+   {
+      if (bFocusNewPage)
+      {
+	 this->nb->SetSelection(0);
+      }
+      int pc = nb->GetPageCount();
+      if (pc > 0) nb->DeletePage(pc - 1);
+      if (this->nb->GetPageCount() > 0) 
+      {
+	 EnableConnectionMenu();
+	 CheckCurrentConnectionMenu();
+      }
+      else 
+      {
+	 DisableConnectionMenu();
+	 this->SetStatusText(wxT("No connections"),1);
+      }
+   }
+   else
+   {
+#ifdef __WXGTK__
+      int pc = nb->GetPageCount();
+      if (pc > 0)
+      {
+	 wxString connection_name, hostname;
+	 connection_name.Clear();
+	 hostname.Clear();
+	 connection_name = local_options[wxT("connection_name")];
+	 hostname = local_options[wxT("hostname")];
+	 if (connection_name != wxT(""))
+	    nb->SetPageText(pc - 1,connection_name);
+	 else
+	    nb->SetPageText(pc - 1,hostname);
+      }
+      EnableConnectionMenu();
+      CheckCurrentConnectionMenu();
+#endif
+
+   }
+
+   FocusCurrentPage();
+}
+
+///////////////////////////////////////////////////////////////////////////////
+//! \brief Process configure event
+///////////////////////////////////////////////////////////////////////////////
+void Main_Frame::on_config(wxCommandEvent& event)
+{
+   Options_HashMap local_options;
+   
+//   wxMessageBox(wxT("THIS")); 
+//   RDPConn rdpconn;
+//	clear_rdpconn(&rdpconn);
+
+   //RDPDialog
+   //dialog(this,wxCAPTION,&rdpconn,this->BaseFile,&base,TRUE);
+   RDPDialog dialog(this);
+   int iRes;
+   iRes = dialog.ShowModal();
+   
+   if (iRes == 0) return;
+   if (iRes == 2)
+   {
+      local_options = dialog.Get_Options();
+      //Add_Connections_Record(&local_options);
+      TREEPANEL(m_panel_tree)->rdptree->ReloadSettings();
+      return;
+   }
+   AddRDP(local_options);
+}
+
+///////////////////////////////////////////////////////////////////////////////
+//! \brief Process double click on element
+///////////////////////////////////////////////////////////////////////////////
+void HideFrame::on_double_left_click(wxTaskBarIconEvent& event)
+{
+	if (!main_frame->bIconized)
+	{
+		wxCommandEvent evt;
+		evt.SetId(1);
+		main_frame->settingsMenu->Check(ID_HIDEFRAME,true); 
+		main_frame->on_hideframe(evt);
+		return;
+	}
+	else
+	{
+		wxCommandEvent evt;
+		evt.SetId(1);
+		on_menu_restore(evt);
+	}
+	return;
+}
+
+
+
+
+Main_Frame::Main_Frame(const wxString& title, const wxPoint& pos, const wxSize& size, long style):
+   wxFrame((wxFrame *)NULL, -1, title, pos, size, style),
+   tree(NULL),
+   FrameOK(FALSE)
+{
+   bMaximizeEvent = FALSE;
+   bNeedHideFrame = FALSE;
+   all_connection_records.Clear();
+   
+   GETBASEPATH();
+   wxString temp = BASEPATH;
+   
+   Benc bc;
+   if(!bc.Load(&base))
+   {
+      wxMessageBox(wxT("Error read from base"),wxT("Closing application..."),wxICON_ERROR);
+      Close();
+   }
+   all_connection_records = bc.Load();
+	
+   programsettings ps = load_main_settings();
+#ifdef TS_NORMAL_VERSION
+   bShowFrame = ps.bShowFrame;
+#else
+   bShowFrame = TRUE;
+#endif
+   bFocusNewPage = ps.bFocusPage;
+   bUseHideFrame = ps.bIcon;
+   if (!bUseHideFrame)
+   {
+      bShowFrame = TRUE;
+   }
+	
+   bUseCrypt = ps.bUseCrypt; 
+
+   m_hideframe = NULL;
+
+   wxIcon icon_main;
+   icon_main.CopyFromBitmap(LOAD_XPM(utilities_terminal32));
+   SetIcon(icon_main);
+	
+   file_menu = new wxMenu;
+   file_menu->Append(ID_NEWCONNECTION,wxT("&New connection...\tCtrl-N"),_("Create new connection"));
+   file_menu->Append(ID_FASTCONN,wxT("&Fast connection...\tCtrl-F"),_("Fast connection or open saved connection")); 
+#ifdef __WXMSW__
+   file_menu->Append(ID_USERDPFILE,wxT("&Load RDP File...\tCtrl-O"),_("Use saved connection settings"));
+   file_menu->Append(ID_EXPORTRDPFILE,wxT("&Export RDP File...\tCtrl-E"),_("Export WinRDP connection settings"));
+#endif
+   file_menu->AppendSeparator();
+   file_menu->Append(ID_EXITPROGRAM, wxT("E&xit\tAlt-X"),wxT("Quit this program"));
+
+   settingsMenu = new wxMenu;
+   settingsMenu->AppendCheckItem(ID_SHOWTREE, wxT("&Connections tree...\tCtrl-T"), _("Enable / disable connections tree")); 
+   settingsMenu->AppendCheckItem(ID_HIDEFRAME, wxT("&Hide frame...\tCtrl-H"), _("Hide frame")); 
+   settingsMenu->Append(ID_SETTINGSDIALOG,wxT("&Options...\tAlt-O"),_("Program settings"));
+
+   currentConnMenu = new wxMenu;
+   currentConnMenu->Append(ID_CONNECT,wxT("&Connect...\tAlt-C"),_("Connection with current settings"));
+   currentConnMenu->Append(ID_DISCONNECT,wxT("&Disconnect...\tAlt-D"),_("Disconnect  from server or reconnect"));
+
+   currentConnMenu->Append(ID_FULLSCREEN,wxT("&Full screen...\tAlt-F"),_("Create full screen RDP window"));
+
+   currentConnMenu->Append(ID_SAVECONNECTED,wxT("&Save this...\tAlt-S"),_("Save this connection settings"));
+   currentConnMenu->Append(ID_SCREENPHOTO,wxT("&Make screenshot...\tAlt-H"),_("Create screenshot and save this"));
+
+#ifdef __WXGTK__
+   currentConnMenu->AppendCheckItem(ID_GRABINPUT,wxT("&Grab input...\tAlt-G"),_("Grab keyboard input"));
 #endif	
-	currentConnMenu->Append(ID_SENDCAD,wxT("&Send Ctrl+Alt+Del...\tAlt-Z"),_("Send Ctrl+Alt+Del to remote host"));
+   currentConnMenu->Append(ID_SENDCAD,wxT("&Send Ctrl+Alt+Del...\tAlt-Z"),_("Send Ctrl+Alt+Del to remote host"));
 
 
 	
-	currentConnMenu->Append(ID_CLOSEPAGE,wxT("&Disconnect and close...\tCtrl-W"),_("Close current page"));
+   currentConnMenu->Append(ID_CLOSEPAGE,wxT("&Disconnect and close...\tCtrl-W"),_("Close current page"));
 
-	helpMenu = new wxMenu;
-	helpMenu->Append(ID_ABOUTDIALOG, wxT("&About...\tF1"),_("Show about dialog"));
+   helpMenu = new wxMenu;
+   helpMenu->Append(ID_ABOUTDIALOG, wxT("&About...\tF1"),_("Show about dialog"));
 	
-    menu_bar = new wxMenuBar();
-    menu_bar->Append(file_menu, wxT("&File"));
+   menu_bar = new wxMenuBar();
+   menu_bar->Append(file_menu, wxT("&File"));
 	
-	menu_bar->Append(currentConnMenu, wxT("&Connection"));
-	menu_bar->Append(settingsMenu, wxT("&Settings"));
-    menu_bar->Append(helpMenu, wxT("&Help"));
+   menu_bar->Append(currentConnMenu, wxT("&Connection"));
+   menu_bar->Append(settingsMenu, wxT("&Settings"));
+   menu_bar->Append(helpMenu, wxT("&Help"));
 		
-    SetMenuBar(menu_bar);
-	menu_bar->EnableTop(1,false); 
+   SetMenuBar(menu_bar);
+   menu_bar->EnableTop(1,false); 
 
-    CreateStatusBar(2);
-	SetStatusText(wxT("No connections"),1);
+   CreateStatusBar(2);
+   SetStatusText(wxT("No connections"),1);
 		
 
-	int xsize = this->GetClientSize().x;
-	int ysize = this->GetClientSize().y;
+   int xsize = this->GetClientSize().x;
+   int ysize = this->GetClientSize().y;
 
-	m_splitter = new MainSplitter(this,-1,wxPoint(0,40),wxSize(xsize, ysize - 40),wxSP_3D);
+   m_splitter = new MainSplitter(this,-1,wxPoint(0,40),wxSize(xsize, ysize - 40),wxSP_3D);
 
-	m_panel_nb = new wxPanel(m_splitter,-1,wxPoint(0,0),m_splitter->GetClientSize(),wxRESIZE_BORDER);
-	nb = new wxAuiNotebook(m_panel_nb,ID_NOTEBOOK, wxPoint(0, 0),m_panel_nb->GetClientSize() , wxAUI_NB_DEFAULT_STYLE);
-	nb->SetArtProvider(new wxAuiSimpleTabArt);
+   m_panel_nb = new wxPanel(m_splitter,-1,wxPoint(0,0),m_splitter->GetClientSize(),wxRESIZE_BORDER);
+   nb = new wxAuiNotebook(m_panel_nb,ID_NOTEBOOK, wxPoint(0, 0),m_panel_nb->GetClientSize() , wxAUI_NB_DEFAULT_STYLE);
+   nb->SetArtProvider(new wxAuiSimpleTabArt);
 
-	m_panel_tree = new TreePanel(this,m_splitter,-1,wxPoint(0,0),wxSize(0.17 * xsize,ysize - 40 ),wxSTAY_ON_TOP  );	
-	m_panel_tree->rdptree->LoadSettings();
+   m_panel_tree = new TreePanel(this,m_splitter,-1,wxPoint(0,0),wxSize(0.17 * xsize,ysize - 40 ),wxSTAY_ON_TOP  );	
+   //std::cout << all_connection_records.Count() << std::endl;
+   
+   TREEPANEL(m_panel_tree)->rdptree->LoadSettings();
+   
+   IsTree = FALSE;
 
-	IsTree = FALSE;
-
-	m_splitter->Initialize( m_panel_nb);
-	m_splitter->SetSashGravity(0.0);   //0.3
-	m_splitter->SetSashSize(SPLITTER_SASH_SIZE);
+   m_splitter->Initialize( m_panel_nb);
+   m_splitter->SetSashGravity(0.0);   //0.3
+   m_splitter->SetSashSize(SPLITTER_SASH_SIZE);
 
 
-	m_panel_maintoolbar = new wxPanel(this,-1,wxPoint(0,0),wxSize(this->GetClientSize().x, 40));
-	wxSize toolbar_size = m_panel_maintoolbar->GetClientSize();
+   m_panel_maintoolbar = new wxPanel(this,-1,wxPoint(0,0),wxSize(this->GetClientSize().x, 40));
+   wxSize toolbar_size = m_panel_maintoolbar->GetClientSize();
 
-	main_auitoolbar_general = new wxAuiToolBar(m_panel_maintoolbar,-1,/*wxDefaultPosition*/wxPoint(0,0), wxSize(toolbar_size.x* 0.18,toolbar_size.y) ,
-                                         wxAUI_TB_DEFAULT_STYLE  | wxAUI_TB_NO_AUTORESIZE);
-    main_auitoolbar_general->SetToolBitmapSize(wxSize(24,24));
-	main_auitoolbar_general->AddTool(ID_AUITOOLBAR_EXIT,wxT("Exit"),LOAD_XPM(system_log_out),wxT("Close program"));
-	main_auitoolbar_general->AddSeparator();
-	main_auitoolbar_general->AddTool(ID_AUITOOLBAR_NEWCONN,wxT("New connection"),LOAD_XPM(list_add),wxT("New connection"));
-	main_auitoolbar_general->AddTool(ID_AUITOOLBAR_FASTCONN,wxT("Fast connection"),LOAD_XPM(folder),wxT("Fast connection"));
+   main_auitoolbar_general = new wxAuiToolBar(m_panel_maintoolbar,-1,/*wxDefaultPosition*/wxPoint(0,0), wxSize(toolbar_size.x* 0.18,toolbar_size.y) ,
+					      wxAUI_TB_DEFAULT_STYLE  | wxAUI_TB_NO_AUTORESIZE);
+   main_auitoolbar_general->SetToolBitmapSize(wxSize(24,24));
+   main_auitoolbar_general->AddTool(ID_AUITOOLBAR_EXIT,wxT("Exit"),LOAD_XPM(system_log_out),wxT("Close program"));
+   main_auitoolbar_general->AddSeparator();
+   main_auitoolbar_general->AddTool(ID_AUITOOLBAR_NEWCONN,wxT("New connection"),LOAD_XPM(list_add),wxT("New connection"));
+   main_auitoolbar_general->AddTool(ID_AUITOOLBAR_FASTCONN,wxT("Fast connection"),LOAD_XPM(folder),wxT("Fast connection"));
 
 #ifdef __WXMSW__	
-	main_auitoolbar_general->AddTool(ID_AUITOOLBAR_LOADRDPFILE,wxT("Load RDP file"),LOAD_XPM(document_open)/*wxArtProvider::GetBitmap(wxART_QUIT, wxART_OTHER, wxSize(16,16))*/,wxT("Load RDP file"));
-	main_auitoolbar_general->AddTool(ID_AUITOOLBAR_EXPORTRDPFILE,wxT("Export RDP file"),LOAD_XPM(edit_select_all)/*wxArtProvider::GetBitmap(wxART_QUIT, wxART_OTHER, wxSize(16,16))*/,wxT("Export RDP file"));
+   main_auitoolbar_general->AddTool(ID_AUITOOLBAR_LOADRDPFILE,wxT("Load RDP file"),LOAD_XPM(document_open)/*wxArtProvider::GetBitmap(wxART_QUIT, wxART_OTHER, wxSize(16,16))*/,wxT("Load RDP file"));
+   main_auitoolbar_general->AddTool(ID_AUITOOLBAR_EXPORTRDPFILE,wxT("Export RDP file"),LOAD_XPM(edit_select_all)/*wxArtProvider::GetBitmap(wxART_QUIT, wxART_OTHER, wxSize(16,16))*/,wxT("Export RDP file"));
 
 #endif	
-	main_auitoolbar_general->AddSeparator();
-	main_auitoolbar_general->Realize();
+   main_auitoolbar_general->AddSeparator();
+   main_auitoolbar_general->Realize();
 
 		
-	wxPoint pos_toolbar(main_auitoolbar_general->GetSize().GetWidth(),0); 
+   wxPoint pos_toolbar(main_auitoolbar_general->GetSize().GetWidth(),0); 
 
-	main_auitoolbar_settings = new wxAuiToolBar(m_panel_maintoolbar,-1,pos_toolbar, wxSize(toolbar_size.x* 0.11 ,toolbar_size.y) ,
-                                         wxAUI_TB_NO_TOOLTIPS | wxAUI_TB_NO_AUTORESIZE);
+   main_auitoolbar_settings = new wxAuiToolBar(m_panel_maintoolbar,-1,pos_toolbar, wxSize(toolbar_size.x* 0.11 ,toolbar_size.y) ,
+					       wxAUI_TB_NO_TOOLTIPS | wxAUI_TB_NO_AUTORESIZE);
 
-	main_auitoolbar_settings->SetToolBitmapSize(wxSize(24,24));
-	main_auitoolbar_settings->AddTool(ID_AUITOOLBAR_SHOWTREE, LOAD_XPM(system_search),NULL,true,NULL,wxT("Show / Hide connections tree"));
+   main_auitoolbar_settings->SetToolBitmapSize(wxSize(24,24));
+   main_auitoolbar_settings->AddTool(ID_AUITOOLBAR_SHOWTREE, LOAD_XPM(system_search),NULL,true,NULL,wxT("Show / Hide connections tree"));
 /*	
 	main_auitoolbar_settings->AddTool(ID_AUITOOLBAR_HIDEFRAME,
 	LOAD_XPM(preferences_desktop),NULL,true,NULL,wxT("Hide frame"));
 */
-	main_auitoolbar_settings->AddTool(ID_AUITOOLBAR_OPTIONS,wxT("Options"),LOAD_XPM(preferences_system),wxT("Options"));
-	main_auitoolbar_settings->AddSeparator();
-	//main_auitoolbar_settings->AddTool(ID_AUITOOLBAR_ABOUT,wxT("About"),wxBitmap(help_browser,wxBITMAP_TYPE_XPM ),wxT("About"));
-	//main_auitoolbar_settings->AddSeparator();
-	main_auitoolbar_settings->Realize();
+   main_auitoolbar_settings->AddTool(ID_AUITOOLBAR_OPTIONS,wxT("Options"),LOAD_XPM(preferences_system),wxT("Options"));
+   main_auitoolbar_settings->AddSeparator();
+   //main_auitoolbar_settings->AddTool(ID_AUITOOLBAR_ABOUT,wxT("About"),wxBitmap(help_browser,wxBITMAP_TYPE_XPM ),wxT("About"));
+   //main_auitoolbar_settings->AddSeparator();
+   main_auitoolbar_settings->Realize();
 
 	
-	wxPoint p(pos_toolbar.x + main_auitoolbar_settings->GetSize().GetWidth(),0);
+   wxPoint p(pos_toolbar.x + main_auitoolbar_settings->GetSize().GetWidth(),0);
 
-	main_auitoolbar_connection = new wxAuiToolBar(m_panel_maintoolbar,-1,p, toolbar_size ,
-                                         wxAUI_TB_DEFAULT_STYLE  | wxAUI_TB_NO_AUTORESIZE);
+   main_auitoolbar_connection = new wxAuiToolBar(m_panel_maintoolbar,-1,p, toolbar_size ,
+						 wxAUI_TB_DEFAULT_STYLE  | wxAUI_TB_NO_AUTORESIZE);
 	
-	main_auitoolbar_connection->SetToolBitmapSize(wxSize(24,24));
-	main_auitoolbar_connection->AddTool(ID_AUITOOLBAR_CONNECT,wxT("Connect"),LOAD_XPM(network_transmit_receive ),wxT("Connect"));
-	main_auitoolbar_connection->AddTool(ID_AUITOOLBAR_DISCONNECT,wxT("Disconnect"),LOAD_XPM(network_offline ),wxT("Disconnect"));
+   main_auitoolbar_connection->SetToolBitmapSize(wxSize(24,24));
+   main_auitoolbar_connection->AddTool(ID_AUITOOLBAR_CONNECT,wxT("Connect"),LOAD_XPM(network_transmit_receive ),wxT("Connect"));
+   main_auitoolbar_connection->AddTool(ID_AUITOOLBAR_DISCONNECT,wxT("Disconnect"),LOAD_XPM(network_offline ),wxT("Disconnect"));
 
-	main_auitoolbar_connection->AddTool(ID_AUITOOLBAR_FULLSCREEN,wxT("Full Screen"),LOAD_XPM(view_fullscreen ),wxT("Full Screen"));
+   main_auitoolbar_connection->AddTool(ID_AUITOOLBAR_FULLSCREEN,wxT("Full Screen"),LOAD_XPM(view_fullscreen ),wxT("Full Screen"));
 
-	main_auitoolbar_connection->AddTool(ID_AUITOOLBAR_SAVECONNECTED,wxT("Save connection"),LOAD_XPM(document_save ),wxT("Save connection"));
-	main_auitoolbar_connection->AddTool(ID_AUITOOLBAR_SCREENPHOTO,wxT("Make screenshot"),LOAD_XPM(camera_photo ),wxT("Make screenshot"));
+   main_auitoolbar_connection->AddTool(ID_AUITOOLBAR_SAVECONNECTED,wxT("Save connection"),LOAD_XPM(document_save ),wxT("Save connection"));
+   main_auitoolbar_connection->AddTool(ID_AUITOOLBAR_SCREENPHOTO,wxT("Make screenshot"),LOAD_XPM(camera_photo ),wxT("Make screenshot"));
 
 #ifdef __WXGTK__
-	main_auitoolbar_connection->AddTool(ID_AUITOOLBAR_GRABINPUT,LOAD_XPM(input_keyboard ),NULL,true,NULL,wxT("Grab Input"));
+   main_auitoolbar_connection->AddTool(ID_AUITOOLBAR_GRABINPUT,LOAD_XPM(input_keyboard ),NULL,true,NULL,wxT("Grab Input"));
 #endif
 
-	main_auitoolbar_connection->AddTool(ID_AUITOOLBAR_SENDCAD,wxT("Send Ctrl+Alt+Del"),LOAD_XPM(go_down ),wxT("Send Ctrl+Alt+Del"));
+   main_auitoolbar_connection->AddTool(ID_AUITOOLBAR_SENDCAD,wxT("Send Ctrl+Alt+Del"),LOAD_XPM(go_down ),wxT("Send Ctrl+Alt+Del"));
 	
 
 	
-	main_auitoolbar_connection->AddTool(ID_AUITOOLBAR_CLOSEPAGE,wxT("Disconnect and close"),LOAD_XPM(process_stop ),wxT("Disconnect and close"));
-	DisableConnectionMenu();
-	main_auitoolbar_connection->Realize();
+   main_auitoolbar_connection->AddTool(ID_AUITOOLBAR_CLOSEPAGE,wxT("Disconnect and close"),LOAD_XPM(process_stop ),wxT("Disconnect and close"));
+   DisableConnectionMenu();
+   main_auitoolbar_connection->Realize();
 		
-	if (bUseHideFrame)
-	{	m_hideframe = new HideFrame(this);
-		wxIcon icon;
-		icon.CopyFromBitmap(LOAD_XPM(utilities_terminal));
-		m_hideframe->SetIcon(icon,TS_NAME);
+   if (bUseHideFrame)
+   {	m_hideframe = new HideFrame(this);
+      wxIcon icon;
+      icon.CopyFromBitmap(LOAD_XPM(utilities_terminal));
+      m_hideframe->SetIcon(icon,TS_NAME);
 		
-	}
-	else
-	{
-		main_auitoolbar_settings->EnableTool(ID_AUITOOLBAR_HIDEFRAME,false);
-		settingsMenu->Enable(ID_HIDEFRAME,false);
-	}
+   }
+   else
+   {
+      main_auitoolbar_settings->EnableTool(ID_AUITOOLBAR_HIDEFRAME,false);
+      settingsMenu->Enable(ID_HIDEFRAME,false);
+   }
 	
-	FrameOK = TRUE;
+   FrameOK = TRUE;
 
 }
-
+///////////////////////////////////////////////////////////////////////////////
+//! \brief Create connection menu
+///////////////////////////////////////////////////////////////////////////////
 void Main_Frame::EnableConnectionMenu()
 {
 	main_auitoolbar_connection->Clear();
@@ -455,6 +664,9 @@ void Main_Frame::EnableConnectionMenu()
 	menu_bar->EnableTop(1,true);
 }
 
+///////////////////////////////////////////////////////////////////////////////
+//! \brief Remove connetction menu
+///////////////////////////////////////////////////////////////////////////////
 void Main_Frame::DisableConnectionMenu()
 {
 	main_auitoolbar_connection->Clear();
@@ -464,6 +676,9 @@ void Main_Frame::DisableConnectionMenu()
 	menu_bar->EnableTop(1,false);
 }
 
+///////////////////////////////////////////////////////////////////////////////
+//! \brief Process connection menu
+///////////////////////////////////////////////////////////////////////////////
 void Main_Frame::CheckCurrentConnectionMenu()
 {
 	wxString strStatus;
@@ -478,14 +693,14 @@ void Main_Frame::CheckCurrentConnectionMenu()
 		return;
 	}
 
-	wxSplitterRDP * splitter_rdp = (wxSplitterRDP *)nb->GetPage(nb->GetSelection());
-	if (splitter_rdp == NULL) return;
-	wxRDP * rdp = splitter_rdp->rdp;
-	if (rdp == NULL) return;
+	ConnSplitter * conn_splitter = (ConnSplitter *)nb->GetPage(nb->GetSelection());
+	if (conn_splitter == NULL) return;
+	/*wxRDP * */ BasicConnection * conn = conn_splitter->conn;
+	if (conn == NULL) return;
 	
-	if (rdp->bConnected)
+	if (conn->bConnected)
 	{
-		strStatus = wxString::Format(_T("%s connected"),rdp->rdpconn.hostname.data()); 
+	   //strStatus = wxString::Format(_T("%s connected"),conn->rdpconn.hostname.data()); 
 		SetStatusText(strStatus,1); 
 
 		currentConnMenu->Enable(ID_CONNECT,false);
@@ -494,7 +709,7 @@ void Main_Frame::CheckCurrentConnectionMenu()
 		main_auitoolbar_connection->EnableTool(ID_AUITOOLBAR_DISCONNECT,true);
 
 
-		if (rdp->bFullScreen)
+		if (conn->bFullScreen)
 		{
 			currentConnMenu->Enable(ID_FULLSCREEN,false);
 			main_auitoolbar_connection->EnableTool(ID_AUITOOLBAR_FULLSCREEN,false);
@@ -508,7 +723,7 @@ void Main_Frame::CheckCurrentConnectionMenu()
 
 
 #ifdef __WXGTK__
-		if (rdp->bGrab)
+		if (conn->bGrab)
 		{
 			main_auitoolbar_connection->ToggleTool(ID_AUITOOLBAR_GRABINPUT,true);
 			currentConnMenu->Check(ID_GRABINPUT,true);
@@ -529,7 +744,7 @@ void Main_Frame::CheckCurrentConnectionMenu()
 	}
 	else
 	{
-		strStatus = wxString::Format(_T("%s disconnected"),rdp->rdpconn.hostname.data()); 
+	   //strStatus = wxString::Format(_T("%s disconnected"),conn->rdpconn.hostname.data()); 
 		SetStatusText(strStatus,1); 
 			
 		currentConnMenu->Enable(ID_CONNECT,true);
@@ -545,27 +760,34 @@ void Main_Frame::CheckCurrentConnectionMenu()
 }
 
 
-
+///////////////////////////////////////////////////////////////////////////////
+//! \brief 
+//! \param 
+//! \return 
+//! \sa
+///////////////////////////////////////////////////////////////////////////////
 void Main_Frame::enable_auitoolbar_conn(bool state)
 {
 	this->main_auitoolbar_connection->Enable(state);
 }
 
-
+///////////////////////////////////////////////////////////////////////////////
+//! \brief Process button "Grub all input"
+///////////////////////////////////////////////////////////////////////////////
 void Main_Frame::on_auitoolbar_grabinput(wxCommandEvent& event)
 {
-	wxCommandEvent evt;
-	evt.SetId(ID_GRABINPUT);
+   wxCommandEvent evt;
+   evt.SetId(ID_GRABINPUT);
 
-	if (this->currentConnMenu->IsChecked(ID_GRABINPUT))
-	{
-		this->currentConnMenu->Check(ID_GRABINPUT,false);
-	}
-	else
-	{
-		this->currentConnMenu->Check(ID_GRABINPUT,true);
-	}
-	this->on_grabinput(evt);
+   if (this->currentConnMenu->IsChecked(ID_GRABINPUT))
+   {
+      this->currentConnMenu->Check(ID_GRABINPUT,false);
+   }
+   else
+   {
+      this->currentConnMenu->Check(ID_GRABINPUT,true);
+   }
+   this->on_grabinput(evt);
 
 }
 
@@ -598,15 +820,15 @@ void Main_Frame::on_auitoolbar_hideframe(wxCommandEvent& event)
 	this->on_hideframe(evt);
 }
 
-
+///////////////////////////////////////////////////////////////////////////////
+//! \brief Process main toolbar
+///////////////////////////////////////////////////////////////////////////////
 void Main_Frame::on_auitoolbar(wxCommandEvent& event)
 {
 	wxCommandEvent evt;
 	switch (event.GetId())
 	{
 	case ID_AUITOOLBAR_EXIT:
-		
-		
 		evt.SetId(ID_EXITPROGRAM);
 		this->on_quit(evt); 
 		break;
@@ -682,7 +904,12 @@ void Main_Frame::on_auitoolbar(wxCommandEvent& event)
 }
 
 
-
+///////////////////////////////////////////////////////////////////////////////
+//! \brief Create munu
+//! \param 
+//! \return 
+//! \sa
+///////////////////////////////////////////////////////////////////////////////
 wxMenu *HideFrame::CreatePopupMenu()
 {
 	wxMenu *menu = new wxMenu;
@@ -694,16 +921,14 @@ wxMenu *HideFrame::CreatePopupMenu()
 	}
 	menu->AppendSeparator();
 	
-	RDPTree * rdptree = main_frame->m_panel_tree->rdptree; 
+	RDPTree * rdptree = TREEPANEL(main_frame->m_panel_tree)->rdptree; 
 
 	wxTreeItemIdValue cookie;
 	wxTreeItemId curr = rdptree->GetFirstChild(rdptree->root,cookie);
 	int count = 0;
 	while (curr.IsOk())
 	{
-		
 		wxMenu * groupmenu = new wxMenu();
-	
 		wxTreeItemIdValue cookie_child;
 		wxTreeItemId curr_child = rdptree->GetFirstChild(curr,cookie_child);
 		while (curr_child.IsOk())
@@ -715,7 +940,6 @@ wxMenu *HideFrame::CreatePopupMenu()
 		menu->AppendSubMenu(groupmenu,rdptree->GetItemText(curr));
 		curr = rdptree->GetNextChild(rdptree->root,cookie);
 	}
-	
 	menu->AppendSeparator();
 	menu->Append(ID_HIDEFRAME_NEW, _T("&New"));
 	menu->Append(ID_HIDEFRAME_SETTINGS, _T("&Settings"));
@@ -725,42 +949,46 @@ wxMenu *HideFrame::CreatePopupMenu()
 
 }
 
+///////////////////////////////////////////////////////////////////////////////
+//! \brief Process connect event from menu
+///////////////////////////////////////////////////////////////////////////////
 void HideFrame::on_menu_connect(wxCommandEvent &event) 
 {
-	if (event.GetId() >= 7000)
-	{
-		RDPTree * rdptree = main_frame->m_panel_tree->rdptree;
-		wxTreeItemIdValue cookie;
-		wxTreeItemId curr = rdptree->GetFirstChild(rdptree->root,cookie);
-		int count = 0;
-		while (curr.IsOk())
-		{
-			wxTreeItemIdValue cookie_child;
-			wxTreeItemId curr_child = rdptree->GetFirstChild(curr,cookie_child);
-			while (curr_child.IsOk())
-			{
-				if (event.GetId() == (ID_TREE_ADDTOEXISTSGROUP + count))
-				{
-					RDPTreeData * rdptreedata = (RDPTreeData *)rdptree->GetItemData(curr_child);
-					if (!rdptreedata) return;
-					rdptree->curr_uniq_name = rdptreedata->uniq_name;
+   if (event.GetId() >= 7000)
+   {
+      RDPTree * rdptree = TREEPANEL(main_frame->m_panel_tree)->rdptree;
+      wxTreeItemIdValue cookie;
+      wxTreeItemId curr = rdptree->GetFirstChild(rdptree->root,cookie);
+      int count = 0;
+      while (curr.IsOk())
+      {
+	 wxTreeItemIdValue cookie_child;
+	 wxTreeItemId curr_child = rdptree->GetFirstChild(curr,cookie_child);
+	 while (curr_child.IsOk())
+	 {
+	    if (event.GetId() == (ID_TREE_ADDTOEXISTSGROUP + count))
+	    {
+	       RDPTreeData * rdptreedata = (RDPTreeData *)rdptree->GetItemData(curr_child);
+	       if (!rdptreedata) return;
+	       rdptree->curr_uniq_name = rdptreedata->uniq_name;
 
-					wxCommandEvent evt;
-					evt.SetId(1);
-					rdptree->on_tree_connect(evt);
+	       wxCommandEvent evt;
+	       evt.SetId(1);
+	       rdptree->on_tree_connect(evt);
 
-					return;
-									
-				}
-				count ++;
-				curr_child = rdptree->GetNextChild(curr,cookie_child);
-			}
-			curr = rdptree->GetNextChild(rdptree->root,cookie);
-		}
-	}
-	
+	       return;
+	    }
+	    count ++;
+	    curr_child = rdptree->GetNextChild(curr,cookie_child);
+	 }
+	 curr = rdptree->GetNextChild(rdptree->root,cookie);
+      }
+   }
 }
 
+///////////////////////////////////////////////////////////////////////////////
+//! \brief Process new element event from menu
+///////////////////////////////////////////////////////////////////////////////
 void HideFrame::on_menu_new(wxCommandEvent& event)
 {
 	if (main_frame->bIconized)
@@ -775,6 +1003,9 @@ void HideFrame::on_menu_new(wxCommandEvent& event)
 	main_frame->on_config(evt);
 }
 
+///////////////////////////////////////////////////////////////////////////////
+//! \brief Process settings event from menu
+///////////////////////////////////////////////////////////////////////////////
 void HideFrame::on_menu_settings(wxCommandEvent& event)
 {
 	if (main_frame->bIconized)
@@ -789,6 +1020,9 @@ void HideFrame::on_menu_settings(wxCommandEvent& event)
 	main_frame->on_settings_dialog(evt);
 }
 
+///////////////////////////////////////////////////////////////////////////////
+//! \brief Process exit event from menu
+///////////////////////////////////////////////////////////////////////////////
 void HideFrame::on_menu_exit(wxCommandEvent &event)
 {
 	wxCommandEvent evt;
@@ -796,6 +1030,9 @@ void HideFrame::on_menu_exit(wxCommandEvent &event)
 	main_frame->on_quit(evt);
 }
 
+///////////////////////////////////////////////////////////////////////////////
+//! \brief Process restore event from menu
+///////////////////////////////////////////////////////////////////////////////
 void HideFrame::on_menu_restore(wxCommandEvent &event)
 {
 #ifdef __WXMSW__
@@ -824,6 +1061,9 @@ void HideFrame::on_menu_restore(wxCommandEvent &event)
 
 }
 
+///////////////////////////////////////////////////////////////////////////////
+//! \brief Process Focus event from menu
+///////////////////////////////////////////////////////////////////////////////
 void Main_Frame::FocusCurrentPageEvt(wxUpdateUIEvent& event)
 {
 	int iPageCount = (DWORD)nb->GetPageCount();
@@ -834,13 +1074,13 @@ void Main_Frame::FocusCurrentPageEvt(wxUpdateUIEvent& event)
 	
 	nb->SetFocus();
 	
-	wxSplitterRDP * splitter_rdp = (wxSplitterRDP *)this->nb->GetPage(nb->GetSelection());
-	wxRDP * rdp = splitter_rdp->rdp;
+	ConnSplitter * conn_splitter = (ConnSplitter *)this->nb->GetPage(nb->GetSelection());
+	/*wxRDP * */ BasicConnection * conn = conn_splitter->conn;
 
-	splitter_rdp->SetFocus(); 
-	if (rdp)
+	conn_splitter->SetFocus(); 
+	if (conn)
 	{
-		rdp->SetFocus();
+		conn->SetFocus();
 	}
 
 }
@@ -854,19 +1094,26 @@ void Main_Frame::FocusCurrentPage()
 }
 
 
+///////////////////////////////////////////////////////////////////////////////
+//! \brief Process change page in ain notebook element event from menu
+///////////////////////////////////////////////////////////////////////////////
 void Main_Frame::notebook_change_func(wxAuiNotebookEvent& event)
 {
 	notebook_change_func_ne();
 }
 
+///////////////////////////////////////////////////////////////////////////////
+//! \brief Process grub event from menu
+///////////////////////////////////////////////////////////////////////////////
 void Main_Frame::on_grabinput(wxCommandEvent& event)
 {
 #ifdef __WXGTK__
 
-	wxSplitterRDP * splitter_rdp = (wxSplitterRDP *)this->nb->GetPage(nb->GetSelection());
-	wxRDP * rdp = splitter_rdp->rdp;
-
-	rdp->GrabAll(!rdp->bGrab);
+	ConnSplitter * conn_splitter = (ConnSplitter *)this->nb->GetPage(nb->GetSelection());
+//	wxRDP * rdp = conn_splitter->rdp;
+	BasicConnection * conn = conn_splitter->conn;
+	
+	conn->GrabAll(!conn->bGrab);
 	if (currentConnMenu->IsChecked(ID_GRABINPUT))
 	{
 		currentConnMenu->Check(ID_GRABINPUT,true);
@@ -884,65 +1131,71 @@ void Main_Frame::on_grabinput(wxCommandEvent& event)
 	
 }
 
+
 void Main_Frame::on_sendcad(wxCommandEvent& event)
 {
 	FocusCurrentPage();
-	wxSplitterRDP * splitter_rdp = (wxSplitterRDP *)this->nb->GetPage(nb->GetSelection());
-	wxRDP * rdp = splitter_rdp->rdp;
+	ConnSplitter * conn_splitter = (ConnSplitter *)this->nb->GetPage(nb->GetSelection());
+	/*wxRDP * */ BasicConnection * conn = conn_splitter->conn;
 
-	rdp->SendKey(TRUE);
+	conn->SendKey(TRUE);
 }
 
+///////////////////////////////////////////////////////////////////////////////
+//! \brief Process screenshot event from menu
+///////////////////////////////////////////////////////////////////////////////
 void Main_Frame::on_screenphoto(wxCommandEvent& event)
 {	
-	wxSplitterRDP * splitter_rdp = (wxSplitterRDP *)this->nb->GetPage(nb->GetSelection());
-	wxRDP * rdp = splitter_rdp->rdp;
+	ConnSplitter * conn_splitter = (ConnSplitter *)this->nb->GetPage(nb->GetSelection());
+	/*wxRDP * */ BasicConnection * conn = conn_splitter->conn;
 
-	rdp->photo();
+	conn->photo();
 }
 
-
+///////////////////////////////////////////////////////////////////////////////
+//! \brief Process amin switch element
+///////////////////////////////////////////////////////////////////////////////
 void Main_Frame::switch_current(BOOL bDisconnect)
 {
-	int lc = nb->GetPageCount();
-	if (lc <= 0) return;
+   int lc = nb->GetPageCount();
+   if (lc <= 0) return;
 
-	wxSplitterRDP * splitter_rdp = (wxSplitterRDP *)this->nb->GetPage(nb->GetSelection());
-	wxRDP * rdp = splitter_rdp->rdp;
+   ConnSplitter * conn_splitter = (ConnSplitter *)this->nb->GetPage(nb->GetSelection());
+   /*wxRDP * */ BasicConnection * conn = conn_splitter->conn;
 
-	if (bDisconnect)
-	{
-		if (rdp->bConnected)
-		{
-			wxCommandEvent evt;
-			evt.SetId(1);
-			on_disconnect(evt);
-			bNeedConnect = TRUE;
+   if (bDisconnect)
+   {
+      if (conn->bConnected)
+      {
+	 wxCommandEvent evt;
+	 evt.SetId(1);
+	 on_disconnect(evt);
+	 bNeedConnect = TRUE;
 			
-		}
-		else
-		{
-			bNeedConnect = FALSE;
-			return;
-		}
+      }
+      else
+      {
+	 bNeedConnect = FALSE;
+	 return;
+      }
 		
-	}
-	else
-	{
-		if (rdp->bConnected)
-		{
-			return;
-		}
-		else
-		{
-			wxCommandEvent evt;
-			evt.SetId(1);
-			on_connect(evt);
-			bNeedConnect = FALSE;
+   }
+   else
+   {
+      if (conn->bConnected)
+      {
+	 return;
+      }
+      else
+      {
+	 wxCommandEvent evt;
+	 evt.SetId(1);
+	 on_connect(evt);
+	 bNeedConnect = FALSE;
 			
-		}
+      }
 	
-	}
+   }
 
 	
 }
@@ -954,17 +1207,17 @@ void Main_Frame::notebook_change_func_ne()
 
 	this->nb->SetFocus();
 	
-	wxSplitterRDP * splitter_rdp = (wxSplitterRDP *)this->nb->GetPage(nb->GetSelection());
-	wxRDP * rdp = splitter_rdp->rdp; 
-	if (rdp && splitter_rdp->screenshot)
+	ConnSplitter * conn_splitter = (ConnSplitter *)this->nb->GetPage(nb->GetSelection());
+	/*wxRDP * */ BasicConnection * conn = conn_splitter->conn; 
+	if (conn && conn_splitter->screenshot)
 	{
-		if (!splitter_rdp->m_timer_screenshot.IsRunning())
+		if (!conn_splitter->m_timer_screenshot.IsRunning())
 		{
-			splitter_rdp->m_timer_screenshot.Start(20000);  
+			conn_splitter->m_timer_screenshot.Start(20000);  
 		}
 
-	splitter_rdp->SetFocus(); 
-	rdp->SetFocus();
+	conn_splitter->SetFocus(); 
+	conn->SetFocus();
 	}
 
 	if (this->nb->GetPageCount() > 0) 
@@ -982,11 +1235,13 @@ void Main_Frame::notebook_change_func_ne()
 
 void Main_Frame::on_saveconnection(wxCommandEvent& event)
 {
-	wxSplitterRDP * splitter_rdp = (wxSplitterRDP *)this->nb->GetPage(nb->GetSelection());
-	wxRDP * rdp = splitter_rdp->rdp;
+	ConnSplitter * conn_splitter = (ConnSplitter *)this->nb->GetPage(nb->GetSelection());
+	/*wxRDP * */ BasicConnection * conn = conn_splitter->conn;
 	BOOL flag;
-	RDPConn rdpc = rdp->rdpconn;
-	if (rdpc.uniq_name != 0)
+	//RDPConn rdpc = conn->rdpconn;
+	Options_HashMap local_options = conn->Get_Options();
+	
+	if (wxAtoi(local_options[wxT("uniq_name")]) != 0)
 	{
 		flag = FALSE;
 	}
@@ -994,53 +1249,65 @@ void Main_Frame::on_saveconnection(wxCommandEvent& event)
 	{
 		flag = TRUE;
 	}
-	RDPDialog * rdpdialog = new RDPDialog(this,wxCAPTION,&rdpc,NULL,&base,flag);
-	rdpdialog->LoadRDPConn();
-	
+	//RDPDialog * rdpdialog = new RDPDialog(this,wxCAPTION,,NULL,&base,flag);
+	//rdpdialog->LoadRDPConn();
+	RDPDialog * rdpdialog = new RDPDialog (this);
+	rdpdialog->Set_Options(&local_options);
 	int iRes = rdpdialog->ShowModal();
 	if (iRes == 2)
 	{
-		this->m_panel_tree->rdptree->ReloadSettings();
+		TREEPANEL(this->m_panel_tree)->rdptree->ReloadSettings();
 	}
 	delete rdpdialog;
 }
 
+///////////////////////////////////////////////////////////////////////////////
+//! \brief Process connect event
+///////////////////////////////////////////////////////////////////////////////
 void Main_Frame::on_connect(wxCommandEvent &event)
 {
-	wxSplitterRDP * splitter_rdp = (wxSplitterRDP *)this->nb->GetPage(nb->GetSelection());
-	wxRDP * rdp = splitter_rdp->rdp; 
+   ConnSplitter * conn_splitter = (ConnSplitter *)this->nb->GetPage(nb->GetSelection());
+   /*wxRDP * */ BasicConnection * conn = conn_splitter->conn; 
 #ifdef __WXMSW__	
-	rdp->Connect();
+   conn->Connect();
 	
 #endif
 #ifdef __WXGTK__
-	if (rdp != NULL)
-	{
-		if (!rdp->DoRdp())
-		{
-			this->nb->DeletePage(this->nb->GetSelection());
-			this->nb->SetSelection(0);
-			if (this->nb->GetPageCount() > 0) menu_bar->EnableTop(1,true);
-			else menu_bar->EnableTop(1,false);
-		}
-		else
-		{
-			this->notebook_change_func_ne();
-			this->switch_splitter();
-		}
-	}
+   if (conn != NULL)
+   {
+//		if (!conn->DoRdp())
+      if (!conn->Connect())
+      {
+	 this->nb->DeletePage(this->nb->GetSelection());
+	 this->nb->SetSelection(0);
+	 if (this->nb->GetPageCount() > 0) menu_bar->EnableTop(1,true);
+	 else menu_bar->EnableTop(1,false);
+      }
+      else
+      {
+	 this->notebook_change_func_ne();
+	 this->switch_splitter();
+      }
+   }
 
 #endif
 
 }
 
+
+///////////////////////////////////////////////////////////////////////////////
+//! \brief Process diaconnetc event
+///////////////////////////////////////////////////////////////////////////////
 void Main_Frame::on_disconnect(wxCommandEvent &event)
 {
-	wxSplitterRDP * splitter_rdp = (wxSplitterRDP *)this->nb->GetPage(nb->GetSelection());
-	wxRDP * rdp = splitter_rdp->rdp; 
-
-	splitter_rdp->create_screenshot(); 
+	ConnSplitter * conn_splitter = (ConnSplitter *)this->nb->GetPage(nb->GetSelection());
+	/*wxRDP * */ BasicConnection * conn = conn_splitter->conn; 
+wxCommandEvent eventCustom(ID_FULLSCREEN);                                                                                              
+		wxPostEvent(this, eventCustom);
+	conn_splitter->create_screenshot();
+	conn->Disconnect();
 	
+/*	
 #ifdef __WXMSW__
 	rdp->Disconnect();
 	
@@ -1051,37 +1318,42 @@ void Main_Frame::on_disconnect(wxCommandEvent &event)
 		rdp->request_close();
 	}
 #endif
-
+*/
 }
 
+///////////////////////////////////////////////////////////////////////////////
+//! \brief Process fullscreen event
+///////////////////////////////////////////////////////////////////////////////
 void Main_Frame::on_fullscreen(wxCommandEvent &event) 
 {
-	wxSplitterRDP * splitter_rdp = (wxSplitterRDP *)this->nb->GetPage(nb->GetSelection());
-	wxRDP * rdp = splitter_rdp->rdp; 
+	ConnSplitter * conn_splitter = (ConnSplitter *)this->nb->GetPage(nb->GetSelection());
+	/*wxRDP * */ BasicConnection * conn = conn_splitter->conn; 
 
-	if (!rdp->bConnected) return;
+	if (!conn->bConnected) return;
 	else
 	{
-		rdp->FullScreen(!rdp->bFullScreen); 
+		conn->FullScreen(!conn->bFullScreen); 
 	}
 }
-
+///////////////////////////////////////////////////////////////////////////////
+//! \brief Process clousing page event
+///////////////////////////////////////////////////////////////////////////////
 void Main_Frame::closepage_num_func(wxUpdateUIEvent &event)
 {
 	int num = this->current_page_for_delete;
 		
-	wxSplitterRDP * splitter_rdp = (wxSplitterRDP *)this->nb->GetPage(num);
-	wxRDP * rdp = splitter_rdp->rdp; 
+	ConnSplitter * conn_splitter = (ConnSplitter *)this->nb->GetPage(num);
+	/*wxRDP * */ BasicConnection * conn = conn_splitter->conn; 
 
-	if (rdp->info_uniq_name != 0)
+	if (conn->info_uniq_name != 0)
 	{
-		rdp->main_frame->m_panel_tree->rdptree->from_wxrdp(rdp->info_uniq_name,TREEDATA_DEC_OBJCOUNT);
-		rdp->info_uniq_name = 0;
+		TREEPANEL(conn->main_frame->m_panel_tree)->rdptree->from_wxrdp(conn->info_uniq_name,TREEDATA_DEC_OBJCOUNT);
+		conn->info_uniq_name = 0;
 	}	
 #ifdef __WXMSW__
-	if (rdp->bConnected)
+	if (conn->bConnected)
 	{
-		rdp->Disconnect();
+		conn->Disconnect();
 	}
 
 #endif
@@ -1102,23 +1374,30 @@ void Main_Frame::closepage_num_func(wxUpdateUIEvent &event)
 	FocusCurrentPage();
 }
 
+///////////////////////////////////////////////////////////////////////////////
+//! \sa on_closepage_ne
+///////////////////////////////////////////////////////////////////////////////
 void Main_Frame::on_closepage(wxCommandEvent &event)
 {
 	on_closepage_ne();
 }
 
+///////////////////////////////////////////////////////////////////////////////
+//! \brief Close page from notebook
+///////////////////////////////////////////////////////////////////////////////
 void Main_Frame::on_closepage_ne()
 {
-	wxSplitterRDP * splitter_rdp = (wxSplitterRDP *)this->nb->GetPage(nb->GetSelection());
-	wxRDP * rdp = splitter_rdp->rdp;
+	ConnSplitter * conn_splitter = (ConnSplitter *)this->nb->GetPage(nb->GetSelection());
+	/*wxRDP * */ BasicConnection * conn = conn_splitter->conn;
 	int iPos = this->nb->GetSelection();
 
-	if (rdp->info_uniq_name != 0)
+	if (conn->info_uniq_name != 0)
 	{
-		rdp->main_frame->m_panel_tree->rdptree->from_wxrdp(rdp->info_uniq_name,TREEDATA_DEC_OBJCOUNT);
-		rdp->info_uniq_name = 0;
+		TREEPANEL(conn->main_frame->m_panel_tree)->rdptree->from_wxrdp(conn->info_uniq_name,TREEDATA_DEC_OBJCOUNT);
+		conn->info_uniq_name = 0;
 	}
-	
+
+	/*
 #ifdef __WXMSW__	
 	if (rdp->bConnected)
 	{
@@ -1129,10 +1408,15 @@ void Main_Frame::on_closepage_ne()
 #ifdef __WXGTK__
 	rdp->request_close(TRUE);
 #endif
-
+	*/
+	if (conn->bConnected)
+	{
+		conn->DisconnectClose();
+	}
+	
 
 #ifdef __WXGTK__
-	if (!rdp->bConnected)
+	if (!conn->bConnected)
 	{
 #endif	
 
@@ -1157,7 +1441,10 @@ void Main_Frame::on_closepage_ne()
 }
 
 #ifdef __WXMSW__
-RDPConn ParseString(WCHAR wstr[], RDPConn rdpconn)
+///////////////////////////////////////////////////////////////////////////////
+//! \brief Process RDP files
+///////////////////////////////////////////////////////////////////////////////
+Options_HashMap ParseString(WCHAR wstr[], Options_HashMap local_options)
 {
 	WCHAR *begin;
 	WCHAR buff[2048];
@@ -1172,9 +1459,9 @@ RDPConn ParseString(WCHAR wstr[], RDPConn rdpconn)
 	{
 		begin += wcslen(L"screen mode id:i:");
 		int mode = _wtoi(begin);	
-		if (mode == 2) rdpconn.bFullScreen = TRUE;
-		else rdpconn.bFullScreen = FALSE;
-		return rdpconn;
+		if (mode == 2) local_options[wxT("full_screen")] = wxT("1");
+		else local_options[wxT("full_screen")] = wxT("0");
+		return local_options;
 	}
 
 	// Check for desktop width
@@ -1182,24 +1469,24 @@ RDPConn ParseString(WCHAR wstr[], RDPConn rdpconn)
 	{
 		begin += wcslen(L"desktopwidth:i:");
 		int mode = _wtoi(begin);	
-		rdpconn.width = (USHORT)mode;
-		return rdpconn;
+		local_options[wxT("width")] = wxString::Format(wxT("%i"), mode);
+		return local_options;
 	}
 	// Check for desktop height
 	if ((begin = wcswcs(buff,L"desktopheight:i:")) != NULL)
 	{
 		begin += wcslen(L"desktopheight:i:");
 		int mode = _wtoi(begin);	
-		rdpconn.heigth = (USHORT)mode;
-		return rdpconn;
+		local_options[wxT("heigth")] = wxString::Format(wxT("%i"), mode);
+		return local_options;
 	}
 	// Check for color depth
 	if ((begin = wcswcs(buff,L"session bpp:i:")) != NULL)
 	{
 		begin += wcslen(L"session bpp:i:");
 		int mode = _wtoi(begin);	
-		rdpconn.color_depth = (BYTE)mode;
-		return rdpconn;
+		local_options[wxT("color_depth")] = wxString::Format(wxT("%i"), mode);
+		return local_options;
 	}
 	// Check for full address
 	if ((begin = wcswcs(buff,L"full address:s:")) != NULL)
@@ -1207,60 +1494,56 @@ RDPConn ParseString(WCHAR wstr[], RDPConn rdpconn)
 		begin += wcslen(L"full address:s:");
 		wcscpy(temp,begin);
 		wxString str = wxString(temp);
-		rdpconn.hostname = str;
-		return rdpconn;
+		local_options[wxT("hostname")] = str;
+		return local_options;
 	}	
 	// Check for keyboard mode
 	if ((begin = wcswcs(buff,L"keyboardhook:i:")) != NULL)
 	{
 		begin += wcslen(L"keyboardhook:i:");
 		mode = _wtoi(begin);	
-		rdpconn.keyboard = (BYTE)mode;
-		return rdpconn;
+		local_options[wxT("keyboard")] = wxString::Format(wxT("%i"), mode);
+		return local_options;
 	}
 	// Check for audio mode
 	if ((begin = wcswcs(buff,L"audiomode:i:")) != NULL)
 	{
 		begin += wcslen(L"audiomode:i:");
 		mode = _wtoi(begin);	
-		rdpconn.SoundType = (BYTE)mode;
-		return rdpconn;
+		local_options[wxT("sound_type")] = wxString::Format(wxT("%i"), mode);
+		return local_options;
 	}
 	// Check for redirect drives
 	if ((begin = wcswcs(buff,L"redirectdrives:i:")) != NULL)
 	{
 		begin += wcslen(L"redirectdrives:i:");
 		mode = _wtoi(begin);
-		if (mode == 1) rdpconn.bShareDrives = TRUE;
-		else	rdpconn.bShareDrives = FALSE;
-		return rdpconn;
+		local_options[wxT("share_drives")] = wxString::Format(wxT("%i"), mode);
+		return local_options;
 	}
 	// Check for redirect printers
 	if ((begin = wcswcs(buff,L"redirectprinters:i:")) != NULL)
 	{
 		begin += wcslen(L"redirectprinters:i:");
 		mode = _wtoi(begin);	
-		if (mode == 1) rdpconn.bSharePrinters = TRUE;
-		else	rdpconn.bSharePrinters = FALSE;
-		return rdpconn;
+		local_options[wxT("share_printers")] = wxString::Format(wxT("%i"), mode);
+		return local_options;
 	}
 	// Check for redirect COM ports
 	if ((begin = wcswcs(buff,L"redirectcomports:i:")) != NULL)
 	{
 		begin += wcslen(L"redirectcomports:i:");
 		mode = _wtoi(begin);	
-		if (mode == 1) rdpconn.bShareComPorts = TRUE;
-		else	rdpconn.bShareComPorts = FALSE;
-		return rdpconn;
+		local_options[wxT("share_com_ports")] = wxString::Format(wxT("%i"), mode);
+		return local_options;
 	}
 	// Check for redirect smart cards
 	if ((begin = wcswcs(buff,L"redirectsmartcards:i:")) != NULL)
 	{
 		begin += wcslen(L"redirectsmartcards:i:");
 		mode = _wtoi(begin);	
-		if (mode == 1) rdpconn.bShareSmartCards = TRUE;
-		else	rdpconn.bShareSmartCards = FALSE;
-		return rdpconn;
+		local_options[wxT("share_smart_cards")] = wxString::Format(wxT("%i"), mode);
+		return local_options;
 	}
 	// Check for username
 	if ((begin = wcswcs(buff,L"username:s:")) != NULL)
@@ -1269,8 +1552,8 @@ RDPConn ParseString(WCHAR wstr[], RDPConn rdpconn)
 		memset(temp,0,sizeof(temp));
 		wcscpy(temp,begin);
 		wxString *strUsername = new wxString(temp);
-		rdpconn.username = *strUsername;
-		return rdpconn;
+		local_options[wxT("username")] = *strUsername;
+		return local_options;
 	}
 	// Check for domain
 	if ((begin = wcswcs(buff,L"domain:s:")) != NULL)
@@ -1279,8 +1562,8 @@ RDPConn ParseString(WCHAR wstr[], RDPConn rdpconn)
 		memset(temp,0,sizeof(temp));
 		wcscpy(temp,begin);
 		wxString *str = new wxString(temp);
-		rdpconn.domain = *str;
-		return rdpconn;
+		local_options[wxT("domain")] = *str;
+		return local_options;
 	}
 
 
@@ -1291,15 +1574,15 @@ RDPConn ParseString(WCHAR wstr[], RDPConn rdpconn)
 		memset(temp,0,sizeof(temp));
 		wcscpy(temp,begin);
 		
-		if (wcslen(temp) == 0) rdpconn.bUseProgram = FALSE;
+		if (wcslen(temp) == 0) local_options[wxT("use_program")] = wxT("0");
 		else
 		{
-			rdpconn.bUseProgram = TRUE;
-			rdpconn.bProgramMaximized = FALSE;
+			local_options[wxT("use_program")] = wxT("1");
+			local_options[wxT("program_maximized")] = wxT("0");
 			wxString str = wxString(temp);
-			rdpconn.shell = str;
+			local_options[wxT("shell")] = str;
 		}
-		return rdpconn;
+		return local_options;
 	}
 	
 	// Check for program directory
@@ -1309,8 +1592,8 @@ RDPConn ParseString(WCHAR wstr[], RDPConn rdpconn)
 		memset(temp,0,sizeof(temp));
 		wcscpy(temp,begin);
 		wxString str = wxString(temp);
-		rdpconn.directory = str;
-		return rdpconn;
+		local_options[wxT("directory")] = str;
+		return local_options;
 	}
 
 	// Check for wallpaper
@@ -1318,9 +1601,8 @@ RDPConn ParseString(WCHAR wstr[], RDPConn rdpconn)
 	{
 		begin += wcslen(L"disable wallpaper:i:");
 		mode = _wtoi(begin);	
-		if (mode == 1) rdpconn.bEnableWallpaper = FALSE;
-		else	rdpconn.bEnableWallpaper = TRUE;
-		return rdpconn;
+		local_options[wxT("enable_wallpaper")] = wxString::Format(wxT("%i"), mode);
+		return local_options;
 	}
 
 	// Check for full window drag
@@ -1328,9 +1610,8 @@ RDPConn ParseString(WCHAR wstr[], RDPConn rdpconn)
 	{
 		begin += wcslen(L"disable full window drag:i:");
 		mode = _wtoi(begin);	
-		if (mode == 1) rdpconn.bEnableFullWindowDrag = FALSE;
-		else	rdpconn.bEnableFullWindowDrag = TRUE;
-		return rdpconn;
+		local_options[wxT("enable_full_window_drag")] = wxString::Format(wxT("%i"), mode);
+		return local_options;
 	}
 
 	// Check for animation
@@ -1338,9 +1619,8 @@ RDPConn ParseString(WCHAR wstr[], RDPConn rdpconn)
 	{
 		begin += wcslen(L"disable menu anims:i:");
 		mode = _wtoi(begin);	
-		if (mode == 1) rdpconn.bEnableAnimation = FALSE;
-		else	rdpconn.bEnableAnimation = TRUE;
-		return rdpconn;
+		local_options[wxT("enable_animation")] = wxString::Format(wxT("%i"), mode);
+		return local_options;
 	}
 
 	// Check for themes
@@ -1348,9 +1628,8 @@ RDPConn ParseString(WCHAR wstr[], RDPConn rdpconn)
 	{
 		begin += wcslen(L"disable themes:i:");
 		mode = _wtoi(begin);	
-		if (mode == 1) rdpconn.bEnableThemes = FALSE;
-		else	rdpconn.bEnableThemes = TRUE;
-		return rdpconn;
+		local_options[wxT("enable_themes")] = wxString::Format(wxT("%i"), mode);
+		return local_options;
 	}
 
 	// Check for bitmap caching
@@ -1358,9 +1637,8 @@ RDPConn ParseString(WCHAR wstr[], RDPConn rdpconn)
 	{
 		begin += wcslen(L"bitmapcachepersistenable:i:");
 		mode = _wtoi(begin);	
-		if (mode == 1) rdpconn.bEnableBitmapCaching = TRUE;
-		else	rdpconn.bEnableBitmapCaching = FALSE;
-		return rdpconn;
+		local_options[wxT("enable_bitmap_caching")] = wxString::Format(wxT("%i"), mode);
+		return local_options;
 	}
 
 	// Check for password
@@ -1393,23 +1671,30 @@ RDPConn ParseString(WCHAR wstr[], RDPConn rdpconn)
 		dbIn.pbData = RDPPassw;  
 		dbOut.pbData = NULL;
 		dbOut.cbData = 0;
-		if (!CryptUnprotectData(&dbIn,NULL,0,0,0,CRYPTPROTECT_UI_FORBIDDEN,&dbOut)) return rdpconn;
+		if (!CryptUnprotectData(&dbIn,NULL,0,0,0,CRYPTPROTECT_UI_FORBIDDEN,&dbOut)) return local_options;
 		memset(temp,0,sizeof(temp));
 		memcpy(temp,dbOut.pbData,dbOut.cbData);
 		wxString str = wxString(temp);
-		rdpconn.password = str;
-		return rdpconn;
+		local_options[wxT("password")] = str;
+		return local_options;
 	}
 	
-	return rdpconn;
+	return local_options;
 }
 #endif
 
+///////////////////////////////////////////////////////////////////////////////
+//! \brief Process userdpfile event
+//! \param 
+//! \return 
+//! \sa
+///////////////////////////////////////////////////////////////////////////////
 void Main_Frame::on_userdpfile(wxCommandEvent& event)
 {
 #ifdef __WXMSW__
 	wxString str;
-	RDPConn rdpconn;
+	//RDPConn rdpconn;
+	Options_HashMap local_options_rdp_files;
 
 	wxFileDialog * openfiledialog = new wxFileDialog(this,wxT("Choose a RDP file"),wxT(""),wxT(""),wxT("*.rdp"),wxFD_OPEN);
 	int iRes;
@@ -1442,19 +1727,20 @@ void Main_Frame::on_userdpfile(wxCommandEvent& event)
 	while (token != NULL)
 	{
 		wcscpy(wstr,token);
-		rdpconn = ParseString(wstr,rdpconn);
+		local_options_rdp_files = ParseString(wstr,local_options_rdp_files);
 		token = wcstok(NULL,separators);
 	}
 	
-	rdpconn.port = wxString(_("3389"));
+	local_options_rdp_files[wxT("port")] = wxT("3389");
 	
-	rdpconn.bControlSize = FALSE; 
+	local_options_rdp_files[wxT("control_size")] = wxT("0"); 
 
-	RDPDialog * dialog = new RDPDialog(this,wxCAPTION,&rdpconn,this->BaseFile,&base,TRUE);
-	dialog->LoadRDPConn();
-	dialog->FillRDPConn(); 
-
-	AddRDP(rdpconn);
+	//,wxCAPTION,&rdpconn,this->BaseFile,&base,TRUE);
+	//dialog->LoadRDPConn();
+	//dialog->FillRDPConn(); 
+	RDPDialog * dialog = new RDPDialog(this);
+	dialog->Set_Options(&local_options_rdp_files);
+	AddRDP(local_options_rdp_files);
 	delete dialog;
 	
 	return;
@@ -1464,14 +1750,18 @@ error:
 #endif
 }
 
+///////////////////////////////////////////////////////////////////////////////
+//! \brief Process export to rdp file event
+///////////////////////////////////////////////////////////////////////////////
 void Main_Frame::on_exportrdpfile(wxCommandEvent& event)
 {
 	
 #ifdef __WXMSW__
 	wxString str;
-	RDPConn rdpconn;
+	//RDPConn rdpconn;
+	Options_HashMap local_options;
 	
-	this->clear_rdpconn(&rdpconn);
+	//this->clear_rdpconn(&rdpconn);
 
 	wxFileDialog * openfiledialog = new wxFileDialog(this,wxT("Choose a RDP file"),wxT(""),wxT(""),wxT("*.rdp"),wxFD_OPEN);
 	int iRes;
@@ -1510,48 +1800,55 @@ void Main_Frame::on_exportrdpfile(wxCommandEvent& event)
 	while (token != NULL)
 	{
 		wcscpy(wstr,token);
-		rdpconn = ParseString(wstr,rdpconn);
+		local_options = ParseString(wstr,local_options);
 		token = wcstok(NULL,separators);
 	}
 	
-	rdpconn.port = wxString(_("3389"));
-	rdpconn.bControlSize = FALSE; 
+	local_options[wxT("port")] = wxString(_("3389"));
+	local_options[wxT("control_size")] = wxT("0"); 
 	
-	RDPDialog dialog = RDPDialog(this,wxCAPTION,&rdpconn,this->BaseFile,&base,TRUE);
-	dialog.LoadRDPConn();
+	RDPDialog dialog = RDPDialog(this);
+	//dialog.LoadRDPConn();
+	dialog.Set_Options(&local_options);
 	iRes = dialog.ShowModal();
 		
-	m_panel_tree->rdptree->ReloadSettings();
+	TREEPANEL(m_panel_tree)->rdptree->ReloadSettings();
 
 	if (iRes == 1)
 	{
-		AddRDP(rdpconn);
+		AddRDP(local_options);
 	}
 #endif
 	return;
 }
 
+///////////////////////////////////////////////////////////////////////////////
+//! \brief Process fast configuretion dialog event
+///////////////////////////////////////////////////////////////////////////////
 void Main_Frame::on_fastconn(wxCommandEvent &event)
 {
-	FastConnDialog fcDialog(this,wxCAPTION,NULL,this->BaseFile,this->base);
-	
-	int iRes = fcDialog.ShowModal(); 
-	if (iRes == 0) return;
+   FastConnDialog fcDialog(this,wxCAPTION,NULL,this->BaseFile,this->base);
+   Options_HashMap local_options;
+   
+   int iRes = fcDialog.ShowModal(); 
+   if (iRes == 0) return;
 
-	if(iRes == 1) 
-	{
-		if (fcDialog.GetRDPConn().uniq_name > 0)
-		{	
-			this->m_panel_tree->rdptree->curr_uniq_name = fcDialog.GetRDPConn().uniq_name;
-			wxCommandEvent evt;
-			evt.SetId(1);
-			this->m_panel_tree->rdptree->on_tree_connect(evt);
-		}
-		else
-		{
-			AddRDP(fcDialog.GetRDPConn());
-		}
-	}
+   if(iRes == 1) 
+   {
+      local_options = fcDialog.Get_Options();
+      //wxMessageBox(local_options[wxT("hostname")]);
+      if (local_options[wxT("uniq_name")].IsEmpty() != false)
+      {	
+	 TREEPANEL(this->m_panel_tree)->rdptree->curr_uniq_name = wxAtoi(local_options[wxT("uniq_name")]);
+	 wxCommandEvent evt;
+	 evt.SetId(1);
+	 TREEPANEL(this->m_panel_tree)->rdptree->on_tree_connect(evt);
+      }
+      else
+      {
+	 AddRDP(fcDialog.Get_Options());
+      }
+   }
 }
 
 void Main_Frame::clear_rdpconn(RDPConn *rdp_conn)
@@ -1617,41 +1914,49 @@ void Main_Frame::clear_rdpconn(RDPConn *rdp_conn)
 		
 }
 
+///////////////////////////////////////////////////////////////////////////////
+//! \brief Process note book change event
+///////////////////////////////////////////////////////////////////////////////
 void Main_Frame::notebook_changing_func(wxAuiNotebookEvent& event)
 {
 	if (nb->GetSelection() >= 0)
 	{
-		wxSplitterRDP * splitter_rdp = (wxSplitterRDP *)this->nb->GetPage(nb->GetSelection());
-		if (splitter_rdp)
+		ConnSplitter * conn_splitter = (ConnSplitter *)this->nb->GetPage(nb->GetSelection());
+		if (conn_splitter)
 		{
-			if (splitter_rdp->state)
+			if (conn_splitter->state)
 			{
-				splitter_rdp->create_screenshot();
+				conn_splitter->create_screenshot();
 			}
-			if (splitter_rdp->m_timer_screenshot.IsRunning())
+			if (conn_splitter->m_timer_screenshot.IsRunning())
 			{
-				splitter_rdp->m_timer_screenshot.Stop();  
+				conn_splitter->m_timer_screenshot.Stop();  
 			}
 		}
 	}
 }
-
+///////////////////////////////////////////////////////////////////////////////
+//! \sa notebook_closepage_func_ne
+///////////////////////////////////////////////////////////////////////////////
 void Main_Frame::notebook_closepage_func(wxAuiNotebookEvent& event)
 {
 	notebook_closepage_func_ne();
 }
 
+///////////////////////////////////////////////////////////////////////////////
+//! \brief Process close page event
+///////////////////////////////////////////////////////////////////////////////
 void Main_Frame::notebook_closepage_func_ne()
 {
-	wxSplitterRDP * splitter_rdp = (wxSplitterRDP *)this->nb->GetPage(nb->GetSelection());
-	wxRDP * rdp = splitter_rdp->rdp; 
+	ConnSplitter * conn_splitter = (ConnSplitter *)this->nb->GetPage(nb->GetSelection());
+	/*wxRDP * */ BasicConnection * conn = conn_splitter->conn; 
 
-	if (rdp->info_uniq_name != 0)
+	if (conn->info_uniq_name != 0)
 	{
-		rdp->main_frame->m_panel_tree->rdptree->from_wxrdp(rdp->info_uniq_name,TREEDATA_DEC_OBJCOUNT);
-		rdp->info_uniq_name = 0;
+		TREEPANEL(conn->main_frame->m_panel_tree)->rdptree->from_wxrdp(conn->info_uniq_name,TREEDATA_DEC_OBJCOUNT);
+		conn->info_uniq_name = 0;
 	}
-
+/*
 	if (rdp->bConnected)
 	{
 #ifdef __WXMSW__
@@ -1661,6 +1966,14 @@ void Main_Frame::notebook_closepage_func_ne()
 		rdp->request_close(TRUE);
 #endif
 	}
+*/
+////////
+	if (conn->bConnected)
+	{
+		conn->Disconnect();
+	}
+	
+	//////// 
 	if (this->nb->GetPageCount() > 1)
 	{
 		EnableConnectionMenu();
@@ -1673,7 +1986,9 @@ void Main_Frame::notebook_closepage_func_ne()
 	}
 	
 }
-
+///////////////////////////////////////////////////////////////////////////////
+//! \brief Show or hide connections tree 
+///////////////////////////////////////////////////////////////////////////////
 void Main_Frame::ShowTree(BOOL bShow)
 {
 	wxSize sz = this->GetClientSize(); 
@@ -1701,15 +2016,16 @@ void Main_Frame::ShowTree(BOOL bShow)
 #ifdef __WXGTK__
 
 		nb->FitInside();
-		wxSplitterRDP * temp;
+		ConnSplitter * temp;
 		int Count = (DWORD)this->nb->GetPageCount();
 		for (int i = 0; i < Count; i ++)
 		{
-			temp = (wxSplitterRDP *)this->nb->GetPage(i);
-			wxRDP * rdp = temp->rdp;
-				
-			rdp->CenterOnParent();
-			rdp->cnt->SetPosition(wxPoint(0,0));
+			temp = (ConnSplitter *)this->nb->GetPage(i);
+			//	wxRDP * rdp = temp->rdp;
+			BasicConnection * conn = temp->conn;
+							
+			conn->CenterOnParent();
+			conn->cnt->SetPosition(wxPoint(0,0));
 			temp->CenterOnParent();
 			temp->Update();
 		}
@@ -1727,14 +2043,16 @@ void Main_Frame::ShowTree(BOOL bShow)
 #ifdef __WXGTK__
 
 		nb->FitInside();
-		wxSplitterRDP * temp;
+		ConnSplitter * temp;
 		int Count = (DWORD)this->nb->GetPageCount();
 		for (int i = 0; i < Count; i ++)
 		{
-			temp = (wxSplitterRDP *)this->nb->GetPage(i);
-			wxRDP * rdp = temp->rdp;
-			rdp->CenterOnParent();
-			rdp->cnt->CenterOnParent();
+			temp = (ConnSplitter *)this->nb->GetPage(i);
+//			wxRDP * rdp = temp->rdp;
+			BasicConnection * conn = temp->conn;
+			
+			conn->CenterOnParent();
+			conn->cnt->CenterOnParent();
 				
 			temp->CenterOnParent();
 			temp->Update();
@@ -1756,7 +2074,9 @@ void Main_Frame::ShowTree(BOOL bShow)
 }
 
 
-
+///////////////////////////////////////////////////////////////////////////////
+//! \brief Process showing tree event
+///////////////////////////////////////////////////////////////////////////////
 void Main_Frame::on_showtree(wxCommandEvent &event) 
 {
 	if (this->settingsMenu->IsChecked(ID_SHOWTREE))
@@ -1785,8 +2105,9 @@ void Main_Frame::on_showtree(wxCommandEvent &event)
 Main_Frame::~Main_Frame()
 {
 	Benc bc;
-	bc.Save(&base);
-
+	//bc.Save(&base);
+	bc.Save(&all_connection_records);
+	
 	delete m_hideframe;
 	delete nb;
 }
@@ -1834,6 +2155,21 @@ void Main_Frame::on_hideframe(wxCommandEvent& event)
 
 void Main_Frame::on_maximize(wxMaximizeEvent& event)
 {
+// TEST (ICA Connection)
+#ifdef __WXGTK__
+	size_t conn_num = nb->GetPageCount();
+	for (size_t i = 0; i < conn_num; i++)
+	{
+		ConnSplitter * splitter = (ConnSplitter *)nb->GetPage(i);
+		if (!splitter) continue;
+		BasicConnection * basic_conn = (BasicConnection *)splitter->conn;
+		if (!basic_conn) continue;
+		basic_conn->CentreConnection();
+	}
+#endif	
+
+
+	
 	event.Skip();
 	return;
 }
@@ -1855,11 +2191,11 @@ void Main_Frame::EnableTabs(BOOL bEnable)
 	size_t iCount = nb->GetPageCount();
 	for (size_t i = 0; i < iCount; i++)
 	{
-		wxSplitterRDP * sp_rdp = (wxSplitterRDP *)nb->GetPage(i);
+		ConnSplitter * sp_rdp = (ConnSplitter *)nb->GetPage(i);
 		if (!bEnable)
-			sp_rdp->rdp->cnt->Disable();	
+			sp_rdp->conn->cnt->Disable();	
 		else
-			sp_rdp->rdp->cnt->Enable();
+			sp_rdp->conn->cnt->Enable();
 	}	
  
 	if (!IsShown())
@@ -1964,20 +2300,21 @@ void Main_Frame::RedrawTabs(wxUpdateUIEvent& event)
 	wxWindowUpdateLocker nb_lock(nb);
 #endif
 	
-	wxSplitterRDP * temp;
+	ConnSplitter * temp;
 	
 	int Count = (DWORD)this->nb->GetPageCount();
 	for (int i = 0; i < Count; i ++)
 	{
-		temp = (wxSplitterRDP *)this->nb->GetPage(i);
+		temp = (ConnSplitter *)this->nb->GetPage(i);
 							
-		temp->rdp->SetPosition(wxPoint(0,0));
-		temp->rdp->SetSize(temp->GetClientSize());
+		temp->conn->SetPosition(wxPoint(0,0));
+		temp->conn->SetSize(temp->GetClientSize());
 
 #ifdef __WXGTK__
-		if (temp->rdp->cnt)
+		if (temp->conn->cnt)
 		{
-			temp->rdp->CentreRDP();
+//			temp->conn->CentreRDP();
+			temp->conn->CentreConnection();
 		}
 #endif				
 				
@@ -2020,10 +2357,17 @@ void Main_Frame::connection_status_update(wxCommandEvent& event)
 {
 	if (nb->GetPageCount() <= 0) return;
 		
-	wxSplitterRDP * splitter_rdp = (wxSplitterRDP *)this->nb->GetPage(nb->GetSelection());
-	if (splitter_rdp != NULL)
+	ConnSplitter * conn_splitter = (ConnSplitter *)this->nb->GetPage(nb->GetSelection());
+	if (conn_splitter != NULL)
 	{
+		notebook_change_func_ne();
+#ifdef __WXGTK__
+		switch_splitter();
+#endif
+		/*
 		wxRDP * rdp = splitter_rdp->rdp;
+		//BasicConnection * conn = splitter_rdp->rdp;
+		
 		if (rdp !=  NULL)
 		{
 			if (rdp->get_proc_state() == false)
@@ -2038,21 +2382,24 @@ void Main_Frame::connection_status_update(wxCommandEvent& event)
 #endif
 			}
 		}
+		*/
 	}
 }
 
 
 void Main_Frame::switch_splitter()
 {
-	wxSplitterRDP * splitter_rdp = (wxSplitterRDP *)this->nb->GetPage(nb->GetSelection());
-	wxRDP * rdp = splitter_rdp->rdp;
-	if (rdp->bConnected == true)
+	ConnSplitter * conn_splitter = (ConnSplitter *)this->nb->GetPage(nb->GetSelection());
+//	wxRDP * rdp = conn_splitter->rdp;
+	BasicConnection * conn = conn_splitter->conn;
+	
+	if (conn->bConnected == true)
 	{
-		splitter_rdp->switch_to_off();
+		conn_splitter->switch_to_off();
 	} 
 	else 
 	{
-		splitter_rdp->switch_to_on();
+		conn_splitter->switch_to_on();
 	}
 }
 
@@ -2062,3 +2409,76 @@ void Main_Frame::error_message(wxString error_mgs)
 }
 
 #endif
+
+///////////////////////////////////////////////////////////////////////////////
+//! \brief Add connections record
+///////////////////////////////////////////////////////////////////////////////
+void Main_Frame::Add_Connections_Record(Options_HashMap *local_options)
+{
+   Benc bc;
+   Options_HashMap options;
+   bool found_copy = false;
+   //wxMessageBox((*local_options)[wxT("uniq_name")]);
+   if ((*local_options)[wxT("hostname")] != wxT(""))
+   {
+      if ( (*local_options)[wxT("uniq_name")].IsEmpty() != true)
+      {
+	 for (int i = 0; i < all_connection_records.Count(); i++)
+	 {
+	    options = all_connection_records.Item(i);
+	    if (options[wxT("uniq_name")] == (*local_options)[wxT("uniq_name")])
+	    {
+	       all_connection_records.RemoveAt(i);
+	       all_connection_records.Insert(*local_options,i);
+	       bc.Save(&all_connection_records);
+	       found_copy = true;
+	       break;
+	    }
+	 }
+	 if (found_copy == false)
+	 {
+	    all_connection_records.Add(*local_options);
+	    bc.Save(&all_connection_records);
+	 }
+      }
+      else
+      {
+	 (*local_options)[wxT("uniq_name")] = wxString::Format(wxT("%d"),
+							       bc.generate_uniq_name());
+	 all_connection_records.Add(*local_options);
+	 bc.Save(&all_connection_records);
+      }
+   }
+   
+}
+///////////////////////////////////////////////////////////////////////////////
+//! \brief Delete connections record by uniq name
+///////////////////////////////////////////////////////////////////////////////
+void Main_Frame::Del_Connections_Record(int uniq_name)
+{
+   Benc bc;
+   Options_HashMap options;
+//   if ( (*local_options)[wxT("uniq_name")].IsEmpty() != true)
+//    {
+       for (int i = 0; i < all_connection_records.Count(); i++)
+       {
+	  options = all_connection_records.Item(i);
+	  if (uniq_name == wxAtoi(options[wxT("uniq_name")]))
+	  {
+  	       all_connection_records.RemoveAt(i);
+	       bc.Save(&all_connection_records);
+	  //all_connection_records.Insert(*local_options,i);
+  	       break;
+	  }
+  	 }
+//    }
+    // else
+    // {
+    //    (*local_options)[wxT("uniq_name")] = wxString::Format(wxT("%d"),
+    // 							     bc.generate_uniq_name());
+    //    all_connection_records.Add(*local_options);
+    //    bc.Save(&all_connection_records);
+    // }
+}
+
+

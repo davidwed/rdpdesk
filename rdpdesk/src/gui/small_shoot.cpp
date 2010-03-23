@@ -1,27 +1,25 @@
 ///////////////////////////////////////////////////////////////////////////////
-// File name: small_shoot.cpp
-// Date create: Fri Sep 25 13:36:57 2009
-// Version: 0.0
-// Time-stamp: "2009-10-09 13:12:25" 
-// E-mail: 
-// Content-Type: text/plain; charset=utf8
+// File name:   small_shoot.cpp
+// Version:     0.0
+// Purpose: 
+// Time-stamp:  "2010-03-03 18:23:57" 
+// E-mail:      rdpdesk@rdpdesk.com
 // $Id$ 
-// Description: 
-// 
-// 
-// 
+// Copyright:   (c) 2009-2010 RDPDesk <rdpdesk@rdpdesk.com> 
+// Licence:     GPL v3 
 ///////////////////////////////////////////////////////////////////////////////
 
 #include "small_shoot.hpp"
-#ifdef __WXMSW__
+//#ifdef __WXMSW__
 #include "main_window.hpp"
-#endif
+//#endif
 
 PanelBitmapBtn::PanelBitmapBtn(wxWindow * parent, wxWindowID id,const wxPoint& point,const wxSize& size, long style):
 wxPanel(parent,id,point,size,style)
 {
 	wxBitmap bmp;
-	bmpbtn = new wxBitmapButton(this,ID_CONNECT_FROM_SCREENSHOT,bmp,wxPoint(0,0),this->GetSize(),wxNO_BORDER );
+	bmpbtn = new wxBitmapButton(this,ID_CONNECT_FROM_SCREENSHOT,bmp,wxPoint(0,0),this->GetSize(),
+								wxNO_BORDER|wxBU_AUTODRAW );
 }
 
 void PanelBitmapBtn::bmpbtn_func(wxCommandEvent &event)
@@ -39,3 +37,13 @@ PanelBitmapBtn::~PanelBitmapBtn()
 		bmpbtn = NULL;
 	}
 }
+
+
+
+
+
+
+
+
+
+
