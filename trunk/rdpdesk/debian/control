@@ -2,13 +2,14 @@ Source: rdpdesk
 Section: net
 Priority: extra
 Maintainer: RDPDesk <pkolobaev@solovat.net>
-Build-Depends: debhelper (>= 7), autotools-dev, libxt-dev (>=1.0.6-0), libgtk2.0-dev (>= 2.18.0), libglib2.0-dev (>=2.22.0-0), x11proto-core-dev (>= 7.0.15-1), libwxbase2.8-dev (>= 2.8.9), libwxgtk2.8-dev (>= 2.8.9), libssl-dev
+Build-Depends: debhelper (>= 7), autotools-dev, libxt-dev (>=1.0.6-0), libgtk2.0-dev (>= 2.18.0), libglib2.0-dev (>=2.22.0-0), x11proto-core-dev (>= 7.0.15-1), libwxbase2.8-dev (>= 2.8.9), libwxgtk2.8-dev (>= 2.8.9), libssl-dev, libjpeg62-dev, zlib1g-dev, libxaw7-dev, libxmu-headers
 Standards-Version: 3.8.3
 Homepage: http://rdpdesk.com/
 
 Package: rdpdesk
 Architecture: any
-Depends: ${shlibs:Depends}, ${misc:Depends}
+Depends: rdesktop | freerdp-x11, ${shlibs:Depends}, ${misc:Depends}
+Recommends:  rdesktop, freerdp-x11
 Description: The RDPDesk is open source Virtual Desktop Infrastructure management solution
  RDPDesk delivers the most comprehensive desktop brokering, management, 
   and application publishing solution. It supports the world...s leading 

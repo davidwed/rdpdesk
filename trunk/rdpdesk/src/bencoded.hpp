@@ -1,12 +1,12 @@
 ///////////////////////////////////////////////////////////////////////////////
 // File name:   bencoded.hpp
 // Version:     0.0
-// Purpose: 
-// Time-stamp:  "2010-03-05 18:34:31" 
+// Purpose:
+// Time-stamp:  "2010-11-30 21:08:20"
 // E-mail:      rdpdesk@rdpdesk.com
-// $Id$ 
-// Copyright:   (c) 2009-2010 RDPDesk <rdpdesk@rdpdesk.com> 
-// Licence:     GPL v3 
+// $Id$
+// Copyright:   (c) 2009-2010 RDPDesk <rdpdesk@rdpdesk.com>
+// Licence:     GPL v3
 ///////////////////////////////////////////////////////////////////////////////
 
 #ifndef BENCODED_HPP
@@ -18,7 +18,7 @@
 #include <wx/textfile.h>
 #include <wx/busyinfo.h>
 
-#include <wx/arrimpl.cpp> 
+#include <wx/arrimpl.cpp>
 
 #include <openssl/aes.h>
 #include <openssl/evp.h>
@@ -34,11 +34,11 @@ WX_DECLARE_OBJARRAY(RDPConn,base_conn);
 //WX_DEFINE_OBJARRAY(GeneralOptionsArray);
 class CryptSettings
 {
-public: 
+public:
    CryptSettings();
-   CryptSettings(wxString Path);
+   CryptSettings(const wxString &Path);
    void WriteKey(wxString Path);
-	
+
    void create_context_simple();
    void create_context_aes();
 
@@ -48,9 +48,9 @@ public:
 
 private:
 
-   wxString Path;
+   wxString localPath;
    wxString base_key;
-   BYTE real_key[256];
+   BYTE_L real_key[256];
    EVP_CIPHER_CTX en_aes;
    EVP_CIPHER_CTX de_aes;
    bool state;
@@ -60,7 +60,7 @@ private:
 class Benc
 {
 public:
-   Benc(){}; 
+   Benc(){};
    ~Benc(){};
 
    int generate_uniq_name(base_conn * bc);
@@ -71,23 +71,23 @@ public:
    void Delete(base_conn * bc, RDPConn rdpc);
    int Count(base_conn * bc);
    RDPConn Get(base_conn * bc, int line_number);
-   Options_HashMap Get_Options(Options_HashMap *all_options, int line_number);
+//   Options_HashMap Get_Options(Options_HashMap *all_options, int line_number);
    Options_HashMap Get_Parsed_Options(wxString str, int pos);
    Options_HashMap Get_Tree_Options(wxString str);
-   
+
    int Find(base_conn * bc, int uniq_name);
    bool Load(base_conn * bc);
    Connections_List Load();
    bool Save(base_conn * bc);
    bool Save(Connections_List *all_connection_records);
-   BOOL LoadProgramSettings(programsettings * ps);
-   BOOL SaveProgramSettings(programsettings * ps);
+   BOOL_L LoadProgramSettings(programsettings * ps);
+   BOOL_L SaveProgramSettings(programsettings * ps);
 private:
 
    wxString GetString(const RDPConn rdpc);
    wxString GetString(const Options_HashMap *all_options);
-   wxString GetParamStr(wxString name, wxString param);  
-   wxString GetParamInt(wxString name, int param);  
+   wxString GetParamStr(wxString name, wxString param);
+   wxString GetParamInt(wxString name, int param);
    int NumberCount(unsigned int val);
    int ByteLen(wxString str);
    wxString ConvertToUTF8(wxString str);
@@ -95,20 +95,20 @@ private:
    int iCurrSize;
 
    int FileCount(wxString filename);
-   BOOL isNormalLine(wxFile * fBase, int pos);
+   BOOL_L isNormalLine(wxFile * fBase, int pos);
    wxString FileGetString(wxString filename, int num);
 
    RDPConn GetRDPConn(wxString str);
-   BOOL GetOptions(wxString str, int pos, RDPConn * rdp_conn);
-   BOOL isNormalParam(wxString str, int pos);
+   BOOL_L GetOptions(wxString str, int pos, RDPConn * rdp_conn);
+   BOOL_L isNormalParam(wxString str, int pos);
 
    wxString sFilename;
 
-	
-   BOOL GetProgramSettings(const wxString str_set, programsettings * ps);
-   BOOL GetProgramOptions(wxString str, int pos, programsettings * ps);
-   
-   
+
+   BOOL_L GetProgramSettings(const wxString str_set, programsettings * ps);
+   BOOL_L GetProgramOptions(wxString str, int pos, programsettings * ps);
+
+
 };
 
 

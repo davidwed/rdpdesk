@@ -1,3 +1,17 @@
+rdpdesk (3.1-0) unstable; urgency=low
+
+  * Add support FreeRDP (only linux)
+  * Fix errors.
+
+ -- rdpdesk <rdpdesk@rdpdesk.com>  Tue, 8 Dec 2010 18:30:06 +0400
+
+rdpdesk (3.0-1) unstable; urgency=low
+
+  * Add support VNC (TightVNC)
+  * Fix errors.
+
+ -- rdpdesk <rdpdesk@rdpdesk.com>  Tue, 20 May 2010 11:12:25 +0400
+
 rdpdesk (2.0-1) unstable; urgency=low
 
   * Add support Citrix ICA client

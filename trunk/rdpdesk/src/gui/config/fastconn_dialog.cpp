@@ -1,103 +1,134 @@
 ///////////////////////////////////////////////////////////////////////////////
 // File name:   fastconn_dialog.cpp
 // Version:     0.0
-// Purpose: 
-// Time-stamp:  "2010-03-21 20:24:38" 
+// Purpose:
+// Time-stamp:  "2010-11-24 17:08:18"
 // E-mail:      rdpdesk@rdpdesk.com
-// $Id$ 
-// Copyright:   (c) 2009-2010 RDPDesk <rdpdesk@rdpdesk.com> 
-// Licence:     GPL v3 
+// $Id$
+// Copyright:   (c) 2009-2010 RDPDesk <rdpdesk@rdpdesk.com>
+// Licence:     GPL v3
 ///////////////////////////////////////////////////////////////////////////////
+
+#include <wx/ptr_scpd.h>
 
 #include "fastconn_dialog.hpp"
 
 //#include "main_window.hpp"
 #include "rdp_dialogs.hpp"
 
+BEGIN_EVENT_TABLE(FastConnDialog, wxDialog)
+EVT_BUTTON     (ID_FASTCONN_CONNECT, FastConnDialog::OnButtonConnect)
+EVT_BUTTON     (ID_FASTCONN_CANCEL,  FastConnDialog::OnButtonCancel)
+EVT_BUTTON     (ID_FASTCONN_DETAILS, FastConnDialog::OnButtonDetails)
+EVT_COMBOBOX   (ID_COMBOBOX_FAST,    FastConnDialog::OnComboboxChange)
+EVT_TEXT       (ID_COMBOBOX_FAST,    FastConnDialog::OnComboboxText)
+EVT_CHAR_HOOK(FastConnDialog::dialog_hotkeys)
+END_EVENT_TABLE()
+
+wxDECLARE_SCOPED_PTR(RDPDialog, wxRdpDialogScopedPtr)
+
 ///////////////////////////////////////////////////////////////////////////////
 //! \brief "Construcror for Fast Config Dialog"
 //! \param wxWindow* parent - parent element
-//! \param int dialogType - dialog type 
+//! \param int dialogType - dialog type
 //! \param RDPConn * rdpc - pointer to rdp struct (need to remove)
 //! \param wxTextFile * frameTextFile (neet to remove)
-//! \param base_conn rdp_base_main - programm options
+//! \param base_conn rdpBase_main - programm options
 ///////////////////////////////////////////////////////////////////////////////
-FastConnDialog::FastConnDialog(wxWindow* parent, int dialogType, RDPConn * rdpc, wxTextFile * frameTextFile, base_conn rdp_base_main) :
-wxDialog(parent, wxID_ANY, _T("Fast RDP Connection"),
-                 wxDefaultPosition, wxDefaultSize/*wxSize(335 + 1.9*SHIFT_W, 120 - 0.6*SHIFT_W)*/,dialogType)
+FastConnDialog::FastConnDialog(MainFrame* parent,
+                               int dialogType,
+                               RDPConn * rdpc,
+                               wxTextFile * frameTextFile,
+                               base_conn rdpBase_main)
+	: wxDialog(parent, wxID_ANY, _("Fast RDP Connection"),
+	           wxDefaultPosition,
+	           wxDefaultSize/*wxSize(335 + 1.9*SHIFT_W, 120 - 0.6*SHIFT_W)*/,
+	           dialogType),
+	rdpBase(rdpBase_main),
+	btnCancel(new wxButton(this, ID_FASTCONN_CANCEL, _("Cancel"),
+	                       wxDefaultPosition, wxSize(100, -1))),
+	btnConnect(new wxButton(this, ID_FASTCONN_CONNECT, _("Connect"),
+	                        wxDefaultPosition, wxSize(100, -1))),
+	btnDetails(new wxButton(this, ID_FASTCONN_DETAILS, _("Details"),
+	                        wxDefaultPosition, wxSize(100, -1))),
+	staticTxtServer(new wxStaticText(this, wxID_ANY,
+	                                 _("Server name or IP address"),
+	                                 wxDefaultPosition,
+	                                 wxDefaultSize)),
+	comboboxServer(new wxComboBox(this,
+	                              ID_COMBOBOX_FAST,
+	                              wxT(""),
+	                              wxDefaultPosition,
+	                              wxSize(170, -1))), // TODO: magic numbers
+   mainFrame(parent)
 {
-	rdp_base = rdp_base_main;
-	main_frame = (Main_Frame *)parent;
-	
 	GETBASEPATH();
-	wxString temp = BASEPATH;
+	const wxString temp = BASEPATH; // WTF?? what does 'temp' mean?
 	BaseFile = new wxTextFile(temp);
-	
-	string_server_list = NULL;
-	
+
 	LoadFromBase();
 
-	sizer_top = new wxBoxSizer(wxVERTICAL);
-
+	sizer_top    = new wxBoxSizer(wxVERTICAL);
 	sizer_server = new wxBoxSizer(wxHORIZONTAL);
-	sizer_btn = new wxBoxSizer(wxHORIZONTAL);
+	sizer_btn    = new wxBoxSizer(wxHORIZONTAL);
 
-	m_static_protocol = new wxStaticText(this,-1,wxT("Protocol "));
-	wxString arr_proto[] = {wxT("RDP Protocol"),wxT("ICA Protocol")};
-	m_combobox_protocol = new wxComboBox(this,wxID_ANY,wxT(""),wxDefaultPosition,wxSize(120,-1) , 2 , arr_proto,wxCB_READONLY);
+	for (size_t i = 0; i < servers.Count(); ++i)
+		comboboxServer->Append(servers[i]);
+
+	m_static_protocol = new wxStaticText(this, wxID_ANY, _("Protocol "));
+	const wxString arrProto[] = { _("RDP Protocol"),
+	                              _("ICA Protocol"),
+	                              _("VNC Protocol") };
+	m_combobox_protocol = new wxComboBox(this,
+	                                     ID_COMBOBOX_PROTOCOL,
+	                                     wxT(""),
+	                                     wxDefaultPosition,
+	                                     wxSize(120, -1),
+	                                     WXSIZEOF(arrProto),
+	                                     arrProto,
+	                                     wxCB_READONLY);
+
 	m_combobox_protocol->SetSelection(0);
-	m_combobox_protocol->SetValue(arr_proto[0]); 
 
-	m_static_server = new wxStaticText(this,wxID_ANY,wxT("Server name or IP address"),wxDefaultPosition, wxDefaultSize);
-	m_combobox_server = new wxComboBox(this,ID_COMBOBOX_FAST,_(""),wxDefaultPosition,wxSize(170,-1),lineCount,string_server_list);
-	sizer_server->Add(m_static_server,0,wxALL, 5);
-	sizer_server->Add(m_combobox_server,0,wxALL | wxALIGN_CENTER| wxEXPAND , 2);
+	sizer_server->Add(staticTxtServer.get(), 0, wxALL,                             5);
+	sizer_server->Add(comboboxServer.get(),  0, wxALL | wxALIGN_CENTER | wxEXPAND, 2);
 
-	sizer_server->Add(m_static_protocol,0,wxALL, 5);
-	sizer_server->Add(m_combobox_protocol,0,wxALL | wxALIGN_CENTER| wxEXPAND , 2);
+	sizer_server->Add(m_static_protocol,   0, wxALL,                             5);
+	sizer_server->Add(m_combobox_protocol, 0, wxALL | wxALIGN_CENTER | wxEXPAND, 2);
 
-	m_line_buttons = new wxStaticLine(this,wxID_ANY,wxDefaultPosition, wxSize(-1,2) ,wxLI_HORIZONTAL);
+	lineButtons = new wxStaticLine(this,
+	                               wxID_ANY,
+	                               wxDefaultPosition,
+	                               wxSize(-1, 2),
+	                               wxLI_HORIZONTAL);
 
-	m_button_cancel = new wxButton(this,ID_FASTCONN_CANCEL,wxT("Cancel"),wxDefaultPosition,wxSize(100,-1));
-	m_button_connect = new wxButton(this,ID_FASTCONN_CONNECT,wxT("Connect"),wxDefaultPosition,wxSize(100,-1));
-	m_button_details = new wxButton(this,ID_FASTCONN_DETAILS,wxT("Details"),wxDefaultPosition,wxSize(100,-1));
+	sizer_btn->Add(btnConnect.get(), 0, wxALL, 5);
+	sizer_btn->Add(btnDetails.get(), 0, wxALL, 5);
+	sizer_btn->Add(btnCancel.get(),  0, wxALL, 5);
 
-	sizer_btn->Add(m_button_connect,0,wxALL,5);
-	sizer_btn->Add(m_button_details,0,wxALL,5);
-	sizer_btn->Add(m_button_cancel,0,wxALL,5);
+	sizer_top->Add(sizer_server, 0, wxALL | wxALIGN_LEFT   | wxEXPAND, 5);
+	sizer_top->Add(lineButtons,  0, wxALL | wxALIGN_CENTER | wxEXPAND, 5);
+	sizer_top->Add(sizer_btn,    0, wxALL | wxALIGN_CENTER,            5);
 
-	sizer_top->Add(sizer_server,0,wxALL | wxALIGN_LEFT | wxEXPAND,5);
-	sizer_top->Add(m_line_buttons,0,wxALL | wxALIGN_CENTER | wxEXPAND,5);
-	sizer_top->Add(sizer_btn,0,wxALL | wxALIGN_CENTER ,5);
-	
 	SetSizer(sizer_top);
 	sizer_top->SetSizeHints(this);
-	sizer_top->Fit(this); 
+	sizer_top->Fit(this);
 
-	m_button_details->Enable(false);
-	
+	btnDetails->Enable(false);
 }
 
 ///////////////////////////////////////////////////////////////////////////////
 //! \brief Destructor
 ///////////////////////////////////////////////////////////////////////////////
-FastConnDialog::~FastConnDialog()
-{
-	if (m_static_server) {delete m_static_server; m_static_server = NULL;}
-	if (m_combobox_server) {delete m_combobox_server; m_combobox_server = NULL;}
-	if (m_button_cancel) {delete m_button_cancel; m_button_cancel = NULL;}
-	if (m_button_connect) {delete m_button_connect ; m_button_connect = NULL;}
-	if (m_button_details) {delete m_button_details ; m_button_details = NULL;}
-	wxDELETE(m_line_buttons);
-
+FastConnDialog::~FastConnDialog() {
+	wxDELETE(lineButtons);
 }
 
 ///////////////////////////////////////////////////////////////////////////////
 //! \brief Process event on Cancel button
 ///////////////////////////////////////////////////////////////////////////////
-void FastConnDialog::button_cancel_func(wxCommandEvent &event)
-{
-	this->EndModal(0);
+void FastConnDialog::OnButtonCancel(wxCommandEvent &event) {
+	EndModal(FASTCONN_RET_CANCEL);
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -105,66 +136,52 @@ void FastConnDialog::button_cancel_func(wxCommandEvent &event)
 //! \param wxString server - server name
 //! \return Options_HashMap
 ///////////////////////////////////////////////////////////////////////////////
-Options_HashMap FastConnDialog::SetDefaultRDPConn(wxString server)
+Options_HashMap FastConnDialog::SetDefaultRDPConn(const wxString &server)
 {
-   Options_HashMap local_options;
-   
-   local_options[wxT("uniq_name")] = wxT("0");
-   local_options[wxT("hostname")] = server;
-   
+	Options_HashMap local_options;
+
+	local_options[wxT("uniq_name")] = wxT("0");
+	local_options[wxT("hostname")]  = server;
+
 //	rdpconn.uniq_name = 0;
 //	rdpconn.hostname = server;
-   // Protocol type
-   if (this->m_combobox_protocol->GetSelection() == 0)
-   {
-      //rdpconn.conn_type = ConnectionType_RDP;
-      local_options[wxT("proto")] = wxT("rdp");
-   }
-   else if  (this->m_combobox_protocol->GetSelection() == 1)
-   {
-      //rdpconn.conn_type = ConnectionType_ICA;
-      local_options[wxT("proto")] = wxT("ica");
-   }
-   else
-   {
-      //rdpconn.conn_type = ConnectionType_Unknown;
-      local_options[wxT("proto")] = wxT("unk");
-   }
+	// TODO: rewrite in OOP-style!
+/*	switch(m_combobox_protocol->GetSelection()) {
+	case 0: local_options[wxT("proto")] = wxT("rdp");
+	        local_options[wxT("port")] = wxT("3389");
+	        break;
+	case 1: local_options[wxT("proto")] = wxT("ica");
+	        local_options[wxT("port")] = wxT("1494");
+	        break;
+	case 2: local_options[wxT("proto")] = wxT("rfb");
+	        local_options[wxT("port")] = wxT("5900");
+	        break;
+	default: local_options[wxT("proto")] = wxT("unk");
+	         local_options[wxT("port")] = wxT("");
+	}*/
 
-   local_options[wxT("username")] = wxT("Administrator");
-   local_options[wxT("password")] = wxT("");
-   local_options[wxT("domain")] = wxT("");
-   local_options[wxT("group_name")] = wxT("");
-   if (local_options[wxT("proto")] == wxT("rdp"))
-   {
-       local_options[wxT("port")] = wxT("3389");
-   }
-   else if (local_options[wxT("proto")] == wxT("rdp"))
-   {
-      local_options[wxT("port")] = wxT("1494");
-   }
-   else
-   {
-      local_options[wxT("port")] = wxT("");
-   }
-   //local_options[wxT("attach_to_console")] = wxT("0");
+	local_options[wxT("username")]   = wxT("Administrator");
+	local_options[wxT("password")]   = wxT("");
+	local_options[wxT("domain")]     = wxT("");
+	local_options[wxT("group_name")] = wxT("");
 
-   // rdpconn.width = 800;
-   // rdpconn.heigth = 600;
-   local_options[wxT("color_depth")] = wxT("1");
+	//local_options[wxT("attach_to_console")] = wxT("0");
 
-   local_options[wxT("control_size")] = wxT("1") ;
-   // rdpconn.bFullScreen = FALSE;
-   // rdpconn.bSmartSizing = FALSE;
+	// rdpconn.width = 800;
+	// rdpconn.heigth = 600;
+	local_options[wxT("color_depth")]  = wxT("1");
+	local_options[wxT("control_size")] = wxT("1") ;
+	// rdpconn.bFullScreen = FALSE;
+	// rdpconn.bSmartSizing = FALSE;
 
-   // rdpconn.force_update_screen = FALSE;
+	// rdpconn.force_update_screen = FALSE;
 
-   // // Share settings
-   // rdpconn.bShareDrives = FALSE;
-   // rdpconn.bSharePrinters  = FALSE;
-   // rdpconn.bShareComPorts = FALSE;
-   // rdpconn.bShareSmartCards = FALSE;
-   // rdpconn.redirect_devices_nix = wxT("");
+	// Share settings
+	// rdpconn.bShareDrives = FALSE;
+	// rdpconn.bSharePrinters  = FALSE;
+	// rdpconn.bShareComPorts = FALSE;
+	// rdpconn.bShareSmartCards = FALSE;
+	// rdpconn.redirect_devices_nix = wxT("");
 
    // rdpconn.SoundType = 0;
    // rdpconn.keyboard = 2;
@@ -216,233 +233,145 @@ Options_HashMap FastConnDialog::SetDefaultRDPConn(wxString server)
    // rdpconn.ProxyUserId = wxT("");
    // rdpconn.ProxyPassword = wxT("");
 
-   return local_options;
+	return local_options;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
 //! \brief Process Connect button
 ///////////////////////////////////////////////////////////////////////////////
-void FastConnDialog::button_connect_func(wxCommandEvent &event)
-{
-   Options_HashMap local_options;
-   wxString str;
-   str = m_combobox_server->GetValue();
-   bool flag = false;
+void FastConnDialog::OnButtonConnect(wxCommandEvent &event) {
+	const wxString server(comboboxServer->GetValue());
+	const int selection = comboboxServer->GetSelection();
+	const int idxInServerLst =
+		wxNOT_FOUND != selection ? selection : servers.Index(server, false);
 
-   if (str.Length() == 0) return;
+	Options_HashMap localOptions;
+	if (wxNOT_FOUND == idxInServerLst)
+		localOptions = SetDefaultRDPConn(server);
+	else
+		localOptions = mainFrame->all_connection_records.Item(idxInServerLst);
 
-   for (int i = 0; i < lineCount; i++)
-   {
-      if (str == string_server_list[i] && m_combobox_server->GetSelection() == i)
-      {
-	 flag = true;
-	 break;
-      }
-   }
+	// TODO: rewrite in OOP-style!
+	switch(m_combobox_protocol->GetSelection()) {
+	case 0: localOptions[wxT("proto")] = wxT("rdp");
+	        localOptions[wxT("port")] = wxT("3389");
+	        break;
+	case 1: localOptions[wxT("proto")] = wxT("ica");
+	        localOptions[wxT("port")] = wxT("1494");
+	        break;
+	case 2: localOptions[wxT("proto")] = wxT("rfb");
+	        localOptions[wxT("port")] = wxT("5900");
+	        break;
+	default: localOptions[wxT("proto")] = wxT("unk");
+	         localOptions[wxT("port")] = wxT("");
+	}
+	options = localOptions;
 
-   if (!flag)
-   {
-      local_options = SetDefaultRDPConn(str);
-   }
-   else
-   {
-      int iSelection = m_combobox_server->GetSelection();
-      if (iSelection < 0)
-      {
-	 local_options = SetDefaultRDPConn(str);
-      }
-      else
-      {
-	 local_options = ParseString(iSelection,options);
-      }
-   }
-   options = local_options;
-   
-   this->EndModal(1);
+	EndModal(FASTCONN_RET_CONNECT);
 }
 
-///////////////////////////////////////////////////////////////////////////////
-//! \brief Return Options_HashMap valiable by line number of All
-//! connections record
-//! \param int iLineNumber - index position 
-//! \param Options_HashMap options (nee remove)
-///////////////////////////////////////////////////////////////////////////////
-Options_HashMap FastConnDialog::ParseString(int iLineNumber, Options_HashMap options)
-{
-   Options_HashMap local_options;
-
-//   if (BaseFile != NULL)
-//   {
-//      for (int i = 0; main_frame->all_connection_records.Count(); i++)
-//      {
-   local_options = main_frame->all_connection_records.Item(iLineNumber);
-   //
-   
-//	 if (local_options[wxT("uniq_name")] = options[wxT("uniq_name")])
-//	 {
-//	    break;
-//	 }
-//	 else
-//	 {
-//	    local_options.clear();
-//	 }
-      //wxString temp = wxString::Format(wxT("%s"), BaseFile->GetName());
-      //Benc bc;
-      //rdpconn = bc.Get(&rdp_base,iLineNumber);
-//      }
-//   }
-   return local_options;
-}
-
-
-
-bool FastConnDialog::LoadFromBase()
-{
-   Options_HashMap local_options;
-   wxString Settings;
-   lineCount = main_frame->all_connection_records.Count();
-   string_server_list = new wxString[lineCount];
-   wxString currstring;
-   for (int i = 0; i < main_frame->all_connection_records.Count(); i++)
-   {
-      local_options = ParseString(i,options);
-      //local_options = main_frame->all_connection_records.Item(i);
-
-      currstring.Clear();
-      if (local_options[wxT("connection_name")].Length() > 0)
-      {
-	 currstring.assign(local_options[wxT("connection_name")]);
-      }
-      else
-      {
-	 currstring.assign(local_options[wxT("hostname")]);
-      }
-      string_server_list[i] = currstring;
-
-   }
-   return true;
+void FastConnDialog::LoadFromBase() {
+	Options_HashMap localOptions;
+	wxString Settings;
+	const int availConnCount = mainFrame->all_connection_records.Count();
+	servers.Clear();
+	servers.Alloc(availConnCount);
+	for (int i = 0; i < availConnCount; ++i) {
+		localOptions = mainFrame->all_connection_records.Item(i);
+		if (localOptions[wxT("connection_name")].Len() > 0)
+			servers.Add(localOptions[wxT("connection_name")]);
+		else
+			servers.Add(localOptions[wxT("hostname")]);
+	}
+	servers.Shrink();
 }
 ///////////////////////////////////////////////////////////////////////////////
 //! \brief Processe keys
 ///////////////////////////////////////////////////////////////////////////////
-void FastConnDialog::dialog_hotkeys(wxKeyEvent &event)
-{
+void FastConnDialog::dialog_hotkeys(wxKeyEvent &event) {
 	wxCommandEvent evt;
-	evt.SetId(1); 
+	evt.SetId(1); // WTF??
 	int iKeyCode = event.GetKeyCode();
-	switch(iKeyCode)
-	{
-	case WXK_RETURN:
-		this->button_connect_func(evt);
-
-
-		break;
-	case WXK_ESCAPE:
-		this->button_cancel_func(evt);
-		break;
-	default:
-		break;
-
+	switch(iKeyCode) {
+	case WXK_RETURN: OnButtonConnect(evt);
+	                 break;
+	case WXK_ESCAPE: OnButtonCancel(evt);
+	                 break;
+	default:         break;
 	}
 
-	event.Skip(); 
+	event.Skip();
 }
 
 ///////////////////////////////////////////////////////////////////////////////
 //! \brief Process connections list change
 ///////////////////////////////////////////////////////////////////////////////
-void FastConnDialog::combobox_change_func(wxCommandEvent &event)
-{
-   if (!m_combobox_server) return;
-
-   for (int i = 0; i < lineCount; i++)
-   {
-      if (m_combobox_server->GetValue() == string_server_list[i] &&
-	  m_combobox_server->GetSelection() == i)
-      {
-	 m_button_details->Enable(true);
-	 return;
-      }
-   }
-   m_button_details->Enable(false);
+void FastConnDialog::OnComboboxChange(wxCommandEvent &event) {
+	for (size_t i = 0; i < servers.Count(); ++i) {
+		if (comboboxServer->GetValue()     == servers[i] &&
+		    (size_t)comboboxServer->GetSelection() == i) {
+			btnDetails->Enable(true);
+			return;
+		}
+	}
+	btnDetails->Enable(false);
 }
 
 ///////////////////////////////////////////////////////////////////////////////
 //! \brief Process connections list edit
 ///////////////////////////////////////////////////////////////////////////////
-void FastConnDialog::combobox_text_func(wxCommandEvent &event)
-{
-   if (!m_combobox_server) return;
-
-   for (int i = 0; i < lineCount; i++)
-   {
-      if (m_combobox_server->GetValue() == string_server_list[i] && m_combobox_server->GetSelection() == i)
-      {
-	 m_button_details->Enable(true);
-	 return;
-      }
-   }
-   m_button_details->Enable(false);
+void FastConnDialog::OnComboboxText(wxCommandEvent &event) {
+	for (size_t i = 0; i < servers.Count(); i++) {
+		if (comboboxServer->GetValue() == servers[i] &&
+		    (size_t)comboboxServer->GetSelection() == i) {
+			btnDetails->Enable(true);
+			return;
+		}
+	}
+	btnDetails->Enable(false);
 }
 
 ///////////////////////////////////////////////////////////////////////////////
 //! \brief Process button Details
-//! \param 
-//! \return 
+//! \param
+//! \return
 //! \sa
 ///////////////////////////////////////////////////////////////////////////////
-void FastConnDialog::button_details_func(wxCommandEvent &event)
-{
-   Options_HashMap local_options;
-   int iSelection = m_combobox_server->GetSelection();
-   //rdpconn = ParseString(iSelection,rdpconn);
-   //
+void FastConnDialog::OnButtonDetails(wxCommandEvent &event) {
+	int iSelection = comboboxServer->GetSelection();
+	const Options_HashMap
+		localOptions(mainFrame->all_connection_records.Item(iSelection));
+	//for (int i = 0; i < mainFrame->all_connection_records.Count(); i++)
 
-   local_options = ParseString(iSelection,options);
-   //for (int i = 0; i < main_frame->all_connection_records.Count(); i++)
-   //{
-   //   local_options
-   //RDPDialog * prdpdialog = new
-   //RDPDialog(main_frame,wxCAPTION,(&rdpconn),NULL,&rdp_base,FALSE/*this->BaseFile*/);
-   RDPDialog * prdpdialog = new RDPDialog(main_frame);
-   //prdpdialog->LoadRDPConn();
-   //
-   prdpdialog->Set_Options(&local_options);
-   //std::cout << __func__ << std::endl;
-   int iRes = prdpdialog->ShowModal();
-   delete prdpdialog;
+	std::auto_ptr<RDPDialog> rdpDialog(new RDPDialog(mainFrame));
+	//prdpdialog->LoadRDPConn();
+	rdpDialog->SetOptions(&localOptions);
 
-   if (iRes)
-   {
-      main_frame->base = rdp_base;
-      int iSel = m_combobox_server->GetSelection();
-      TREEPANEL(main_frame->m_panel_tree)->rdptree->ReloadSettings();
-      LoadFromBase();
-      if (m_combobox_server) 
-      {
-	 delete m_combobox_server;
-      }
-      m_combobox_server =  new wxComboBox(this,ID_COMBOBOX_FAST,_(""),wxPoint(160,10),wxSize(140,20),lineCount,string_server_list);
-      m_combobox_server->SetSelection(iSel);
-      m_combobox_server->Refresh();
-   }
+	const int iRes = rdpDialog->ShowModal();
+	if (RDPDLG_RET_CANCEL != iRes) {
+		mainFrame->base = rdpBase;
+		const int iSel = comboboxServer->GetSelection();
+		TREEPANEL(mainFrame->m_panel_tree)->rdptree->ReloadSettings();
+		LoadFromBase();
+		comboboxServer->Clear();
+		for (size_t i = 0; i < servers.Count(); ++i)
+			comboboxServer->Append(servers[i]);
+
+		comboboxServer->SetSelection(iSel);
+		comboboxServer->Refresh();
+	}
 }
 
+/*
+int FastConnDialog::GetavailConnCount() const {
+	int availConnCount = 0;
+	if (NULL != BaseFile) {
+		wxString temp(wxString::Format(wxT("%s"), BaseFile->GetName()));
 
-int FastConnDialog::getlinecount()
-{
-	int line_count = 0;
-	if (BaseFile != NULL)
-	{
-		wxString temp = wxString::Format(wxT("%s"), BaseFile->GetName());
-		
 		Benc bc;
-		line_count = bc.Count(&rdp_base);	
+		availConnCount = bc.Count(&rdpBase);
 	}
 	return line_count;
 }
-
-
-
-
+*/
 

@@ -15,8 +15,7 @@
 #include "bencoded.hpp"
 #include <wx/spinctrl.h>
 
-enum ICA_ERRORS
-{
+enum ICA_ERRORS {
    ICA_ERROR_OK = 0,
    ICA_ERROR_PARENT_IS_NULL,
    ICA_ERROR_CANT_CREATE_NOTEBOOK,
@@ -34,17 +33,16 @@ enum ICA_ERRORS
 #define SHIFT_H 4
 #endif
 
-const int ID_ICA_CHECKBOX_CUSTOMPORT = 123;
-const int ID_ICA_TEXTCTRL_PASSWORD = 124;
-const int ID_ICA_CHECKBOX_AUTOLOGON = 125;
-const int ID_ICA_CHK_CONTROLSIZE = 126;
-const int ID_ICA_CHECKBOX_USE_PROGRAM = 1127;
-const int ID_ICA_COMBOBOX_SPEED = 128;
-const int ID_ICA_SSL_ENABLE = 1129;
-const int ID_ICA_DESIRED_COLOR = 1130;
-
-
-
+enum {
+	ID_ICA_CHECKBOX_CUSTOMPORT  = 123,
+	ID_ICA_TEXTCTRL_PASSWORD    = 124,
+	ID_ICA_CHECKBOX_AUTOLOGON   = 125,
+	ID_ICA_CHK_CONTROLSIZE      = 126,
+	ID_ICA_CHECKBOX_USE_PROGRAM = 1127,
+	ID_ICA_COMBOBOX_SPEED       = 128,
+	ID_ICA_SSL_ENABLE           = 1129,
+	ID_ICA_DESIRED_COLOR        = 1130,
+};
 
 class ICAOptions
 {
@@ -66,8 +64,8 @@ public:
    virtual ~ICAOptionsDialog_General();
    int Build();
    Options_HashMap Get_Options();
-   bool Set_Options(const Options_HashMap *all_options);
-   void Set_Group_List(wxArrayString group_list);
+   bool SetOptions(const Options_HashMap *all_options);
+   void SetGroupList(const wxArrayString &groupList);
 private:
    ICAOptionsDialog *parent;
 
@@ -80,68 +78,66 @@ private:
    wxBoxSizer *m_boxsizer_2;
    wxBoxSizer *m_boxsizer_3;
 
+   wxStaticText *staticServer;
+   wxTextCtrl *textServer;
 
-   wxStaticText *m_static_server;
-   wxTextCtrl *m_text_server;
+   wxStaticText *staticPort;
+   wxTextCtrl *textPort;
 
-   wxStaticText *m_static_port;
-   wxTextCtrl *m_text_port;
+   wxStaticText * staticUsername;
+   wxTextCtrl * textUsername;
 
-   wxStaticText * m_static_username;
-   wxTextCtrl * m_text_username;
+   wxStaticText * staticPasswd;
+   wxTextCtrl * textPasswd;
 
-   wxStaticText * m_static_password;
-   wxTextCtrl * m_text_password;
+   wxStaticText * staticDomain;
+   wxTextCtrl * textDomain;
 
-   wxStaticText * m_static_domain;
-   wxTextCtrl * m_text_domain;
-
-   wxCheckBox *m_checkbox_autologon;
-   wxCheckBox *m_checkbox_customport;
+   wxCheckBox *checkboxAutologon;
+   wxCheckBox *checkboxCustomPort;
 //   wxCheckBox *m_checkbox_attachtoconsole;
 
-   wxStaticText *m_static_groupname;
-   wxComboBox *m_combobox_groupname;
+   wxStaticText *staticGroupName;
+   wxComboBox *comboboxGroupName;
 
-   wxStaticText *m_static_connectionname;
-   wxTextCtrl *m_text_connectionname;
+   wxStaticText *staticConnectionName;
+   wxTextCtrl *textConnectionName;
 
-   wxStaticText *m_static_proxy_autoconfig_url;
-   wxTextCtrl *m_text_proxy_autoconfig_url;
+   wxStaticText *staticProxyAutoconfigUrl;
+   wxTextCtrl *textProxyAutoconfigUrl;
 
-   wxStaticText *m_static_proxy_username;
-   wxTextCtrl *m_text_proxy_username;
+   wxStaticText *staticProxyUsername;
+   wxTextCtrl *textProxyUsername;
 
-   wxStaticText *m_static_proxy_password;
-   wxTextCtrl *m_text_proxy_password;
+   wxStaticText *staticProxyPassword;
+   wxTextCtrl *textProxyPassword;
 
-   wxStaticText *m_static_proxy_host;
-   wxTextCtrl *m_text_proxy_host;
+   wxStaticText *staticProxyHost;
+   wxTextCtrl *textProxyHost;
 
-   wxStaticText *m_static_proxy_type;
-   wxComboBox *m_combobox_proxy_type;
+   wxStaticText *staticProxyType;
+   wxComboBox *comboboxProxyType;
 
-   wxStaticText *m_static_proxy_bypass_list;
-   wxTextCtrl *m_text_proxy_bypass_list;
+   wxStaticText *staticProxyBypassList;
+   wxTextCtrl *textProxyBypassList;
 
-   wxStaticText *m_static_proxy_timeout;
-   wxSpinCtrl *m_spinctrl_proxy_timeout;
+   wxStaticText *staticProxyTimeout;
+   wxSpinCtrl *spinctrlProxyTimeout;
 
-   wxStaticText *m_static_ssl_proxy_host;
-   wxTextCtrl *m_text_ssl_proxy_host;
+   wxStaticText *staticSslProxyHost;
+   wxTextCtrl *textSslProxyHost;
 
-   wxCheckBox *m_checkbox_ssl_enable;
-   wxCheckBox *m_checkbox_proxy_use_default;
+   wxCheckBox *checkboxSslEnable;
+   wxCheckBox *checkboxProxyUseDefault;
 
    int groupcount;
-   wxString *string_group_list;
-   wxArrayString array_string_group_list;
+   wxArrayString arrayStringGroupList;
    //base_conn *rdp_base;
    //GeneralOptionsArray options;
    //wxArrayString array_string_group_list; 
 
 
-   void get_group_list();
+   void GetGroupList();
    void checkbox_customport_func(wxCommandEvent &event);
    void checkbox_customport();
    void text_passwordentry_func(wxCommandEvent &event);
@@ -156,7 +152,7 @@ public:
    virtual ~ICAOptionsDialog_Display();
    int Build();
    Options_HashMap Get_Options();
-   bool Set_Options(const Options_HashMap *all_options);
+   bool SetOptions(const Options_HashMap *all_options);
 private:
    ICAOptionsDialog *parent;
    int error;
@@ -200,7 +196,7 @@ private:
 //   wxCheckBox *m_checkbox_updatescreen;
    wxCheckBox *m_checkbox_allow_degraded_colors;
    wxCheckBox *m_checkbox_enable_oss;
-   wxCheckBox *m_checkbox_enable_session_sharing_screen;
+   wxCheckBox *checkboxEnableSessionSharingScreen;
    wxCheckBox *m_checkbox_approximate_colors;
    wxCheckBox *m_checkbox_resize_session;
 
@@ -237,7 +233,7 @@ public:
    virtual ~ICAOptionsDialog_Sound();
    int Build();
    Options_HashMap Get_Options();
-   bool Set_Options(const Options_HashMap *all_options);
+   bool SetOptions(const Options_HashMap *all_options);
 //   wxString Get_Options_String();
 private:
 
@@ -272,7 +268,7 @@ public:
    virtual ~ICAOptionsDialog_Advanced();
    int Build();
    Options_HashMap Get_Options();
-   bool Set_Options(const Options_HashMap *all_options);
+   bool SetOptions(const Options_HashMap *all_options);
    wxString Get_Options_String();
 
 private:
@@ -316,7 +312,7 @@ public:
    virtual ~ICAOptionsDialog_Security();
    int Build();
    Options_HashMap Get_Options();
-   bool Set_Options(const Options_HashMap *all_options);
+   bool SetOptions(const Options_HashMap *all_options);
    wxString Get_Options_String();
 
 private:
@@ -345,8 +341,8 @@ public:
    ICAOptionsDialog(wxWindow *parent_element);
    ~ICAOptionsDialog();
    int Build();
-   bool Set_Options(const Options_HashMap *options);
-   void Set_Group_List(wxArrayString group_list);
+   bool SetOptions(const Options_HashMap *options);
+   void SetGroupList(const wxArrayString &groupList);
    Options_HashMap Get_Options();
 private:
    wxWindow *parent;
@@ -359,7 +355,7 @@ private:
    ICAOptionsDialog_Security *ica_security;
 
    Options_HashMap save_options;
-   wxArrayString array_string_group_list;
+   wxArrayString arrayStringGroupList;
 
 
 };

@@ -15,8 +15,6 @@
 
 @SET_MAKE@
 
-#SUBDIR = gui proto
-
 VPATH = @srcdir@
 pkgdatadir = $(datadir)/@PACKAGE@
 pkgincludedir = $(includedir)/@PACKAGE@
@@ -41,7 +39,14 @@ subdir = src
 DIST_COMMON = $(srcdir)/Makefile.am $(srcdir)/Makefile.in \
 	$(srcdir)/config.hpp.in
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
-am__aclocal_m4_deps = $(top_srcdir)/configure.in
+am__aclocal_m4_deps = $(top_srcdir)/m4/gettext.m4 \
+	$(top_srcdir)/m4/iconv.m4 $(top_srcdir)/m4/lib-ld.m4 \
+	$(top_srcdir)/m4/lib-link.m4 $(top_srcdir)/m4/lib-prefix.m4 \
+	$(top_srcdir)/m4/libtool.m4 $(top_srcdir)/m4/ltoptions.m4 \
+	$(top_srcdir)/m4/ltsugar.m4 $(top_srcdir)/m4/ltversion.m4 \
+	$(top_srcdir)/m4/lt~obsolete.m4 $(top_srcdir)/m4/nls.m4 \
+	$(top_srcdir)/m4/po.m4 $(top_srcdir)/m4/progtest.m4 \
+	$(top_srcdir)/configure.in
 am__configure_deps = $(am__aclocal_m4_deps) $(CONFIGURE_DEPENDENCIES) \
 	$(ACLOCAL_M4)
 mkinstalldirs = $(install_sh) -d
@@ -56,12 +61,18 @@ am_rdpdesk_OBJECTS = rdpdesk-main.$(OBJEXT) rdpdesk-bencoded.$(OBJEXT) \
 	rdpdesk-fastconn_dialog.$(OBJEXT) \
 	rdpdesk-settings_dialog.$(OBJEXT) rdpdesk-splitter.$(OBJEXT) \
 	rdpdesk-small_shoot.$(OBJEXT) rdpdesk-tree_group.$(OBJEXT) \
-	rdpdesk-network_helper.$(OBJEXT) \
+	rdpdesk-helpbrowser.$(OBJEXT) rdpdesk-network_helper.$(OBJEXT) \
 	rdpdesk-RDPConnection_nix.$(OBJEXT) \
 	rdpdesk-RDPOptionsDialog.$(OBJEXT) \
 	rdpdesk-BasicConnection.$(OBJEXT) \
 	rdpdesk-ICAConnection_nix.$(OBJEXT) \
-	rdpdesk-ICAOptionsDialog.$(OBJEXT)
+	rdpdesk-ICAOptionsDialog.$(OBJEXT) \
+	rdpdesk-RFBConnection_nix.$(OBJEXT) \
+	rdpdesk-RFBOptionsDialog.$(OBJEXT) \
+	rdpdesk-FRDPConnection_nix.$(OBJEXT) \
+	rdpdesk-FRDPOptionsDialog.$(OBJEXT) \
+	rdpdesk-FRDPKeyboard.$(OBJEXT) rdpdesk-autoupdate.$(OBJEXT) \
+	rdpdesk-CatcherWindowID.$(OBJEXT)
 rdpdesk_OBJECTS = $(am_rdpdesk_OBJECTS)
 am__DEPENDENCIES_1 =
 rdpdesk_DEPENDENCIES = $(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
@@ -84,9 +95,47 @@ CXXLINK = $(LIBTOOL) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) \
 	$(LDFLAGS) -o $@
 SOURCES = $(rdpdesk_SOURCES)
 DIST_SOURCES = $(rdpdesk_SOURCES)
+RECURSIVE_TARGETS = all-recursive check-recursive dvi-recursive \
+	html-recursive info-recursive install-data-recursive \
+	install-dvi-recursive install-exec-recursive \
+	install-html-recursive install-info-recursive \
+	install-pdf-recursive install-ps-recursive install-recursive \
+	installcheck-recursive installdirs-recursive pdf-recursive \
+	ps-recursive uninstall-recursive
+RECURSIVE_CLEAN_TARGETS = mostlyclean-recursive clean-recursive	\
+  distclean-recursive maintainer-clean-recursive
+AM_RECURSIVE_TARGETS = $(RECURSIVE_TARGETS:-recursive=) \
+	$(RECURSIVE_CLEAN_TARGETS:-recursive=) tags TAGS ctags CTAGS \
+	distdir
 ETAGS = etags
 CTAGS = ctags
+DIST_SUBDIRS = $(SUBDIRS)
 DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
+am__relativize = \
+  dir0=`pwd`; \
+  sed_first='s,^\([^/]*\)/.*$$,\1,'; \
+  sed_rest='s,^[^/]*/*,,'; \
+  sed_last='s,^.*/\([^/]*\)$$,\1,'; \
+  sed_butlast='s,/*[^/]*$$,,'; \
+  while test -n "$$dir1"; do \
+    first=`echo "$$dir1" | sed -e "$$sed_first"`; \
+    if test "$$first" != "."; then \
+      if test "$$first" = ".."; then \
+        dir2=`echo "$$dir0" | sed -e "$$sed_last"`/"$$dir2"; \
+        dir0=`echo "$$dir0" | sed -e "$$sed_butlast"`; \
+      else \
+        first2=`echo "$$dir2" | sed -e "$$sed_first"`; \
+        if test "$$first2" = "$$first"; then \
+          dir2=`echo "$$dir2" | sed -e "$$sed_rest"`; \
+        else \
+          dir2="../$$dir2"; \
+        fi; \
+        dir0="$$dir0"/"$$first"; \
+      fi; \
+    fi; \
+    dir1=`echo "$$dir1" | sed -e "$$sed_rest"`; \
+  done; \
+  reldir="$$dir2"
 ACLOCAL = @ACLOCAL@
 AMTAR = @AMTAR@
 AR = @AR@
@@ -114,6 +163,9 @@ ECHO_T = @ECHO_T@
 EGREP = @EGREP@
 EXEEXT = @EXEEXT@
 FGREP = @FGREP@
+GETTEXT_MACRO_VERSION = @GETTEXT_MACRO_VERSION@
+GMSGFMT = @GMSGFMT@
+GMSGFMT_015 = @GMSGFMT_015@
 GREP = @GREP@
 GTK2_INCLUDE = @GTK2_INCLUDE@
 GTK2_LIBS = @GTK2_LIBS@
@@ -122,16 +174,25 @@ INSTALL_DATA = @INSTALL_DATA@
 INSTALL_PROGRAM = @INSTALL_PROGRAM@
 INSTALL_SCRIPT = @INSTALL_SCRIPT@
 INSTALL_STRIP_PROGRAM = @INSTALL_STRIP_PROGRAM@
+INTLLIBS = @INTLLIBS@
+INTL_MACOSX_LIBS = @INTL_MACOSX_LIBS@
 LD = @LD@
 LDFLAGS = @LDFLAGS@
+LIBICONV = @LIBICONV@
+LIBINTL = @LIBINTL@
 LIBOBJS = @LIBOBJS@
 LIBS = @LIBS@
 LIBTOOL = @LIBTOOL@
 LIPO = @LIPO@
 LN_S = @LN_S@
+LTLIBICONV = @LTLIBICONV@
+LTLIBINTL = @LTLIBINTL@
 LTLIBOBJS = @LTLIBOBJS@
 MAKEINFO = @MAKEINFO@
 MKDIR_P = @MKDIR_P@
+MSGFMT = @MSGFMT@
+MSGFMT_015 = @MSGFMT_015@
+MSGMERGE = @MSGMERGE@
 NM = @NM@
 NMEDIT = @NMEDIT@
 OBJDUMP = @OBJDUMP@
@@ -146,15 +207,20 @@ PACKAGE_TARNAME = @PACKAGE_TARNAME@
 PACKAGE_URL = @PACKAGE_URL@
 PACKAGE_VERSION = @PACKAGE_VERSION@
 PATH_SEPARATOR = @PATH_SEPARATOR@
+POSUB = @POSUB@
 RANLIB = @RANLIB@
 SED = @SED@
 SET_MAKE = @SET_MAKE@
 SHELL = @SHELL@
 SSL_LIBS = @SSL_LIBS@
 STRIP = @STRIP@
+USE_NLS = @USE_NLS@
 VERSION = @VERSION@
 WX_CXXFLAGS = @WX_CXXFLAGS@
 WX_LIBS = @WX_LIBS@
+XGETTEXT = @XGETTEXT@
+XGETTEXT_015 = @XGETTEXT_015@
+XGETTEXT_EXTRA_OPTIONS = @XGETTEXT_EXTRA_OPTIONS@
 abs_builddir = @abs_builddir@
 abs_srcdir = @abs_srcdir@
 abs_top_builddir = @abs_top_builddir@
@@ -218,24 +284,45 @@ rdpdesk_SOURCES = main.cpp \
     gui/splitter.cpp \
     gui/small_shoot.cpp \
     gui/tree_group.cpp \
+    gui/helpbrowser.cpp \
     proto/network_helper.cpp \
     proto/RDPConnection_nix.cpp \
     proto/RDPOptionsDialog.cpp \
     proto/BasicConnection.cpp \
     proto/ICAConnection_nix.cpp \
-    proto/ICAOptionsDialog.cpp
+    proto/ICAOptionsDialog.cpp \
+    proto/RFBConnection_nix.cpp \
+    proto/RFBOptionsDialog.cpp \
+    proto/FRDPConnection_nix.cpp \
+    proto/FRDPOptionsDialog.cpp \
+    proto/FRDPKeyboard.cpp \
+    modules/autoupdate/autoupdate.cpp \
+    modules/CatcherWindowID/CatcherWindowID.cpp 
 
 
 #rdpdesk_LDADD = 
 #$(WX_LIBS) $(SSL_LIBS) @LIBS@
 #rdpdesk_LDADD = 
-rdpdesk_CXXFLAGS = @CXXFLAGS@ $(WX_CXXFLAGS) $(LOCAL_INCLUDES) $(GTK2_INCLUDE)
+rdpdesk_CXXFLAGS = @CXXFLAGS@ $(WX_CXXFLAGS) $(LOCAL_INCLUDES) $(GTK2_INCLUDE) -DMITSHM 
+rdpdesk_CFLAGS = @CXXFLAGS@ $(WX_CXXFLAGS) $(LOCAL_INCLUDES) $(GTK2_INCLUDE) -DMITSHM 
 #-lconfig_dialog $(WX_LIBS)
 #
-INCLUDES = -Igui -Igui/config -Iproto -Iinclude
-rdpdesk_LDADD = $(WX_LIBS) $(GTK2_LIBS) $(SSL_LIBS)
+INCLUDES = -Igui \
+	-Igui/config \
+	-Iproto \
+	-Iinclude \
+	-Iargsresources.c \
+	-Iproto/vnc_unixsrc/include \
+	-Iproto/vnc_unixsrc/vncviewer  \
+	-Iproto/vnc_unixsrc/libvncauth \
+	-Imodules/autoupdate \
+	-Imodules/CatcherWindowID
+
+rdpdesk_LDADD = $(WX_LIBS) $(GTK2_LIBS) $(SSL_LIBS) -ljpeg -lz -lXaw
+#AM_LDFLAGS = `wx-config --libs`
+SUBDIRS = proto/vnc_unixsrc/libvncauth proto/vnc_unixsrc/vncviewer 
 all: config.hpp
-	$(MAKE) $(AM_MAKEFLAGS) all-am
+	$(MAKE) $(AM_MAKEFLAGS) all-recursive
 
 .SUFFIXES:
 .SUFFIXES: .cpp .lo .o .obj
@@ -248,9 +335,9 @@ $(srcdir)/Makefile.in:  $(srcdir)/Makefile.am  $(am__configure_deps)
 	      exit 1;; \
 	  esac; \
 	done; \
-	echo ' cd $(top_srcdir) && $(AUTOMAKE) --gnu src/Makefile'; \
+	echo ' cd $(top_srcdir) && $(AUTOMAKE) --foreign src/Makefile'; \
 	$(am__cd) $(top_srcdir) && \
-	  $(AUTOMAKE) --gnu src/Makefile
+	  $(AUTOMAKE) --foreign src/Makefile
 .PRECIOUS: Makefile
 Makefile: $(srcdir)/Makefile.in $(top_builddir)/config.status
 	@case '$?' in \
@@ -340,12 +427,20 @@ distclean-compile:
 	-rm -f *.tab.c
 
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/rdpdesk-BasicConnection.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/rdpdesk-CatcherWindowID.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/rdpdesk-FRDPConnection_nix.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/rdpdesk-FRDPKeyboard.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/rdpdesk-FRDPOptionsDialog.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/rdpdesk-ICAConnection_nix.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/rdpdesk-ICAOptionsDialog.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/rdpdesk-RDPConnection_nix.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/rdpdesk-RDPOptionsDialog.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/rdpdesk-RFBConnection_nix.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/rdpdesk-RFBOptionsDialog.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/rdpdesk-autoupdate.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/rdpdesk-bencoded.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/rdpdesk-fastconn_dialog.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/rdpdesk-helpbrowser.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/rdpdesk-locale_helper.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/rdpdesk-main.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/rdpdesk-main_window.Po@am__quote@
@@ -517,6 +612,20 @@ rdpdesk-tree_group.obj: gui/tree_group.cpp
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(rdpdesk_CXXFLAGS) $(CXXFLAGS) -c -o rdpdesk-tree_group.obj `if test -f 'gui/tree_group.cpp'; then $(CYGPATH_W) 'gui/tree_group.cpp'; else $(CYGPATH_W) '$(srcdir)/gui/tree_group.cpp'; fi`
 
+rdpdesk-helpbrowser.o: gui/helpbrowser.cpp
+@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(rdpdesk_CXXFLAGS) $(CXXFLAGS) -MT rdpdesk-helpbrowser.o -MD -MP -MF $(DEPDIR)/rdpdesk-helpbrowser.Tpo -c -o rdpdesk-helpbrowser.o `test -f 'gui/helpbrowser.cpp' || echo '$(srcdir)/'`gui/helpbrowser.cpp
+@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/rdpdesk-helpbrowser.Tpo $(DEPDIR)/rdpdesk-helpbrowser.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='gui/helpbrowser.cpp' object='rdpdesk-helpbrowser.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(rdpdesk_CXXFLAGS) $(CXXFLAGS) -c -o rdpdesk-helpbrowser.o `test -f 'gui/helpbrowser.cpp' || echo '$(srcdir)/'`gui/helpbrowser.cpp
+
+rdpdesk-helpbrowser.obj: gui/helpbrowser.cpp
+@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(rdpdesk_CXXFLAGS) $(CXXFLAGS) -MT rdpdesk-helpbrowser.obj -MD -MP -MF $(DEPDIR)/rdpdesk-helpbrowser.Tpo -c -o rdpdesk-helpbrowser.obj `if test -f 'gui/helpbrowser.cpp'; then $(CYGPATH_W) 'gui/helpbrowser.cpp'; else $(CYGPATH_W) '$(srcdir)/gui/helpbrowser.cpp'; fi`
+@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/rdpdesk-helpbrowser.Tpo $(DEPDIR)/rdpdesk-helpbrowser.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='gui/helpbrowser.cpp' object='rdpdesk-helpbrowser.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(rdpdesk_CXXFLAGS) $(CXXFLAGS) -c -o rdpdesk-helpbrowser.obj `if test -f 'gui/helpbrowser.cpp'; then $(CYGPATH_W) 'gui/helpbrowser.cpp'; else $(CYGPATH_W) '$(srcdir)/gui/helpbrowser.cpp'; fi`
+
 rdpdesk-network_helper.o: proto/network_helper.cpp
 @am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(rdpdesk_CXXFLAGS) $(CXXFLAGS) -MT rdpdesk-network_helper.o -MD -MP -MF $(DEPDIR)/rdpdesk-network_helper.Tpo -c -o rdpdesk-network_helper.o `test -f 'proto/network_helper.cpp' || echo '$(srcdir)/'`proto/network_helper.cpp
 @am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/rdpdesk-network_helper.Tpo $(DEPDIR)/rdpdesk-network_helper.Po
@@ -601,11 +710,179 @@ rdpdesk-ICAOptionsDialog.obj: proto/ICAOptionsDialog.cpp
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(rdpdesk_CXXFLAGS) $(CXXFLAGS) -c -o rdpdesk-ICAOptionsDialog.obj `if test -f 'proto/ICAOptionsDialog.cpp'; then $(CYGPATH_W) 'proto/ICAOptionsDialog.cpp'; else $(CYGPATH_W) '$(srcdir)/proto/ICAOptionsDialog.cpp'; fi`
 
+rdpdesk-RFBConnection_nix.o: proto/RFBConnection_nix.cpp
+@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(rdpdesk_CXXFLAGS) $(CXXFLAGS) -MT rdpdesk-RFBConnection_nix.o -MD -MP -MF $(DEPDIR)/rdpdesk-RFBConnection_nix.Tpo -c -o rdpdesk-RFBConnection_nix.o `test -f 'proto/RFBConnection_nix.cpp' || echo '$(srcdir)/'`proto/RFBConnection_nix.cpp
+@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/rdpdesk-RFBConnection_nix.Tpo $(DEPDIR)/rdpdesk-RFBConnection_nix.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='proto/RFBConnection_nix.cpp' object='rdpdesk-RFBConnection_nix.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(rdpdesk_CXXFLAGS) $(CXXFLAGS) -c -o rdpdesk-RFBConnection_nix.o `test -f 'proto/RFBConnection_nix.cpp' || echo '$(srcdir)/'`proto/RFBConnection_nix.cpp
+
+rdpdesk-RFBConnection_nix.obj: proto/RFBConnection_nix.cpp
+@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(rdpdesk_CXXFLAGS) $(CXXFLAGS) -MT rdpdesk-RFBConnection_nix.obj -MD -MP -MF $(DEPDIR)/rdpdesk-RFBConnection_nix.Tpo -c -o rdpdesk-RFBConnection_nix.obj `if test -f 'proto/RFBConnection_nix.cpp'; then $(CYGPATH_W) 'proto/RFBConnection_nix.cpp'; else $(CYGPATH_W) '$(srcdir)/proto/RFBConnection_nix.cpp'; fi`
+@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/rdpdesk-RFBConnection_nix.Tpo $(DEPDIR)/rdpdesk-RFBConnection_nix.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='proto/RFBConnection_nix.cpp' object='rdpdesk-RFBConnection_nix.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(rdpdesk_CXXFLAGS) $(CXXFLAGS) -c -o rdpdesk-RFBConnection_nix.obj `if test -f 'proto/RFBConnection_nix.cpp'; then $(CYGPATH_W) 'proto/RFBConnection_nix.cpp'; else $(CYGPATH_W) '$(srcdir)/proto/RFBConnection_nix.cpp'; fi`
+
+rdpdesk-RFBOptionsDialog.o: proto/RFBOptionsDialog.cpp
+@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(rdpdesk_CXXFLAGS) $(CXXFLAGS) -MT rdpdesk-RFBOptionsDialog.o -MD -MP -MF $(DEPDIR)/rdpdesk-RFBOptionsDialog.Tpo -c -o rdpdesk-RFBOptionsDialog.o `test -f 'proto/RFBOptionsDialog.cpp' || echo '$(srcdir)/'`proto/RFBOptionsDialog.cpp
+@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/rdpdesk-RFBOptionsDialog.Tpo $(DEPDIR)/rdpdesk-RFBOptionsDialog.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='proto/RFBOptionsDialog.cpp' object='rdpdesk-RFBOptionsDialog.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(rdpdesk_CXXFLAGS) $(CXXFLAGS) -c -o rdpdesk-RFBOptionsDialog.o `test -f 'proto/RFBOptionsDialog.cpp' || echo '$(srcdir)/'`proto/RFBOptionsDialog.cpp
+
+rdpdesk-RFBOptionsDialog.obj: proto/RFBOptionsDialog.cpp
+@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(rdpdesk_CXXFLAGS) $(CXXFLAGS) -MT rdpdesk-RFBOptionsDialog.obj -MD -MP -MF $(DEPDIR)/rdpdesk-RFBOptionsDialog.Tpo -c -o rdpdesk-RFBOptionsDialog.obj `if test -f 'proto/RFBOptionsDialog.cpp'; then $(CYGPATH_W) 'proto/RFBOptionsDialog.cpp'; else $(CYGPATH_W) '$(srcdir)/proto/RFBOptionsDialog.cpp'; fi`
+@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/rdpdesk-RFBOptionsDialog.Tpo $(DEPDIR)/rdpdesk-RFBOptionsDialog.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='proto/RFBOptionsDialog.cpp' object='rdpdesk-RFBOptionsDialog.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(rdpdesk_CXXFLAGS) $(CXXFLAGS) -c -o rdpdesk-RFBOptionsDialog.obj `if test -f 'proto/RFBOptionsDialog.cpp'; then $(CYGPATH_W) 'proto/RFBOptionsDialog.cpp'; else $(CYGPATH_W) '$(srcdir)/proto/RFBOptionsDialog.cpp'; fi`
+
+rdpdesk-FRDPConnection_nix.o: proto/FRDPConnection_nix.cpp
+@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(rdpdesk_CXXFLAGS) $(CXXFLAGS) -MT rdpdesk-FRDPConnection_nix.o -MD -MP -MF $(DEPDIR)/rdpdesk-FRDPConnection_nix.Tpo -c -o rdpdesk-FRDPConnection_nix.o `test -f 'proto/FRDPConnection_nix.cpp' || echo '$(srcdir)/'`proto/FRDPConnection_nix.cpp
+@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/rdpdesk-FRDPConnection_nix.Tpo $(DEPDIR)/rdpdesk-FRDPConnection_nix.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='proto/FRDPConnection_nix.cpp' object='rdpdesk-FRDPConnection_nix.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(rdpdesk_CXXFLAGS) $(CXXFLAGS) -c -o rdpdesk-FRDPConnection_nix.o `test -f 'proto/FRDPConnection_nix.cpp' || echo '$(srcdir)/'`proto/FRDPConnection_nix.cpp
+
+rdpdesk-FRDPConnection_nix.obj: proto/FRDPConnection_nix.cpp
+@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(rdpdesk_CXXFLAGS) $(CXXFLAGS) -MT rdpdesk-FRDPConnection_nix.obj -MD -MP -MF $(DEPDIR)/rdpdesk-FRDPConnection_nix.Tpo -c -o rdpdesk-FRDPConnection_nix.obj `if test -f 'proto/FRDPConnection_nix.cpp'; then $(CYGPATH_W) 'proto/FRDPConnection_nix.cpp'; else $(CYGPATH_W) '$(srcdir)/proto/FRDPConnection_nix.cpp'; fi`
+@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/rdpdesk-FRDPConnection_nix.Tpo $(DEPDIR)/rdpdesk-FRDPConnection_nix.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='proto/FRDPConnection_nix.cpp' object='rdpdesk-FRDPConnection_nix.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(rdpdesk_CXXFLAGS) $(CXXFLAGS) -c -o rdpdesk-FRDPConnection_nix.obj `if test -f 'proto/FRDPConnection_nix.cpp'; then $(CYGPATH_W) 'proto/FRDPConnection_nix.cpp'; else $(CYGPATH_W) '$(srcdir)/proto/FRDPConnection_nix.cpp'; fi`
+
+rdpdesk-FRDPOptionsDialog.o: proto/FRDPOptionsDialog.cpp
+@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(rdpdesk_CXXFLAGS) $(CXXFLAGS) -MT rdpdesk-FRDPOptionsDialog.o -MD -MP -MF $(DEPDIR)/rdpdesk-FRDPOptionsDialog.Tpo -c -o rdpdesk-FRDPOptionsDialog.o `test -f 'proto/FRDPOptionsDialog.cpp' || echo '$(srcdir)/'`proto/FRDPOptionsDialog.cpp
+@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/rdpdesk-FRDPOptionsDialog.Tpo $(DEPDIR)/rdpdesk-FRDPOptionsDialog.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='proto/FRDPOptionsDialog.cpp' object='rdpdesk-FRDPOptionsDialog.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(rdpdesk_CXXFLAGS) $(CXXFLAGS) -c -o rdpdesk-FRDPOptionsDialog.o `test -f 'proto/FRDPOptionsDialog.cpp' || echo '$(srcdir)/'`proto/FRDPOptionsDialog.cpp
+
+rdpdesk-FRDPOptionsDialog.obj: proto/FRDPOptionsDialog.cpp
+@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(rdpdesk_CXXFLAGS) $(CXXFLAGS) -MT rdpdesk-FRDPOptionsDialog.obj -MD -MP -MF $(DEPDIR)/rdpdesk-FRDPOptionsDialog.Tpo -c -o rdpdesk-FRDPOptionsDialog.obj `if test -f 'proto/FRDPOptionsDialog.cpp'; then $(CYGPATH_W) 'proto/FRDPOptionsDialog.cpp'; else $(CYGPATH_W) '$(srcdir)/proto/FRDPOptionsDialog.cpp'; fi`
+@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/rdpdesk-FRDPOptionsDialog.Tpo $(DEPDIR)/rdpdesk-FRDPOptionsDialog.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='proto/FRDPOptionsDialog.cpp' object='rdpdesk-FRDPOptionsDialog.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(rdpdesk_CXXFLAGS) $(CXXFLAGS) -c -o rdpdesk-FRDPOptionsDialog.obj `if test -f 'proto/FRDPOptionsDialog.cpp'; then $(CYGPATH_W) 'proto/FRDPOptionsDialog.cpp'; else $(CYGPATH_W) '$(srcdir)/proto/FRDPOptionsDialog.cpp'; fi`
+
+rdpdesk-FRDPKeyboard.o: proto/FRDPKeyboard.cpp
+@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(rdpdesk_CXXFLAGS) $(CXXFLAGS) -MT rdpdesk-FRDPKeyboard.o -MD -MP -MF $(DEPDIR)/rdpdesk-FRDPKeyboard.Tpo -c -o rdpdesk-FRDPKeyboard.o `test -f 'proto/FRDPKeyboard.cpp' || echo '$(srcdir)/'`proto/FRDPKeyboard.cpp
+@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/rdpdesk-FRDPKeyboard.Tpo $(DEPDIR)/rdpdesk-FRDPKeyboard.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='proto/FRDPKeyboard.cpp' object='rdpdesk-FRDPKeyboard.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(rdpdesk_CXXFLAGS) $(CXXFLAGS) -c -o rdpdesk-FRDPKeyboard.o `test -f 'proto/FRDPKeyboard.cpp' || echo '$(srcdir)/'`proto/FRDPKeyboard.cpp
+
+rdpdesk-FRDPKeyboard.obj: proto/FRDPKeyboard.cpp
+@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(rdpdesk_CXXFLAGS) $(CXXFLAGS) -MT rdpdesk-FRDPKeyboard.obj -MD -MP -MF $(DEPDIR)/rdpdesk-FRDPKeyboard.Tpo -c -o rdpdesk-FRDPKeyboard.obj `if test -f 'proto/FRDPKeyboard.cpp'; then $(CYGPATH_W) 'proto/FRDPKeyboard.cpp'; else $(CYGPATH_W) '$(srcdir)/proto/FRDPKeyboard.cpp'; fi`
+@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/rdpdesk-FRDPKeyboard.Tpo $(DEPDIR)/rdpdesk-FRDPKeyboard.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='proto/FRDPKeyboard.cpp' object='rdpdesk-FRDPKeyboard.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(rdpdesk_CXXFLAGS) $(CXXFLAGS) -c -o rdpdesk-FRDPKeyboard.obj `if test -f 'proto/FRDPKeyboard.cpp'; then $(CYGPATH_W) 'proto/FRDPKeyboard.cpp'; else $(CYGPATH_W) '$(srcdir)/proto/FRDPKeyboard.cpp'; fi`
+
+rdpdesk-autoupdate.o: modules/autoupdate/autoupdate.cpp
+@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(rdpdesk_CXXFLAGS) $(CXXFLAGS) -MT rdpdesk-autoupdate.o -MD -MP -MF $(DEPDIR)/rdpdesk-autoupdate.Tpo -c -o rdpdesk-autoupdate.o `test -f 'modules/autoupdate/autoupdate.cpp' || echo '$(srcdir)/'`modules/autoupdate/autoupdate.cpp
+@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/rdpdesk-autoupdate.Tpo $(DEPDIR)/rdpdesk-autoupdate.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='modules/autoupdate/autoupdate.cpp' object='rdpdesk-autoupdate.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(rdpdesk_CXXFLAGS) $(CXXFLAGS) -c -o rdpdesk-autoupdate.o `test -f 'modules/autoupdate/autoupdate.cpp' || echo '$(srcdir)/'`modules/autoupdate/autoupdate.cpp
+
+rdpdesk-autoupdate.obj: modules/autoupdate/autoupdate.cpp
+@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(rdpdesk_CXXFLAGS) $(CXXFLAGS) -MT rdpdesk-autoupdate.obj -MD -MP -MF $(DEPDIR)/rdpdesk-autoupdate.Tpo -c -o rdpdesk-autoupdate.obj `if test -f 'modules/autoupdate/autoupdate.cpp'; then $(CYGPATH_W) 'modules/autoupdate/autoupdate.cpp'; else $(CYGPATH_W) '$(srcdir)/modules/autoupdate/autoupdate.cpp'; fi`
+@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/rdpdesk-autoupdate.Tpo $(DEPDIR)/rdpdesk-autoupdate.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='modules/autoupdate/autoupdate.cpp' object='rdpdesk-autoupdate.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(rdpdesk_CXXFLAGS) $(CXXFLAGS) -c -o rdpdesk-autoupdate.obj `if test -f 'modules/autoupdate/autoupdate.cpp'; then $(CYGPATH_W) 'modules/autoupdate/autoupdate.cpp'; else $(CYGPATH_W) '$(srcdir)/modules/autoupdate/autoupdate.cpp'; fi`
+
+rdpdesk-CatcherWindowID.o: modules/CatcherWindowID/CatcherWindowID.cpp
+@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(rdpdesk_CXXFLAGS) $(CXXFLAGS) -MT rdpdesk-CatcherWindowID.o -MD -MP -MF $(DEPDIR)/rdpdesk-CatcherWindowID.Tpo -c -o rdpdesk-CatcherWindowID.o `test -f 'modules/CatcherWindowID/CatcherWindowID.cpp' || echo '$(srcdir)/'`modules/CatcherWindowID/CatcherWindowID.cpp
+@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/rdpdesk-CatcherWindowID.Tpo $(DEPDIR)/rdpdesk-CatcherWindowID.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='modules/CatcherWindowID/CatcherWindowID.cpp' object='rdpdesk-CatcherWindowID.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(rdpdesk_CXXFLAGS) $(CXXFLAGS) -c -o rdpdesk-CatcherWindowID.o `test -f 'modules/CatcherWindowID/CatcherWindowID.cpp' || echo '$(srcdir)/'`modules/CatcherWindowID/CatcherWindowID.cpp
+
+rdpdesk-CatcherWindowID.obj: modules/CatcherWindowID/CatcherWindowID.cpp
+@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(rdpdesk_CXXFLAGS) $(CXXFLAGS) -MT rdpdesk-CatcherWindowID.obj -MD -MP -MF $(DEPDIR)/rdpdesk-CatcherWindowID.Tpo -c -o rdpdesk-CatcherWindowID.obj `if test -f 'modules/CatcherWindowID/CatcherWindowID.cpp'; then $(CYGPATH_W) 'modules/CatcherWindowID/CatcherWindowID.cpp'; else $(CYGPATH_W) '$(srcdir)/modules/CatcherWindowID/CatcherWindowID.cpp'; fi`
+@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/rdpdesk-CatcherWindowID.Tpo $(DEPDIR)/rdpdesk-CatcherWindowID.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='modules/CatcherWindowID/CatcherWindowID.cpp' object='rdpdesk-CatcherWindowID.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(rdpdesk_CXXFLAGS) $(CXXFLAGS) -c -o rdpdesk-CatcherWindowID.obj `if test -f 'modules/CatcherWindowID/CatcherWindowID.cpp'; then $(CYGPATH_W) 'modules/CatcherWindowID/CatcherWindowID.cpp'; else $(CYGPATH_W) '$(srcdir)/modules/CatcherWindowID/CatcherWindowID.cpp'; fi`
+
 mostlyclean-libtool:
 	-rm -f *.lo
 
 clean-libtool:
 	-rm -rf .libs _libs
+
+# This directory's subdirectories are mostly independent; you can cd
+# into them and run `make' without going through this Makefile.
+# To change the values of `make' variables: instead of editing Makefiles,
+# (1) if the variable is set in `config.status', edit `config.status'
+#     (which will cause the Makefiles to be regenerated when you run `make');
+# (2) otherwise, pass the desired values on the `make' command line.
+$(RECURSIVE_TARGETS):
+	@fail= failcom='exit 1'; \
+	for f in x $$MAKEFLAGS; do \
+	  case $$f in \
+	    *=* | --[!k]*);; \
+	    *k*) failcom='fail=yes';; \
+	  esac; \
+	done; \
+	dot_seen=no; \
+	target=`echo $@ | sed s/-recursive//`; \
+	list='$(SUBDIRS)'; for subdir in $$list; do \
+	  echo "Making $$target in $$subdir"; \
+	  if test "$$subdir" = "."; then \
+	    dot_seen=yes; \
+	    local_target="$$target-am"; \
+	  else \
+	    local_target="$$target"; \
+	  fi; \
+	  ($(am__cd) $$subdir && $(MAKE) $(AM_MAKEFLAGS) $$local_target) \
+	  || eval $$failcom; \
+	done; \
+	if test "$$dot_seen" = "no"; then \
+	  $(MAKE) $(AM_MAKEFLAGS) "$$target-am" || exit 1; \
+	fi; test -z "$$fail"
+
+$(RECURSIVE_CLEAN_TARGETS):
+	@fail= failcom='exit 1'; \
+	for f in x $$MAKEFLAGS; do \
+	  case $$f in \
+	    *=* | --[!k]*);; \
+	    *k*) failcom='fail=yes';; \
+	  esac; \
+	done; \
+	dot_seen=no; \
+	case "$@" in \
+	  distclean-* | maintainer-clean-*) list='$(DIST_SUBDIRS)' ;; \
+	  *) list='$(SUBDIRS)' ;; \
+	esac; \
+	rev=''; for subdir in $$list; do \
+	  if test "$$subdir" = "."; then :; else \
+	    rev="$$subdir $$rev"; \
+	  fi; \
+	done; \
+	rev="$$rev ."; \
+	target=`echo $@ | sed s/-recursive//`; \
+	for subdir in $$rev; do \
+	  echo "Making $$target in $$subdir"; \
+	  if test "$$subdir" = "."; then \
+	    local_target="$$target-am"; \
+	  else \
+	    local_target="$$target"; \
+	  fi; \
+	  ($(am__cd) $$subdir && $(MAKE) $(AM_MAKEFLAGS) $$local_target) \
+	  || eval $$failcom; \
+	done && test -z "$$fail"
+tags-recursive:
+	list='$(SUBDIRS)'; for subdir in $$list; do \
+	  test "$$subdir" = . || ($(am__cd) $$subdir && $(MAKE) $(AM_MAKEFLAGS) tags); \
+	done
+ctags-recursive:
+	list='$(SUBDIRS)'; for subdir in $$list; do \
+	  test "$$subdir" = . || ($(am__cd) $$subdir && $(MAKE) $(AM_MAKEFLAGS) ctags); \
+	done
 
 ID: $(HEADERS) $(SOURCES) $(LISP) $(TAGS_FILES)
 	list='$(SOURCES) $(HEADERS) $(LISP) $(TAGS_FILES)'; \
@@ -617,10 +894,23 @@ ID: $(HEADERS) $(SOURCES) $(LISP) $(TAGS_FILES)
 	mkid -fID $$unique
 tags: TAGS
 
-TAGS:  $(HEADERS) $(SOURCES) config.hpp.in $(TAGS_DEPENDENCIES) \
+TAGS: tags-recursive $(HEADERS) $(SOURCES) config.hpp.in $(TAGS_DEPENDENCIES) \
 		$(TAGS_FILES) $(LISP)
 	set x; \
 	here=`pwd`; \
+	if ($(ETAGS) --etags-include --version) >/dev/null 2>&1; then \
+	  include_option=--etags-include; \
+	  empty_fix=.; \
+	else \
+	  include_option=--include; \
+	  empty_fix=; \
+	fi; \
+	list='$(SUBDIRS)'; for subdir in $$list; do \
+	  if test "$$subdir" = .; then :; else \
+	    test ! -f $$subdir/TAGS || \
+	      set "$$@" "$$include_option=$$here/$$subdir/TAGS"; \
+	  fi; \
+	done; \
 	list='$(SOURCES) $(HEADERS) config.hpp.in $(LISP) $(TAGS_FILES)'; \
 	unique=`for i in $$list; do \
 	    if test -f "$$i"; then echo $$i; else echo $(srcdir)/$$i; fi; \
@@ -639,7 +929,7 @@ TAGS:  $(HEADERS) $(SOURCES) config.hpp.in $(TAGS_DEPENDENCIES) \
 	  fi; \
 	fi
 ctags: CTAGS
-CTAGS:  $(HEADERS) $(SOURCES) config.hpp.in $(TAGS_DEPENDENCIES) \
+CTAGS: ctags-recursive $(HEADERS) $(SOURCES) config.hpp.in $(TAGS_DEPENDENCIES) \
 		$(TAGS_FILES) $(LISP)
 	list='$(SOURCES) $(HEADERS) config.hpp.in $(LISP) $(TAGS_FILES)'; \
 	unique=`for i in $$list; do \
@@ -689,22 +979,51 @@ distdir: $(DISTFILES)
 	    || exit 1; \
 	  fi; \
 	done
+	@list='$(DIST_SUBDIRS)'; for subdir in $$list; do \
+	  if test "$$subdir" = .; then :; else \
+	    test -d "$(distdir)/$$subdir" \
+	    || $(MKDIR_P) "$(distdir)/$$subdir" \
+	    || exit 1; \
+	  fi; \
+	done
+	@list='$(DIST_SUBDIRS)'; for subdir in $$list; do \
+	  if test "$$subdir" = .; then :; else \
+	    dir1=$$subdir; dir2="$(distdir)/$$subdir"; \
+	    $(am__relativize); \
+	    new_distdir=$$reldir; \
+	    dir1=$$subdir; dir2="$(top_distdir)"; \
+	    $(am__relativize); \
+	    new_top_distdir=$$reldir; \
+	    echo " (cd $$subdir && $(MAKE) $(AM_MAKEFLAGS) top_distdir="$$new_top_distdir" distdir="$$new_distdir" \\"; \
+	    echo "     am__remove_distdir=: am__skip_length_check=: am__skip_mode_fix=: distdir)"; \
+	    ($(am__cd) $$subdir && \
+	      $(MAKE) $(AM_MAKEFLAGS) \
+	        top_distdir="$$new_top_distdir" \
+	        distdir="$$new_distdir" \
+		am__remove_distdir=: \
+		am__skip_length_check=: \
+		am__skip_mode_fix=: \
+	        distdir) \
+	      || exit 1; \
+	  fi; \
+	done
 check-am: all-am
-check: check-am
+check: check-recursive
 all-am: Makefile $(PROGRAMS) config.hpp
-installdirs:
+installdirs: installdirs-recursive
+installdirs-am:
 	for dir in "$(DESTDIR)$(bindir)"; do \
 	  test -z "$$dir" || $(MKDIR_P) "$$dir"; \
 	done
-install: install-am
-install-exec: install-exec-am
-install-data: install-data-am
-uninstall: uninstall-am
+install: install-recursive
+install-exec: install-exec-recursive
+install-data: install-data-recursive
+uninstall: uninstall-recursive
 
 install-am: all-am
 	@$(MAKE) $(AM_MAKEFLAGS) install-exec-am install-data-am
 
-installcheck: installcheck-am
+installcheck: installcheck-recursive
 install-strip:
 	$(MAKE) $(AM_MAKEFLAGS) INSTALL_PROGRAM="$(INSTALL_STRIP_PROGRAM)" \
 	  install_sh_PROGRAM="$(INSTALL_STRIP_PROGRAM)" INSTALL_STRIP_FLAG=-s \
@@ -721,93 +1040,95 @@ distclean-generic:
 maintainer-clean-generic:
 	@echo "This command is intended for maintainers to use"
 	@echo "it deletes files that may require special tools to rebuild."
-clean: clean-am
+clean: clean-recursive
 
 clean-am: clean-binPROGRAMS clean-generic clean-libtool mostlyclean-am
 
-distclean: distclean-am
+distclean: distclean-recursive
 	-rm -rf ./$(DEPDIR)
 	-rm -f Makefile
 distclean-am: clean-am distclean-compile distclean-generic \
 	distclean-hdr distclean-tags
 
-dvi: dvi-am
+dvi: dvi-recursive
 
 dvi-am:
 
-html: html-am
+html: html-recursive
 
 html-am:
 
-info: info-am
+info: info-recursive
 
 info-am:
 
 install-data-am:
 
-install-dvi: install-dvi-am
+install-dvi: install-dvi-recursive
 
 install-dvi-am:
 
 install-exec-am: install-binPROGRAMS
 
-install-html: install-html-am
+install-html: install-html-recursive
 
 install-html-am:
 
-install-info: install-info-am
+install-info: install-info-recursive
 
 install-info-am:
 
 install-man:
 
-install-pdf: install-pdf-am
+install-pdf: install-pdf-recursive
 
 install-pdf-am:
 
-install-ps: install-ps-am
+install-ps: install-ps-recursive
 
 install-ps-am:
 
 installcheck-am:
 
-maintainer-clean: maintainer-clean-am
+maintainer-clean: maintainer-clean-recursive
 	-rm -rf ./$(DEPDIR)
 	-rm -f Makefile
 maintainer-clean-am: distclean-am maintainer-clean-generic
 
-mostlyclean: mostlyclean-am
+mostlyclean: mostlyclean-recursive
 
 mostlyclean-am: mostlyclean-compile mostlyclean-generic \
 	mostlyclean-libtool
 
-pdf: pdf-am
+pdf: pdf-recursive
 
 pdf-am:
 
-ps: ps-am
+ps: ps-recursive
 
 ps-am:
 
 uninstall-am: uninstall-binPROGRAMS
 
-.MAKE: all install-am install-strip
+.MAKE: $(RECURSIVE_CLEAN_TARGETS) $(RECURSIVE_TARGETS) all \
+	ctags-recursive install-am install-strip tags-recursive
 
-.PHONY: CTAGS GTAGS all all-am check check-am clean clean-binPROGRAMS \
-	clean-generic clean-libtool ctags distclean distclean-compile \
-	distclean-generic distclean-hdr distclean-libtool \
-	distclean-tags distdir dvi dvi-am html html-am info info-am \
-	install install-am install-binPROGRAMS install-data \
-	install-data-am install-dvi install-dvi-am install-exec \
-	install-exec-am install-html install-html-am install-info \
-	install-info-am install-man install-pdf install-pdf-am \
-	install-ps install-ps-am install-strip installcheck \
-	installcheck-am installdirs maintainer-clean \
-	maintainer-clean-generic mostlyclean mostlyclean-compile \
-	mostlyclean-generic mostlyclean-libtool pdf pdf-am ps ps-am \
-	tags uninstall uninstall-am uninstall-binPROGRAMS
+.PHONY: $(RECURSIVE_CLEAN_TARGETS) $(RECURSIVE_TARGETS) CTAGS GTAGS \
+	all all-am check check-am clean clean-binPROGRAMS \
+	clean-generic clean-libtool ctags ctags-recursive distclean \
+	distclean-compile distclean-generic distclean-hdr \
+	distclean-libtool distclean-tags distdir dvi dvi-am html \
+	html-am info info-am install install-am install-binPROGRAMS \
+	install-data install-data-am install-dvi install-dvi-am \
+	install-exec install-exec-am install-html install-html-am \
+	install-info install-info-am install-man install-pdf \
+	install-pdf-am install-ps install-ps-am install-strip \
+	installcheck installcheck-am installdirs installdirs-am \
+	maintainer-clean maintainer-clean-generic mostlyclean \
+	mostlyclean-compile mostlyclean-generic mostlyclean-libtool \
+	pdf pdf-am ps ps-am tags tags-recursive uninstall uninstall-am \
+	uninstall-binPROGRAMS
 
-#AM_LDFLAGS = `wx-config --libs`
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.

@@ -1,18 +1,24 @@
 ///////////////////////////////////////////////////////////////////////////////
 // File name:   ICAConnection_win.cpp
 // Version:     0.0
-// Purpose: 
-// Time-stamp:  "2010-03-12 14:38:52"
+// Purpose:
+// Time-stamp:  "2010-12-08 19:14:55"
 // E-mail:      rdpdesk@rdpdesk.com
-// $Id$ 
-// Copyright:   (c) 2009-2010 RDPDesk <rdpdesk@rdpdesk.com> 
-// Licence:     GPL v3 
+// $Id$
+// Copyright:   (c) 2009-2010 RDPDesk <rdpdesk@rdpdesk.com>
+// Licence:     GPL v3
 ///////////////////////////////////////////////////////////////////////////////
 
 #include "ICAConnection_win.hpp"
 #include "main_window.hpp"
 
 #include "network_helper.hpp"
+
+
+BEGIN_EVENT_TABLE(ICAConnection,wxWindow)
+EVT_ACTIVEX(wxID_ANY,ICAConnection::DispatcherActiveX)
+EVT_SET_FOCUS(ICAConnection::on_enter_focus)
+END_EVENT_TABLE()
 
 inline wxString bstr2wx(const _bstr_t& bstr)
 {
@@ -24,7 +30,7 @@ inline _bstr_t wx2bstr(const wxString& str)
    return _bstr_t(str.wc_str(*wxConvCurrent));
 }
 
-ICAConnection::ICAConnection(Main_Frame * main, Options_HashMap options ,wxWindow * parent, wxWindowID id,
+ICAConnection::ICAConnection(MainFrame * main, Options_HashMap options ,wxWindow * parent, wxWindowID id,
 			     const wxPoint& pos, const wxSize& size,long style ,	const wxString& name):
 //wxWindow(parent,id,pos,size,style,name)
 //,cnt(NULL)
@@ -38,17 +44,17 @@ ICAConnection::ICAConnection(Main_Frame * main, Options_HashMap options ,wxWindo
 
    if ( FAILED(hr) )
    {
-      wxMessageBox(wxT("ICA connection is not available."),wxT("Error"),wxICON_ERROR);
+      wxMessageBox(_("ICA connection is not available. Please install ICA client from http://www.citrix.com"),_("Error"),wxICON_ERROR);
       return ;
    }
 
 
-//	bNeedReconnect = !rdpsettings.bFullScreen; 
+//	bNeedReconnect = !rdpsettings.bFullScreen;
 
    cnt = new wxActiveXContainer(this,__uuidof(WFICALib::IICAClientPtr),pUnknown);
    if (cnt == NULL)
    {
-      wxMessageBox(wxT("ICA connection is not available."),wxT("Error"),wxICON_ERROR);
+	   wxMessageBox(_("ICA connection is not available. Please install ICA client from http://www.citrix.com"),_("Error"),wxICON_ERROR);
    }
    else
    {
@@ -58,9 +64,9 @@ ICAConnection::ICAConnection(Main_Frame * main, Options_HashMap options ,wxWindo
 
 ICAConnection::~ICAConnection()
 {
-//	if (cnt) 
+//	if (cnt)
 //	{
-//		cnt->Destroy(); //delete cnt; 
+//		cnt->Destroy(); //delete cnt;
 //		cnt = NULL;
 //	}
 
@@ -92,7 +98,7 @@ void ICAConnection::FullScreen(BOOL bRestore)
 
 			refICA->FullScreenWindow();
 			//refICA->FullScreenWindow();
-			//refICA->ShowTitleBar(); 
+			//refICA->ShowTitleBar();
 			//refRDP->put_FullScreen(VARIANT_TRUE);
 			//refRDP->FullScreenTitle = SysAllocString(L"Full screen RDP");
 
@@ -101,19 +107,19 @@ void ICAConnection::FullScreen(BOOL bRestore)
 		{
 			if (wxAtoi(local_options[wxT("control_size")]))
 			{
-				refICA->ScaleToFit(); 
+				refICA->ScaleToFit();
 				wxSize sz_window = GetClientSize();
 				refICA->SetWindowSize(WFICALib::WindowTypeContainer ,(long)sz_window.x ,(long)sz_window.y ,0);
 			}
 			else
 			{
-				wxMessageBox(wxT("2"));
+				//wxMessageBox(wxT("2"));
 				refICA->SetWindowSize(WFICALib::WindowTypeControl,(long)wxAtoi(local_options[wxT("width")]),(long)wxAtoi(local_options[wxT("heigth")]),0);
 				refICA->SetProp(wx2bstr(wxT("Width")), wx2bstr(wxString::Format(wxT("%i"),wxAtoi(local_options[wxT("width")]))));
 				refICA->SetProp(wx2bstr(wxT("Height")), wx2bstr(wxString::Format(wxT("%i"),wxAtoi(local_options[wxT("heigth")]))));
 			}
 			refICA->HideTitleBar();
-			refICA->DockWindow(); 
+			refICA->DockWindow();
 
 		}
 		refICA->Release();
@@ -174,7 +180,7 @@ bool ICAConnection::DoConnection()
    DWORD thId;
    hTestHostThread = CreateThread(NULL,0,(LPTHREAD_START_ROUTINE)this->TestHost, this,0,&thId);
 
-	
+
    cnt->CenterOnParent();
    cnt->Show(false);
    WFICALib::IICAClient * refICA;
@@ -182,12 +188,12 @@ bool ICAConnection::DoConnection()
    hres = pUnknown->QueryInterface(__uuidof(WFICALib::IICAClientPtr),(void**)&refICA);
    if (FAILED(hres)) return FALSE;
 
-   refICA->ClearProps(); 
+   refICA->ClearProps();
    refICA->ResetProps();
 
    // General Settings
    refICA->Address = wx2bstr(local_options[wxT("hostname")]);
-	
+
 //	refICA->Domain = SysAllocString(AnsiToUnicode(rdpconn.domain));
 //  refICA->Username = SysAllocString(AnsiToUnicode(rdpconn.username));
    if (wxAtoi(local_options[wxT("custom_port")]))
@@ -205,7 +211,7 @@ bool ICAConnection::DoConnection()
    if (local_options[wxT("password")] != wxT(""))
    {
       refICA->SetProp(wx2bstr(wxT("ClearPassword")), wx2bstr(local_options[wxT("password")]));
-      refICA->put_AutoLogonAllowed(VARIANT_TRUE); 
+      refICA->put_AutoLogonAllowed(VARIANT_TRUE);
    }
    if (local_options[wxT("username")] != wxT(""))
    {
@@ -219,28 +225,28 @@ bool ICAConnection::DoConnection()
    //{
    //   m_text_proxy_autoconfig_url->SetValue(local_options[wxT("proxy_autoconfig_url"]));
    //}
-   //wxString proxy_type_array[] = {wxT("None") ,_T("Auto"), _T("Socks"), _T("SocksV4"),
-//						_T("SocksV5"), _T("Secure"), _T("Script")};
-   if ((wxAtoi(local_options[wxT("proxy_type"])) == 2) ||
-		(wxAtoi(local_options[wxT("proxy_type"])) == 3) ||
-		(wxAtoi(local_options[wxT("proxy_type"])) == 4))
+   //wxString proxy_type_array[] = {wxT("None") ,wxT("Auto"), wxT("Socks"), wxT("SocksV4"),
+//						wxT("SocksV5"), wxT("Secure"), wxT("Script")};
+   if ((wxAtoi(local_options[wxT("proxy_type")]) == 2) ||
+		(wxAtoi(local_options[wxT("proxy_type")]) == 3) ||
+		(wxAtoi(local_options[wxT("proxy_type")]) == 4))
    {
 	   //wxMessageBox(wxT("proxy type = 1"));
 	   refICA->SetProp(wx2bstr(wxT("UseAlternateAddress")), wx2bstr(wxT("ON")));
 	   if (local_options[wxT("proxy_host"]) != wxT(""))
 	   {
 		   refICA->ICASOCKSProxyHost = wx2bstr(local_options[wxT("proxy_host"]));
-		   long proxy_port = 1080; 
+		   long proxy_port = 1080;
 		   /*if (rdpconn.ProxyPort.Length() > 0)
 		   {
 			   rdpconn.ProxyPort.ToLong(&proxy_port);
 		   }*/
-		   refICA->ICASOCKSProxyPortNumber = (proxy_port <= 0 || proxy_port > 65536) ? 1080 : proxy_port;	
+		   refICA->ICASOCKSProxyPortNumber = (proxy_port <= 0 || proxy_port > 65536) ? 1080 : proxy_port;
 		   refICA->SetProp(wx2bstr(wxT("ICASOCKSRFC1929Username")),wx2bstr(local_options[wxT("proxy_username")]));
 		   refICA->SetProp(wx2bstr(wxT("ICASOCKSRFC1929Password")),wx2bstr(local_options[wxT("proxy_password")]));
 	   }
    }
-   else if ((wxAtoi(local_options[wxT("proxy_type"])) == 5))
+   else if ((wxAtoi(local_options[wxT("proxy_type")]) == 5))
    {
 	   refICA->SetProp(wx2bstr(wxT("UseAlternateAddress")), wx2bstr(wxT("ON")));
 	   refICA->SSLProxyHost = wx2bstr(local_options[wxT("ssl_proxy_host"]));
@@ -270,12 +276,12 @@ bool ICAConnection::DoConnection()
    {
 	   if (local_options[wxT("color_depth")] == wxT("0"))
 	   {
-		   refICA->DesiredColor = WFICALib::Color256; 
+		   refICA->DesiredColor = WFICALib::Color256;
 	   }
-	   else if ((local_options[wxT("color_depth")] == wxT("1")) || 
+	   else if ((local_options[wxT("color_depth")] == wxT("1")) ||
 		   (local_options[wxT("color_depth")] == wxT("2")))
 	   {
-		   refICA->DesiredColor = WFICALib::Color16Bit; 	
+		   refICA->DesiredColor = WFICALib::Color16Bit;
 	   }
 	   else if (local_options[wxT("color_depth")] == wxT("3"))
 	   {
@@ -283,12 +289,12 @@ bool ICAConnection::DoConnection()
 	   }
 	   else
 	   {
-		   refICA->DesiredColor = WFICALib::Color16Bit; 
+		   refICA->DesiredColor = WFICALib::Color16Bit;
 	   }
    }
    if (wxAtoi(local_options[wxT("control_size")]))
    {
-	   refICA->ScaleToFit(); 
+	   refICA->ScaleToFit();
 	   wxSize sz_window = GetClientSize();
 	   refICA->SetWindowSize(WFICALib::WindowTypeControl ,(long)sz_window.x ,(long)sz_window.y ,0);
    }
@@ -311,15 +317,15 @@ bool ICAConnection::DoConnection()
    }
    if (wxAtoi(local_options[wxT("resize_session")]))
    {
-	   refICA->ScaleEnable(); 
+	   refICA->ScaleEnable();
 	   refICA->AutoScale = VARIANT_TRUE;
 	   refICA->SetProp(wx2bstr(wxT("ScalingMode")), wx2bstr(wxT("3")));
    }
    else
    {
-	   refICA->ScaleDisable(); 
+	   refICA->ScaleDisable();
    }
-   
+
    //if (m_checkbox_allow_degraded_colors != NULL)
    //{
    //   local_options[wxT("allow_degraded_colors")] = wxString::Format(wxT("%i"),
@@ -437,7 +443,7 @@ bool ICAConnection::DoConnection()
    //}
    if (wxAtoi(local_options[wxT("encryption_level_session")]))
    {
-        refICA->Encrypt = VARIANT_TRUE;	
+        refICA->Encrypt = VARIANT_TRUE;
       if (wxAtoi(local_options[wxT("encryption_level_session")]) == 1) refICA->SetProp(wx2bstr(wxT("EncryptionLevelSession")), wx2bstr(wxT("Encrypt")));
       else if (wxAtoi(local_options[wxT("encryption_level_session")]) == 2) refICA->SetProp(wx2bstr(wxT("EncryptionLevelSession")), wx2bstr(wxT("EncRC5-0")));
       else if (wxAtoi(local_options[wxT("encryption_level_session")]) == 3) refICA->SetProp(wx2bstr(wxT("EncryptionLevelSession")), wx2bstr(wxT("EncRC5-40")));
@@ -451,15 +457,15 @@ bool ICAConnection::DoConnection()
    //   local_options[wxT("secure_channel_protocol")] = wxString::Format(wxT("%i"),
    //								       m_combo_secure_channel_protocol->GetCurrentSelection());
    //}
-	
 
-//	
+
+//
 ////Program settings
 //   if (rdpconn.bUseProgram)
 //   {
 //      refICA->AutoAppResize = VARIANT_TRUE;
 //      refICA->put_WorkDirectory(wx2bstr(rdpconn.directory));
-//      refICA->put_InitialProgram(wx2bstr(rdpconn.shell)); 
+//      refICA->put_InitialProgram(wx2bstr(rdpconn.shell));
 //   }
 //
 ////Performance settings
@@ -486,24 +492,24 @@ bool ICAConnection::DoConnection()
 //   {
 //      refICA->ICAFile = wx2bstr(rdpconn.ica_file);
 //   }
-//	
+//
 //   if (rdpconn.bIcaEncryption)
 //   {	wxMessageBox(wxT("OK"));
 //      refICA->Encrypt = VARIANT_TRUE;
-//		
+//
 //      if (rdpconn.ica_encryption == 0) refICA->SetProp(wx2bstr(wxT("EncryptionLevelSession")), wx2bstr(wxT("Encrypt")));
 //      else if (rdpconn.ica_encryption == 1) refICA->SetProp(wx2bstr(wxT("EncryptionLevelSession")), wx2bstr(wxT("EncRC5-0")));
 //      else if (rdpconn.ica_encryption == 2) refICA->SetProp(wx2bstr(wxT("EncryptionLevelSession")), wx2bstr(wxT("EncRC5-40")));
 //      else if (rdpconn.ica_encryption == 3) refICA->SetProp(wx2bstr(wxT("EncryptionLevelSession")), wx2bstr(wxT("EncRC5-56")));
 //      else if (rdpconn.ica_encryption == 4) refICA->SetProp(wx2bstr(wxT("EncryptionLevelSession")), wx2bstr(wxT("EncRC5-128")));
 //      else refICA->SetProp(wx2bstr(wxT("EncryptionLevelSession")), wx2bstr(wxT("Encrypt")));
-//		
+//
 //   }
 //   else
 //   {
 //      refICA->Encrypt = VARIANT_FALSE;
 //   }
-//	
+//
 //   if (rdpconn.bUseApplication)
 //   {
 //      refICA->TCPBrowserAddress = wx2bstr(rdpconn.hostname);
@@ -511,19 +517,19 @@ bool ICAConnection::DoConnection()
 //   }
 //
 
-	
+
    refICA->Launch = VARIANT_FALSE;
-   refICA->PutTitle(wx2bstr(wxT("ICA Citrix connection")));
+   refICA->PutTitle(wx2bstr(_("ICA Citrix connection")));
    refICA->PutTransportDriver(wx2bstr(wxT("TCP/IP")));
 
    refICA->Connect();
   //refICA->FocusWindow();
    //refICA->Focus();
    refICA->Release();
- 
-   cnt->CenterOnParent(); 
-   cnt->Show(true); 
-	
+
+   cnt->CenterOnParent();
+   cnt->Show(true);
+
    //refICA->EncryptionLevelSession = SysAllocString(AnsiToUnicode(wxT("Basic")));
 
    //refICA->SetProp("ScalingMode", "3");
@@ -531,7 +537,7 @@ bool ICAConnection::DoConnection()
    //refICA->SetProp(SysAllocString(AnsiToUnicode(wxT("Height"))), "600");
 
    long ltemp = 0;
-	 
+
 
    //refICA->SetWindowSize(WFICALib::WindowTypeControl,800,600,0);
    //refICA->SetProp(wx2bstr(wxT("Width")), wx2bstr(wxT("800")));
@@ -541,15 +547,15 @@ bool ICAConnection::DoConnection()
    //refICA->SetProp(wx2bstr(wxT("Width")), wx2bstr(wxString::Format(wxT("%i"),rdpconn.width)));
    //refICA->SetProp(wx2bstr(wxT("Height")), wx2bstr(wxString::Format(wxT("%i"),rdpconn.heigth)));
 
-	
-	
-	
-	
+
+
+
+
 /*WFICALib::WindowTypeContainer*/
-/*	
+/*
 	if (rdpconn.bControlSize)
 	{
-	refICA->ScaleToFit(); 
+	refICA->ScaleToFit();
 	wxSize sz_window = GetClientSize();
 	refICA->SetWindowSize(WFICALib::WindowTypeControl ,(long)sz_window.x ,(long)sz_window.y ,0);
 	}
@@ -558,14 +564,14 @@ bool ICAConnection::DoConnection()
 	refICA->SetWindowSize(WFICALib::WindowTypeControl,(long)rdpconn.width,(long)rdpconn.heigth,0);
 	refICA->SetProp(wx2bstr(wxT("Width")), wx2bstr(wxString::Format(wxT("%i"),rdpconn.width)));
 	refICA->SetProp(wx2bstr(wxT("Height")), wx2bstr(wxString::Format(wxT("%i"),rdpconn.heigth)));
-		
+
 	}
-*/	
+*/
    //if (refICA->IsPassThrough() == VARIANT_TRUE)
    //{
    //	wxMessageBox(wxT("PassThrough"));
    //}
-	
+
 
 //	refICA->DesiredVRes = 1000;
 //	refICA->DesiredHRes = 750;
@@ -578,16 +584,16 @@ bool ICAConnection::DoConnection()
   if (rdpconn.bSmartSizing)
   {
   //	refICA->SetProp("ScalingMode", "3");
-  refICA->ScaleEnable(); 
+  refICA->ScaleEnable();
   }
 */
    //refICA->Width = 800;
    //refICA->Height = 600;
-	
-   //WFICALib::IICAClient::DisplayWindow 
+
+   //WFICALib::IICAClient::DisplayWindow
    //	refICA->ConnectionEntry =  wx2bstr(rdpconn.password);
-	
-	  
+
+
    //refICA->PutICAPortNumber(1494);
    //  refICA->Launch = VARIANT_FALSE;
    //refICA->PutLocTCPBrowserAddress(wx2bstr(wxT("1494")));
@@ -597,41 +603,41 @@ bool ICAConnection::DoConnection()
 
    //wxMessageBox(bstr2wx(refICA->GetTransportDriver()));
    // refICA->TransportDriver = SysAllocString(AnsiToUnicode(wxT("TCP/IP")));
-  
+
 /*
   wxString conn_text(wxT("Try establish connection"));
-  refRDP->put_ConnectingText(SysAllocString( conn_text.wc_str(*wxConvCurrent) )); 
+  refRDP->put_ConnectingText(SysAllocString( conn_text.wc_str(*wxConvCurrent) ));
 
   refRDP->put_Server(SysAllocString(AnsiToUnicode(rdpconn.hostname)));
   refRDP->put_UserName(SysAllocString(AnsiToUnicode(rdpconn.username)));
-	
-  if (rdpconn.password.Length() != NULL) 
+
+  if (rdpconn.password.Length() != NULL)
   {
-  refRDP->GetAdvancedSettings2()->put_ClearTextPassword(SysAllocString(AnsiToUnicode(rdpconn.password))); 
+  refRDP->GetAdvancedSettings2()->put_ClearTextPassword(SysAllocString(AnsiToUnicode(rdpconn.password)));
   }
 
   refRDP->put_Domain(SysAllocString(AnsiToUnicode(rdpconn.domain)));
 
-	
+
   if (rdpconn.attach_to_console)
   {
-  refRDP->GetAdvancedSettings2()->put_ConnectToServerConsole(VARIANT_TRUE);  
+  refRDP->GetAdvancedSettings2()->put_ConnectToServerConsole(VARIANT_TRUE);
   }
   else
-  refRDP->GetAdvancedSettings2()->put_ConnectToServerConsole(VARIANT_FALSE); 
-		
+  refRDP->GetAdvancedSettings2()->put_ConnectToServerConsole(VARIANT_FALSE);
+
 
   if (rdpconn.port.Length() == 0)	refRDP->GetAdvancedSettings2()->put_RDPPort(3389);
   else
   {
   LONG lPort;
   rdpconn.port.ToLong(&lPort);
-  refRDP->GetAdvancedSettings2()->put_RDPPort(lPort);  
+  refRDP->GetAdvancedSettings2()->put_RDPPort(lPort);
   }
 
-	
+
   refRDP->put_ColorDepth(rdpconn.color_depth);
-		
+
   if (rdpconn.bControlSize)
   {
   refRDP->put_DesktopWidth(0);
@@ -662,13 +668,13 @@ bool ICAConnection::DoConnection()
 
 
 
-	
-	
-	
+
+
+
   if (rdpconn.bUseProgram)
   {
-  refRDP->GetSecuredSettings2()->put_StartProgram(SysAllocString(AnsiToUnicode(rdpconn.shell))); 
-  refRDP->GetSecuredSettings2()->put_WorkDir(SysAllocString(AnsiToUnicode(rdpconn.directory)));  
+  refRDP->GetSecuredSettings2()->put_StartProgram(SysAllocString(AnsiToUnicode(rdpconn.shell)));
+  refRDP->GetSecuredSettings2()->put_WorkDir(SysAllocString(AnsiToUnicode(rdpconn.directory)));
   if (rdpconn.bProgramMaximized)
   refRDP->GetAdvancedSettings2()->put_MaximizeShell(1);
   else
@@ -679,7 +685,7 @@ bool ICAConnection::DoConnection()
   if (rdpconn.bShareDrives)
   {
   refRDP->GetAdvancedSettings2()->put_RedirectDrives(VARIANT_TRUE);
-		
+
   }
   else
   refRDP->GetAdvancedSettings2()->put_RedirectDrives(VARIANT_FALSE);
@@ -692,7 +698,7 @@ bool ICAConnection::DoConnection()
   if (rdpconn.bShareComPorts)
   refRDP->GetAdvancedSettings2()->put_RedirectPorts(VARIANT_TRUE);
   else
-  refRDP->GetAdvancedSettings2()->put_RedirectPorts(VARIANT_FALSE);  
+  refRDP->GetAdvancedSettings2()->put_RedirectPorts(VARIANT_FALSE);
 
   if (rdpconn.bShareSmartCards)
   refRDP->GetAdvancedSettings2()->put_RedirectSmartCards(VARIANT_TRUE);
@@ -717,14 +723,14 @@ bool ICAConnection::DoConnection()
   if (!rdpconn.bEnableThemes)
   lDisableList = lDisableList | TS_PERF_DISABLE_THEMING;
 
-  refRDP->GetAdvancedSettings2()->put_PerformanceFlags(lDisableList); 
+  refRDP->GetAdvancedSettings2()->put_PerformanceFlags(lDisableList);
 
   if (rdpconn.bEnableBitmapCaching)
   refRDP->GetAdvancedSettings2()->put_BitmapPersistence(1);
   else
   refRDP->GetAdvancedSettings2()->put_BitmapPersistence(0);
 
-	
+
 
   refRDP->Connect();
 
@@ -748,13 +754,13 @@ void ICAConnection::DispatcherActiveX(wxActiveXEvent& event)
 
 	case ICA_EVENT_CONNECTED:
 
-		this->conn_splitter->switch_state();  
-		/*	 
+		this->conn_splitter->switch_state();
+		/*
 		if (this->info_uniq_name != 0)
 		{
-		this->main_frame->m_panel_tree->rdptree->from_wxrdp(this->info_uniq_name,TREEDATA_INC_CONNCOUNT);  
+		this->main_frame->m_panel_tree->rdptree->from_wxrdp(this->info_uniq_name,TREEDATA_INC_CONNCOUNT);
 		}
-		*/	
+		*/
 		SendConnectEvent();
 		this->bConnected = TRUE;
 		CheckOptions();
@@ -774,16 +780,16 @@ void ICAConnection::DispatcherActiveX(wxActiveXEvent& event)
 		break;
 	case ICA_EVENT_DISCONNECTED:
 
-		this->conn_splitter->switch_state(); 
-		/*		
+		this->conn_splitter->switch_state();
+		/*
 		if (info_uniq_name != 0)
 		{
-		main_frame->m_panel_tree->rdptree->from_wxrdp(this->info_uniq_name,TREEDATA_DEC_CONNCOUNT);  
+		main_frame->m_panel_tree->rdptree->from_wxrdp(this->info_uniq_name,TREEDATA_DEC_CONNCOUNT);
 		}
 		*/
 		SendDisconnectEvent();
 		this->bConnected = FALSE;
-		//wxCommandEvent eventCustom(ID_FULLSCREEN);                                                                                              
+		//wxCommandEvent eventCustom(ID_FULLSCREEN);
 		//wxPostEvent(main_frame, eventCustom);
 
 		//if (this->bFullScreen == true)
@@ -793,7 +799,7 @@ void ICAConnection::DispatcherActiveX(wxActiveXEvent& event)
 		//}
 
 		CheckOptions();
-		/*		
+		/*
 		if ((wxSplitterRDP *)this->main_frame->nb->GetPage(this->main_frame->nb->GetSelection()) == this->splitter_rdp)
 		{
 		this->main_frame->CheckCurrentConnectionMenu();
@@ -801,7 +807,7 @@ void ICAConnection::DispatcherActiveX(wxActiveXEvent& event)
 		*/
 		//if (bNeedReconnect)
 		//{
-		//	bNeedReconnect = FALSE; 
+		//	bNeedReconnect = FALSE;
 		//	Connect();
 		//}
 
@@ -809,7 +815,7 @@ void ICAConnection::DispatcherActiveX(wxActiveXEvent& event)
 
 	case ICA_EVENT_ENTERFULLSCREEN:
 		//wxMessageBox(wxT("ICA_EVENT_ENTERFULLSCREEN1"));
-		
+
 		this->bFullScreen = TRUE;
 
 		//if ((wxSplitterRDP *)this->main_frame->nb->GetPage(this->main_frame->nb->GetSelection()) == this->splitter_rdp)
@@ -819,7 +825,7 @@ void ICAConnection::DispatcherActiveX(wxActiveXEvent& event)
 		break;
 	case 21:
 		//wxMessageBox(wxT("ICA_EVENT_LEAVEFULLSCREEN2"));
-		
+
 		FullScreen(0);
 		//if ((wxSplitterRDP *)this->main_frame->nb->GetPage(this->main_frame->nb->GetSelection()) == this->splitter_rdp)
 		//{
@@ -830,7 +836,7 @@ void ICAConnection::DispatcherActiveX(wxActiveXEvent& event)
 
 	case ICA_EVENT_LEAVEFULLSCREEN:
 		//wxMessageBox(wxT("ICA_EVENT_LEAVEFULLSCREEN"));
-		
+
 		FullScreen(0);
 		//if ((wxSplitterRDP *)this->main_frame->nb->GetPage(this->main_frame->nb->GetSelection()) == this->splitter_rdp)
 		//{
@@ -843,7 +849,7 @@ void ICAConnection::DispatcherActiveX(wxActiveXEvent& event)
 		break;
 
 	}
-	event.StopPropagation(); 
+	event.StopPropagation();
 }
 
 
@@ -865,7 +871,7 @@ DWORD WINAPI ICAConnection::TestHost(ICAConnection * ica)
 		{
 			if (ica->bWaitFlag)
 			{
-				ica->main_frame->SetStatusText(ica->local_options[wxT("hostname")],2); 
+				ica->main_frame->SetStatusText(ica->local_options[wxT("hostname")],2);
 
 				if (ica->local_options[wxT("connection_name")] != wxT(""))
 				{
@@ -875,16 +881,17 @@ DWORD WINAPI ICAConnection::TestHost(ICAConnection * ica)
 				{
 					ica->main_frame->nb->SetPageText(i,ica->local_options[wxT("hostname")]);
 				}
-				ica->main_frame->menu_bar->EnableTop(1,true); 
+				ica->main_frame->menu_bar->EnableTop(1,true);
 				return 0;
 			}
 			else
 			{
 				ica->main_frame->current_page_for_delete = i;
 				wxUpdateUIEvent evt;
-				evt.Check(true); 
+				evt.Check(true);
 				evt.SetId(ID_ERRORHOSTNAME);
-				wxPostEvent(ica->main_frame,evt); 
+				wxMessageBox(_("This computer can't connect to the remote server. Type the server name or IP address again, and then try connecting. If the problem continues, contact your network administrator."));
+				wxPostEvent(ica->main_frame,evt);
 				return 0;
 			}
 		}
@@ -912,7 +919,7 @@ void ICAConnection::SendKey(BOOL cad)
       //refICA->FocusWindow();
       //keybd_event( VkKeyScan(TEXT('A')),0x1E, 0, 0 );
       //keybd_event( VkKeyScan(TEXT('A')), 0x1E, KEYEVENTF_KEYUP, 0 );
-		
+
 
       keybd_event( VkKeyScan(VK_F1),	0x3B, 0,0 );
       keybd_event( VkKeyScan(VK_F1),	0x3B, KEYEVENTF_KEYUP,0 );
@@ -931,18 +938,18 @@ void ICAConnection::SendKey(BOOL cad)
   UINT res = SendInput(2,key_input,sizeof(INPUT));
   if (res <= 0) wxMessageBox(wxT("input failed"));
 */
-      wxMessageBox(wxT("send ica cad"));
-      wxWindowList lst_win = cnt->GetChildren(); 
+      wxMessageBox(_("send ica cad"));
+      wxWindowList lst_win = cnt->GetChildren();
       for (size_t i = 0; i < lst_win.GetCount(); i ++)
       {
-			
-	 wxWindow * win = (lst_win.Item(i))->GetData(); 
+
+	 wxWindow * win = (lst_win.Item(i))->GetData();
 	 HWND hwnd = (HWND)cnt->GetHandle();
 	 EnableWindow(hwnd,true);
 	 SetActiveWindow(hwnd);
 	 SetForegroundWindow(hwnd);
-	 ::SetFocus(hwnd); 
-		
+	 ::SetFocus(hwnd);
+
 /*
   keybd_event( VkKeyScan(VK_CONTROL),	0x1D, 0,0 );
   keybd_event( VkKeyScan(VK_MENU),0x38,0,0 );

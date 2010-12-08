@@ -1,0 +1,39 @@
+HKCR
+{
+	UltraVncAx.UltraVncAxObj.1 = s 'UltraVNC Viewer ActiveX Object 1.1.0.2'
+	{
+		CLSID = s '{36D64AE5-6626-4DDE-A958-2FF1D46D4424}'
+	}
+	UltraVncAx.UltraVncAxObj = s 'UltraVNC Viewer ActiveX Object 1.1.0.2'
+	{
+		CLSID = s '{36D64AE5-6626-4DDE-A958-2FF1D46D4424}'
+		CurVer = s 'UltraVncAx.UltraVncAxObj.1'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {36D64AE5-6626-4DDE-A958-2FF1D46D4424} = s 'UltraVNC Viewer ActiveX Object 1.1.0.2'
+		{
+			ProgID = s 'UltraVncAx.UltraVncAxObj.1'
+			VersionIndependentProgID = s 'UltraVncAx.UltraVncAxObj'
+			ForceRemove 'Programmable'
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'Apartment'
+			}
+			ForceRemove 'Control'
+			ForceRemove 'Insertable'
+			ForceRemove 'ToolboxBitmap32' = s '%MODULE%, 101'
+			'MiscStatus' = s '0'
+			{
+			    '1' = s '131473'
+			}
+			'TypeLib' = s '{987AD05D-338A-4E92-991B-F30C31824968}'
+			'Version' = s '1.1.0.2'
+			'Implemented Categories'
+			{
+				'{7DD95801-9882-11CF-9FA9-00AA006C42C4}'
+				'{7DD95802-9882-11CF-9FA9-00AA006C42C4}'
+			}
+		}
+	}
+}

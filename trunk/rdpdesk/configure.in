@@ -1,6 +1,10 @@
 AC_INIT([src/main.cpp])
-AM_INIT_AUTOMAKE([rdpdesk], [1.0], [src icons])
+AM_INIT_AUTOMAKE([rdpdesk], [0.1], [src icons desktop doc])
 AM_CONFIG_HEADER(src/config.hpp)
+AM_GNU_GETTEXT([external])
+ALL_LINGUAS="ru"
+
+
 
 AC_PROG_CXX
 AC_PROG_LIBTOOL
@@ -131,13 +135,27 @@ if test "x$GCC" = "xyes"; then
     fi
 fi
 
-AC_CHECK_HEADERS(X11/Intrinsic.h X11/keysym.h)
 
-AC_OUTPUT([ 
+temp=`cd src/proto/vnc_unixsrc/libvncauth && xmkmf`
+temp=`cd src/proto/vnc_unixsrc/vncviewer && xmkmf`
+
+#AC_CHECK_HEADERS(X11/Intrinsic.h X11/keysym.h)
+AC_CHECK_HEADERS([X11/Intrinsic.h],[], exit,[])
+AC_CHECK_HEADERS([X11/keysym.h],[], exit,[])
+AC_CHECK_HEADERS([X11/Xaw/Viewport.h],[], exit,[])
+AC_CHECK_HEADERS([X11/Xlib.h],[], exit,[])
+AC_CHECK_HEADERS([jpeglib.h],[],exit, [])
+AC_CHECK_LIB([jpeg],[jpeg_CreateCompress])
+AC_CHECK_HEADERS([zlib.h],[], exit,[])
+AC_CHECK_LIB([z],[crc32])
+
+
+AC_OUTPUT([ po/Makefile.in
             Makefile
             src/Makefile
             icons/Makefile
             desktop/Makefile
-          ])
+            doc/Makefile
+        ])
 
 

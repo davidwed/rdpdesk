@@ -1,135 +1,119 @@
 ///////////////////////////////////////////////////////////////////////////////
 // File name:   RDPConnection_nix.cpp
 // Version:     0.0
-// Purpose: 
-// Time-stamp:  "2010-03-23 13:10:18" 
+// Purpose:
+// Time-stamp:  "2010-12-07 20:19:54"
 // E-mail:      rdpdesk@rdpdesk.com
-// $Id$ 
-// Copyright:   (c) 2009-2010 RDPDesk <rdpdesk@rdpdesk.com> 
-// Licence:     GPL v3 
+// $Id$
+// Copyright:   (c) 2009-2010 RDPDesk <rdpdesk@rdpdesk.com>
+// Licence:     GPL v3
 ///////////////////////////////////////////////////////////////////////////////
 
 #include "RDPConnection_nix.hpp"
 #include <wx/stattext.h>
 
-//BEGIN_EVENT_TABLE(RDPFullScreen, wxTopLevelWindow)
 
-//END_EVENT_TABLE()
-
-
-RDPFullScreen::RDPFullScreen(wxContRDP * cnt, Options_HashMap options):
-   wxTopLevelWindow(NULL,-1,wxT(""),wxDefaultPosition,wxDefaultSize)
+RDPFullScreen::RDPFullScreen(MainFrame * main, wxContRDP * cnt, Options_HashMap options):
+	wxTopLevelWindow(NULL,-1,wxT(""),wxDefaultPosition,wxDefaultSize)
 {
-   rdp = (RDPConnection *)cnt->GetParent();
-   cnt_old = cnt;
-   //rdpc = rdpconn;
-   local_options = options;
-   win = NULL;
-   win2 = NULL;
-   tb = NULL;
-   SetSize(wxGetDisplaySize());
-   Show();
-   win = new wxScrolledWindow(this,-1,wxPoint(0,0),GetClientSize());
-   ShowFullScreen(true);
-//	win->SetSize(GetClientSize());
-   win->FitInside();
-   win2 = new ToolbarCnt(this);
-   
-   
-   int heigth = wxAtoi(options[wxT("heigth")]);
-   int width = wxAtoi(options[wxT("width")]);
-   wxString connection_name, control_size, full_screen;
-   // for (int i = 0 ; i < local_options.Count(); i++)
-   // {
-   //    if (local_options.Item(i).Item(0).name == wxT("connection_name"))
-   //    {
-   // 	 connection_name = local_options.Item(i).Item(0).value;
-   //    }
-   //    if (local_options.Item(i).Item(0).name == wxT("control_size"))
-   //    {
-   // 	 control_size = local_options.Item(i).Item(0).value;
-   //    }
-   //    if (local_options.Item(i).Item(0).name == wxT("full_screen"))
-   //    {
-   // 	 full_screen = local_options.Item(i).Item(0).value;
-   //    }
-   //    if (local_options.Item(i).Item(0).name == wxT("heigth"))
-   //    {
-   // 	 heigth = wxAtoi(local_options.Item(i).Item(0).value);
-   //    }
-   //    if (local_options.Item(i).Item(0).name == wxT("width"))
-   //    {
-   // 	 width = wxAtoi(local_options.Item(i).Item(0).value);
-   //    }
-   // }
-   tb = new FullScreenToolBar(connection_name,win2,-1,wxPoint(100,100),wxSize(200,22));
+	rdp = (RDPConnection *)cnt->GetParent();
+	cnt_old = cnt;
+	local_options = options;
+	win = NULL;
+	win2 = NULL;
+	tb = NULL;
+	SetSize(wxGetDisplaySize());
+	Show();
+	win = new wxScrolledWindow(this,-1,wxPoint(0,0),GetClientSize());
+	ShowFullScreen(true);
+	win->FitInside();
+	win2 = new ToolbarCnt(this);
+	if (main != NULL)
+	{
+		main_frame = main;
+	} else {
+		main_frame = NULL;
+	}
 
-   win2->fs = tb;
 
-   GtkWidget * widget_fullscreen = win->m_wxwindow;
-   GtkWidget * widget_cont = cnt->m_wxwindow;
-   gtk_container_add(GTK_CONTAINER(widget_fullscreen),widget_cont);
-   gtk_widget_reparent(widget_cont,widget_fullscreen);
+	int heigth = wxAtoi(options[wxT("heigth")]);
+	int width = wxAtoi(options[wxT("width")]);
+	wxString connection_name, control_size, full_screen;
 
-   wxSize fs = wxGetDisplaySize();
+	if (local_options[wxT("connection_name")] != wxT(""))
+	{
+		connection_name = local_options[wxT("connection_name")];
+	} else {
+		connection_name = local_options[wxT("hostname")];
+	}
 
-   if (wxAtoi(options[wxT("control_size")]))
-   {
-      RDPConnection * rdp_temp = (RDPConnection *)cnt->GetParent();
-      wxSize sz = rdp_temp->GetVirtualSize();
-      gtk_widget_set_size_request(widget_cont,sz.x,sz.y);
-   }
-   else if (wxAtoi(options[wxT("full_screen")]))
-   {
-      wxSize disp_size = wxGetDisplaySize();
-      gtk_widget_set_size_request(widget_cont, disp_size.x, disp_size.y);
-   }
-   else
-   {
-      gtk_widget_set_size_request(widget_cont,width,heigth);
-   }
+	tb = new FullScreenToolBar(main_frame, connection_name,win2,-1,wxPoint(100,100),wxSize(200,22));
 
-   if (!wxAtoi(options[wxT("control_size")]))
-   {
-      if ((width > fs.x) || (heigth > fs.y))
-      {
-	 if (!wxAtoi(full_screen))
-	 {
-	    win->SetScrollbars(1,1,width,heigth);
-	 }
+	win2->fs = tb;
 
-      }
-      else  ////////////////
-      {
-	 int rdp_x = 0;
-	 int rdp_y = 0;
-	 gtk_widget_get_size_request(widget_cont,&rdp_x,&rdp_y);
-	 win->SetSize(wxSize(rdp_x,rdp_y));
-      }     ////////
+	GtkWidget * widget_fullscreen = win->m_wxwindow;
+	GtkWidget * widget_cont = cnt->m_wxwindow;
+	gtk_container_add(GTK_CONTAINER(widget_fullscreen),widget_cont);
+	gtk_widget_reparent(widget_cont,widget_fullscreen);
+	wxSize fs = wxGetDisplaySize();
 
-   }
-   else
-   {
-      int rdp_x = 0;
-      int rdp_y = 0;
-      gtk_widget_get_size_request(widget_cont,&rdp_x,&rdp_y);
-      win->SetSize(wxSize(rdp_x,rdp_y));
-   }
-   gtk_widget_show(widget_fullscreen);
-   tb->fullscreen = this;
-   tb->win = win;
-   cnt->CenterOnParent();
-   win->Center();
-   win->SetVirtualSize(cnt->GetSize());
-   win->FitInside();
-   win->Refresh();
-   win->Update();
-   win2->Raise();
-   win2->Fit();
-   win2->SetPosition(wxPoint(0,0));
-   win2->Center(wxHORIZONTAL);
-   win2->on_leave();
-   Update();
+	if (wxAtoi(options[wxT("control_size")]))
+	{
+		RDPConnection * rdp_temp = (RDPConnection *)cnt->GetParent();
+		wxSize sz = rdp_temp->GetVirtualSize();
+		gtk_widget_set_size_request(widget_cont,sz.x,sz.y);
+	}
+	else if (wxAtoi(options[wxT("full_screen")]))
+	{
+		wxSize disp_size = wxGetDisplaySize();
+		gtk_widget_set_size_request(widget_cont, disp_size.x, disp_size.y);
+	}
+	else
+	{
+		gtk_widget_set_size_request(widget_cont,width,heigth);
+	}
+
+	if (!wxAtoi(options[wxT("control_size")]))
+	{
+		if ((width > fs.x) || (heigth > fs.y))
+		{
+			if (!wxAtoi(full_screen))
+			{
+				win->SetScrollbars(1,1,width,heigth);
+			}
+
+		}
+		else  ////////////////
+		{
+			int rdp_x = 0;
+			int rdp_y = 0;
+			gtk_widget_get_size_request(widget_cont,&rdp_x,&rdp_y);
+			win->SetSize(wxSize(rdp_x,rdp_y));
+		}     ////////
+
+	}
+	else
+	{
+		int rdp_x = 0;
+		int rdp_y = 0;
+		gtk_widget_get_size_request(widget_cont,&rdp_x,&rdp_y);
+		win->SetSize(wxSize(rdp_x,rdp_y));
+	}
+	gtk_widget_show(widget_fullscreen);
+	tb->fullscreen = this;
+	tb->win = win;
+	cnt->CenterOnParent();
+	win->Center();
+	win->SetVirtualSize(cnt->GetSize());
+	win->FitInside();
+	win->Refresh();
+	win->Update();
+	win2->Raise();
+	win2->Fit();
+	win2->SetPosition(wxPoint(0,0));
+	win2->Center(wxHORIZONTAL);
+	win2->on_leave();
+	Update();
 }
 
 
@@ -146,156 +130,165 @@ RDPFullScreen::~RDPFullScreen()
 		delete tb;
 		tb = NULL;
 	}
-	
+
 	if (win2)
 	{
 		delete win2;
 		win2 = NULL;
-		
+
 	}
-	
-		
-	
+
+
+
 
 }
 
 void RDPFullScreen::dialog_hotkeys(wxKeyEvent &event)
 {
-//   std::cout << "THIS" << std::endl;
-   wxCommandEvent evt;
-   evt.SetId(1); 
-   switch(event.GetKeyCode())
-   {
-      case WXK_RETURN + WXK_ALT + WXK_CONTROL:
-	 //this->button_ok_func(evt);
-//	 wxMessageBox (wxT("THIS"));
+	wxCommandEvent evt;
+	evt.SetId(1);
+	switch(event.GetKeyCode())
+	{
+		case WXK_RETURN + WXK_ALT + WXK_CONTROL:
 
-	 break;
-      case WXK_ESCAPE:
-	 //this->button_cancel_func(evt);
-	 break;
+			break;
+		case WXK_ESCAPE:
+			//this->button_cancel_func(evt);
+			break;
 
-      // case WXK_TAB:
-      // 	 if (event.GetModifiers() == wxMOD_SHIFT)
-      // 	 {
-      // 	    if (notebook)
-      // 	    {
-      // 	       size_t iSel = (notebook->GetSelection() + 1) % (notebook->GetPageCount());
-      // 	       notebook->SetSelection(iSel);
-      // 	    }
-      // 	 }
-      // 	 break;
-      default:
-	 
-	 break;
+			// case WXK_TAB:
+			// 	 if (event.GetModifiers() == wxMOD_SHIFT)
+			// 	 {
+			// 	    if (notebook)
+			// 	    {
+			// 	       size_t iSel = (notebook->GetSelection() + 1) % (notebook->GetPageCount());
+			// 	       notebook->SetSelection(iSel);
+			// 	    }
+			// 	 }
+			// 	 break;
+		default:
 
-   }
-   event.Skip();
+			break;
+
+	}
+	event.Skip();
 }
 
 void RDPFullScreen::Leave()
 {
-   ShowFullScreen(false);
+	ShowFullScreen(false);
 
-   RDPConnection * rdp = (RDPConnection *)cnt_old->GetParent();
-   GtkWidget * rdp_w = rdp->m_wxwindow;
-   GtkWidget * rdp_c = cnt_old->m_wxwindow;
-   int heigth = wxAtoi(local_options[wxT("heigth")]);
-   int width = wxAtoi(local_options[wxT("width")]);
-   wxString connection_name, control_size, full_screen;
-   // for (int i = 0 ; i < local_options.Count(); i++)
-   // {
-   //    if (local_options.Item(i).Item(0).name == wxT("connection_name"))
-   //    {
-   // 	 connection_name = local_options.Item(i).Item(0).value;
-   //    }
-   //    if (local_options.Item(i).Item(0).name == wxT("control_size"))
-   //    {
-   // 	 control_size = local_options.Item(i).Item(0).value;
-   //    }
-   //    if (local_options.Item(i).Item(0).name == wxT("full_screen"))
-   //    {
-   // 	 full_screen = local_options.Item(i).Item(0).value;
-   //    }
-   //    if (local_options.Item(i).Item(0).name == wxT("heigth"))
-   //    {
-   // 	 heigth = wxAtoi(local_options.Item(i).Item(0).value);
-   //    }
-   //    if (local_options.Item(i).Item(0).name == wxT("width"))
-   //    {
-   // 	 width = wxAtoi(local_options.Item(i).Item(0).value);
-   //    }
-   // }
-   gtk_widget_reparent(rdp_c,rdp_w);
-   if (wxAtoi(local_options[wxT("control_size")]))
-   {
-      wxSize sz = rdp->GetVirtualSize();
-      gtk_widget_set_size_request(rdp_c,sz.x,sz.y);
-   }
-   else if (wxAtoi(local_options[wxT("full_screen")]))
-   {
-      wxSize disp_size = wxGetDisplaySize();
-      gtk_widget_set_size_request(rdp_c, disp_size.x, disp_size.y);
-   }
-   else
-   {
-      gtk_widget_set_size_request(rdp_c,width,heigth);
-   }
-   // for (int j = 0 ; j < local_options.Count(); j++)
-   // {
-   //    if (local_options.Item(j).Item(0).name == wxT("full_screen"))
-   //    {
-   // 	 local_options.Item(j).Item(0).value = wxT("0");
-   //    }
-   // }
-   
-   rdp->bFullScreen = FALSE;
-   rdp->conn_splitter->m_timer_screenshot.Start();
-   Close();
-   Destroy();
+	RDPConnection * rdp = (RDPConnection *)cnt_old->GetParent();
+	GtkWidget * rdp_w = rdp->m_wxwindow;
+	GtkWidget * rdp_c = cnt_old->m_wxwindow;
+	int heigth = wxAtoi(local_options[wxT("heigth")]);
+	int width = wxAtoi(local_options[wxT("width")]);
+	wxString connection_name, control_size, full_screen;
+	// for (int i = 0 ; i < local_options.Count(); i++)
+	// {
+	//    if (local_options.Item(i).Item(0).name == wxT("connection_name"))
+	//    {
+	// 	 connection_name = local_options.Item(i).Item(0).value;
+	//    }
+	//    if (local_options.Item(i).Item(0).name == wxT("control_size"))
+	//    {
+	// 	 control_size = local_options.Item(i).Item(0).value;
+	//    }
+	//    if (local_options.Item(i).Item(0).name == wxT("full_screen"))
+	//    {
+	// 	 full_screen = local_options.Item(i).Item(0).value;
+	//    }
+	//    if (local_options.Item(i).Item(0).name == wxT("heigth"))
+	//    {
+	// 	 heigth = wxAtoi(local_options.Item(i).Item(0).value);
+	//    }
+	//    if (local_options.Item(i).Item(0).name == wxT("width"))
+	//    {
+	// 	 width = wxAtoi(local_options.Item(i).Item(0).value);
+	//    }
+	// }
+	gtk_widget_reparent(rdp_c,rdp_w);
+	if (wxAtoi(local_options[wxT("control_size")]))
+	{
+		wxSize sz = rdp->GetVirtualSize();
+		gtk_widget_set_size_request(rdp_c,sz.x,sz.y);
+	}
+	else if (wxAtoi(local_options[wxT("full_screen")]))
+	{
+		wxSize disp_size = wxGetDisplaySize();
+		gtk_widget_set_size_request(rdp_c, disp_size.x, disp_size.y);
+	}
+	else
+	{
+		gtk_widget_set_size_request(rdp_c,width,heigth);
+	}
+	// for (int j = 0 ; j < local_options.Count(); j++)
+	// {
+	//    if (local_options.Item(j).Item(0).name == wxT("full_screen"))
+	//    {
+	// 	 local_options.Item(j).Item(0).value = wxT("0");
+	//    }
+	// }
+
+	rdp->bFullScreen = FALSE;
+	rdp->conn_splitter->m_timer_screenshot.Start();
+	Close();
+	Destroy();
 }
 
 
 void RDPFullScreen::on_toolbar(wxCommandEvent& event)
 {
-
 	switch(event.GetId())
 	{
-	case ID_FULLSCREEN_PHOTO:
-		rdp->photo();
-		break;
-		
-	case ID_FULLSCREEN_SENDCAD:
-		rdp->SendKey(TRUE);
-		break;
-		
-	case ID_FULLSCREEN_GRABINPUT:
-		if (tb->GetToolToggled(ID_FULLSCREEN_GRABINPUT))
-		{
-			rdp->GrabAll(TRUE);
-		}
-		else
-		{
-			rdp->GrabAll(FALSE);
-		}
-		break;	
-				
-	case ID_FULLSCREEN_CLOSE:
-		Leave();
-		rdp->request_close();
-		break;
-		
-	case ID_FULLSCREEN_LEAVE:	
-		Leave();
-		break;
-	default:
-		break;
-		
+		case ID_FULLSCREEN_PHOTO:
+			rdp->photo();
+			break;
+
+		case ID_FULLSCREEN_SENDCAD:
+			rdp->SendKey(TRUE);
+			break;
+
+		case ID_FULLSCREEN_GRABINPUT:
+			if (tb->GetToolToggled(ID_FULLSCREEN_GRABINPUT))
+			{
+				rdp->GrabAll(TRUE);
+			}
+			else
+			{
+				rdp->GrabAll(FALSE);
+			}
+			break;
+
+		case ID_FULLSCREEN_CLOSE:
+			Leave();
+			rdp->request_close();
+			break;
+
+		case ID_FULLSCREEN_LEAVE:
+			Leave();
+			break;
+		case ID_FULLSCREEN_TABSMENU:
+			PopupMenu(tb->EstablishedConnectionsMenu,
+					  tb->GetScreenPosition().x + tb->GetToolRect(ID_FULLSCREEN_TABSMENU).GetBottomLeft().x,
+					  tb->GetToolRect(ID_FULLSCREEN_TABSMENU).GetBottomLeft().y + 3);
+
+			break;
+		case ID_FULLSCREEN_CONNTREE:
+			PopupMenu(tb->ConnectionsMenu,
+					  tb->GetScreenPosition().x + tb->GetToolRect(ID_FULLSCREEN_CONNTREE).GetBottomLeft().x,
+					  tb->GetToolRect(ID_FULLSCREEN_CONNTREE).GetBottomLeft().y + 3);
+
+			break;
+
+		default:
+			break;
+
 	}
 }
 
 
-RDPConnection::RDPConnection(Main_Frame *m_frame,Options_HashMap all_options,
+RDPConnection::RDPConnection(MainFrame *m_frame,Options_HashMap all_options,
 			     wxWindow *parent, wxWindowID id,
 			     const wxPoint& pos,
 			     const wxSize& size,
@@ -303,10 +296,19 @@ RDPConnection::RDPConnection(Main_Frame *m_frame,Options_HashMap all_options,
 			     const wxString& name)
    :BasicConnection(m_frame,all_options,parent,id,pos,size,0,name)
 {
-   bool found_pid = false;
-   if (!wxFileExists(wxT("/usr/bin/rdesktop")))
+   wxFileName temp;
+   GETRDESKTOPPATH();
+
+   if ((!RDESKTOPPATH.IsEmpty()) && (temp.FileExists(RDESKTOPPATH)))
    {
-      wxMessageBox(wxT("rdesktop (RDP client for Linux) not found.\nPlease install rdesktop (www.rdesktop.org)"),wxT("Error"),wxICON_ERROR);
+      wxrdp_status = WXRDP_OK;
+   }
+   else
+   {
+      Error_mgs = _("Can't found \"rdesktop\" file.\nPlease press Alt+O, and edit patch to \"rdesktop\" executable file");
+      //FIXME:
+      //wxMessageBox(Error_mgs + wxT("!"), _T("Error"));
+      wxrdp_status = RDESKTOP_NOT_FOUND;
       return;
    }
    local_options = all_options;
@@ -322,64 +324,51 @@ RDPConnection::RDPConnection(Main_Frame *m_frame,Options_HashMap all_options,
 //	main_frame = m_frame;
 //	bConnected = false;
 //	bFullScreen = false;
-   conn_splitter = (ConnSplitter *)parent;
-   // for (int i = 0; i < options.Count();  i++)
-   // {
-   //    if (options.Item(i).Item(0).name == wxT("pid"))
-   //    {
-   // 	 options.Item(i).Item(0).value = wxT("0");
-   // 	 found_pid = true;
-   //    }
+	conn_splitter = (ConnSplitter *)parent;
+	// for (int i = 0; i < options.Count();  i++)
+	// {
+	//    if (options.Item(i).Item(0).name == wxT("pid"))
+	//    {
+	// 	 options.Item(i).Item(0).value = wxT("0");
+	// 	 found_pid = true;
+	//    }
 
-   // }
-   // if (found_pid == false)
-   // {
-   //    temp_options.type = wxT("s");
-   //    temp_options.name = wxT("pid");
-   //    temp_options.value = wxT("0");
-   //    temp_array.Add (temp_options);
-   //    options.Add(temp_array);
-   // }
-   wxFile temp;
-   GtkWidget *widget = this->m_wxwindow;
-   cnt = new wxContRDP(this,-1,wxPoint(0,0),wxDefaultSize);
-   gtk_widget_realize( widget );
-   GdkWindow *gdkWin = GTK_PIZZA (widget)->bin_window;
-   Window wid = GDK_WINDOW_XWINDOW(gdkWin);
-   xid =  wid;
-   //rdp_settings = rdpsettings;
+	// }
+	// if (found_pid == false)
+	// {
+	//    temp_options.type = wxT("s");
+	//    temp_options.name = wxT("pid");
+	//    temp_options.value = wxT("0");
+	//    temp_array.Add (temp_options);
+	//    options.Add(temp_array);
+	// }
+	GtkWidget *widget = this->m_wxwindow;
+	cnt = new wxContRDP(this,-1,wxPoint(0,0),wxDefaultSize);
+	gtk_widget_realize( widget );
+	GdkWindow *gdkWin = GTK_PIZZA (widget)->bin_window;
+	Window wid = GDK_WINDOW_XWINDOW(gdkWin);
+	xid =  wid;
+	//rdp_settings = rdpsettings;
 //	rdpconn = rdpsettings;
 
-   GETRDESKTOPPATH();
-
-   if ((RDESKTOPPATH != wxT("")) && (temp.Exists(RDESKTOPPATH)))
-   {
-      wxrdp_status = WXRDP_OK;
-   }
-   else
-   {
-      Error_mgs = wxT("Can't found \"rdesktop\" file.\nPlease press Alt+O, and edit patch to \"rdesktop\" executable file");
-      wxrdp_status = RDESKTOP_NOT_FOUND;
-   }
    bObjectOk = TRUE;
 }
 RDPConnection::~RDPConnection()
 {
 //	if (rdp->sock) {gtk_widget_destroy(rdp->sock); rdp->sock = NULL;}
 	if (cnt) { delete cnt; cnt = NULL;	}
-	
-		
+
+
 }
 
 void RDPConnection::CentreRDP()
 {
 	CheckWindow();
-	
+
 	wxSize sz_cnt = cnt->GetSize();
 	wxSize sz_this = conn_splitter->GetClientSize();
-
 	cnt->SetPosition(wxPoint(0,0));
-	
+
 	if ((sz_cnt.x < sz_this.x) || (sz_cnt.y < sz_this.y))
 	{
 		cnt->CenterOnParent();
@@ -389,12 +378,12 @@ void RDPConnection::CentreRDP()
 void RDPConnection::photo()
 {
 	wxClientDC client_dc(this->cnt);
-	wxBitmap bmp(client_dc.GetSize().GetWidth(), client_dc.GetSize().GetHeight()); 
-	wxMemoryDC mdc(bmp); 
-	mdc.Blit(0, 0, bmp.GetWidth(), bmp.GetHeight(), &client_dc, 0, 0); 
+	wxBitmap bmp(client_dc.GetSize().GetWidth(), client_dc.GetSize().GetHeight());
+	wxMemoryDC mdc(bmp);
+	mdc.Blit(0, 0, bmp.GetWidth(), bmp.GetHeight(), &client_dc, 0, 0);
 	mdc.SelectObject(wxNullBitmap);
 
-	wxFileDialog * savefiledialog = new wxFileDialog(this,wxT("Save screenshot"),wxT(""),wxT(""),wxT("*.bmp"),wxFD_SAVE|wxFD_OVERWRITE_PROMPT);
+	wxFileDialog * savefiledialog = new wxFileDialog(this,_("Save screenshot"),wxT(""),wxT(""),wxT("*.bmp"),wxFD_SAVE|wxFD_OVERWRITE_PROMPT);
 	int iRes;
 	iRes = savefiledialog->ShowModal();
 	if (iRes == wxID_CANCEL){ delete savefiledialog; return;}
@@ -403,41 +392,40 @@ void RDPConnection::photo()
 	wxString filepath = savefiledialog->GetPath();
 	if (!filepath.IsEmpty())
 	{
-		bmp.SaveFile(filepath,wxBITMAP_TYPE_BMP); 
+	   bmp.SaveFile(filepath + wxT(".bmp"),wxBITMAP_TYPE_BMP);
 	}
 	delete savefiledialog;
 
 }
 
-void RDPConnection::FullScreen(BOOL bRestore)
+void RDPConnection::FullScreen(BOOL_L bRestore)
 {
-   if (bRestore)
-   {
-      //	RDPFullScreen * win = NULL;
-      fullscreen_frame = new RDPFullScreen((wxContRDP *)cnt,options);
-      if (fullscreen_frame)
-      {
-	 conn_splitter->m_timer_screenshot.Stop();
-	 bFullScreen = TRUE;
-      }
-   }
+	if (bRestore)
+	{
+		fullscreen_frame = new RDPFullScreen(main_frame, (wxContRDP *)cnt,options);
+		if (fullscreen_frame)
+		{
+			conn_splitter->m_timer_screenshot.Stop();
+			bFullScreen = TRUE;
+		}
+	}
 }
 
 
-void RDPConnection::SendKey(BOOL cad)
+void RDPConnection::SendKey(BOOL_L cad)
 {
 //	GtkWidget *widget = main_frame->m_wxwindow;
 	GtkWidget *widget = cnt->m_wxwindow;
-	
+
 	GdkWindow *gdkWin = GTK_PIZZA (widget)->bin_window;
 	Window wid = GDK_WINDOW_XWINDOW(gdkWin);
-	Display * disp = XOpenDisplay(NULL); 
+	Display * disp = XOpenDisplay(NULL);
 
 	Window cur_focus;
 	XKeyEvent event;
 
 	cur_focus = wid;
-	 
+
 	event.display = disp;
 	event.window = cur_focus;
 	event.root = RootWindow(event.display, DefaultScreen(event.display));
@@ -450,75 +438,75 @@ void RDPConnection::SendKey(BOOL cad)
 	event.same_screen = TRUE;
 
 	event.state = 0;
-	
+
 	if (cad)
 	{
-		 event.type = KeyPress;
-		 
-		 event.keycode = XKeysymToKeycode(disp, XK_Control_L);
-		 SendXKeyEvent(&event);
+		event.type = KeyPress;
 
-		 event.keycode = XKeysymToKeycode(disp, XK_Alt_L);
-		 SendXKeyEvent(&event); 
+		event.keycode = XKeysymToKeycode(disp, XK_Control_L);
+		SendXKeyEvent(&event);
 
-		 event.keycode = XKeysymToKeycode(disp, XK_Delete);
-		 SendXKeyEvent(&event);
+		event.keycode = XKeysymToKeycode(disp, XK_Alt_L);
+		SendXKeyEvent(&event);
 
-		 event.type = KeyRelease;
+		event.keycode = XKeysymToKeycode(disp, XK_Delete);
+		SendXKeyEvent(&event);
 
-		 event.keycode = XKeysymToKeycode(disp, XK_Control_L);
-		 SendXKeyEvent(&event);
+		event.type = KeyRelease;
 
-		 event.keycode = XKeysymToKeycode(disp, XK_Alt_L);
-		 SendXKeyEvent(&event); 
+		event.keycode = XKeysymToKeycode(disp, XK_Control_L);
+		SendXKeyEvent(&event);
+
+		event.keycode = XKeysymToKeycode(disp, XK_Alt_L);
+		SendXKeyEvent(&event);
 	}
 	else
 	{
-		 event.type = KeyPress;
-		 event.keycode = XKeysymToKeycode(disp, XK_Control_L);
-		 SendXKeyEvent(&event);
-		 event.type = KeyRelease;
-		 SendXKeyEvent(&event);
-		 event.type = KeyPress;
-		 event.keycode = XKeysymToKeycode(disp, XK_Alt_L);
-		 SendXKeyEvent(&event); 
-		 event.type = KeyRelease;
-		 SendXKeyEvent(&event);
+		event.type = KeyPress;
+		event.keycode = XKeysymToKeycode(disp, XK_Control_L);
+		SendXKeyEvent(&event);
+		event.type = KeyRelease;
+		SendXKeyEvent(&event);
+		event.type = KeyPress;
+		event.keycode = XKeysymToKeycode(disp, XK_Alt_L);
+		SendXKeyEvent(&event);
+		event.type = KeyRelease;
+		SendXKeyEvent(&event);
 
-		 event.type = KeyPress;
-		 event.keycode = XKeysymToKeycode(disp, XK_Alt_L);
-		 SendXKeyEvent(&event); 
-		 event.type = KeyRelease;
-		 SendXKeyEvent(&event);
+		event.type = KeyPress;
+		event.keycode = XKeysymToKeycode(disp, XK_Alt_L);
+		SendXKeyEvent(&event);
+		event.type = KeyRelease;
+		SendXKeyEvent(&event);
 	}
 
 	XCloseDisplay(disp);
-	
+
 }
 
 
 void RDPConnection::SendXKeyEvent(XKeyEvent * event)
 {
-	 XSync(event->display, FALSE);
-	 XSendEvent(event->display, event->window, TRUE, KeyPressMask, (XEvent *)event);
-	 XSync(event->display, FALSE);
+	XSync(event->display, FALSE);
+	XSendEvent(event->display, event->window, TRUE, KeyPressMask, (XEvent *)event);
+	XSync(event->display, FALSE);
 }
 
-void RDPConnection::GrabAll(BOOL state)
+void RDPConnection::GrabAll(BOOL_L state)
 {
-   if (state)
-   {
-      EnableFocus(FALSE);
-      gdk_keyboard_grab (gtk_widget_get_window (GTK_WIDGET (sock)), TRUE, GDK_CURRENT_TIME);
-      EnableFocus(TRUE);
-      bGrab = TRUE;
-   }
-   else
-   {
-      EnableFocus(FALSE);
-      EnableFocus(TRUE);
-      bGrab = FALSE;
-   }
+	if (state)
+	{
+		EnableFocus(FALSE);
+		gdk_keyboard_grab (gtk_widget_get_window (GTK_WIDGET (sock)), TRUE, GDK_CURRENT_TIME);
+		EnableFocus(TRUE);
+		bGrab = TRUE;
+	}
+	else
+	{
+		EnableFocus(FALSE);
+		EnableFocus(TRUE);
+		bGrab = FALSE;
+	}
 }
 
 
@@ -537,7 +525,7 @@ void wxContRDP::on_set_focus(wxFocusEvent& event)
 	{
 		rdp->CheckFocus();
 	}
-	
+
 	event.Skip();
 }
 
@@ -548,9 +536,9 @@ void wxContRDP::on_kill_focus(wxFocusEvent& event)
 	{
 		rdp->EnableFocus(FALSE);
 	}
-	
+
 	event.Skip();
-	
+
 
 }
 
@@ -566,22 +554,22 @@ void wxContRDP::on_mouse_events(wxMouseEvent& event)
 
 
 
-void RDPConnection::EnableFocus(BOOL state)
+void RDPConnection::EnableFocus(BOOL_L state)
 {
 	if (state)
 	{
 		lock = new wxWindowUpdateLocker(this);
 		lock_cnt = new wxWindowUpdateLocker(cnt);
-		
+
 		gtk_widget_set_can_focus(sock,true);
 		gdk_window_focus(gtk_widget_get_window(sock),GDK_CURRENT_TIME);
 		gtk_widget_grab_focus (sock);
-	
-		
+
+
 		SendKey();
 		CentreRDP();
-		
-	
+
+
 	}
 	else
 	{
@@ -589,7 +577,7 @@ void RDPConnection::EnableFocus(BOOL state)
 		gdk_keyboard_ungrab (GDK_CURRENT_TIME);
 
 		if (lock) { delete lock; lock = NULL;}
-		if (lock_cnt) { delete lock_cnt; lock_cnt = NULL;}	
+		if (lock_cnt) { delete lock_cnt; lock_cnt = NULL;}
 	}
 }
 
@@ -600,9 +588,9 @@ void RDPConnection::on_set_focus(wxFocusEvent& event)
 	{
 		CheckFocus();
 	}
-	
+
 	event.Skip();
-	
+
 }
 
 void RDPConnection::on_leave_focus(wxFocusEvent& event)
@@ -612,10 +600,10 @@ void RDPConnection::on_leave_focus(wxFocusEvent& event)
 	{
 		EnableFocus(FALSE);
 	}
-	
+
 	event.Skip();
-	
-	
+
+
 }
 
 void RDPConnection::CheckFocus()
@@ -623,7 +611,7 @@ void RDPConnection::CheckFocus()
 	gboolean bFocus = gtk_widget_is_focus(GTK_WIDGET(sock));
 	if (!bFocus)
 	{
-		
+
 		if (bGrab)
 		{
 			GrabAll(TRUE);
@@ -642,13 +630,13 @@ void RDPConnection::on_any_mouse_event(wxMouseEvent& event)
 	{
 		CheckFocus();
 	}
-		
+
 }
 
 void RDPConnection::CheckWindow()
 {
 	wxSize cnt_size = cnt->GetSize();
-	
+
 	wxSize rdp_size = GetSize();
 	if (rdp_size.x < cnt_size.x || rdp_size.y < cnt_size.y)
 	{
@@ -658,12 +646,12 @@ void RDPConnection::CheckWindow()
 	{
 		FitInside();
 		Refresh();
-				
-		
+
+
 	}
-	
+
 	Update();
-	
+
 }
 
 
@@ -674,22 +662,16 @@ void RDPConnection::wait_exit(GPid pid, gint status, gpointer data)
 	g_spawn_close_pid (pid);
 	rdp->bConnected = false;
 
-//	if (rdp->info_uniq_name != 0)
-//	{
-//		rdp->main_frame->m_panel_tree->rdptree->from_wxrdp(rdp->info_uniq_name,TREEDATA_DEC_CONNCOUNT);  
-//	}
 	rdp->SendDisconnectEvent();
-	
-	
+
 	if (status != 0 && status != SIGTERM)
 	{
 		char * buffer = new char[4096];
 		memset(buffer,0,4096);
 		int len;
-		
+
 	    lseek (rdp->error_fd, 0, SEEK_SET);
 	    len = read (rdp->error_fd, buffer, 4095);
-	
 		if (len > 0)
 		{
 			buffer[len] = '\0';
@@ -698,14 +680,13 @@ void RDPConnection::wait_exit(GPid pid, gint status, gpointer data)
 
 			//// TEST
 			rdp->EnableFocus(FALSE);
-			
-			
-			wxMessageBox(error_string,wxT("Error"),wxICON_ERROR);
+
+
+			wxMessageBox(error_string,_("Error"),wxICON_ERROR);
 		}
-	
-		delete buffer;
-	 }
-	
+		delete[] buffer;
+	}
+
 	close(rdp->output_fd);
 	close(rdp->error_fd);
 
@@ -714,18 +695,20 @@ void RDPConnection::wait_exit(GPid pid, gint status, gpointer data)
 		rdp->fullscreen_frame->Leave();
 	}
 	rdp->fullscreen_frame = NULL;
-	
-	
+
+
 	if (!rdp->bClosing)
 	{
 		wxCommandEvent evt;
 		evt.SetId(ID_CONNECTION_STATUS_UPDATE);
-		rdp->main_frame->connection_status_update(evt);
+		rdp->main_frame->connectionStatusUpdate(evt);
 	}
-
 	rdp->sock_id = 0;
-	if (rdp->sock) {gtk_widget_destroy(rdp->sock); rdp->sock = NULL;}
-
+	if (rdp->sock)
+	{
+		gtk_widget_destroy(rdp->sock);
+		rdp->sock = NULL;
+	}
 	if (rdp->bClosing)
 	{
 		int lc = rdp->main_frame->nb->GetPageCount();
@@ -737,7 +720,7 @@ void RDPConnection::wait_exit(GPid pid, gint status, gpointer data)
 				{
 					rdp->main_frame->current_page_for_delete = i;
 					wxUpdateUIEvent evt;
-					evt.Check(true); 
+					evt.Check(true);
 					evt.SetId(ID_ERRORHOSTNAME);
 					wxPostEvent(rdp->main_frame,evt);
 					rdp->bClosing = FALSE;
@@ -747,7 +730,6 @@ void RDPConnection::wait_exit(GPid pid, gint status, gpointer data)
 			}
 		}
 	}
-	
 	rdp->bClosing = FALSE;
 }
 
@@ -758,7 +740,7 @@ bool RDPConnection::DoRdp()
 {
    cnt->SetPosition(wxPoint(0,0));
    wxString hostname, port;
-   bool ret;
+   bool ret = false;
    wxSize rdp_size;
 
    sock = gtk_socket_new();
@@ -773,16 +755,12 @@ bool RDPConnection::DoRdp()
    cnt->SetSize(rdp_size);
    gtk_widget_set_size_request (GTK_WIDGET (sock), rdp_size.x,rdp_size.y);
    sock_id =  gtk_socket_get_id(GTK_SOCKET(sock));
-//   RDPConn rdp_settings;
-//   std::cout << __LINE__ << " " << __func__ << std::endl;
-   //RDPConn * settings = &rdp_settings;
 
    gchar *argv[50];
    int argc = 0;
-   argv[argc++] = g_strdup ("rdesktop");
+   GETRDESKTOPPATH();
+   argv[argc++] = g_strdup (RDESKTOPPATH.fn_str());
 
-   //if (settings != NULL)
-   //{
    if ( local_options[wxT("username")] != wxT(""))
    {
       argv[argc++] = g_strdup("-u");
@@ -820,14 +798,16 @@ bool RDPConnection::DoRdp()
 	 list_keyboard_map.Add( wxT("en-us"));
 	 while (check == true)
 	 {
-	    if (temp_str != wxT("en-us"))
+	    if ((temp_str != wxT("en-us")) &&
+		(temp_str != wxT("common")) &&
+		(temp_str != wxT("modifiers")))
 	    {
 	       list_keyboard_map.Add(temp_str);
 	    }
 	    check = temp.GetNext(&temp_str);
 	 }
       }
-      else 
+      else
       {
 	 list_keyboard_map.Add( wxT("en-us"));
 	 list_keyboard_map.Add( wxT("ru-ru"));
@@ -840,13 +820,13 @@ bool RDPConnection::DoRdp()
       int width = 0;
       int height = 0;
       conn_splitter->GetSize(&width, &height);
-      GetClientSize(&width, &height);
       cnt->SetSize(wxSize(width,height));
       gtk_widget_set_size_request (GTK_WIDGET (sock), width,height);
       if ((width >= 0) && (height >= 0))
       {
 	 argv[argc++] = g_strdup ("-g");
 	 argv[argc++] = g_strdup_printf ("%ix%i", width, height);
+
       }
       else
       {
@@ -912,7 +892,7 @@ bool RDPConnection::DoRdp()
    {
       argv[argc++] = g_strdup("-N");
    }
-   if (wxAtoi(local_options[wxT("color_depth")]) == 0) 
+   if (wxAtoi(local_options[wxT("color_depth")]) == 0)
    {
       argv[argc++] = g_strdup("-a");
       argv[argc++] = g_strdup_printf(("%i"), 8);
@@ -991,7 +971,6 @@ bool RDPConnection::DoRdp()
    }
    if (local_options[wxT("linux_devices")] != wxT(""))
    {
-      //	wxMessageBox(settings->redirect_devices_nix);
       wxString devices(local_options[wxT("linux_devices")]);
       for (size_t i = 0; i < devices.Length() - 2; i ++)
       {
@@ -1002,7 +981,6 @@ bool RDPConnection::DoRdp()
 	       if (devices.Mid(j,3) == wxT("-r "))
 	       {
 		  wxString device = devices.Mid(i + 3, j - i - 4);
-		  //				wxMessageBox(device);
 		  argv[argc++] = g_strdup ("-r");
 		  argv[argc++] = g_strdup (device.ToUTF8());
 		  break;
@@ -1010,7 +988,6 @@ bool RDPConnection::DoRdp()
 	       else if (j == devices.Length())
 	       {
 		  wxString device = devices.Mid(i + 3, j - i - 3);
-		  //wxMessageBox(device);
 		  argv[argc++] = g_strdup ("-r");
 		  argv[argc++] = g_strdup (device.ToUTF8());
 		  break;
@@ -1019,13 +996,10 @@ bool RDPConnection::DoRdp()
 	 }
       }
    }
-   //}
    if ((local_options[wxT("port")].IsEmpty() == false) &&
        (local_options[wxT("hostname")].IsEmpty() == false))
    {
       hostname = local_options[wxT("hostname")] + wxT(":") + local_options[wxT("port")];
-//      wxMessageBox(local_options[wxT("hostname")]);
-//      wxMessageBox(local_options[wxT("port")]);
       argv[argc++] = g_strdup (hostname.ToUTF8());
    }
    else if (local_options[wxT("hostname")].IsEmpty() == false)
@@ -1036,19 +1010,15 @@ bool RDPConnection::DoRdp()
 
    argv[argc++] = g_strdup ("-X");
    argv[argc++] = g_strdup_printf ("%i", sock_id);
-   //argv[argc++] = g_strdup(rdpconn.hostname.ToUTF8());
    argv[argc++] = NULL;
-   // for (int j = 0; j < argc; j++)
-   // {
-   //    std::cout << argv[j] << " ";
-   // }
+
    if (local_options[wxT("hostname")] != wxT(""))
    {
-      
+
       GSpawnFlags spawn_flags =  (GSpawnFlags)(G_SPAWN_SEARCH_PATH | G_SPAWN_DO_NOT_REAP_CHILD);
 
-      ret = g_spawn_async_with_pipes (NULL,argv,NULL,spawn_flags,NULL, 
-					   NULL,&sock_id,NULL,&output_fd, &error_fd,NULL);
+      ret = g_spawn_async_with_pipes (NULL,argv,NULL,spawn_flags,NULL,
+				      NULL,&sock_id,NULL,&output_fd, &error_fd,NULL);
 
 
       for (int i = 0; i < argc ; i++)
@@ -1061,11 +1031,6 @@ bool RDPConnection::DoRdp()
 
 	 g_child_watch_add (sock_id, RDPConnection::wait_exit, this);
 
-//			if (info_uniq_name != 0)
-//			{
-//				main_frame->m_panel_tree->rdptree->from_wxrdp(info_uniq_name,TREEDATA_INC_CONNCOUNT);  
-//			}
-
 	 SendConnectEvent();
 	 wxCommandEvent eventCustom(ID_CONNECTION_STATUS_UPDATE);
 	 wxPostEvent(main_frame, eventCustom);
@@ -1073,7 +1038,7 @@ bool RDPConnection::DoRdp()
       gtk_widget_show(sock);
       CentreRDP();
    }
-   
+
    return ret;
 }
 
@@ -1096,17 +1061,14 @@ void RDPConnection::close_rdesktop_prg(wxCommandEvent& event)
 	wxPostEvent(main_frame, eventCustom);
 }
 
-bool RDPConnection::request_close(BOOL bDetach)
+bool RDPConnection::request_close(BOOL_L bDetach)
 {
 	if (sock_id)
 	{
 		EnableFocus(FALSE);
-				
 		bClosing = bDetach;
-		//	kill(sock_id,SIGKILL);
 		kill(sock_id,SIGTERM);
 	}
-
 	return true;
 }
 
@@ -1169,27 +1131,27 @@ bool RDPConnection::DoConnection()
 bool RDPConnection::Connect()
 {
 	return DoRdp();
-	
+
 }
 
 void RDPConnection::Disconnect()
 {
 	request_close();
-	
+
 }
 
 
 bool RDPConnection::DisconnectClose()
 {
 	return request_close(TRUE);
-	
+
 }
 
 void RDPConnection::CentreConnection()
 {
 	if (cnt != NULL)
-	CentreRDP();
-	
+		CentreRDP();
+
 }
 
 
