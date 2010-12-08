@@ -52,12 +52,12 @@ wchar_t * AnsiToUnicode(const char * buffer);
 #define RDP_EVENT_DISCONNECTED 4
 #define RDP_EVENT_ENTERFULLSCREEN 5
 #define RDP_EVENT_LEAVEFULLSCREEN 6
-
+#define RDP_EVENT_CONFIRMCLOSE	0xf
 
 class RDPConnection : public BasicConnection//wxWindow
 {
 public:
-	 RDPConnection(Main_Frame * main,Options_HashMap options ,wxWindow * parent , wxWindowID id = -1,
+	 RDPConnection(MainFrame * main,Options_HashMap options ,wxWindow * parent , wxWindowID id = -1,
         const wxPoint& pos = wxDefaultPosition,
         const wxSize& size = wxDefaultSize,
         long style = 0,
@@ -105,6 +105,12 @@ public:
 	DECLARE_EVENT_TABLE()
 private:
 	Options_HashMap local_options;
+	void OnNeedReconnect(wxUpdateUIEvent& event);
+
+	void OnConfirmCloseSuccess();
+
 };
+
+const int ID_RDPWIN_NEED_RECONNECT_EVENT = 3200;
 
 #endif

@@ -1,17 +1,19 @@
 ///////////////////////////////////////////////////////////////////////////////
 // File name:   RDPOptionsDialog.cpp
 // Version:     0.0
-// Purpose: 
-// Time-stamp:  "2010-03-23 12:55:15" 
+// Purpose:
+// Time-stamp:  "2010-12-08 14:12:10"
 // E-mail:      rdpdesk@rdpdesk.com
-// $Id$ 
-// Copyright:   (c) 2009-2010 RDPDesk <rdpdesk@rdpdesk.com> 
-// Licence:     GPL v3 
+// $Id$
+// Copyright:   (c) 2009-2010 RDPDesk <rdpdesk@rdpdesk.com>
+// Licence:     GPL v3
 ///////////////////////////////////////////////////////////////////////////////
 
 #include "RDPOptionsDialog.hpp"
 #include <wx/display.h>
 #include <wx/dir.h>
+#include <wx/font.h>
+
 BEGIN_EVENT_TABLE(RDPOptionsDialog_General, wxPanel)
 EVT_CHECKBOX (ID_RDP_CHECKBOX_CUSTOMPORT, RDPOptionsDialog_General::checkbox_customport_func)
 EVT_TEXT(ID_RDP_TEXTCTRL_PASSWORD, RDPOptionsDialog_General::text_passwordentry_func)
@@ -32,9 +34,9 @@ END_EVENT_TABLE()
 
 //WX_DEFINE_OBJARRAY(GeneralOptionsArray);
 ///////////////////////////////////////////////////////////////////////////////
-//! \brief 
-//! \param 
-//! \return 
+//! \brief
+//! \param
+//! \return
 //! \sa
 ///////////////////////////////////////////////////////////////////////////////
 RDPOptionsDialog::RDPOptionsDialog(wxWindow *parent_element)
@@ -47,22 +49,22 @@ RDPOptionsDialog::RDPOptionsDialog(wxWindow *parent_element)
    rdp_perfomance = NULL;
    rdp_advanced = NULL;
    save_options.clear();
-   
+
    error = 0;
    if (parent_element != NULL)
    {
-   	  parent = parent_element;
-   } 
-   else 
+      parent = parent_element;
+   }
+   else
    {
-   	  error = ERROR_PARENT_IS_NULL; 
+      error = ERROR_PARENT_IS_NULL;
    }
 }
 
 ///////////////////////////////////////////////////////////////////////////////
-//! \brief 
-//! \param 
-//! \return 
+//! \brief
+//! \param
+//! \return
 //! \sa
 ///////////////////////////////////////////////////////////////////////////////
 RDPOptionsDialog::~RDPOptionsDialog()
@@ -72,11 +74,11 @@ RDPOptionsDialog::~RDPOptionsDialog()
 //   if(this != NULL)
 //   {
 //      end = this->GetPageCount();
-      this->DeleteAllPages();
-      //delete notebook;
-      //notebook = NULL;
+   this->DeleteAllPages();
+   //delete notebook;
+   //notebook = NULL;
 //   }
-	
+
    // if (rdp_general != NULL) {delete rdp_general; rdp_general = NULL;}
    // if (rdp_display != NULL) {delete rdp_display; rdp_display = NULL;}
    // if (rdp_share != NULL) {delete rdp_share; rdp_share = NULL;}
@@ -86,10 +88,10 @@ RDPOptionsDialog::~RDPOptionsDialog()
 }
 
 ///////////////////////////////////////////////////////////////////////////////
-//! \brief 
+//! \brief
 //! \param
 //! \return
-//! \sa 
+//! \sa
 ///////////////////////////////////////////////////////////////////////////////
 int RDPOptionsDialog::Build()
 {
@@ -97,15 +99,15 @@ int RDPOptionsDialog::Build()
    {
       bool state = false;
       state = Create(parent, wxID_ANY, wxDefaultPosition, wxDefaultSize);
-      if ( state == false) 
+      if ( state == false)
       {
 	 error = ERROR_CANT_CREATE_NOTEBOOK;
       }
-      else 
+      else
       {
 	 rdp_general = new RDPOptionsDialog_General (this);
-	 rdp_general->Set_Group_List(array_string_group_list);
-	 
+	 rdp_general->SetGroupList(array_string_group_list);
+
 	 rdp_general->Build();
 	 rdp_display = new RDPOptionsDialog_Display (this);
 	 rdp_display->Build();
@@ -118,78 +120,64 @@ int RDPOptionsDialog::Build()
 	 rdp_advanced = new RDPOptionsDialog_Advanced (this);
 	 rdp_advanced->Build();
 
-	 this->AddPage(rdp_general, wxT("General"));
-	 this->AddPage(rdp_display, wxT("Display"));
-	 this->AddPage(rdp_share, wxT("Share"));
-	 this->AddPage(rdp_program, wxT("Program"));
-	 this->AddPage(rdp_perfomance, wxT("Perfomance"));
-	 this->AddPage(rdp_advanced, wxT("Advance"));
+	 this->AddPage(rdp_general, _("General"));
+	 this->AddPage(rdp_display, _("Display"));
+	 this->AddPage(rdp_share, _("Share"));
+	 this->AddPage(rdp_program, _("Program"));
+	 this->AddPage(rdp_perfomance, _("Perfomance"));
+	 this->AddPage(rdp_advanced, _("Advanced"));
 	 //this->Show();
 #ifdef __WXMSW__
-rdp_advanced->Enable(false);
+	 rdp_advanced->Enable(false);
 #endif
 
       }
-   } 
+   }
    return error;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
-//! \brief 
-//! \param 
-//! \return 
+//! \brief
+//! \param
+//! \return
 //! \sa
 ///////////////////////////////////////////////////////////////////////////////
-bool RDPOptionsDialog::Set_Options (const Options_HashMap *options)
-{
+bool RDPOptionsDialog::SetOptions (const Options_HashMap *options) {
    bool state = false;
-   if (options != NULL)
-   {
-      
+
+   if (options != NULL) {
       save_options = *options;
       //wxMessageBox(save_options[wxT("uniq_name")]);
       if (rdp_general != NULL)
-      {
-	 rdp_general->Set_Options(options);
-      }
+	 rdp_general->SetOptions(options);
       if (rdp_display != NULL)
-      {
-	 rdp_display->Set_Options(options);
-      }
+	 rdp_display->SetOptions(options);
       if (rdp_share != NULL)
-      {
-	 rdp_share->Set_Options(options);
-      }
+	 rdp_share->SetOptions(options);
       if (rdp_program != NULL)
-      {
-	 rdp_program->Set_Options(options);
-      }
+	 rdp_program->SetOptions(options);
       if (rdp_perfomance != NULL)
-      {
-	 rdp_perfomance->Set_Options(options);
-      }
+	 rdp_perfomance->SetOptions(options);
       if (rdp_advanced != NULL)
-      {
-	 rdp_advanced->Set_Options(options);
-      }
+	 rdp_advanced->SetOptions(options);
    }
    return state;
 }
 
-void RDPOptionsDialog::Set_Group_List(wxArrayString group_list)
+void RDPOptionsDialog::SetGroupList(const wxArrayString &group_list)
 {
    array_string_group_list = group_list;
-   
+
 //   if (rdp_general != NULL)
 //   {
-//      rdp_general->Set_Group_List(group_list);
+//	  rdp_general->SetGroupList(group_list);
 //   }
 }
 
 ///////////////////////////////////////////////////////////////////////////////
-//! \brief 
-//! \param 
-//! \return 
+//! \brief
+//! \param
+//! \return
 //! \sa
 ///////////////////////////////////////////////////////////////////////////////
 Options_HashMap RDPOptionsDialog::Get_Options ()
@@ -197,8 +185,8 @@ Options_HashMap RDPOptionsDialog::Get_Options ()
    //
    Options_HashMap options, temp_options;
    Options_HashMap::iterator it;
-   int max_count = 0, min_count = 0;
-   bool option_found;
+
+
 
    if (rdp_general != NULL)
    {
@@ -223,8 +211,8 @@ Options_HashMap RDPOptionsDialog::Get_Options ()
       temp_options = rdp_share->Get_Options();
       for( it = temp_options.begin(); it != temp_options.end(); ++it )
       {
-   	 wxString key = it->first, value = it->second;
-   	 options[key] = value;
+	 wxString key = it->first, value = it->second;
+	 options[key] = value;
       }
    }
    if ((rdp_program != NULL) &&
@@ -234,8 +222,8 @@ Options_HashMap RDPOptionsDialog::Get_Options ()
       temp_options = rdp_program->Get_Options();
       for( it = temp_options.begin(); it != temp_options.end(); ++it )
       {
-   	 wxString key = it->first, value = it->second;
-   	 options[key] = value;
+	 wxString key = it->first, value = it->second;
+	 options[key] = value;
       }
    }
    if ((rdp_perfomance != NULL) &&
@@ -245,8 +233,8 @@ Options_HashMap RDPOptionsDialog::Get_Options ()
       temp_options = rdp_perfomance->Get_Options();
       for( it = temp_options.begin(); it != temp_options.end(); ++it )
       {
-   	 wxString key = it->first, value = it->second;
-   	 options[key] = value;
+	 wxString key = it->first, value = it->second;
+	 options[key] = value;
       }
    }
    if ((rdp_advanced != NULL) &&
@@ -256,65 +244,65 @@ Options_HashMap RDPOptionsDialog::Get_Options ()
       temp_options = rdp_advanced->Get_Options();
       for( it = temp_options.begin(); it != temp_options.end(); ++it )
       {
-   	 wxString key = it->first, value = it->second;
-   	 options[key] = value;
+	 wxString key = it->first, value = it->second;
+	 options[key] = value;
       }
    }
    if (options.size() > 0)
    {
       for( it = options.begin(); it != options.end(); ++it )
       {
-   	 wxString key = it->first, value = it->second;
-   	 save_options[key] = value;
+	 wxString key = it->first, value = it->second;
+	 save_options[key] = value;
       }
    }
    //wxMessageBox((save_options)[wxT("uniq_name")]);
    // if (options.size() > save_options.size())
    // {
-   //    max_count = options.size();
-   //    min_count = save_options.size();
+   //	max_count = options.size();
+   //	min_count = save_options.size();
    // }
    // else
    // {
-   //    max_count = save_options.size();
-   //    min_count = options.size();
+   //	max_count = save_options.size();
+   //	min_count = options.size();
    // }
    // if (options.count() > 0)
    // {
-   //    for (int i = 0 ; i < max_count; i++)
-   //    {
+   //	for (int i = 0 ; i < max_count; i++)
+   //	{
    // 	 option_found = false;
    // 	 for (int f = 0; f < max_count; f++)
    // 	 {
-   // 	    if ((options.count() > f) && (save_options.count() > i ))
-   // 	    {
-   // 	       if (options.Item(f).Item(0).name == save_options.Item(i).Item(0).name)
-   // 	       {
+   // 		if ((options.count() > f) && (save_options.count() > i ))
+   // 		{
+   // 		   if (options.Item(f).Item(0).name == save_options.Item(i).Item(0).name)
+   // 		   {
    // 		  option_found = true;
    // 		  break;
-   // 	       }
-   // 	    }
-   // 	    else if ((options.Count() == f) && (save_options.Count() > i ))
-   // 	    {
-   // 	       option_found = false;
-   // 	    }
+   // 		   }
+   // 		}
+   // 		else if ((options.Count() == f) && (save_options.Count() > i ))
+   // 		{
+   // 		   option_found = false;
+   // 		}
    // 	 }
    // 	 if ((save_options.Count() > i ) &&
-   // 	     (option_found == false))
+   // 		 (option_found == false))
    // 	 {
-   // 	    options_struct temp_struct;
-   // 	    GeneralOptionsArray temp_array;
-   // 	    temp_struct.type = wxT("s");
-   // 	    temp_struct.name = save_options.Item(i).Item(0).name;
-   // 	    temp_struct.value= save_options.Item(i).Item(0).value;
-   // 	    temp_array.Add (temp_struct);
-   // 	    options.Add(temp_array);
-   // 	    temp_struct.type.Clear();
-   // 	    temp_struct.name.Clear();
-   // 	    temp_struct.value.Clear();
-   // 	    option_found = false;
+   // 		options_struct temp_struct;
+   // 		GeneralOptionsArray temp_array;
+   // 		temp_struct.type = wxT("s");
+   // 		temp_struct.name = save_options.Item(i).Item(0).name;
+   // 		temp_struct.value= save_options.Item(i).Item(0).value;
+   // 		temp_array.Add (temp_struct);
+   // 		options.Add(temp_array);
+   // 		temp_struct.type.Clear();
+   // 		temp_struct.name.Clear();
+   // 		temp_struct.value.Clear();
+   // 		option_found = false;
    // 	 }
-   //    }
+   //	}
    //wxMessageBox(options.Item(0).Item(0).name);
 //   std::cout << options.size() << std::endl;
 //   wxMessageBox( options[wxT("hostname")]);
@@ -323,9 +311,9 @@ Options_HashMap RDPOptionsDialog::Get_Options ()
 }
 
 ///////////////////////////////////////////////////////////////////////////////
-//! \brief 
-//! \param 
-//! \return 
+//! \brief
+//! \param
+//! \return
 //! \sa
 ///////////////////////////////////////////////////////////////////////////////
 RDPOptionsDialog_General::RDPOptionsDialog_General(RDPOptionsDialog *parent_element)
@@ -368,25 +356,25 @@ RDPOptionsDialog_General::RDPOptionsDialog_General(RDPOptionsDialog *parent_elem
    error = 0;
    if (parent_element != NULL)
    {
-   	  parent = parent_element;
+      parent = parent_element;
 
-   } 
-   else 
+   }
+   else
    {
-   	  error = ERROR_PARENT_IS_NULL; 
+      error = ERROR_PARENT_IS_NULL;
    }
 }
 
 ///////////////////////////////////////////////////////////////////////////////
-//! \brief 
-//! \param 
-//! \return 
+//! \brief
+//! \param
+//! \return
 //! \sa
 ///////////////////////////////////////////////////////////////////////////////
 RDPOptionsDialog_General::~RDPOptionsDialog_General()
 {
-   
-   
+
+
    if(m_static_server != NULL) {delete m_static_server; m_static_server = NULL;}
    if(m_text_server != NULL) {delete m_text_server; m_text_server = NULL;}
    if(m_static_port != NULL) {delete m_static_port; m_static_port = NULL;}
@@ -409,13 +397,13 @@ RDPOptionsDialog_General::~RDPOptionsDialog_General()
    //if (m_boxsizer_2 != NULL) {delete m_boxsizer_2; m_boxsizer_2 = NULL;}
    // if (m_flexgrid_sizer_2 != NULL){delete m_flexgrid_sizer_2; m_flexgrid_sizer_2 = NULL;}
    // if (m_boxsizer_1 != NULL){delete m_boxsizer_1; m_boxsizer_1 = NULL;}
-   
+
 }
 
 ///////////////////////////////////////////////////////////////////////////////
-//! \brief 
-//! \param 
-//! \return 
+//! \brief
+//! \param
+//! \return
 //! \sa
 ///////////////////////////////////////////////////////////////////////////////
 int RDPOptionsDialog_General::Build()
@@ -424,21 +412,21 @@ int RDPOptionsDialog_General::Build()
    {
       bool state = false;
       state = Create(parent, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL);
-      if ( state == false) 
+      if ( state == false)
       {
 	 error = ERROR_CANT_CREATE_PANEL;
-      } 
-      else 
+      }
+      else
       {
 	 m_boxsizer_1 = new wxBoxSizer(wxVERTICAL);
 	 m_flexgrid_sizer_1 = new wxFlexGridSizer(0, 2, 0, 0);
 	 m_flexgrid_sizer_1->AddGrowableCol(1);
 
-	 m_static_connectionname = new wxStaticText(this, wxID_ANY, wxT("Connection name"),
+	 m_static_connectionname = new wxStaticText(this, wxID_ANY, _("Connection name"),
 						    wxDefaultPosition,wxDefaultSize);
 	 m_text_connectionname = new wxTextCtrl( this, wxID_ANY, wxT(""),
 						 wxDefaultPosition, wxDefaultSize, wxTE_PROCESS_ENTER);
-	 m_static_groupname = new wxStaticText(this, wxID_ANY, wxT("Group name"),
+	 m_static_groupname = new wxStaticText(this, wxID_ANY, _("Group name"),
 					       wxDefaultPosition, wxDefaultSize);
 	 //std::cout << array_string_group_list.Count() << std::endl;
 	 for (size_t i = 0; i < array_string_group_list.Count(); i++)
@@ -450,52 +438,52 @@ int RDPOptionsDialog_General::Build()
 	 }
 	 array_string_group_list.Insert(wxT("Main"), 0);
 //	 if (array_string_group_list.Count() > 0)
-//	 { 
-	    m_combobox_groupname = new wxComboBox(this,wxID_ANY,wxT(""),wxDefaultPosition,
-						  wxDefaultSize,array_string_group_list);
-//	 }
-//	 else 
 //	 {
-//	    m_combobox_groupname = new wxComboBox(this,wxID_ANY,wxT(""),wxDefaultPosition,
-//						  wxDefaultSize,array_string_group_list);
-//	    m_combobox_groupname->SetValue(wxT("Main"));
+	 m_combobox_groupname = new wxComboBox(this,wxID_ANY,wxT(""),wxDefaultPosition,
+					       wxDefaultSize,array_string_group_list);
 //	 }
-	 m_flexgrid_sizer_1->Add(m_static_connectionname, 1, 
+//	 else
+//	 {
+//		m_combobox_groupname = new wxComboBox(this,wxID_ANY,wxT(""),wxDefaultPosition,
+//						  wxDefaultSize,array_string_group_list);
+//		m_combobox_groupname->SetValue(wxT("Main"));
+//	 }
+	 m_flexgrid_sizer_1->Add(m_static_connectionname, 1,
 				 wxALL|wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL, 5);
-	 m_flexgrid_sizer_1->Add(m_text_connectionname, 1, 
+	 m_flexgrid_sizer_1->Add(m_text_connectionname, 1,
 				 wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
-	 m_flexgrid_sizer_1->Add(m_static_groupname, 1, 
+	 m_flexgrid_sizer_1->Add(m_static_groupname, 1,
 				 wxALL|wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL, 5);
-	 m_flexgrid_sizer_1->Add(m_combobox_groupname, 1, 
+	 m_flexgrid_sizer_1->Add(m_combobox_groupname, 1,
 				 wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
 
 
-	 m_static_server = new wxStaticText(this, wxID_ANY, wxT("Server"),wxDefaultPosition,
+	 m_static_server = new wxStaticText(this, wxID_ANY, _("Server"),wxDefaultPosition,
 					    wxDefaultSize);
-	 m_text_server = new wxTextCtrl( this, wxID_ANY, wxT(""), wxDefaultPosition, 
+	 m_text_server = new wxTextCtrl( this, wxID_ANY, wxT(""), wxDefaultPosition,
 					 wxDefaultSize, wxTE_PROCESS_ENTER);
-	 m_checkbox_customport = new wxCheckBox( this, ID_RDP_CHECKBOX_CUSTOMPORT, 
-						 wxT("&Use custom port"), wxDefaultPosition,
+	 m_checkbox_customport = new wxCheckBox( this, ID_RDP_CHECKBOX_CUSTOMPORT,
+						 _("&Use custom port"), wxDefaultPosition,
 						 wxDefaultSize );
 	 m_flexgrid_sizer_2 = new wxFlexGridSizer(0, 3, 0, 0);
 	 m_flexgrid_sizer_2->AddGrowableCol(1);
 	 m_flexgrid_sizer_2->Add(m_static_server, 1, wxALL|wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL, 5);
-	 m_flexgrid_sizer_2->Add(m_text_server, 1, 
+	 m_flexgrid_sizer_2->Add(m_text_server, 1,
 				 wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
-	 m_flexgrid_sizer_2->Add(m_checkbox_customport, 0, 
+	 m_flexgrid_sizer_2->Add(m_checkbox_customport, 0,
 				 wxALL|wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL, 5);
 
 
-	 m_static_username = new wxStaticText(this, wxID_ANY, wxT("Username"),wxDefaultPosition,
+	 m_static_username = new wxStaticText(this, wxID_ANY, _("Username"),wxDefaultPosition,
 					      wxDefaultSize);
-	 m_text_username = new wxTextCtrl( this, wxID_ANY, wxT("Administrator"), wxDefaultPosition,
+	 m_text_username = new wxTextCtrl( this, wxID_ANY, _("Administrator"), wxDefaultPosition,
 					   wxDefaultSize, wxTE_PROCESS_ENTER);
 
 	 m_static_port = new wxStaticText(this, wxID_ANY, _("Port"),wxDefaultPosition,wxDefaultSize);
-	 m_text_port = new wxTextCtrl( this, wxID_ANY, wxT("3389"), wxDefaultPosition, 
-				       wxDefaultSize, wxTE_PROCESS_ENTER, 
+	 m_text_port = new wxTextCtrl( this, wxID_ANY, wxT("3389"), wxDefaultPosition,
+				       wxDefaultSize, wxTE_PROCESS_ENTER,
 				       wxTextValidator(wxFILTER_NUMERIC) );
-	  
+
 	 m_boxsizer_2 = new wxBoxSizer(wxHORIZONTAL);
 	 m_flexgrid_sizer_2->Add(m_static_username, 1, wxALL|wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL, 5);
 	 m_flexgrid_sizer_2->Add(m_text_username, 1,
@@ -503,31 +491,31 @@ int RDPOptionsDialog_General::Build()
 	 m_boxsizer_2->Add(m_static_port, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
 	 m_boxsizer_2->Add(m_text_port, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
 	 m_flexgrid_sizer_2->Add(m_boxsizer_2, 0, wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL, 5);
-	  
-	 m_static_password = new wxStaticText(this, wxID_ANY, wxT("Password"),wxDefaultPosition,
+
+	 m_static_password = new wxStaticText(this, wxID_ANY, _("Password"),wxDefaultPosition,
 					      wxDefaultSize);
-	 m_text_password = new wxTextCtrl( this, ID_RDP_TEXTCTRL_PASSWORD, wxT(""),wxDefaultPosition, 
+	 m_text_password = new wxTextCtrl( this, ID_RDP_TEXTCTRL_PASSWORD, wxT(""),wxDefaultPosition,
 					   wxDefaultSize, wxTE_PASSWORD);
-	 m_checkbox_autologon = new wxCheckBox( this, ID_RDP_CHECKBOX_AUTOLOGON, wxT("&Auto logon"), 
+	 m_checkbox_autologon = new wxCheckBox( this, ID_RDP_CHECKBOX_AUTOLOGON, _("&Auto logon"),
 						wxDefaultPosition,wxDefaultSize );
 
 	 m_flexgrid_sizer_2->Add(m_static_password, 1, wxALL|wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL, 5);
-	 m_flexgrid_sizer_2->Add(m_text_password, 1, 
+	 m_flexgrid_sizer_2->Add(m_text_password, 1,
 				 wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
-	 m_flexgrid_sizer_2->Add(m_checkbox_autologon, 1, 
+	 m_flexgrid_sizer_2->Add(m_checkbox_autologon, 1,
 				 wxALL|wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL, 5);
 
-	 m_static_domain = new wxStaticText(this, wxID_ANY, wxT("Domain"),wxDefaultPosition,
+	 m_static_domain = new wxStaticText(this, wxID_ANY, _("Domain"),wxDefaultPosition,
 					    wxDefaultSize);
-	 m_text_domain = new wxTextCtrl( this, wxID_ANY, wxT(""), wxDefaultPosition, 
+	 m_text_domain = new wxTextCtrl( this, wxID_ANY, wxT(""), wxDefaultPosition,
 					 wxDefaultSize, wxTE_PROCESS_ENTER);
-	 m_checkbox_attachtoconsole = new wxCheckBox( this, wxID_ANY, wxT("&Attach to console"), 
+	 m_checkbox_attachtoconsole = new wxCheckBox( this, wxID_ANY, _("&Attach to console"),
 						      wxDefaultPosition,wxDefaultSize);
 
 	 m_flexgrid_sizer_2->Add(m_static_domain, 1, wxALL|wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL, 5);
-	 m_flexgrid_sizer_2->Add(m_text_domain, 1, 
+	 m_flexgrid_sizer_2->Add(m_text_domain, 1,
 				 wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
-	 m_flexgrid_sizer_2->Add(m_checkbox_attachtoconsole, 1, 
+	 m_flexgrid_sizer_2->Add(m_checkbox_attachtoconsole, 1,
 				 wxALL|wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL, 5);
 
 
@@ -539,9 +527,9 @@ int RDPOptionsDialog_General::Build()
 
 
 
-	 m_boxsizer_1->Add(m_flexgrid_sizer_1, 0, 
+	 m_boxsizer_1->Add(m_flexgrid_sizer_1, 0,
 			   wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
-	 m_boxsizer_1->Add(m_flexgrid_sizer_2, 0, 
+	 m_boxsizer_1->Add(m_flexgrid_sizer_2, 0,
 			   wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
 	 m_boxsizer_1->Add(-1,-1,1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
 
@@ -549,16 +537,16 @@ int RDPOptionsDialog_General::Build()
 	 m_boxsizer_1->SetSizeHints(this);
 
       }
-   } 
+   }
 
    return error;
 }
 
 
 ///////////////////////////////////////////////////////////////////////////////
-//! \brief 
-//! \param 
-//! \return 
+//! \brief
+//! \param
+//! \return
 //! \sa
 ///////////////////////////////////////////////////////////////////////////////
 void RDPOptionsDialog_General::get_group_list()
@@ -568,7 +556,7 @@ void RDPOptionsDialog_General::get_group_list()
    // RDPConn lrdpconn;
    // int lc = bc.Count(rdp_base);
    // array_string_group_list.Alloc(lc);
-	
+
    // wxString currgroupname;
 
    // for (int i = 0; i < lc; i++)
@@ -579,24 +567,24 @@ void RDPOptionsDialog_General::get_group_list()
    // 	{
    // 		if (lrdpconn.group_name.Length() == 0)
    // 		{
-   // 			lrdpconn.group_name.assign(wxT("Main")); 
+   // 			lrdpconn.group_name.assign(wxT("Main"));
    // 		}
    // 		int arr_size = (int)array_string_group_list.Count();
    // 		bool flag = true;
    // 		for (int i = 0; i < arr_size; i++)
    // 		{
-   // 			if (lrdpconn.group_name == array_string_group_list.Item(i)) 
+   // 			if (lrdpconn.group_name == array_string_group_list.Item(i))
    // 			{
-   // 				flag = false;				
+   // 				flag = false;
    // 				break;
    // 			}
    // 		}
 
    // 		if (flag)
    // 		{
-   // 			array_string_group_list.Add(lrdpconn.group_name); 
+   // 			array_string_group_list.Add(lrdpconn.group_name);
    // 		}
-			
+
    // 	}
 
    // }
@@ -617,7 +605,7 @@ void RDPOptionsDialog_General::checkbox_customport()
       m_text_port->Enable(true);
       m_static_port->Enable(true);
    }
-	
+
 }
 
 void RDPOptionsDialog_General::checkbox_customport_func(wxCommandEvent &event)
@@ -626,9 +614,9 @@ void RDPOptionsDialog_General::checkbox_customport_func(wxCommandEvent &event)
 }
 
 ///////////////////////////////////////////////////////////////////////////////
-//! \brief 
-//! \param 
-//! \return 
+//! \brief
+//! \param
+//! \return
 //! \sa
 ///////////////////////////////////////////////////////////////////////////////
 void RDPOptionsDialog_General::text_passwordentry_func(wxCommandEvent &event)
@@ -641,15 +629,15 @@ void RDPOptionsDialog_General::text_passwordentry_func(wxCommandEvent &event)
 	 if (strTemp.Length() == 0)
 	 {
 	    m_checkbox_autologon->SetValue(false);
-	 } 
-	 else 
+	 }
+	 else
 	 {
 	    m_checkbox_autologon->SetValue(true);
 	 }
 	 break;
 
       case ID_RDP_CHECKBOX_AUTOLOGON:
-	 if (!m_checkbox_autologon->IsChecked()) m_text_password->SetValue(_T(""));
+	 if (!m_checkbox_autologon->IsChecked()) m_text_password->SetValue(wxT(""));
 	 break;
 
       default:
@@ -658,16 +646,16 @@ void RDPOptionsDialog_General::text_passwordentry_func(wxCommandEvent &event)
 }
 
 ///////////////////////////////////////////////////////////////////////////////
-//! \brief 
-//! \param 
-//! \return 
+//! \brief
+//! \param
+//! \return
 //! \sa
 ///////////////////////////////////////////////////////////////////////////////
 Options_HashMap RDPOptionsDialog_General::Get_Options()
 {
    Options_HashMap local_options;
    ERRORS error = ERROR_OK;
- 
+
    local_options.clear();
 
    if ((m_text_server != NULL) &&
@@ -693,7 +681,7 @@ Options_HashMap RDPOptionsDialog_General::Get_Options()
    if(m_checkbox_customport != NULL)
    {
       local_options[wxT("custom_port")] = wxString::Format(wxT("%i"),
-							  m_checkbox_customport->GetValue());
+							   m_checkbox_customport->GetValue());
    }
    if(m_text_port != NULL)
    {
@@ -702,7 +690,7 @@ Options_HashMap RDPOptionsDialog_General::Get_Options()
    if(m_checkbox_attachtoconsole != NULL)
    {
       local_options[wxT("attach_to_console")] = wxString::Format(wxT("%i"),
-								m_checkbox_attachtoconsole->GetValue());
+								 m_checkbox_attachtoconsole->GetValue());
    }
    if (m_combobox_groupname != NULL) {
       local_options[wxT("group_name")] = m_combobox_groupname->GetValue();
@@ -719,17 +707,17 @@ Options_HashMap RDPOptionsDialog_General::Get_Options()
 }
 
 ///////////////////////////////////////////////////////////////////////////////
-//! \brief 
-//! \param 
-//! \return 
+//! \brief
+//! \param
+//! \return
 //! \sa
 ///////////////////////////////////////////////////////////////////////////////
-bool RDPOptionsDialog_General::Set_Options(const Options_HashMap *all_options)
+bool RDPOptionsDialog_General::SetOptions(const Options_HashMap *all_options)
 {
    bool state = false;
    Options_HashMap local_options;
    local_options = *all_options;
-   
+
 //   size_t count, index = 0;
 //   count = all_options->GetCount();
 //   for (index = 0; index < count ; index++)
@@ -753,8 +741,8 @@ bool RDPOptionsDialog_General::Set_Options(const Options_HashMap *all_options)
    }
    if ((m_checkbox_customport != NULL))
    {
-      m_checkbox_customport->SetValue(local_options[wxT("custom_port")]);
-      
+      m_checkbox_customport->SetValue(wxAtoi(local_options[wxT("custom_port")]));
+
    }
    if ((m_text_port != NULL))
    {
@@ -762,11 +750,26 @@ bool RDPOptionsDialog_General::Set_Options(const Options_HashMap *all_options)
    }
    if ((m_checkbox_attachtoconsole != NULL))
    {
-      m_checkbox_attachtoconsole->SetValue(local_options[wxT("attach_to_console")]);
+      /*
+	bool bVal;
+	if (wxAtoi(local_options[wxT("attach_to_console")]) == 0)
+	{
+	bVal = false;
+	}
+	else
+	{
+	bVal = true;
+	}
+
+	m_checkbox_attachtoconsole->SetValue(bVal);
+      */
+
+      m_checkbox_attachtoconsole->SetValue(wxAtoi(local_options[wxT("attach_to_console")]));
+      //m_checkbox_attachtoconsole->SetValue(local_options[wxT("attach_to_console")]);
    }
    if ((m_combobox_groupname != NULL))
    {
-      for (int i = 0; i < array_string_group_list.Count(); i++)
+      for (int i = 0; i < (int)array_string_group_list.Count(); i++)
       {
 	 if (array_string_group_list.Item(i) == local_options[wxT("group_name")])
 	 {
@@ -782,15 +785,8 @@ bool RDPOptionsDialog_General::Set_Options(const Options_HashMap *all_options)
    return state;
 }
 
-void RDPOptionsDialog_General::Set_Group_List(wxArrayString group_list)
+void RDPOptionsDialog_General::SetGroupList(const wxArrayString &group_list)
 {
-//   wxString group[256];
-   
-//   std::cout << group_list.Count() << std::endl;
-
-//   if ((m_combobox_groupname != NULL))
-//   {
-
    for (size_t i = 0; i < group_list.Count(); i++)
    {
       array_string_group_list.Add(group_list.Item(i));
@@ -798,9 +794,9 @@ void RDPOptionsDialog_General::Set_Group_List(wxArrayString group_list)
 }
 
 ///////////////////////////////////////////////////////////////////////////////
-//! \brief 
-//! \param 
-//! \return 
+//! \brief
+//! \param
+//! \return
 //! \sa
 ///////////////////////////////////////////////////////////////////////////////
 RDPOptionsDialog_Display::RDPOptionsDialog_Display(RDPOptionsDialog *parent_element)
@@ -812,7 +808,7 @@ RDPOptionsDialog_Display::RDPOptionsDialog_Display(RDPOptionsDialog *parent_elem
    m_boxsizer_5 = NULL;
    m_flexgrid_sizer_1 = NULL;
    m_radiobox_1 = NULL;
-   
+
    m_static_width = NULL;
    m_text_width = NULL;
 
@@ -826,7 +822,7 @@ RDPOptionsDialog_Display::RDPOptionsDialog_Display(RDPOptionsDialog *parent_elem
    m_radiobutton_fullscreen = NULL;
    m_radiobutton_customgeometry = NULL;
    m_radiobutton_presetsize = NULL;
-   
+
    m_checkbox_fullscreen = NULL;
    m_checkbox_smartsizing = NULL;
    m_checkbox_controlsize = NULL;
@@ -840,19 +836,19 @@ RDPOptionsDialog_Display::RDPOptionsDialog_Display(RDPOptionsDialog *parent_elem
    error = 0;
    if (parent_element != NULL)
    {
-	  parent = parent_element;
-   } 
-   else 
+      parent = parent_element;
+   }
+   else
    {
-	  error = ERROR_PARENT_IS_NULL; 
+      error = ERROR_PARENT_IS_NULL;
    }
 
 }
 
 ///////////////////////////////////////////////////////////////////////////////
-//! \brief 
-//! \param 
-//! \return 
+//! \brief
+//! \param
+//! \return
 //! \sa
 ///////////////////////////////////////////////////////////////////////////////
 int RDPOptionsDialog_Display::Build()
@@ -861,11 +857,11 @@ int RDPOptionsDialog_Display::Build()
    {
       bool state = false;
       state = Create(parent, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL);
-      if ( state == false) 
+      if ( state == false)
       {
 	 error = ERROR_CANT_CREATE_PANEL;
-      } 
-      else 
+      }
+      else
       {
 	 wxArrayString resolutions = GetResolutionsList();
 
@@ -876,26 +872,26 @@ int RDPOptionsDialog_Display::Build()
 	 m_boxsizer_5 = new wxBoxSizer(wxHORIZONTAL);
 	 m_flexgrid_sizer_1 = new wxFlexGridSizer(0, 3, 0, 0);
 	 m_flexgrid_sizer_1->AddGrowableCol(1);
-		 
+
 	 //m_radiobox_1 = new wxRadioBox(this, wxID_ANY, wxT("Screen resolution"),
-	//			       wxDefaultPosition, wxDefaultSize, 0, 0, 1, 0, wxDefaultValidator);
+	 //				   wxDefaultPosition, wxDefaultSize, 0, 0, 1, 0, wxDefaultValidator);
 	 m_radiobutton_controlsize = new wxRadioButton(this, ID_RDP_CHK_CONTROLSIZE,
-						       wxT("&Control size"),
+						       _("&Control size"),
 						       wxDefaultPosition, wxDefaultSize, 0,
 						       wxDefaultValidator);
 	 m_radiobutton_controlsize->SetValue(true);
 	 m_radiobutton_fullscreen = new wxRadioButton(this, ID_RDP_CHK_CONTROLSIZE,
-						      wxT("&Full screen"),
+						      _("&Full screen"),
 						      wxDefaultPosition, wxDefaultSize, 0,
 						      wxDefaultValidator);
 	 m_radiobutton_customgeometry = new wxRadioButton(this, ID_RDP_CHK_CONTROLSIZE,
-							  wxT("&Custom geometry"),
+							  _("&Custom geometry"),
 							  wxDefaultPosition, wxDefaultSize, 0,
 							  wxDefaultValidator);
 	 m_radiobutton_presetsize = new wxRadioButton(this, ID_RDP_CHK_CONTROLSIZE,
-							  wxT("&Preset geometry"),
-							  wxDefaultPosition, wxDefaultSize, 0,
-							  wxDefaultValidator);
+						      _("&Preset geometry"),
+						      wxDefaultPosition, wxDefaultSize, 0,
+						      wxDefaultValidator);
 
 	 //m_boxsizer_3->Add(m_radiobox_1, 1, wxALL|wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL, 5);
 	 m_boxsizer_3->Add(m_radiobutton_controlsize, 1,
@@ -905,10 +901,10 @@ int RDPOptionsDialog_Display::Build()
 			   wxALL|wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL, 5);
 	 m_boxsizer_3->Add(m_radiobutton_presetsize, 1,
 			   wxALL|wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL, 5);
-		 
+
 //	 m_boxsizer_2->Add(m_boxsizer_3, 0, wxALL|wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL, 5);
 
-	 m_static_resolution = new wxStaticText(this, wxID_ANY, wxT("Screen resolution"),
+	 m_static_resolution = new wxStaticText(this, wxID_ANY, _("Screen resolution"),
 						wxDefaultPosition, wxDefaultSize);
 	 m_combobox_resolution = new wxComboBox(this,wxID_ANY,wxT(""),wxDefaultPosition,
 						wxDefaultSize,resolutions,wxCB_READONLY);
@@ -919,25 +915,25 @@ int RDPOptionsDialog_Display::Build()
 	    m_combobox_resolution->SetSelection(sel);
 	 }
 
-//		 m_checkbox_customgeometry = new wxCheckBox( this, , _T(""), 
+//		 m_checkbox_customgeometry = new wxCheckBox( this, , wxT(""),
 //													 wxDefaultPosition, wxDefaultSize );
-	 m_static_width = new wxStaticText(this, wxID_ANY, wxT("Screen width"),wxDefaultPosition, 
+	 m_static_width = new wxStaticText(this, wxID_ANY, _("Screen width"),wxDefaultPosition,
 					   wxDefaultSize);
-	 m_text_width = new wxTextCtrl( this, wxID_ANY, wxT("800"), wxDefaultPosition, wxDefaultSize, 
+	 m_text_width = new wxTextCtrl( this, wxID_ANY, wxT("800"), wxDefaultPosition, wxDefaultSize,
 					wxTE_PROCESS_ENTER , wxTextValidator(wxFILTER_NUMERIC) );
-	 m_static_height = new wxStaticText(this, wxID_ANY, wxT("Screen height"),wxDefaultPosition, 
+	 m_static_height = new wxStaticText(this, wxID_ANY, _("Screen height"),wxDefaultPosition,
 					    wxDefaultSize);
-	 m_text_height = new wxTextCtrl( this, wxID_ANY, wxT("600"), wxDefaultPosition, wxDefaultSize, 
+	 m_text_height = new wxTextCtrl( this, wxID_ANY, wxT("600"), wxDefaultPosition, wxDefaultSize,
 					 wxTE_PROCESS_ENTER , wxTextValidator(wxFILTER_NUMERIC) );
 
-	 m_static_colordepth = new wxStaticText(this, wxID_ANY, wxT("Color depth"),wxDefaultPosition, 
+	 m_static_colordepth = new wxStaticText(this, wxID_ANY, _("Color depth"),wxDefaultPosition,
 						wxDefaultSize);
 	 wxString Choises[] = {_("8-bit"),_("15-bit"),_("16-bit"),_("24-bit")};
-	 m_choise_colordepth = new wxComboBox(this,wxID_ANY,_(""),wxDefaultPosition,wxDefaultSize,
+	 m_choise_colordepth = new wxComboBox(this,wxID_ANY,wxT(""),wxDefaultPosition,wxDefaultSize,
 					      4,Choises,wxCB_READONLY);
 	 m_choise_colordepth->SetValue(Choises[2]);
 	 m_choise_colordepth->SetSelection(2);
-		 
+
 	 m_flexgrid_sizer_1->Add(m_static_width, 1, wxALL|wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL, 5);
 	 m_flexgrid_sizer_1->Add(m_text_width, 0,
 				 wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
@@ -948,14 +944,14 @@ int RDPOptionsDialog_Display::Build()
 				 wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
 	 m_flexgrid_sizer_1->Add(-1,-1,1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
 
-	 
+
 	 m_flexgrid_sizer_1->Add(m_static_resolution, 1, wxALL|wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL, 5);
 	 m_flexgrid_sizer_1->Add(m_combobox_resolution, 0, wxALL|wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL, 5);
 	 m_flexgrid_sizer_1->Add(-1,-1,1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
 
 	 m_flexgrid_sizer_1->Add(m_static_colordepth, 1, wxALL|wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL, 5);
 	 m_flexgrid_sizer_1->Add(m_choise_colordepth, 0,
-			   wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+				 wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
 	 m_flexgrid_sizer_1->Add(-1,-1,1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
 	 m_boxsizer_2->Add(m_boxsizer_3, 0, wxALL|wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL, 5);
 	 m_boxsizer_2->Add(m_flexgrid_sizer_1, 1, wxALL|wxALIGN_TOP|wxALIGN_CENTER_HORIZONTAL, 5);
@@ -963,12 +959,12 @@ int RDPOptionsDialog_Display::Build()
 	 //m_boxsizer_4->Add(m_static_colordepth, 1, wxALL|wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL, 5);
 	 //m_boxsizer_4->Add(m_choise_colordepth, 1,
 	 //			 wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
-	 
-	 m_checkbox_updatescreen = new wxCheckBox( this, wxID_ANY, wxT("&Force update screen"), 
+
+	 m_checkbox_updatescreen = new wxCheckBox( this, wxID_ANY, _("&Force update screen"),
 						   wxDefaultPosition, wxDefaultSize );
-//		 m_checkbox_fullscreen = new wxCheckBox( this, , wxT(""), 
+//		 m_checkbox_fullscreen = new wxCheckBox( this, , wxT(""),
 //												 wxDefaultPosition, wxDefaultSize );
-	 m_checkbox_smartsizing = new wxCheckBox( this, -1, wxT("&Smart sizing"), wxDefaultPosition, 
+	 m_checkbox_smartsizing = new wxCheckBox( this, -1, _("&Smart sizing"), wxDefaultPosition,
 						  wxDefaultSize );
 //		 m_checkbox_controlsize = new wxCheckBox( this, , wxT(""),
 //												  wxDefaultPosition,
@@ -1009,9 +1005,9 @@ int RDPOptionsDialog_Display::Build()
 }
 
 ///////////////////////////////////////////////////////////////////////////////
-//! \brief 
-//! \param 
-//! \return 
+//! \brief
+//! \param
+//! \return
 //! \sa
 ///////////////////////////////////////////////////////////////////////////////
 wxArrayString RDPOptionsDialog_Display::GetResolutionsList()
@@ -1022,29 +1018,44 @@ wxArrayString RDPOptionsDialog_Display::GetResolutionsList()
    wxArrayVideoModes avm = disp.GetModes();
    for (int i = 0; i < (int)avm.Count(); i++)
    {
-	  if (avm.Item(i).w < 800 || avm.Item(i).h < 600 || avm.Item(i).h > avm.Item(i).w)
-		 continue;
-	  wxString temp;
-	  temp = wxString::Format(wxT("%i x %i"),avm.Item(i).w,avm.Item(i).h);
-	  BOOL flag = FALSE;
-	  for (int i = 0; i < (int)resolutions.Count(); i++)
-	  {	
-		 if (resolutions.Item(i) == temp) flag = TRUE;
-	  }
-	  if (!flag)	resolutions.Add(temp); 
+      if (avm.Item(i).w < 800 || avm.Item(i).h < 600 || avm.Item(i).h > avm.Item(i).w)
+	 continue;
+      const wxString temp = wxString::Format(wxT("%i x %i"),avm.Item(i).w,avm.Item(i).h);
+      BOOL flag = FALSE;
+      for (int i = 0; i < (int)resolutions.Count(); i++)
+      {
+	 if (resolutions.Item(i) == temp) flag = TRUE;
+      }
+      if (!flag)	resolutions.Add(temp);
 
    }
-   resolutions.Add(wxT("800 x 600"));
-   resolutions.Add(wxT("1024 x 768"));
-   resolutions.Add(wxT("1152 x 864"));
-   resolutions.Add(wxT("1280 x 960"));
-   resolutions.Add(wxT("1280 x 1024"));
-	resolutions.Sort();
-	resolutions.Shrink();
+
+   if (resolutions.Index(wxT("800 x 600")) == wxNOT_FOUND)
+   {
+      resolutions.Add(wxT("800 x 600"));
+   }
+   if (resolutions.Index(wxT("1024 x 768")) == wxNOT_FOUND)
+   {
+      resolutions.Add(wxT("1024 x 768"));
+   }
+   if (resolutions.Index(wxT("1152 x 864")) == wxNOT_FOUND)
+   {
+      resolutions.Add(wxT("1152 x 864"));
+   }
+   if (resolutions.Index(wxT("1280 x 960")) == wxNOT_FOUND)
+   {
+      resolutions.Add(wxT("1280 x 960"));
+   }
+   if (resolutions.Index(wxT("1280 x 1024")) == wxNOT_FOUND)
+   {
+      resolutions.Add(wxT("1280 x 1024"));
+   }
+   resolutions.Sort();
+   resolutions.Shrink();
 #endif
 
 #ifdef __WXGTK__
-	
+
    resolutions.Add(wxT("800 x 600"));
    resolutions.Add(wxT("1024 x 768"));
    resolutions.Add(wxT("1152 x 864"));
@@ -1056,9 +1067,9 @@ wxArrayString RDPOptionsDialog_Display::GetResolutionsList()
 }
 
 ///////////////////////////////////////////////////////////////////////////////
-//! \brief 
-//! \param 
-//! \return 
+//! \brief
+//! \param
+//! \return
 //! \sa
 ///////////////////////////////////////////////////////////////////////////////
 wxSize RDPOptionsDialog_Display::GetResolution(int i)
@@ -1067,33 +1078,33 @@ wxSize RDPOptionsDialog_Display::GetResolution(int i)
    if (i < 0) return error_size;
    wxArrayString resolutions = GetResolutionsList();
    if (i >= (int)resolutions.Count())  return error_size;
-   wxString resolution_string = resolutions.Item(i); 
-   size_t len = resolution_string.Length(); 
+   wxString resolution_string = resolutions.Item(i);
+   size_t len = resolution_string.Length();
    int pos = resolution_string.Find(wxT("x"));
    wxString width_string = resolution_string.Left(pos - 1);
-   wxString heigth_string = resolution_string.Right(len - pos - 1); 
+   wxString heigth_string = resolution_string.Right(len - pos - 1);
 
    wxSize result_size(wxAtoi(width_string),wxAtoi(heigth_string));
    return result_size;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
-//! \brief 
-//! \param 
-//! \return 
+//! \brief
+//! \param
+//! \return
 //! \sa
 ///////////////////////////////////////////////////////////////////////////////
 int RDPOptionsDialog_Display::GetDefaultResolution()
 {
    wxSize disp_size = wxGetDisplaySize();
    wxArrayString resolutions = GetResolutionsList();
-   if (resolutions.Count() <= 0) return -1; 
+   if (resolutions.Count() <= 0) return -1;
    int default_pos = 0;
    for (int i = 0; i < (int)resolutions.Count(); i ++)
    {
       wxSize size = GetResolution(i);
       if (size.x == 800) return i;
-      else 
+      else
       {
 	 if (size.x >= disp_size.x || size.y >= disp_size.y)
 	 {
@@ -1116,9 +1127,9 @@ int RDPOptionsDialog_Display::GetDefaultResolution()
 }
 
 ///////////////////////////////////////////////////////////////////////////////
-//! \brief 
-//! \param 
-//! \return 
+//! \brief
+//! \param
+//! \return
 //! \sa
 ///////////////////////////////////////////////////////////////////////////////
 void RDPOptionsDialog_Display::CheckRDPDisplay()
@@ -1152,9 +1163,9 @@ void RDPOptionsDialog_Display::CheckRDPDisplay()
 }
 
 ///////////////////////////////////////////////////////////////////////////////
-//! \brief 
-//! \param 
-//! \return 
+//! \brief
+//! \param
+//! \return
 //! \sa
 ///////////////////////////////////////////////////////////////////////////////
 void RDPOptionsDialog_Display::checkbox_customgeometry_func(wxCommandEvent& event)
@@ -1163,9 +1174,9 @@ void RDPOptionsDialog_Display::checkbox_customgeometry_func(wxCommandEvent& even
 }
 
 ///////////////////////////////////////////////////////////////////////////////
-//! \brief 
-//! \param 
-//! \return 
+//! \brief
+//! \param
+//! \return
 //! \sa
 ///////////////////////////////////////////////////////////////////////////////
 void RDPOptionsDialog_Display::checkbox_fullscreen_func(wxCommandEvent &event)
@@ -1174,9 +1185,9 @@ void RDPOptionsDialog_Display::checkbox_fullscreen_func(wxCommandEvent &event)
 }
 
 ///////////////////////////////////////////////////////////////////////////////
-//! \brief 
-//! \param 
-//! \return 
+//! \brief
+//! \param
+//! \return
 //! \sa
 ///////////////////////////////////////////////////////////////////////////////
 void RDPOptionsDialog_Display::checkbox_controlsize_func(wxCommandEvent &event)
@@ -1185,9 +1196,9 @@ void RDPOptionsDialog_Display::checkbox_controlsize_func(wxCommandEvent &event)
 }
 
 ///////////////////////////////////////////////////////////////////////////////
-//! \brief 
-//! \param 
-//! \return 
+//! \brief
+//! \param
+//! \return
 //! \sa
 ///////////////////////////////////////////////////////////////////////////////
 RDPOptionsDialog_Display::~RDPOptionsDialog_Display()
@@ -1224,9 +1235,9 @@ RDPOptionsDialog_Display::~RDPOptionsDialog_Display()
 
 
 ///////////////////////////////////////////////////////////////////////////////
-//! \brief 
-//! \param 
-//! \return 
+//! \brief
+//! \param
+//! \return
 //! \sa
 ///////////////////////////////////////////////////////////////////////////////
 Options_HashMap RDPOptionsDialog_Display::Get_Options()
@@ -1271,21 +1282,21 @@ Options_HashMap RDPOptionsDialog_Display::Get_Options()
    {
       local_options[wxT("preset_screen_size")] = wxString::Format(wxT("%i"),
 								  m_radiobutton_presetsize->GetValue());
-      
+
       if (m_combobox_resolution != NULL)
       {
 	 wxSize resolution;
 	 resolution = GetResolution(m_combobox_resolution->GetCurrentSelection());
 	 //wxArrayString resolution = GetResolutionsList();
-      	 local_options[wxT("width")] = wxString::Format(wxT("%i"), resolution.x);
-      	 local_options[wxT("heigth")] = wxString::Format(wxT("%i"), resolution.y);
+	 local_options[wxT("width")] = wxString::Format(wxT("%i"), resolution.x);
+	 local_options[wxT("heigth")] = wxString::Format(wxT("%i"), resolution.y);
       }
 
    }
    if (m_combobox_resolution != NULL)
    {
       local_options[wxT("resolution")] = wxString::Format(wxT("%i"),
-							       m_combobox_resolution->GetCurrentSelection());
+							  m_combobox_resolution->GetCurrentSelection());
    }
 
    if(m_checkbox_smartsizing != NULL)
@@ -1296,19 +1307,19 @@ Options_HashMap RDPOptionsDialog_Display::Get_Options()
 
    return local_options;
 }
-      
+
 ///////////////////////////////////////////////////////////////////////////////
-//! \brief 
-//! \param 
-//! \return 
+//! \brief
+//! \param
+//! \return
 //! \sa
 ///////////////////////////////////////////////////////////////////////////////
-bool RDPOptionsDialog_Display::Set_Options(const Options_HashMap *all_options)
+bool RDPOptionsDialog_Display::SetOptions(const Options_HashMap *all_options)
 {
    bool state = false;
    Options_HashMap local_options;
    local_options = *all_options;
-   
+
    if ((m_choise_colordepth != NULL))
    {
       if ((wxAtoi(local_options[wxT("color_depth")]) > -1) &&
@@ -1327,7 +1338,7 @@ bool RDPOptionsDialog_Display::Set_Options(const Options_HashMap *all_options)
    }
    if((m_radiobutton_controlsize != NULL))
    {
-	  m_radiobutton_controlsize->SetValue(wxAtoi(local_options[wxT("control_size")]));
+      m_radiobutton_controlsize->SetValue(wxAtoi(local_options[wxT("control_size")]));
    }
    if((m_radiobutton_fullscreen != NULL))
    {
@@ -1356,16 +1367,16 @@ bool RDPOptionsDialog_Display::Set_Options(const Options_HashMap *all_options)
 
    if ((m_checkbox_smartsizing != NULL))
    {
-      m_checkbox_smartsizing->SetValue(wxAtoi(local_options[wxT("smart_sizing")])); 
+      m_checkbox_smartsizing->SetValue(wxAtoi(local_options[wxT("smart_sizing")]));
    }
    CheckRDPDisplay();
    return state;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
-//! \brief 
-//! \param 
-//! \return 
+//! \brief
+//! \param
+//! \return
 //! \sa
 ///////////////////////////////////////////////////////////////////////////////
 RDPOptionsDialog_Share::RDPOptionsDialog_Share(RDPOptionsDialog *parent_element)
@@ -1378,7 +1389,7 @@ RDPOptionsDialog_Share::RDPOptionsDialog_Share(RDPOptionsDialog *parent_element)
    m_boxsizer_6 = NULL;
    m_boxsizer_7 = NULL;
    m_flexgrid_sizer_1 = NULL;
-   
+
    m_static_sound = NULL;
    m_choise_sound = NULL;
 
@@ -1398,17 +1409,17 @@ RDPOptionsDialog_Share::RDPOptionsDialog_Share(RDPOptionsDialog *parent_element)
    if (parent_element != NULL)
    {
       parent = parent_element;
-   } 
-   else 
+   }
+   else
    {
-      error = ERROR_PARENT_IS_NULL; 
+      error = ERROR_PARENT_IS_NULL;
    }
 }
 
 ///////////////////////////////////////////////////////////////////////////////
-//! \brief 
-//! \param 
-//! \return 
+//! \brief
+//! \param
+//! \return
 //! \sa
 ///////////////////////////////////////////////////////////////////////////////
 int RDPOptionsDialog_Share::Build()
@@ -1417,11 +1428,11 @@ int RDPOptionsDialog_Share::Build()
    {
       bool state = false;
       state = Create(parent, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL);
-      if ( state == false) 
+      if ( state == false)
       {
 	 error = ERROR_CANT_CREATE_PANEL;
-      } 
-      else 
+      }
+      else
       {
 	 m_boxsizer_1 = new wxBoxSizer(wxVERTICAL);
 	 m_flexgrid_sizer_1 = new wxFlexGridSizer(0, 2, 0, 0);
@@ -1432,37 +1443,37 @@ int RDPOptionsDialog_Share::Build()
 	 m_boxsizer_5 = new wxBoxSizer(wxVERTICAL);
 	 m_boxsizer_6 = new wxBoxSizer(wxVERTICAL);
 
-	 m_static_sound  = new wxStaticText(this, wxID_ANY, wxT("Redirect sound"),wxDefaultPosition,
+	 m_static_sound  = new wxStaticText(this, wxID_ANY, _("Redirect sound"),wxDefaultPosition,
 					    wxDefaultSize);
-	 wxString ChoisesSound[] = {wxT("Bring to this computer"),wxT("Do not play"),
-				    wxT("Leave at remote computer")};
+	 wxString ChoisesSound[] = {_("Bring to this computer"),_("Do not play"),
+				    _("Leave at remote computer")};
 	 m_choise_sound = new wxComboBox(this,wxID_ANY,wxT(""),wxDefaultPosition,
 					 wxDefaultSize,3,ChoisesSound,wxCB_READONLY);
 	 m_choise_sound->SetValue(ChoisesSound[0]);
 	 m_choise_sound->SetSelection(0);
 
-	 m_static_keyboard  = new wxStaticText(this, wxID_ANY, wxT("Using windows key combinations"),
+	 m_static_keyboard  = new wxStaticText(this, wxID_ANY, _("Using windows key combinations"),
 					       wxDefaultPosition, wxDefaultSize);
-	 wxString ChoisesKeyboard[] = {wxT("On local computer"),wxT("On remote computer"),
-				       wxT("In full screen only")};
-   	 m_choise_keyboard = new wxComboBox(this,wxID_ANY,_(""),wxDefaultPosition,wxDefaultSize,
+	 wxString ChoisesKeyboard[] = {_("On local computer"),_("On remote computer"),
+				       _("In full screen only")};
+	 m_choise_keyboard = new wxComboBox(this,wxID_ANY,wxT(""),wxDefaultPosition,wxDefaultSize,
 					    3,ChoisesKeyboard,wxCB_READONLY);
 	 m_choise_keyboard->SetValue(ChoisesKeyboard[2]);
 	 m_choise_keyboard->SetSelection(2);
-   
-	 m_checkbox_drives = new wxCheckBox( this, wxID_ANY, wxT("&Redirect drives"), wxDefaultPosition,
+
+	 m_checkbox_drives = new wxCheckBox( this, wxID_ANY, _("&Redirect drives"), wxDefaultPosition,
 					     wxDefaultSize );
-	 m_checkbox_printers = new wxCheckBox( this, wxID_ANY, wxT("&Redirect printers"),
+	 m_checkbox_printers = new wxCheckBox( this, wxID_ANY, _("&Redirect printers"),
 					       wxDefaultPosition, wxDefaultSize );
-	 m_checkbox_comports = new wxCheckBox( this, wxID_ANY, wxT("&Redirect COM ports"),
+	 m_checkbox_comports = new wxCheckBox( this, wxID_ANY, _("&Redirect COM ports"),
 					       wxDefaultPosition, wxDefaultSize );
-	 m_checkbox_smartcards = new wxCheckBox( this, wxID_ANY, wxT("&Redirect smartcards"),
+	 m_checkbox_smartcards = new wxCheckBox( this, wxID_ANY, _("&Redirect smartcards"),
 						 wxDefaultPosition, wxDefaultSize );
 
 	 m_static_linux_devices = new wxStaticText(this, wxID_ANY,
-						   wxT("&Redirect devices for linux (see man for rdesktop)"),
+						   _("&Redirect devices for linux (see man for rdesktop)"),
 						   wxDefaultPosition, wxDefaultSize);
-	 m_text_linux_devices = new wxTextCtrl(this, wxID_ANY, wxT(""), wxDefaultPosition, wxDefaultSize, 
+	 m_text_linux_devices = new wxTextCtrl(this, wxID_ANY, wxT(""), wxDefaultPosition, wxDefaultSize,
 					       wxTE_MULTILINE );
 	 m_boxsizer_4->Add(m_static_sound, 0, wxALL|wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL, 5);
 	 m_boxsizer_4->Add(m_choise_sound, 1, wxALL|wxEXPAND|wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL, 5);
@@ -1510,9 +1521,9 @@ int RDPOptionsDialog_Share::Build()
 }
 
 ///////////////////////////////////////////////////////////////////////////////
-//! \brief 
-//! \param 
-//! \return 
+//! \brief
+//! \param
+//! \return
 //! \sa
 ///////////////////////////////////////////////////////////////////////////////
 RDPOptionsDialog_Share::~RDPOptionsDialog_Share()
@@ -1541,9 +1552,9 @@ RDPOptionsDialog_Share::~RDPOptionsDialog_Share()
 }
 
 ///////////////////////////////////////////////////////////////////////////////
-//! \brief 
-//! \param 
-//! \return 
+//! \brief
+//! \param
+//! \return
 //! \sa
 ///////////////////////////////////////////////////////////////////////////////
 Options_HashMap RDPOptionsDialog_Share::Get_Options()
@@ -1587,12 +1598,12 @@ Options_HashMap RDPOptionsDialog_Share::Get_Options()
 }
 
 ///////////////////////////////////////////////////////////////////////////////
-//! \brief 
-//! \param 
-//! \return 
+//! \brief
+//! \param
+//! \return
 //! \sa
 ///////////////////////////////////////////////////////////////////////////////
-bool RDPOptionsDialog_Share::Set_Options(const Options_HashMap *all_options)
+bool RDPOptionsDialog_Share::SetOptions(const Options_HashMap *all_options)
 {
    Options_HashMap local_options;
    local_options = *all_options;
@@ -1601,27 +1612,27 @@ bool RDPOptionsDialog_Share::Set_Options(const Options_HashMap *all_options)
    {
       m_choise_sound->SetSelection(wxAtoi(local_options[wxT("sound_type")]));
    }
-   if (m_choise_keyboard !=NULL) 
+   if (m_choise_keyboard !=NULL)
    {
       m_choise_keyboard->SetSelection(wxAtoi(local_options[wxT("keyboard_type")]));
    }
    if (m_checkbox_drives !=NULL)
    {
-      m_checkbox_drives->SetValue(local_options[wxT("share_drives")]);
+      m_checkbox_drives->SetValue(wxAtoi(local_options[wxT("share_drives")]));
    }
    if (m_checkbox_printers !=NULL)
    {
-      m_checkbox_printers->SetValue(local_options[wxT("share_printers")]);
+      m_checkbox_printers->SetValue(wxAtoi(local_options[wxT("share_printers")]));
 
    }
    if (m_checkbox_comports !=NULL)
    {
-      m_checkbox_comports->SetValue(local_options[wxT("share_com_ports")]);
+      m_checkbox_comports->SetValue(wxAtoi(local_options[wxT("share_com_ports")]));
 
    }
    if (m_checkbox_smartcards !=NULL)
    {
-      m_checkbox_smartcards->SetValue(local_options[wxT("share_smart_cards")]);
+      m_checkbox_smartcards->SetValue(wxAtoi(local_options[wxT("share_smart_cards")]));
    }
    if (m_text_linux_devices !=NULL)
    {
@@ -1633,15 +1644,15 @@ bool RDPOptionsDialog_Share::Set_Options(const Options_HashMap *all_options)
 
 
 ///////////////////////////////////////////////////////////////////////////////
-//! \brief 
-//! \param 
-//! \return 
+//! \brief
+//! \param
+//! \return
 //! \sa
 ///////////////////////////////////////////////////////////////////////////////
-RDPOptionsDialog_Program::RDPOptionsDialog_Program(RDPOptionsDialog *parent_element) 
+RDPOptionsDialog_Program::RDPOptionsDialog_Program(RDPOptionsDialog *parent_element)
 {
    m_boxsizer_1 = NULL;
-   
+
    m_static_program = NULL;
    m_text_program = NULL;
 
@@ -1655,18 +1666,18 @@ RDPOptionsDialog_Program::RDPOptionsDialog_Program(RDPOptionsDialog *parent_elem
    if (parent_element != NULL)
    {
       parent = parent_element;
-   } 
-   else 
+   }
+   else
    {
-      error = ERROR_PARENT_IS_NULL; 
+      error = ERROR_PARENT_IS_NULL;
    }
 
 }
 
 ///////////////////////////////////////////////////////////////////////////////
-//! \brief 
-//! \param 
-//! \return 
+//! \brief
+//! \param
+//! \return
 //! \sa
 ///////////////////////////////////////////////////////////////////////////////
 int RDPOptionsDialog_Program::Build()
@@ -1675,25 +1686,25 @@ int RDPOptionsDialog_Program::Build()
    {
       bool state = false;
       state = Create(parent, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL);
-      if ( state == false) 
+      if ( state == false)
       {
 	 error = ERROR_CANT_CREATE_PANEL;
-      } 
-      else 
+      }
+      else
       {
 	 m_boxsizer_1= new wxBoxSizer(wxVERTICAL);
-	 m_static_program  = new wxStaticText(this, wxID_ANY, wxT("Program path"),
+	 m_static_program  = new wxStaticText(this, wxID_ANY, _("Program path"),
 					      wxDefaultPosition, wxDefaultSize);
 	 m_text_program = new wxTextCtrl( this, wxID_ANY, wxT(""),  wxDefaultPosition, wxDefaultSize,
 					  wxTE_PROCESS_ENTER);
-	 m_static_workdir  = new wxStaticText(this, wxID_ANY, wxT("Working dir"), wxDefaultPosition, wxDefaultSize);
+	 m_static_workdir  = new wxStaticText(this, wxID_ANY, _("Working dir"), wxDefaultPosition, wxDefaultSize);
 	 m_text_workdir = new wxTextCtrl( this, wxID_ANY, wxT(""),  wxDefaultPosition, wxDefaultSize, wxTE_PROCESS_ENTER);
-	 m_checkbox_program = new wxCheckBox( this, ID_RDP_CHECKBOX_USE_PROGRAM, wxT("&Start following program"),  wxDefaultPosition, wxDefaultSize );
-	 m_checkbox_maximized = new wxCheckBox( this, wxID_ANY, wxT("&Start maximized"),  wxDefaultPosition, wxDefaultSize);
+	 m_checkbox_program = new wxCheckBox( this, ID_RDP_CHECKBOX_USE_PROGRAM, _("&Start the following program:"),  wxDefaultPosition, wxDefaultSize );
+	 m_checkbox_maximized = new wxCheckBox( this, wxID_ANY, _("&Start maximized"),  wxDefaultPosition, wxDefaultSize);
 
 
 	 m_boxsizer_1->Add(m_checkbox_program, 0,
-			wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+			   wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
 	 m_boxsizer_1->Add(m_checkbox_maximized, 0,
 			   wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
 	 m_boxsizer_1->Add(m_static_program, 0,
@@ -1721,9 +1732,9 @@ int RDPOptionsDialog_Program::Build()
 }
 
 ///////////////////////////////////////////////////////////////////////////////
-//! \brief 
-//! \param 
-//! \return 
+//! \brief
+//! \param
+//! \return
 //! \sa
 ///////////////////////////////////////////////////////////////////////////////
 RDPOptionsDialog_Program::~RDPOptionsDialog_Program()
@@ -1740,15 +1751,15 @@ RDPOptionsDialog_Program::~RDPOptionsDialog_Program()
 }
 
 ///////////////////////////////////////////////////////////////////////////////
-//! \brief 
-//! \param 
-//! \return 
+//! \brief
+//! \param
+//! \return
 //! \sa
 ///////////////////////////////////////////////////////////////////////////////
 Options_HashMap RDPOptionsDialog_Program::Get_Options()
 {
    Options_HashMap local_options;
-   
+
    if (m_text_program)
    {
       local_options[wxT("shell")] = m_text_program->GetValue();
@@ -1771,12 +1782,12 @@ Options_HashMap RDPOptionsDialog_Program::Get_Options()
 }
 
 ///////////////////////////////////////////////////////////////////////////////
-//! \brief 
-//! \param 
-//! \return 
+//! \brief
+//! \param
+//! \return
 //! \sa
 ///////////////////////////////////////////////////////////////////////////////
-bool RDPOptionsDialog_Program::Set_Options(const Options_HashMap *all_options)
+bool RDPOptionsDialog_Program::SetOptions(const Options_HashMap *all_options)
 {
    Options_HashMap local_options;
    local_options = *all_options;
@@ -1797,16 +1808,16 @@ bool RDPOptionsDialog_Program::Set_Options(const Options_HashMap *all_options)
       m_checkbox_maximized->SetValue(wxAtoi(local_options[wxT("program_maximized")]));
    }
    checkbox_program();
-	return true;
+   return true;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
-//! \brief 
-//! \param 
-//! \return 
+//! \brief
+//! \param
+//! \return
 //! \sa
 ///////////////////////////////////////////////////////////////////////////////
-void RDPOptionsDialog_Program::checkbox_program() 
+void RDPOptionsDialog_Program::checkbox_program()
 {
    if(!m_checkbox_program->IsChecked() )
    {
@@ -1827,23 +1838,23 @@ void RDPOptionsDialog_Program::checkbox_program()
 }
 
 ///////////////////////////////////////////////////////////////////////////////
-//! \brief 
-//! \param 
-//! \return 
+//! \brief
+//! \param
+//! \return
 //! \sa
 ///////////////////////////////////////////////////////////////////////////////
-void RDPOptionsDialog_Program::checkbox_program_func(wxCommandEvent &event) 
+void RDPOptionsDialog_Program::checkbox_program_func(wxCommandEvent &event)
 {
    checkbox_program();
 }
 
 ///////////////////////////////////////////////////////////////////////////////
-//! \brief 
-//! \param 
-//! \return 
+//! \brief
+//! \param
+//! \return
 //! \sa
 ///////////////////////////////////////////////////////////////////////////////
-RDPOptionsDialog_Performance::RDPOptionsDialog_Performance(RDPOptionsDialog *parent_element) 
+RDPOptionsDialog_Performance::RDPOptionsDialog_Performance(RDPOptionsDialog *parent_element)
 {
    m_boxsizer_1 = NULL;
    m_boxsizer_2 = NULL;
@@ -1851,7 +1862,7 @@ RDPOptionsDialog_Performance::RDPOptionsDialog_Performance(RDPOptionsDialog *par
    m_boxsizer_4 = NULL;
    m_boxsizer_5 = NULL;
    m_boxsizer_6 = NULL;
-   
+
    m_static_speed = NULL;
    m_choise_speed = NULL;
 
@@ -1870,29 +1881,23 @@ RDPOptionsDialog_Performance::RDPOptionsDialog_Performance(RDPOptionsDialog *par
    }
    else
    {
-      error = ERROR_PARENT_IS_NULL; 
+      error = ERROR_PARENT_IS_NULL;
    }
 
 }
 
 ///////////////////////////////////////////////////////////////////////////////
-//! \brief 
-//! \param 
-//! \return 
+//! \brief
+//! \param
+//! \return
 //! \sa
 ///////////////////////////////////////////////////////////////////////////////
-int RDPOptionsDialog_Performance::Build()
-{
-   if ( error == 0 )
-   {
-      bool state = false;
-      state = Create(parent, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL);
-      if ( state == false) 
-      {
+int RDPOptionsDialog_Performance::Build() {
+   if (error == 0) {
+      const bool state = Create(parent, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL);
+      if (state == false) {
 	 error = ERROR_CANT_CREATE_PANEL;
-      } 
-      else 
-      {
+      } else {
 	 m_boxsizer_1 = new wxBoxSizer(wxVERTICAL);
 	 m_boxsizer_2 = new wxBoxSizer(wxHORIZONTAL);
 	 m_boxsizer_3 = new wxBoxSizer(wxHORIZONTAL);
@@ -1900,50 +1905,51 @@ int RDPOptionsDialog_Performance::Build()
 	 m_boxsizer_5 = new wxBoxSizer(wxHORIZONTAL);
 	 m_boxsizer_6 = new wxBoxSizer(wxHORIZONTAL);
 
-	 m_static_speed  = new wxStaticText(this, wxID_ANY, wxT("Choise connection speed"),
+     m_static_speed = new wxStaticText(this, wxID_ANY, _("Connection speed"),
 					    wxDefaultPosition, wxDefaultSize);
-	 ChoisesSpeed[0] = wxT("Modem 28.8 Kbps");
-	 ChoisesSpeed[1] = wxT("Modem 56 Kbps");
-	 ChoisesSpeed[2] = wxT("Broadband 128Kbps - 1.5 Mbps");
-	 ChoisesSpeed[3] = wxT("LAN 10 Mbps or higher");
-	 ChoisesSpeed[4] = wxT("Custom");
-	 m_choise_speed = new wxComboBox(this,ID_RDP_COMBOBOX_SPEED,wxT(""),
-					 wxDefaultPosition,wxSize(220,-1),5,ChoisesSpeed,wxCB_READONLY) ;
+	 // TODO: move to array
+	 ChoisesSpeed[0] = _("Modem 28.8 Kbps");
+	 ChoisesSpeed[1] = _("Modem 56 Kbps");
+	 ChoisesSpeed[2] = _("Broadband 128Kbps - 1.5 Mbps");
+	 ChoisesSpeed[3] = _("LAN 10 Mbps or higher");
+	 ChoisesSpeed[4] = _("Custom");
+	 m_choise_speed = new wxComboBox(this,
+					 ID_RDP_COMBOBOX_SPEED,wxT(""),
+					 wxDefaultPosition,
+					 wxSize(220,-1),
+					 5,
+					 ChoisesSpeed,wxCB_READONLY) ;
 	 m_choise_speed->SetValue(ChoisesSpeed[1]);
 	 m_choise_speed->SetSelection(1);
-
-	 m_static_performance  = new wxStaticText(this, wxID_ANY, wxT("Performance settings"),
-						  wxDefaultPosition, wxDefaultSize);
-	 m_checkbox_bitmapcaching = new wxCheckBox( this, wxID_ANY, wxT("&Bitmap caching"),
-						    wxDefaultPosition, wxDefaultSize);
+	 m_static_performance = new wxStaticText(this, wxID_ANY, _("Performance settings"));
+	    wxFont m_static_performance_font;
+	    m_static_performance_font.SetWeight(wxFONTWEIGHT_BOLD);
+	    m_static_performance->SetFont(m_static_performance_font);
+	 m_checkbox_bitmapcaching = new wxCheckBox(this, wxID_ANY, _("&Bitmap caching"));
 	 m_checkbox_bitmapcaching->SetValue(true);
-	 m_checkbox_enablewallpaper = new wxCheckBox( this, wxID_ANY, wxT("&Desktop wallpaper"),
+	 m_checkbox_enablewallpaper = new wxCheckBox( this, wxID_ANY, _("&Desktop wallpaper"),
 						      wxDefaultPosition, wxDefaultSize );
 	 m_checkbox_fullwindowdrag = new wxCheckBox( this, wxID_ANY,
-						     wxT("&Show contents of window while dragging"),
+						     _("&Show contents of window while dragging"),
 						     wxDefaultPosition, wxDefaultSize);
-	 m_checkbox_animation = new wxCheckBox( this, wxID_ANY, wxT("&Animation"),
+	 m_checkbox_animation = new wxCheckBox( this, wxID_ANY, _("&Animation"),
 						wxDefaultPosition, wxDefaultSize );
-	 m_checkbox_themes = new wxCheckBox( this, wxID_ANY, wxT("&Themes"), wxDefaultPosition,
+	 m_checkbox_themes = new wxCheckBox( this, wxID_ANY, _("&Themes"), wxDefaultPosition,
 					     wxDefaultSize );
 	 m_checkbox_themes->SetValue(true);
 
-	 m_boxsizer_2->Add(m_static_speed, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
-	 m_boxsizer_2->Add(m_choise_speed, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+	 m_boxsizer_2->Add(m_static_speed, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+	    m_boxsizer_2->Add(m_choise_speed, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+	    m_boxsizer_2->Add(0,0,1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
 	 m_boxsizer_1->Add(m_boxsizer_2, 0,
 			   wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
 	 m_boxsizer_3->Add(0,0,1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
-	 m_boxsizer_3->Add(m_static_performance, 0,
-			   wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+	 m_boxsizer_3->Add(m_static_performance, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
 	 m_boxsizer_3->Add(0,0,1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
 	 m_boxsizer_1->Add(m_boxsizer_3, 0,
 			   wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
 	 m_boxsizer_4->Add(m_checkbox_fullwindowdrag, 1,
 			   wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
-//	 m_boxsizer_4->Add(, 1,
-//			   wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
-//	 m_boxsizer_1->Add(m_boxsizer_4, 0,
-//			   wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
 	 m_boxsizer_5->Add(m_checkbox_bitmapcaching, 1,
 			   wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
 	 m_boxsizer_5->Add(m_checkbox_themes, 1,
@@ -1962,525 +1968,484 @@ int RDPOptionsDialog_Performance::Build()
 	 this->SetSizer(m_boxsizer_1);
 	 m_boxsizer_1->Fit(this);
 	 m_boxsizer_1->SetSizeHints(this);
+	 choise_speed();
       }
    }
    return error;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
-//! \brief 
-//! \param 
-//! \return 
+//! \brief
+//! \param
+//! \return
 //! \sa
 ///////////////////////////////////////////////////////////////////////////////
 RDPOptionsDialog_Performance::~RDPOptionsDialog_Performance()
 {
-   if (m_static_speed) {delete m_static_speed; m_static_speed = NULL;}
-   if (m_choise_speed) {delete m_choise_speed; m_choise_speed = NULL;}
+	if (m_static_speed) {delete m_static_speed; m_static_speed = NULL;}
+	if (m_choise_speed) {delete m_choise_speed; m_choise_speed = NULL;}
 
-   if (m_static_performance) {delete m_static_performance; m_static_performance = NULL;}
+	if (m_static_performance) {delete m_static_performance; m_static_performance = NULL;}
 
-   if (m_checkbox_enablewallpaper)
-   {delete m_checkbox_enablewallpaper; m_checkbox_enablewallpaper = NULL;}
-   if (m_checkbox_fullwindowdrag)
-   {delete m_checkbox_fullwindowdrag; m_checkbox_fullwindowdrag = NULL;}
-   if (m_checkbox_animation) {delete m_checkbox_animation; m_checkbox_animation = NULL;}
-   if (m_checkbox_themes) {delete m_checkbox_themes; m_checkbox_themes = NULL;}
-   if (m_checkbox_bitmapcaching) {delete m_checkbox_bitmapcaching; m_checkbox_bitmapcaching = NULL;}
-   // if (m_boxsizer_6 != NULL) {delete m_boxsizer_6; m_boxsizer_6 = NULL;}
-   // if (m_boxsizer_5 != NULL) {delete m_boxsizer_5; m_boxsizer_5 = NULL;}
-   // if (m_boxsizer_4 != NULL) {delete m_boxsizer_4; m_boxsizer_4 = NULL;}
-   // if (m_boxsizer_3 != NULL) {delete m_boxsizer_3; m_boxsizer_3 = NULL;}
-   // if (m_boxsizer_2 != NULL) {delete m_boxsizer_2; m_boxsizer_2 = NULL;}
-   // if (m_boxsizer_1 != NULL) {delete m_boxsizer_1; m_boxsizer_1 = NULL;}
+	if (m_checkbox_enablewallpaper)
+	{delete m_checkbox_enablewallpaper; m_checkbox_enablewallpaper = NULL;}
+	if (m_checkbox_fullwindowdrag)
+	{delete m_checkbox_fullwindowdrag; m_checkbox_fullwindowdrag = NULL;}
+	if (m_checkbox_animation) {delete m_checkbox_animation; m_checkbox_animation = NULL;}
+	if (m_checkbox_themes) {delete m_checkbox_themes; m_checkbox_themes = NULL;}
+	if (m_checkbox_bitmapcaching) {delete m_checkbox_bitmapcaching; m_checkbox_bitmapcaching = NULL;}
 }
 
 ///////////////////////////////////////////////////////////////////////////////
-//! \brief 
-//! \param 
-//! \return 
+//! \brief
+//! \param
+//! \return
 //! \sa
 ///////////////////////////////////////////////////////////////////////////////
 Options_HashMap RDPOptionsDialog_Performance::Get_Options()
 {
-   Options_HashMap local_options;
-   if (m_choise_speed)
-   {
-      local_options[wxT("bandwidth")] = wxString::Format(wxT("%i"),
-							 m_choise_speed->GetCurrentSelection());
-   }
-   if (m_checkbox_enablewallpaper)
-   {
-      local_options[wxT("enable_wallpaper")] = wxString::Format(wxT("%i"),
-								m_checkbox_enablewallpaper->GetValue());
-   }
-   if (m_checkbox_fullwindowdrag)
-   {
-      local_options[wxT("enable_full_window_drag")] = wxString::Format(wxT("%i"),
-								       m_checkbox_fullwindowdrag->GetValue());
-   }
-   if (m_checkbox_animation)
-   {
-      local_options[wxT("enable_animation")] = wxString::Format(wxT("%i"),
-								m_checkbox_animation->GetValue());
-   }
-   if (m_checkbox_themes)
-   {
-      local_options[wxT("enable_themes")] = wxString::Format(wxT("%i"),
-							     m_checkbox_themes->GetValue());
-   }
-   if (m_checkbox_bitmapcaching)
-   {
-      local_options[wxT("enable_bitmap_caching")] = wxString::Format(wxT("%i"),
-								     m_checkbox_bitmapcaching->GetValue());
-   }
-   return local_options;
+	Options_HashMap local_options;
+	if (m_choise_speed)
+	{
+		local_options[wxT("bandwidth")] = wxString::Format(wxT("%i"),
+														   m_choise_speed->GetCurrentSelection());
+	}
+	if (m_checkbox_enablewallpaper)
+	{
+		local_options[wxT("enable_wallpaper")] = wxString::Format(wxT("%i"),
+																  m_checkbox_enablewallpaper->GetValue());
+	}
+	if (m_checkbox_fullwindowdrag)
+	{
+		local_options[wxT("enable_full_window_drag")] = wxString::Format(wxT("%i"),
+																		 m_checkbox_fullwindowdrag->GetValue());
+	}
+	if (m_checkbox_animation)
+	{
+		local_options[wxT("enable_animation")] = wxString::Format(wxT("%i"),
+																  m_checkbox_animation->GetValue());
+	}
+	if (m_checkbox_themes)
+	{
+		local_options[wxT("enable_themes")] = wxString::Format(wxT("%i"),
+															   m_checkbox_themes->GetValue());
+	}
+	if (m_checkbox_bitmapcaching)
+	{
+		local_options[wxT("enable_bitmap_caching")] = wxString::Format(wxT("%i"),
+																	   m_checkbox_bitmapcaching->GetValue());
+	}
+	return local_options;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
-//! \brief 
-//! \param 
-//! \return 
+//! \brief
+//! \param
+//! \return
 //! \sa
 ///////////////////////////////////////////////////////////////////////////////
-bool RDPOptionsDialog_Performance::Set_Options(const Options_HashMap *all_options)
+bool RDPOptionsDialog_Performance::SetOptions(const Options_HashMap *all_options)
 {
-   Options_HashMap local_options;
-   local_options = *all_options;
+	Options_HashMap local_options;
+	local_options = *all_options;
 
-   if (m_choise_speed)
-   {
-      m_choise_speed->SetSelection(wxAtoi(local_options[wxT("bandwidth")]));
-   }
-   if (m_checkbox_enablewallpaper)
-   {
-      m_checkbox_enablewallpaper->SetValue(wxAtoi(local_options[wxT("enable_wallpaper")]));
-   }
-   if (m_checkbox_fullwindowdrag)
-   {
-      m_checkbox_fullwindowdrag->SetValue(wxAtoi(local_options[wxT("enable_full_window_drag")]));
-   }
-   if (m_checkbox_animation)
-   {
-      m_checkbox_animation->SetValue(wxAtoi(local_options[wxT("enable_animation")]));
-   }
-   if (m_checkbox_themes)
-   {
-      m_checkbox_themes->SetValue(wxAtoi(local_options[wxT("enable_themes")]));
-   }
-   if (m_checkbox_bitmapcaching)
-   {
-      m_checkbox_bitmapcaching->SetValue(wxAtoi(local_options[wxT("enable_bitmap_caching")]));
-   }
+	if (m_choise_speed)
+	{
+		m_choise_speed->SetSelection(wxAtoi(local_options[wxT("bandwidth")]));
+	}
+	if (m_checkbox_enablewallpaper)
+	{
+		m_checkbox_enablewallpaper->SetValue(wxAtoi(local_options[wxT("enable_wallpaper")]));
+	}
+	if (m_checkbox_fullwindowdrag)
+	{
+		m_checkbox_fullwindowdrag->SetValue(wxAtoi(local_options[wxT("enable_full_window_drag")]));
+	}
+	if (m_checkbox_animation)
+	{
+		m_checkbox_animation->SetValue(wxAtoi(local_options[wxT("enable_animation")]));
+	}
+	if (m_checkbox_themes)
+	{
+		m_checkbox_themes->SetValue(wxAtoi(local_options[wxT("enable_themes")]));
+	}
+	if (m_checkbox_bitmapcaching)
+	{
+		m_checkbox_bitmapcaching->SetValue(wxAtoi(local_options[wxT("enable_bitmap_caching")]));
+	}
 
-   choise_speed();
-   return true;
+	choise_speed();
+	return true;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
-//! \brief 
-//! \param 
-//! \return 
+//! \brief
+//! \param
+//! \return
 //! \sa
 ///////////////////////////////////////////////////////////////////////////////
-void RDPOptionsDialog_Performance::choise_speed()
-{
-   if (!m_choise_speed)	return;
+void RDPOptionsDialog_Performance::choise_speed() {
+	if (!m_choise_speed) return;
 
-   if (m_choise_speed->GetValue() == this->ChoisesSpeed[0])
-   {
-      m_checkbox_enablewallpaper->SetValue(false); 
-      m_checkbox_fullwindowdrag->SetValue(false); 
-      m_checkbox_animation->SetValue(false);
-      m_checkbox_themes->SetValue(false);
-      m_checkbox_bitmapcaching->SetValue(true);
-      return;
-   }
-   if (m_choise_speed->GetValue() == this->ChoisesSpeed[1])
-   {
-      m_checkbox_enablewallpaper->SetValue(false); 
-      m_checkbox_fullwindowdrag->SetValue(false); 
-      m_checkbox_animation->SetValue(false);
-      m_checkbox_themes->SetValue(true);
-      m_checkbox_bitmapcaching->SetValue(true);
-      return;
-   }
-   if (m_choise_speed->GetValue() == this->ChoisesSpeed[2])
-   {
-      m_checkbox_enablewallpaper->SetValue(false); 
-      m_checkbox_fullwindowdrag->SetValue(true); 
-      m_checkbox_animation->SetValue(true);
-      m_checkbox_themes->SetValue(true);
-      m_checkbox_bitmapcaching->SetValue(true);
-      return;
-   }
-   if (m_choise_speed->GetValue() == this->ChoisesSpeed[3])
-   {
-      m_checkbox_enablewallpaper->SetValue(true); 
-      m_checkbox_fullwindowdrag->SetValue(true); 
-      m_checkbox_animation->SetValue(true);
-      m_checkbox_themes->SetValue(true);
-      m_checkbox_bitmapcaching->SetValue(true);
-      return;
-   }
-   // if (m_choise_speed->GetValue() == this->ChoisesSpeed[4])
-   // {
-   //    m_checkbox_enablewallpaper->SetValue(false); 
-   //    m_checkbox_fullwindowdrag->SetValue(false); 
-   //    m_checkbox_animation->SetValue(false);
-   //    m_checkbox_themes->SetValue(true);
-   //    m_checkbox_bitmapcaching->SetValue(true);
-   //    return;
-   // }
+	const int selection = m_choise_speed->GetSelection();
 
-   // m_checkbox_enablewallpaper->SetValue(false); 
-   // m_checkbox_fullwindowdrag->SetValue(false); 
-   // m_checkbox_animation->SetValue(false);
-   // m_checkbox_themes->SetValue(true);
-   // m_checkbox_bitmapcaching->SetValue(true);
+	m_checkbox_enablewallpaper->Disable();
+	m_checkbox_fullwindowdrag->Disable();
+	m_checkbox_animation->Disable();
+	m_checkbox_themes->Disable();
+	m_checkbox_bitmapcaching->Disable();
+
+	switch(selection) {
+		case 0: m_checkbox_enablewallpaper->SetValue(false);
+			m_checkbox_fullwindowdrag->SetValue(false);
+			m_checkbox_animation->SetValue(false);
+			m_checkbox_themes->SetValue(false);
+			m_checkbox_bitmapcaching->SetValue(true);
+			break;
+		case 1: m_checkbox_enablewallpaper->SetValue(false);
+			m_checkbox_fullwindowdrag->SetValue(false);
+			m_checkbox_animation->SetValue(false);
+			m_checkbox_themes->SetValue(true);
+			m_checkbox_bitmapcaching->SetValue(true);
+			break;
+		case 2: m_checkbox_enablewallpaper->SetValue(false);
+			m_checkbox_fullwindowdrag->SetValue(true);
+			m_checkbox_animation->SetValue(true);
+			m_checkbox_themes->SetValue(true);
+			m_checkbox_bitmapcaching->SetValue(true);
+			break;
+		case 3: m_checkbox_enablewallpaper->SetValue(true);
+			m_checkbox_fullwindowdrag->SetValue(true);
+			m_checkbox_animation->SetValue(true);
+			m_checkbox_themes->SetValue(true);
+			m_checkbox_bitmapcaching->SetValue(true);
+			break;
+		case 4:	m_checkbox_enablewallpaper->Enable();
+			m_checkbox_fullwindowdrag->Enable();
+			m_checkbox_animation->Enable();
+			m_checkbox_themes->Enable();
+			m_checkbox_bitmapcaching->Enable();
+			break;
+	}
+
+	// if (m_choise_speed->GetValue() == this->ChoisesSpeed[4])
+	// {
+	//	m_checkbox_enablewallpaper->SetValue(false);
+	//	m_checkbox_fullwindowdrag->SetValue(false);
+	//	m_checkbox_animation->SetValue(false);
+	//	m_checkbox_themes->SetValue(true);
+	//	m_checkbox_bitmapcaching->SetValue(true);
+	//	return;
+	// }
+
+	// m_checkbox_enablewallpaper->SetValue(false);
+	// m_checkbox_fullwindowdrag->SetValue(false);
+	// m_checkbox_animation->SetValue(false);
+	// m_checkbox_themes->SetValue(true);
+	// m_checkbox_bitmapcaching->SetValue(true);
 //   std::cout << "choise_speed_func" << std::endl;
-
-   return;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
-//! \brief 
-//! \param 
-//! \return 
+//! \brief
+//! \param
+//! \return
 //! \sa
 ///////////////////////////////////////////////////////////////////////////////
 void RDPOptionsDialog_Performance::choise_speed_func(wxCommandEvent &event)
 {
-   choise_speed();
+	choise_speed();
 }
 
 ///////////////////////////////////////////////////////////////////////////////
-//! \brief 
-//! \param 
-//! \return 
+//! \brief
+//! \param
+//! \return
 //! \sa
 ///////////////////////////////////////////////////////////////////////////////
 RDPOptionsDialog_Advanced::RDPOptionsDialog_Advanced(RDPOptionsDialog *parent_element)
 {
-   m_boxsizer_1 = NULL;
-   m_boxsizer_2 = NULL;
-   m_boxsizer_3 = NULL;
-   m_boxsizer_4 = NULL;
-   m_gridsizer_1 = NULL;
-   
-   m_static_rdpversion = NULL;
-   m_choise_rdpversion = NULL; 
-   m_checkbox_french = NULL;  
-   m_checkbox_encryption_enable = NULL;	
-   m_checkbox_backingstore = NULL;
-   m_checkbox_usemouse = NULL;
-   m_checkbox_privatecolormap = NULL; 
-   m_checkbox_numlock = NULL;
-   m_checkbox_enablecompress = NULL;
+	m_boxsizer_1 = NULL;
+	m_boxsizer_2 = NULL;
+	m_boxsizer_3 = NULL;
+	m_boxsizer_4 = NULL;
+	m_gridsizer_1 = NULL;
 
-   m_combobox_keyboard_map = NULL;
-   m_static_keyboard_map = NULL;
+	m_static_rdpversion = NULL;
+	m_choise_rdpversion = NULL;
+	m_checkbox_french = NULL;
+	m_checkbox_encryption_enable = NULL;
+	m_checkbox_backingstore = NULL;
+	m_checkbox_usemouse = NULL;
+	m_checkbox_privatecolormap = NULL;
+	m_checkbox_numlock = NULL;
+	m_checkbox_enablecompress = NULL;
 
-   error = 0;
-   if (parent_element != NULL)
-   {
-      parent = parent_element;
-   }
-   else
-   {
-      error = ERROR_PARENT_IS_NULL; 
-   }
+	m_combobox_keyboard_map = NULL;
+	m_static_keyboard_map = NULL;
+
+	error = 0;
+	if (parent_element != NULL)
+		parent = parent_element;
+	else
+		error = ERROR_PARENT_IS_NULL;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
-//! \brief 
-//! \param 
-//! \return 
+//! \brief
+//! \param
+//! \return
 //! \sa
 ///////////////////////////////////////////////////////////////////////////////
-int RDPOptionsDialog_Advanced::Build()
-{
-   if ( error == 0 )
-   {
-      bool state = false;
-      state = Create(parent, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL);
-      if ( state == false) 
-      {
-	 error = ERROR_CANT_CREATE_PANEL;
-      } 
-      else 
-      {
-	m_boxsizer_1 = new wxBoxSizer(wxVERTICAL);
-	m_boxsizer_2 = new wxBoxSizer(wxHORIZONTAL);
-	m_boxsizer_3 = new wxBoxSizer(wxHORIZONTAL);
-	m_boxsizer_4 = new wxBoxSizer(wxHORIZONTAL);
-	m_gridsizer_1 = new wxGridSizer(0, 2, 0, 0);
+int RDPOptionsDialog_Advanced::Build() {
+	if ( error == 0 ) {
+		const bool state = Create(parent, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL);
+		if ( state == false) {
+			error = ERROR_CANT_CREATE_PANEL;
+		} else {
+			m_boxsizer_1 = new wxBoxSizer(wxVERTICAL);
+			m_boxsizer_2 = new wxBoxSizer(wxHORIZONTAL);
+			m_boxsizer_3 = new wxBoxSizer(wxHORIZONTAL);
+			m_boxsizer_4 = new wxBoxSizer(wxHORIZONTAL);
+			m_gridsizer_1 = new wxGridSizer(0, 2, 0, 0);
 
-	 m_static_rdpversion = new wxStaticText(this, wxID_ANY, wxT("Choise RDP version"),
-						wxDefaultPosition, wxDefaultSize);
-	wxString ChoiseVersion[] = {wxT("Use RDP 4"),wxT("Use RDP 5"),wxT("Use RDP 6")};
-	m_choise_rdpversion = new wxComboBox(this,wxID_ANY,wxT(""),wxDefaultPosition,
-					     wxDefaultSize,2,ChoiseVersion,wxCB_READONLY) ;
-	m_choise_rdpversion->SetValue(ChoiseVersion[1]);
-	m_choise_rdpversion->SetSelection(1);
-	m_checkbox_french = new wxCheckBox( this, wxID_ANY,
-					    wxT("&Enable encrypt for French version"),
-					    wxDefaultPosition, wxDefaultSize );
-	m_checkbox_encryption_enable = new wxCheckBox( this, wxID_ANY, wxT("&Enable encryption"),
-						       wxDefaultPosition, wxDefaultSize );
-	m_checkbox_backingstore = new wxCheckBox( this, wxID_ANY, wxT("&Use BackingStore"),
-						  wxDefaultPosition, wxDefaultSize )	;
-	m_checkbox_usemouse = new wxCheckBox( this, wxID_ANY, wxT("&Use mouse"), wxDefaultPosition,
-					      wxDefaultSize );
-	m_checkbox_privatecolormap = new wxCheckBox( this, wxID_ANY, wxT("&Use private color map"),
-						     wxDefaultPosition, wxDefaultSize );
-	m_checkbox_numlock = new wxCheckBox(this,wxID_ANY,wxT("&Num Lock sync"),wxDefaultPosition,
-					    wxDefaultSize);
-	m_checkbox_enablecompress = new wxCheckBox(this,wxID_ANY,wxT("&Enable compress"),
-						   wxDefaultPosition, wxDefaultSize);
-	m_static_keyboard_map = new wxStaticText(this, wxID_ANY, wxT("Choise keyboard map"),
-						 wxDefaultPosition, wxDefaultSize);
+			m_static_rdpversion = new wxStaticText(this, wxID_ANY, _("RDP version"),
+												   wxDefaultPosition, wxDefaultSize);
+			wxString ChoiseVersion[] = {_("Use RDP 4"),_("Use RDP 5"),_("Use RDP 6")};
+			m_choise_rdpversion = new wxComboBox(this,wxID_ANY,wxT(""),wxDefaultPosition,
+												 wxDefaultSize,2,ChoiseVersion,wxCB_READONLY) ;
+			m_choise_rdpversion->SetValue(ChoiseVersion[1]);
+			m_choise_rdpversion->SetSelection(1);
+			m_checkbox_french = new wxCheckBox( this, wxID_ANY,
+												_("&Enable encrypt for French version"),
+												wxDefaultPosition, wxDefaultSize );
+			m_checkbox_encryption_enable = new wxCheckBox( this, wxID_ANY, _("&Enable encryption"),
+														   wxDefaultPosition, wxDefaultSize );
+			m_checkbox_backingstore = new wxCheckBox( this, wxID_ANY, _("&Use BackingStore"),
+													  wxDefaultPosition, wxDefaultSize )	;
+			m_checkbox_usemouse = new wxCheckBox( this, wxID_ANY, _("&Use mouse"), wxDefaultPosition,
+												  wxDefaultSize );
+			m_checkbox_privatecolormap = new wxCheckBox( this, wxID_ANY, _("&Use private color map"),
+														 wxDefaultPosition, wxDefaultSize );
+			m_checkbox_numlock = new wxCheckBox(this,wxID_ANY,_("&Num Lock sync"),wxDefaultPosition,
+												wxDefaultSize);
+			m_checkbox_enablecompress = new wxCheckBox(this,wxID_ANY,_("&Enable compress"),
+													   wxDefaultPosition, wxDefaultSize);
+			m_static_keyboard_map = new wxStaticText(this, wxID_ANY, _("Keyboard map"),
+													 wxDefaultPosition, wxDefaultSize);
 #ifdef __WXGTK__
-	GETRDESKTOPMAPPATH();
-	wxArrayString list_keyboard_map;
-	wxString temp_str;
-	wxDir temp(RDESKTOPMAPPATH);
-	if ((RDESKTOPMAPPATH != wxT("")) && (temp.Exists(RDESKTOPMAPPATH)))
-	{
-		bool check = temp.GetFirst(&temp_str);
-		list_keyboard_map.Add( wxT("en-us"));
-		while (check == true)
-		{
-			if (temp_str != wxT("en-us"))
+			GETRDESKTOPMAPPATH();
+			wxArrayString list_keyboard_map;
+			wxString temp_str;
+			wxDir temp(RDESKTOPMAPPATH);
+			if ((RDESKTOPMAPPATH != wxT("")) && (temp.Exists(RDESKTOPMAPPATH)))
 			{
-				list_keyboard_map.Add(temp_str);
+				bool check = temp.GetFirst(&temp_str);
+				list_keyboard_map.Add( wxT("en-us"));
+				while (check == true)
+				{
+					if ((temp_str != wxT("en-us")) &&
+						(temp_str != wxT("common"))&&
+						(temp_str != wxT("modifiers")))
+					{
+						list_keyboard_map.Add(temp_str);
+					}
+					check = temp.GetNext(&temp_str);
+				}
 			}
-			check = temp.GetNext(&temp_str);
-		}
-	}
-	else 
-	{
-	   list_keyboard_map.Add( wxT("en-us"));
-	   list_keyboard_map.Add( wxT("ru-ru"));
-	}
+			else
+			{
+				list_keyboard_map.Add( wxT("en-us"));
+				list_keyboard_map.Add( wxT("ru-ru"));
+			}
 
-// 	m_combobox_keyboard_map = new wxComboBox(this, wxID_ANY, wxEmptyString, wxDefaultPosition,
-// 						 wxDefaultSize, 0, list_keyboard_map, wxCB_READONLY,
-// 						 wxDefaultValidator, wxT(""));
-// 	//m_combobox_keyboard_map = new wxComboBox(this, wxID_ANY, wxEmptyString, wxDefaultPosition,
-// 	//					 wxDefaultSize, 0, list_keyboard_map, wxCB_READONLY,
-// 	//					 wxDefaultValidator, wxT(""));
-// //	m_combobox_keyboard_map->SetValue(list_keyboard_map);
-// 	m_combobox_keyboard_map->SetSelection(0);
-	m_combobox_keyboard_map = new wxComboBox(this, wxID_ANY,wxT(""),wxDefaultPosition, wxDefaultSize,
-						 list_keyboard_map,wxCB_READONLY,
-						 wxDefaultValidator,wxT(""));
-	m_combobox_keyboard_map->SetValue(list_keyboard_map[0]);
-	m_combobox_keyboard_map->SetSelection(0);
+			m_combobox_keyboard_map = new wxComboBox(this, wxID_ANY,wxT(""),wxDefaultPosition, wxDefaultSize,
+													 list_keyboard_map,wxCB_READONLY,
+													 wxDefaultValidator,wxT(""));
+			m_combobox_keyboard_map->SetValue(list_keyboard_map[0]);
+			m_combobox_keyboard_map->SetSelection(0);
 #endif
 
 #ifdef __WXMSW__
-	wxString list_keyboard_map[] = {_T("en"),_T("ru")};
-	m_combobox_keyboard_map = new wxComboBox(this,wxID_ANY, wxT("") , wxDefaultPosition,
-						 wxDefaultSize,2,list_keyboard_map,wxCB_READONLY);
-	m_combobox_keyboard_map->SetValue(ChoiseVersion[1]);
-	m_combobox_keyboard_map->SetSelection(1);
+			wxString list_keyboard_map[] = {wxT("en"),wxT("ru")};
+			m_combobox_keyboard_map = new wxComboBox(this,wxID_ANY, wxT("") , wxDefaultPosition,
+													 wxDefaultSize,2,list_keyboard_map,wxCB_READONLY);
+			m_combobox_keyboard_map->SetValue(ChoiseVersion[1]);
+			m_combobox_keyboard_map->SetSelection(1);
 #endif
-	m_boxsizer_2->Add(m_static_rdpversion, 1,
-			  wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
-	m_boxsizer_2->Add(m_choise_rdpversion, 1,
-			  wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
-	m_boxsizer_1->Add(m_boxsizer_2, 0,
-			  wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
-	m_boxsizer_3->Add(m_checkbox_french, 1,
-			  wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
-	m_boxsizer_1->Add(m_boxsizer_3, 0,
-			  wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
-	m_gridsizer_1->Add(m_checkbox_encryption_enable, 1,
-			   wxALL|wxEXPAND|wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL, 5);
-	m_gridsizer_1->Add(m_checkbox_backingstore, 1,
-			   wxALL|wxEXPAND|wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL, 5);
-	m_gridsizer_1->Add(m_checkbox_usemouse, 1,
-			   wxALL|wxEXPAND|wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL, 5);
-	m_gridsizer_1->Add(m_checkbox_privatecolormap, 1,
-			   wxALL|wxEXPAND|wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL, 5);
-	m_gridsizer_1->Add(m_checkbox_numlock, 1,
-			   wxALL|wxEXPAND|wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL, 5);
-	m_gridsizer_1->Add(m_checkbox_enablecompress, 1,
-			   wxALL|wxEXPAND|wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL, 5);
-	m_boxsizer_1->Add(m_gridsizer_1, 0,
-			  wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
-	m_boxsizer_4->Add(m_static_keyboard_map, 0,
-			  wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
-	m_boxsizer_4->Add(m_combobox_keyboard_map, 0,
-			  wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
-	m_boxsizer_4->Add(0,0,1, wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
-	m_boxsizer_1->Add(m_boxsizer_4, 0, wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
-	m_boxsizer_1->Add(0,0,1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
-	this->SetSizer(m_boxsizer_1);
-	m_boxsizer_1->Fit(this);
-	m_boxsizer_1->SetSizeHints(this);
-      }
-   }
-   return error;
-  
+			m_boxsizer_2->Add(m_static_rdpversion, 1,
+							  wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+			m_boxsizer_2->Add(m_choise_rdpversion, 1,
+							  wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+			m_boxsizer_1->Add(m_boxsizer_2, 0,
+							  wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+			m_boxsizer_3->Add(m_checkbox_french, 1,
+							  wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+			m_boxsizer_1->Add(m_boxsizer_3, 0,
+							  wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+			m_gridsizer_1->Add(m_checkbox_encryption_enable, 1,
+							   wxALL|wxEXPAND|wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL, 5);
+			m_gridsizer_1->Add(m_checkbox_backingstore, 1,
+							   wxALL|wxEXPAND|wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL, 5);
+			m_gridsizer_1->Add(m_checkbox_usemouse, 1,
+							   wxALL|wxEXPAND|wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL, 5);
+			m_gridsizer_1->Add(m_checkbox_privatecolormap, 1,
+							   wxALL|wxEXPAND|wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL, 5);
+			m_gridsizer_1->Add(m_checkbox_numlock, 1,
+							   wxALL|wxEXPAND|wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL, 5);
+			m_gridsizer_1->Add(m_checkbox_enablecompress, 1,
+							   wxALL|wxEXPAND|wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL, 5);
+			m_boxsizer_1->Add(m_gridsizer_1, 0,
+							  wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+			m_boxsizer_4->Add(m_static_keyboard_map, 0,
+							  wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+			m_boxsizer_4->Add(m_combobox_keyboard_map, 0,
+							  wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+			m_boxsizer_4->Add(0,0,1, wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+			m_boxsizer_1->Add(m_boxsizer_4, 0, wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+			m_boxsizer_1->Add(0,0,1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+			this->SetSizer(m_boxsizer_1);
+			m_boxsizer_1->Fit(this);
+			m_boxsizer_1->SetSizeHints(this);
+		}
+	}
+	return error;
+
 }
 
 ///////////////////////////////////////////////////////////////////////////////
-//! \brief 
-//! \param 
-//! \return 
+//! \brief
+//! \param
+//! \return
 //! \sa
 ///////////////////////////////////////////////////////////////////////////////
 RDPOptionsDialog_Advanced::~RDPOptionsDialog_Advanced()
 {
-   if (m_static_rdpversion != NULL) {delete m_static_rdpversion; m_static_rdpversion = NULL;}
-   if (m_choise_rdpversion != NULL) {delete m_choise_rdpversion; m_choise_rdpversion = NULL;}
-   if (m_checkbox_french != NULL) {delete m_checkbox_french; m_checkbox_french = NULL;}
-   if (m_checkbox_encryption_enable != NULL) {delete m_checkbox_encryption_enable; m_checkbox_encryption_enable = NULL;}
-   if (m_checkbox_backingstore != NULL) {delete m_checkbox_backingstore; m_checkbox_backingstore = NULL;}
-   if (m_checkbox_usemouse != NULL) {delete m_checkbox_usemouse; m_checkbox_usemouse = NULL;}
-   if (m_checkbox_privatecolormap != NULL) {delete m_checkbox_privatecolormap; m_checkbox_privatecolormap = NULL;}
-   if (m_checkbox_numlock != NULL) {delete m_checkbox_numlock; m_checkbox_numlock = NULL;}
-   if (m_checkbox_enablecompress != NULL) {delete m_checkbox_enablecompress; m_checkbox_enablecompress = NULL;}
+	if (m_static_rdpversion != NULL) {delete m_static_rdpversion; m_static_rdpversion = NULL;}
+	if (m_choise_rdpversion != NULL) {delete m_choise_rdpversion; m_choise_rdpversion = NULL;}
+	if (m_checkbox_french != NULL) {delete m_checkbox_french; m_checkbox_french = NULL;}
+	if (m_checkbox_encryption_enable != NULL) {delete m_checkbox_encryption_enable; m_checkbox_encryption_enable = NULL;}
+	if (m_checkbox_backingstore != NULL) {delete m_checkbox_backingstore; m_checkbox_backingstore = NULL;}
+	if (m_checkbox_usemouse != NULL) {delete m_checkbox_usemouse; m_checkbox_usemouse = NULL;}
+	if (m_checkbox_privatecolormap != NULL) {delete m_checkbox_privatecolormap; m_checkbox_privatecolormap = NULL;}
+	if (m_checkbox_numlock != NULL) {delete m_checkbox_numlock; m_checkbox_numlock = NULL;}
+	if (m_checkbox_enablecompress != NULL) {delete m_checkbox_enablecompress; m_checkbox_enablecompress = NULL;}
 
-   if (m_static_keyboard_map) {delete m_static_keyboard_map; m_static_keyboard_map = NULL;}
-   if (m_combobox_keyboard_map) {delete m_combobox_keyboard_map; m_combobox_keyboard_map = NULL;}
-   // if (m_boxsizer_1 != NULL) {delete m_boxsizer_1; m_boxsizer_1 = NULL;}
-   // if (m_boxsizer_2 != NULL) {delete m_boxsizer_2; m_boxsizer_2 = NULL;}
-   // if (m_boxsizer_3 != NULL) {delete m_boxsizer_3; m_boxsizer_3 = NULL;}
-   // if (m_boxsizer_4 != NULL) {delete m_boxsizer_4; m_boxsizer_4 = NULL;}
-   // if (m_gridsizer_1 != NULL) {delete m_gridsizer_1; m_gridsizer_1  = NULL;}
+	if (m_static_keyboard_map) {delete m_static_keyboard_map; m_static_keyboard_map = NULL;}
+	if (m_combobox_keyboard_map) {delete m_combobox_keyboard_map; m_combobox_keyboard_map = NULL;}
+	// if (m_boxsizer_1 != NULL) {delete m_boxsizer_1; m_boxsizer_1 = NULL;}
+	// if (m_boxsizer_2 != NULL) {delete m_boxsizer_2; m_boxsizer_2 = NULL;}
+	// if (m_boxsizer_3 != NULL) {delete m_boxsizer_3; m_boxsizer_3 = NULL;}
+	// if (m_boxsizer_4 != NULL) {delete m_boxsizer_4; m_boxsizer_4 = NULL;}
+	// if (m_gridsizer_1 != NULL) {delete m_gridsizer_1; m_gridsizer_1  = NULL;}
 }
 
 ///////////////////////////////////////////////////////////////////////////////
-//! \brief 
-//! \param 
-//! \return 
+//! \brief
+//! \param
+//! \return
 //! \sa
 ///////////////////////////////////////////////////////////////////////////////
 Options_HashMap RDPOptionsDialog_Advanced::Get_Options()
 {
-   Options_HashMap local_options;
-   if (m_choise_rdpversion != NULL)
-   {
-      local_options[wxT("use_rdp_version")] = wxString::Format(wxT("%i"),
-				     m_choise_rdpversion->GetCurrentSelection());
-   }
-   if (m_checkbox_french != NULL)
-   {
-      local_options[wxT("encription_enable_french")] = wxString::Format(wxT("%i"),
-									m_checkbox_french->GetValue());
-   }
-   if (m_checkbox_encryption_enable != NULL)
-   {
-      local_options[wxT("encription_enable_new")] = wxString::Format(wxT("%i"),
-								     m_checkbox_encryption_enable->GetValue());
-   }
-   if (m_checkbox_backingstore != NULL)
-   {
-      local_options[wxT("backing_store")] = wxString::Format(wxT("%i"),
-							     m_checkbox_backingstore->GetValue());
-   }
-   if (m_checkbox_usemouse != NULL)
-   {
-      local_options[wxT("send_mouse_event")] = wxString::Format(wxT("%i"),
-								m_checkbox_usemouse->GetValue());
-   }
-   if (m_checkbox_privatecolormap != NULL)
-   {
-      local_options[wxT("private_color_map")] = wxString::Format(wxT("%i"),
-								 m_checkbox_privatecolormap->GetValue());
-   }
-   if (m_checkbox_numlock != NULL)
-   {
-      local_options[wxT("numlock_sync")] = wxString::Format(wxT("%i"),
-							    m_checkbox_numlock->GetValue());
-   }
-   if (m_checkbox_enablecompress != NULL)
-   {
-      local_options[wxT("enable_compres")] = wxString::Format(wxT("%i"),
-							      m_checkbox_enablecompress->GetValue());
-   }
-   if (m_combobox_keyboard_map)
-   {
-      local_options[wxT("keyboard_map")] = wxString::Format(wxT("%i"),
-							    m_combobox_keyboard_map->GetCurrentSelection());
-   }
-//    // result += GetParamInt (wxT("connection_count"), (int)(rdpc.dwConnectionCount));
+	Options_HashMap local_options;
+	if (m_choise_rdpversion != NULL)
+	{
+		local_options[wxT("use_rdp_version")] = wxString::Format(wxT("%i"),
+																 m_choise_rdpversion->GetCurrentSelection());
+	}
+	if (m_checkbox_french != NULL)
+	{
+		local_options[wxT("encription_enable_french")] = wxString::Format(wxT("%i"),
+																		  m_checkbox_french->GetValue());
+	}
+	if (m_checkbox_encryption_enable != NULL)
+	{
+		local_options[wxT("encription_enable_new")] = wxString::Format(wxT("%i"),
+																	   m_checkbox_encryption_enable->GetValue());
+	}
+	if (m_checkbox_backingstore != NULL)
+	{
+		local_options[wxT("backing_store")] = wxString::Format(wxT("%i"),
+															   m_checkbox_backingstore->GetValue());
+	}
+	if (m_checkbox_usemouse != NULL)
+	{
+		local_options[wxT("send_mouse_event")] = wxString::Format(wxT("%i"),
+																  m_checkbox_usemouse->GetValue());
+	}
+	if (m_checkbox_privatecolormap != NULL)
+	{
+		local_options[wxT("private_color_map")] = wxString::Format(wxT("%i"),
+																   m_checkbox_privatecolormap->GetValue());
+	}
+	if (m_checkbox_numlock != NULL)
+	{
+		local_options[wxT("numlock_sync")] = wxString::Format(wxT("%i"),
+															  m_checkbox_numlock->GetValue());
+	}
+	if (m_checkbox_enablecompress != NULL)
+	{
+		local_options[wxT("enable_compres")] = wxString::Format(wxT("%i"),
+																m_checkbox_enablecompress->GetValue());
+	}
+	if (m_combobox_keyboard_map)
+	{
+		local_options[wxT("keyboard_map")] = wxString::Format(wxT("%i"),
+															  m_combobox_keyboard_map->GetCurrentSelection());
+	}
+//	// result += GetParamInt (wxT("connection_count"), (int)(rdpc.dwConnectionCount));
 
-//    // // ICA Citrix
-//    // result += GetParamStr (wxT("ica_server_ini"), (rdpc.server_ini));
-//    // result += GetParamStr (wxT("ica_client_ini"), (rdpc.client_ini));
-//    // result += GetParamInt (wxT("ICASound"), (int)(rdpc.bIcaSound));
-//    // result += GetParamInt (wxT("ICASoundType"), (int)(rdpc.bIcaSoundType));
-//    // result += GetParamInt (wxT("ICAEncryption"), (int)(rdpc.bIcaEncryption));
-//    // result += GetParamInt (wxT("ICAEncryptionType"), (int)(rdpc.ica_encryption));
+//	// // ICA Citrix
+//	// result += GetParamStr (wxT("ica_server_ini"), (rdpc.server_ini));
+//	// result += GetParamStr (wxT("ica_client_ini"), (rdpc.client_ini));
+//	// result += GetParamInt (wxT("ICASound"), (int)(rdpc.bIcaSound));
+//	// result += GetParamInt (wxT("ICASoundType"), (int)(rdpc.bIcaSoundType));
+//	// result += GetParamInt (wxT("ICAEncryption"), (int)(rdpc.bIcaEncryption));
+//	// result += GetParamInt (wxT("ICAEncryptionType"), (int)(rdpc.ica_encryption));
 
-//    // result += GetParamStr (wxT("ica_connection_file"), (rdpc.ica_file));
-//    // result += GetParamInt (wxT("bUseApplication"), (int)(rdpc.bUseApplication));
-//    // result += GetParamStr (wxT("ICAApplication"), (rdpc.IcaApplication));
+//	// result += GetParamStr (wxT("ica_connection_file"), (rdpc.ica_file));
+//	// result += GetParamInt (wxT("bUseApplication"), (int)(rdpc.bUseApplication));
+//	// result += GetParamStr (wxT("ICAApplication"), (rdpc.IcaApplication));
 
-//    // result += GetParamInt (wxT("bProxyType"), (int)(rdpc.bProxyType));
-//    // result += GetParamStr (wxT("ProxyAddr"), (rdpc.ProxyAddr));
-//    // result += GetParamStr (wxT("ProxyPort"), (rdpc.ProxyPort));
-//    // result += GetParamStr (wxT("ProxyUserId"), (rdpc.ProxyUserId));
-//    // result += GetParamStr (wxT("ProxyPassword"),
-//    // (rdpc.ProxyPassword));
+//	// result += GetParamInt (wxT("bProxyType"), (int)(rdpc.bProxyType));
+//	// result += GetParamStr (wxT("ProxyAddr"), (rdpc.ProxyAddr));
+//	// result += GetParamStr (wxT("ProxyPort"), (rdpc.ProxyPort));
+//	// result += GetParamStr (wxT("ProxyUserId"), (rdpc.ProxyUserId));
+//	// result += GetParamStr (wxT("ProxyPassword"),
+//	// (rdpc.ProxyPassword));
 
    return local_options;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
-//! \brief 
-//! \param 
-//! \return 
+//! \brief
+//! \param
+//! \return
 //! \sa
 ///////////////////////////////////////////////////////////////////////////////
-bool RDPOptionsDialog_Advanced::Set_Options(const Options_HashMap *all_options)
-{
-   Options_HashMap local_options;
-   local_options = *all_options;
-   
-   
-      if (m_choise_rdpversion != NULL)
-      {
-	 m_choise_rdpversion->SetSelection(wxAtoi(local_options[wxT("use_rdp_version")]));
-      }
-      if (m_checkbox_french != NULL)
-      {
-	 m_checkbox_french->SetValue(wxAtoi(local_options[wxT("encription_enable_french")]));
-      }
-      if (m_checkbox_encryption_enable != NULL)
-      {
-	 m_checkbox_encryption_enable->SetValue(wxAtoi(local_options[wxT("encription_enable_new")]));
-      }
-      if (m_checkbox_backingstore != NULL)
-      {
-	 m_checkbox_backingstore->SetValue(wxAtoi(local_options[wxT("backing_store")]));
-      }
-      if (m_checkbox_usemouse != NULL)
-      {
-	 m_checkbox_usemouse->SetValue(wxAtoi(local_options[wxT("send_mouse_event")]));
-      }
-      if (m_checkbox_privatecolormap != NULL)
-      {
-	 m_checkbox_privatecolormap->SetValue(wxAtoi(local_options[wxT("private_color_map")]));
-      }
-      if (m_checkbox_numlock != NULL)
-      {
-	 m_checkbox_numlock->SetValue(wxAtoi(local_options[wxT("numlock_sync")]));
-      }
-      if (m_checkbox_enablecompress != NULL)
-      {
-	 m_checkbox_enablecompress->SetValue(wxAtoi(local_options[wxT("enable_compres")]));
-      }
-      if (m_combobox_keyboard_map)
-      {
-	 m_combobox_keyboard_map->SetSelection(wxAtoi(local_options[wxT("keyboard_map")]));
-      }
-   
-   return true;
+bool RDPOptionsDialog_Advanced::SetOptions(const Options_HashMap *all_options) {
+	Options_HashMap local_options = *all_options;
+
+	m_choise_rdpversion->SetSelection(wxAtoi(local_options[wxT("use_rdp_version")]));
+
+	m_checkbox_french->SetValue(wxAtoi(local_options[wxT("encription_enable_french")]));
+
+	m_checkbox_encryption_enable->SetValue(wxAtoi(local_options[wxT("encription_enable_new")]));
+
+	m_checkbox_backingstore->SetValue(wxAtoi(local_options[wxT("backing_store")]));
+
+	m_checkbox_usemouse->SetValue(wxAtoi(local_options[wxT("send_mouse_event")]));
+
+	m_checkbox_privatecolormap->SetValue(wxAtoi(local_options[wxT("private_color_map")]));
+
+	m_checkbox_numlock->SetValue(wxAtoi(local_options[wxT("numlock_sync")]));
+
+	m_checkbox_enablecompress->SetValue(wxAtoi(local_options[wxT("enable_compres")]));
+
+	m_combobox_keyboard_map->SetSelection(wxAtoi(local_options[wxT("keyboard_map")]));
+
+	return true;
 }
 
 

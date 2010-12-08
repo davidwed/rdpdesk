@@ -1,0 +1,69 @@
+// UltraVncAx.idl : IDL source for UltraVncAx.dll
+//
+
+// This file will be processed by the MIDL tool to
+// produce the type library (UltraVncAx.tlb) and marshalling code.
+
+import "oaidl.idl";
+import "ocidl.idl";
+#include "olectl.h"
+	
+
+	[
+		object,
+		uuid(8002D0F3-4218-44A7-9A23-FBA2D176F432),
+		dual,
+		helpstring("IUltraVncAxObj Interface"),
+		pointer_default(unique)
+	]
+	interface IUltraVncAxObj : IDispatch
+	{
+		[id(1), helpstring("method Connect")] HRESULT Connect();
+		[id(2), helpstring("method Disconnect")] HRESULT Disconnect();
+		[propget, id(3), helpstring("property Connected")] HRESULT Connected([out, retval] BOOL *pVal);
+		[propget, id(4), helpstring("property Server")] HRESULT Server([out, retval] BSTR *pVal);
+		[propput, id(4), helpstring("property Server")] HRESULT Server([in] BSTR newVal);
+		[id(5), helpstring("method ExecuteCommand")] HRESULT ExecuteCommand( [in] BSTR cmdText, [out, retval] BSTR *pRetVal );
+		[propget, id(6), helpstring("property IsInitialized")] HRESULT IsInitialized([out, retval] BOOL *pVal);
+		[propput, id(7), helpstring("property Password")] HRESULT Password([in] BSTR newVal);
+		[propput, id(8), helpstring("property Scale")] HRESULT Scale([in] VARIANT_BOOL newVal);
+		[propput, id(9), helpstring("property FullScreen")] HRESULT FullScreen([in] VARIANT_BOOL newVal);
+		[propput, id(10), helpstring("property Shared")] HRESULT Shared([in] VARIANT_BOOL newVal);
+		[propput, id(11), helpstring("property ProxyHost")] HRESULT ProxyHost([in] BSTR newVal);
+		[propput, id(12), helpstring("property ProxyPort")] HRESULT ProxyPort([in] ULONG newVal);
+		[propput, id(13), helpstring("property ViewOnly")] HRESULT ViewOnly([in] VARIANT_BOOL newVal);
+		[id(14), helpstring("method sendCAD")] HRESULT sendCAD(void);
+	};
+
+[
+	uuid(987AD05D-338A-4E92-991B-F30C31824968),
+	version(1.0),
+	helpstring("UltraVncAx 1.0 Type Library")
+]
+library ULTRAVNCAXLib
+{
+	importlib("stdole32.tlb");
+	importlib("stdole2.tlb");
+
+	[
+		uuid(27E8B694-5F19-446B-8A4A-6A5E086D8254),
+		helpstring("_IUltraVncAxObjEvents Interface")
+	]
+	dispinterface _IUltraVncAxObjEvents
+	{
+		properties:
+		methods:
+		[id(1), helpstring("method OnConnected")] HRESULT OnConnected();
+		[id(2), helpstring("method OnDisconnected")] HRESULT OnDisconnected(BSTR reason);
+	};
+
+	[
+		uuid(36D64AE5-6626-4DDE-A958-2FF1D46D4424),
+		helpstring("UltraVncAxObj Class")
+	]
+	coclass UltraVncAxObj
+	{
+		[default] interface IUltraVncAxObj;
+		[default, source] dispinterface _IUltraVncAxObjEvents;
+	};
+};

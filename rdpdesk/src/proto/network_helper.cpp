@@ -1,12 +1,12 @@
 ///////////////////////////////////////////////////////////////////////////////
 // File name:   network_helper.cpp
 // Version:     0.0
-// Purpose: 
-// Time-stamp:  "2010-03-03 18:21:43" 
+// Purpose:
+// Time-stamp:  "2010-12-06 20:02:21"
 // E-mail:      rdpdesk@rdpdesk.com
-// $Id$ 
-// Copyright:   (c) 2009-2010 RDPDesk <rdpdesk@rdpdesk.com> 
-// Licence:     GPL v3 
+// $Id$
+// Copyright:   (c) 2009-2010 RDPDesk <rdpdesk@rdpdesk.com>
+// Licence:     GPL v3
 ///////////////////////////////////////////////////////////////////////////////
 
 #include "network_helper.hpp"
@@ -19,16 +19,16 @@ NetworkHelper::~NetworkHelper()
 {
 }
 
-BOOL NetworkHelper::Test(wxString hostname,wxString port)
+BOOL_L NetworkHelper::Test(wxString hostname,wxString port)
 {
 	unsigned long iPort;
 	port.ToULong(&iPort);
 	return Test(hostname,iPort);
 }
 
-BOOL NetworkHelper::Test(wxString hostname,USHORT port)
+BOOL_L NetworkHelper::Test(wxString hostname,USHORT port)
 {
-	BOOL bRes = FALSE;
+	BOOL_L bRes = FALSE;
 #ifdef __WXMSW__
 	WSAData wsa;
 	WSAStartup(MAKEWORD(1,1),&wsa);
@@ -47,14 +47,14 @@ BOOL NetworkHelper::Test(wxString hostname,USHORT port)
 	{
 #endif
 #ifdef __WXMSW__
-	if(sock == INVALID_SOCKET) 
+	if(sock == INVALID_SOCKET)
 	{
 		WSACleanup();
 #endif
 
 		goto end;
 	}
-	
+
 	if ((hp = gethostbyname(hostname.To8BitData())) == NULL)
 	{
 		lAddr = inet_addr(hostname.To8BitData());
@@ -67,7 +67,7 @@ BOOL NetworkHelper::Test(wxString hostname,USHORT port)
 #ifdef __WXGTK__
 			close(sock);
 #endif
-		
+
 			goto end;
 		}
 		else
@@ -86,17 +86,18 @@ BOOL NetworkHelper::Test(wxString hostname,USHORT port)
 	if (connect(sock, (struct sockaddr *)&sin, sizeof(sin)) == -1)
 	{
 		close(sock);
+	}
 #endif
 #ifdef __WXMSW__
-	if(connect(sock, (struct sockaddr *)&sin, sizeof(sin)) == SOCKET_ERROR) 
+	if(connect(sock, (struct sockaddr *)&sin, sizeof(sin)) == SOCKET_ERROR)
 	{
 		closesocket(sock);
 		WSACleanup();
-#endif
 		goto end;
 	}
-	
-	
+#endif
+
+
 	shutdown(sock,2);
 #ifdef __WXMSW__
 	closesocket(sock);

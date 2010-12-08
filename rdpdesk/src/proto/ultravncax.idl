@@ -1,0 +1,82 @@
+// Generated .IDL file (by the OLE/COM Object Viewer)
+// 
+// typelib filename: ultravncax.dll
+
+[
+  uuid(987AD05D-338A-4E92-991B-F30C31824968),
+  version(1.0),
+  helpstring("UltraVncAx 1.0 Type Library")
+]
+library ULTRAVNCAXLib
+{
+    // TLib :     // TLib : OLE Automation : {00020430-0000-0000-C000-000000000046}
+    importlib("stdole2.tlb");
+
+    // Forward declare all types defined in this typelib
+    dispinterface _IUltraVncAxObjEvents;
+    interface IUltraVncAxObj;
+
+    [
+      uuid(27E8B694-5F19-446B-8A4A-6A5E086D8254),
+      helpstring("_IUltraVncAxObjEvents Interface")
+    ]
+    dispinterface _IUltraVncAxObjEvents {
+        properties:
+        methods:
+            [id(0x00000001), helpstring("method OnConnected")]
+            HRESULT OnConnected();
+            [id(0x00000002), helpstring("method OnDisconnected")]
+            HRESULT OnDisconnected(BSTR reason);
+    };
+
+    [
+      uuid(36D64AE5-6626-4DDE-A958-2FF1D46D4424),
+      helpstring("UltraVncAxObj Class")
+    ]
+    coclass UltraVncAxObj {
+        [default] interface IUltraVncAxObj;
+        [default, source] dispinterface _IUltraVncAxObjEvents;
+    };
+
+    [
+      odl,
+      uuid(8002D0F3-4218-44A7-9A23-FBA2D176F432),
+      helpstring("IUltraVncAxObj Interface"),
+      dual,
+      oleautomation
+    ]
+    interface IUltraVncAxObj : IDispatch {
+        [id(0x00000001), helpstring("method Connect")]
+        HRESULT Connect();
+        [id(0x00000002), helpstring("method Disconnect")]
+        HRESULT Disconnect();
+        [id(0x00000003), propget, helpstring("property Connected")]
+        HRESULT Connected([out, retval] long* pVal);
+        [id(0x00000004), propget, helpstring("property Server")]
+        HRESULT Server([out, retval] BSTR* pVal);
+        [id(0x00000004), propput, helpstring("property Server")]
+        HRESULT Server([in] BSTR pVal);
+        [id(0x00000005), helpstring("method ExecuteCommand")]
+        HRESULT ExecuteCommand(
+                        [in] BSTR cmdText, 
+                        [out, retval] BSTR* pRetVal);
+        [id(0x00000006), propget, helpstring("property IsInitialized")]
+        HRESULT IsInitialized([out, retval] long* pVal);
+        [id(0x00000007), propput, helpstring("property Password")]
+        HRESULT Password([in] BSTR rhs);
+        [id(0x00000008), propput, helpstring("property Scale")]
+        HRESULT Scale([in] VARIANT_BOOL rhs);
+        [id(0x00000009), propput, helpstring("property FullScreen")]
+        HRESULT FullScreen([in] VARIANT_BOOL rhs);
+        [id(0x0000000a), propput, helpstring("property Shared")]
+        HRESULT Shared([in] VARIANT_BOOL rhs);
+        [id(0x0000000b), propput, helpstring("property ProxyHost")]
+        HRESULT ProxyHost([in] BSTR rhs);
+        [id(0x0000000c), propput, helpstring("property ProxyPort")]
+        HRESULT ProxyPort([in] unsigned long rhs);
+        [id(0x0000000d), propput, helpstring("property ViewOnly")]
+        HRESULT ViewOnly([in] VARIANT_BOOL rhs);
+        [id(0x0000000e), helpstring("method sendCAD")]
+        HRESULT sendCAD();
+    };
+};

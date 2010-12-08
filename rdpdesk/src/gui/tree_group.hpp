@@ -1,12 +1,12 @@
 ///////////////////////////////////////////////////////////////////////////////
 // File name:   tree_group.hpp
 // Version:     0.0
-// Purpose: 
-// Time-stamp:  "2010-03-07 23:31:12" 
+// Purpose:
+// Time-stamp:  "2010-11-24 17:06:26"
 // E-mail:      rdpdesk@rdpdesk.com
-// $Id$ 
-// Copyright:   (c) 2009-2010 RDPDesk <rdpdesk@rdpdesk.com> 
-// Licence:     GPL v3 
+// $Id$
+// Copyright:   (c) 2009-2010 RDPDesk <rdpdesk@rdpdesk.com>
+// Licence:     GPL v3
 ///////////////////////////////////////////////////////////////////////////////
 
 #ifndef TREEGROUP
@@ -71,7 +71,7 @@ public:
 	DWORD dwConnCount;
 	int uniq_name;
 private:
-    
+
 };
 
 
@@ -79,26 +79,26 @@ class RDPTree : public wxTreeCtrl
 {
 public:
 
-   RDPTree(Main_Frame * main, wxWindow *parent, const wxWindowID id,
+   RDPTree(MainFrame * main, wxWindow *parent, const wxWindowID id,
 	   const wxPoint& pos, const wxSize& size,
 	   long style);
 
    virtual ~RDPTree(){};
-		
+
    wxArrayTreeItemIds items;
    wxTreeItemId root;
-   
+
    wxTreeItemId base;
    void LoadSettings();
    void ReloadSettings();
 
-   Main_Frame * main_frame;
+   MainFrame * const mainFrame;
    wxString * string_server_list;
    int lineCount;
    wxString currstring;
    int curr_uniq_name;
 
-   BOOL IsFavorites;
+   BOOL_L IsFavorites;
 
    int fcount;
    int fmax;
@@ -112,44 +112,44 @@ public:
    void on_end_drag(wxTreeEvent& event);
 
    void createmenu(wxTreeEvent& event);
-	
+
    void on_event_from_wxrdp(wxCommandEvent& event);
    void from_wxrdp(wxString info, int type);
    void from_wxrdp(int info_uniq_name, int type);
-	
+
    void on_deleting_item(wxTreeEvent& event);
    void on_activated(wxTreeEvent& event);
    void on_key_down(wxTreeEvent& event);
    void on_tree_connect(wxCommandEvent& event);
    void on_tree_delete(wxCommandEvent& event);
-   void on_tree_change(wxCommandEvent& event);
+   void OnTreeChange(wxCommandEvent& event);
    void on_tree_clone(wxCommandEvent& event);
-   void on_add_group(wxCommandEvent& event);
+   void OnAddToGroup(wxCommandEvent& event);
    void on_tree_delete_from_favorites(wxCommandEvent& event);
    void on_tree_set_credentials(wxCommandEvent& event);
    void on_kill_focus(wxFocusEvent& event);
 private:
    int find_min_favorites(int * un);
-   BOOL IsFavoritesFull();
+   BOOL_L IsFavoritesFull();
 
    void sort_group(wxTreeItemId group);
-   BOOL IsGroup(wxTreeItemId item);
-   BOOL IsRDPConn(wxTreeItemId item);
-   wxTreeItemId create_new_group();
+   BOOL_L IsGroup(wxTreeItemId item);
+   BOOL_L IsRDPConn(wxTreeItemId item);
+   wxTreeItemId CreateNewGroup();
    void delete_item(wxTreeItemId id);
    void delete_this_item(wxString item_text);
    wxTreeItemId find_this_item(wxString item_text);
-   wxTreeItemId find_item_by_uniq_name(int uniq_name);
+   wxTreeItemId FindItemByUniqName(int uniqName) const;
    wxTreeItemId find_this_group(wxString group_name);
 
    void redraw(wxTreeItemId item);
-   void move_item(wxTreeItemId item, wxTreeItemId group);
+   void MoveItem(wxTreeItemId item, wxTreeItemId group);
 
    void get_rdpbase_item(wxTreeItemId item, RDPConn * rdpconn);
    void refresh_rdpbase_item(RDPConn * rdpconn);
-	
-   BOOL item_already_exists(wxTreeItemId id);
-   BOOL group_already_exists(wxString group_name);
+
+   BOOL_L item_already_exists(wxTreeItemId id);
+   BOOL_L group_already_exists(wxString group_name);
 
    void add_to_favorites(wxTreeItemId id,  Options_HashMap local_options);
 
@@ -161,15 +161,15 @@ private:
 class TreePanel : public wxPanel
 {
 public:
-    TreePanel(Main_Frame * main, wxSplitterWindow * parent, wxWindowID id,const wxPoint& pt,const wxSize& sz, long style);
-		
-	Main_Frame * main_frame;
+    TreePanel(MainFrame * main, wxSplitterWindow * parent, wxWindowID id,const wxPoint& pt,const wxSize& sz, long style);
+
+	MainFrame * const mainFrame;
 	RDPTree * rdptree;
 
 	RDPTree * favorites;
-	
+
 	wxToolBarBase * toolBar;
-	wxAuiToolBar * auitoolbar;	
+	wxAuiToolBar * auitoolbar;
 	wxPanel * m_panel_toolbar;
 	wxNotebook * tree_notebook;
 
@@ -184,7 +184,7 @@ private:
 
 	void OnToolLeftClick(wxCommandEvent& event);
 	DECLARE_EVENT_TABLE()
-  
+
 };
 
 #define TREEPANEL(ptr) ((TreePanel *)ptr)
@@ -218,7 +218,7 @@ private:
 	wxBoxSizer * sizer_btn;
 	wxFlexGridSizer * sizer_creds;
 	wxBoxSizer * sizer_top;
-	
+
 	void button_ok_func(wxCommandEvent &event);
 	void button_cancel_func(wxCommandEvent &event);
 

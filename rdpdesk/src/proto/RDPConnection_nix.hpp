@@ -1,12 +1,11 @@
 ///////////////////////////////////////////////////////////////////////////////
 // File name:   RDPConnection_nix.hpp
 // Version:     0.0
-// Purpose: 
-// Time-stamp:  "2010-03-23 12:56:08" 
+// Time-stamp:  "2010-11-24 17:34:43"
 // E-mail:      rdpdesk@rdpdesk.com
-// $Id$ 
-// Copyright:   (c) 2009-2010 RDPDesk <rdpdesk@rdpdesk.com> 
-// Licence:     GPL v3 
+// $Id$
+// Copyright:   (c) 2009-2010 RDPDesk <rdpdesk@rdpdesk.com>
+// Licence:     GPL v3
 ///////////////////////////////////////////////////////////////////////////////
 
 #ifndef WXRDP_NIX_HPP
@@ -41,17 +40,6 @@
 #include <X11/Intrinsic.h>
 #include <X11/keysym.h>
 
-
-/*
-#include "res/emblem-unreadable.xpm"
-//#include "res/user-desktop.xpm"
-#include "res/input-keyboard16.xpm"
-#include "res/go-down16.xpm"
-#include "res/preferences-system-windows.xpm"
-#include "res/camera-photo16.xpm"
-#include "res/media-eject.xpm"
-
-*/
 const int WXRDP_OK = 7000;
 const int RDESKTOP_NOT_FOUND = 7001;
 const int WXRDP_HOST_EMPTY = 7002;
@@ -75,7 +63,7 @@ class wxContRDP : public wxWindow
 {
 public:
 	wxContRDP(wxWindow * parent,wxWindowID id,const wxPoint& point,const wxSize& size);
-	
+
 void	on_set_focus(wxFocusEvent& event);
 void	on_kill_focus(wxFocusEvent& event);
 void	on_mouse_events(wxMouseEvent& event);
@@ -89,44 +77,45 @@ class RDPFullScreen : public wxTopLevelWindow
    friend class RDPConnection;
 
 public:
-   RDPFullScreen(wxContRDP * cnt, Options_HashMap options);
+	RDPFullScreen(MainFrame *main, wxContRDP * cnt, Options_HashMap options);
    ~RDPFullScreen();
 private:
 
 //	wxRDP * rdp;
-   RDPConnection * rdp;
+	RDPConnection * rdp;
 
-   //RDPConn rdpc;
-   Options_HashMap local_options;
-   
-   wxContRDP * cnt_old;
+	//RDPConn rdpc;
+	Options_HashMap local_options;
 
-   wxScrolledWindow * win;
-   ToolbarCnt * win2;
-   FullScreenToolBar * tb;
+	wxContRDP * cnt_old;
 
-   void on_toolbar(wxCommandEvent& event);
-   void Leave();
-   void dialog_hotkeys(wxKeyEvent &event);
+	wxScrolledWindow * win;
+	ToolbarCnt * win2;
+	FullScreenToolBar * tb;
+
+	void on_toolbar(wxCommandEvent& event);
+	void Leave();
+	void dialog_hotkeys(wxKeyEvent &event);
+	MainFrame *main_frame;
    DECLARE_EVENT_TABLE()
 };
 
 class RDPConnection : public BasicConnection
 {
 public:
-   RDPConnection(Main_Frame * m_frame, Options_HashMap all_options,
+   RDPConnection(MainFrame * m_frame, Options_HashMap all_options,
 		 wxWindow *parent, wxWindowID id = -1,
 		 const wxPoint& pos = wxDefaultPosition,
 		 const wxSize& size = wxDefaultSize,
 		 long style = 0,
 		 const wxString& name = wxPanelNameStr);
 
-   
+
 
 
    ~RDPConnection();
 
-	
+
    virtual bool DoConnection();
    virtual bool Connect();
    virtual void Disconnect();
@@ -134,9 +123,9 @@ public:
    virtual void CentreConnection();
 
 
-	
+
    bool DoRdp();
-   void FullScreen(BOOL bRestore);
+   void FullScreen(BOOL_L bRestore);
    void photo();
 
    void close_rdesktop_prg(wxCommandEvent& event);
@@ -144,7 +133,7 @@ public:
    void event_dispatcher(wxCommandEvent& event);
    void OnIdle(wxIdleEvent& event);
    void OnTimer(wxTimerEvent& event);
-   bool request_close(BOOL bDetach = FALSE);
+   bool request_close(BOOL_L bDetach = FALSE);
    bool get_state();
    void set_state(bool state_to_set);
    bool get_proc_state();
@@ -157,7 +146,7 @@ public:
    void on_set_focus(wxFocusEvent& event);
    void on_leave_focus(wxFocusEvent& event);
    void on_any_mouse_event(wxMouseEvent& event);
-   void EnableFocus(BOOL state);
+   void EnableFocus(BOOL_L state);
    void CheckFocus();
 
 
@@ -165,15 +154,15 @@ public:
    void CheckWindow();
 
 
-   virtual void SendKey(BOOL cad = FALSE);
+   virtual void SendKey(BOOL_L cad = FALSE);
    void SendXKeyEvent(XKeyEvent * event);
-   virtual void GrabAll(BOOL state);
-//	BOOL bGrab;
+   virtual void GrabAll(BOOL_L state);
+//	BOOL_L bGrab;
 
 
 //	wxContRDP * cnt;
 
-   BOOL bClosing;
+   BOOL_L bClosing;
 
 //	RDPConn rdpconn;
    wxString Info;
@@ -182,7 +171,7 @@ public:
 
 //	Main_Frame * main_frame;
 //	bool bConnected;
-//	BOOL bFullScreen;
+//	BOOL_L bFullScreen;
 
    RDPFullScreen * fullscreen_frame;
 
@@ -211,7 +200,7 @@ private:
    wxString m_filename;
    //RDPConn rdp_settings;
    Options_HashMap local_options;
-   
+
    XID xid;
    wxString Error_mgs;
    wxString Messgage;

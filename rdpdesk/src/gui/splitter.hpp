@@ -1,12 +1,12 @@
 ///////////////////////////////////////////////////////////////////////////////
 // File name:   splitter.hpp
 // Version:     0.0
-// Purpose: 
-// Time-stamp:  "2010-03-21 21:13:11" 
+// Purpose:
+// Time-stamp:  "2010-11-24 17:03:44"
 // E-mail:      rdpdesk@rdpdesk.com
-// $Id$ 
-// Copyright:   (c) 2009-2010 RDPDesk <rdpdesk@rdpdesk.com> 
-// Licence:     GPL v3 
+// $Id$
+// Copyright:   (c) 2009-2010 RDPDesk <rdpdesk@rdpdesk.com>
+// Licence:     GPL v3
 ///////////////////////////////////////////////////////////////////////////////
 
 #ifndef SPLITTER_HPP
@@ -33,7 +33,7 @@ class PanelBitmapBtn;
 class ConnSplitter : public wxSplitterWindow
 {
 public:
-   ConnSplitter(Main_Frame * main,Options_HashMap local_options ,wxWindow * parent, wxWindowID id = -1,
+   ConnSplitter(MainFrame * main,Options_HashMap local_options ,wxWindow * parent, wxWindowID id = -1,
 		const wxPoint& pos = wxDefaultPosition,
 		const wxSize& size = wxDefaultSize,
 		long style = 0,
@@ -51,12 +51,12 @@ private:
    void on_kill_focus(wxFocusEvent& event);
    void on_activate(wxActivateEvent& event);
 public:
-   BOOL state;
+   BOOL_L state;
 
-   Main_Frame * main_frame;
+   MainFrame * main_frame;
 
    wxTimer m_timer_screenshot;
-	
+
    void create_screenshot();
    void switch_state();
 
@@ -66,10 +66,10 @@ public:
 #endif
 
    void init();
-   BOOL check_conn();
+   BOOL_L check_conn();
    //RDPConn rdpc;
    Options_HashMap options;
-   
+
    DECLARE_EVENT_TABLE();
 };
 

@@ -1,12 +1,12 @@
 ///////////////////////////////////////////////////////////////////////////////
 // File name:   bencoded.cpp
 // Version:     0.0
-// Purpose: 
-// Time-stamp:  "2010-03-10 19:17:27" 
+// Purpose:
+// Time-stamp:  "2010-12-03 16:08:38"
 // E-mail:      rdpdesk@rdpdesk.com
-// $Id$ 
-// Copyright:   (c) 2009-2010 RDPDesk <rdpdesk@rdpdesk.com> 
-// Licence:     GPL v3 
+// $Id$
+// Copyright:   (c) 2009-2010 RDPDesk <rdpdesk@rdpdesk.com>
+// Licence:     GPL v3
 ///////////////////////////////////////////////////////////////////////////////
 
 #include "bencoded.hpp"
@@ -17,16 +17,16 @@ WX_DEFINE_OBJARRAY(OptionsArray);
 WX_DEFINE_OBJARRAY(Connections_List);
 
 
-////////////////////////////////////////////////////// 
+//////////////////////////////////////////////////////
 
 CryptSettings::CryptSettings()
 {
    long lt = wxGetLocalTime();
    srand((unsigned)time(NULL));
-	
+
    char random;
    for (int i = 0; i < 256; i ++)
-   {	
+   {
       random = (char)(rand() % 256);
       random ^= (lt*(i+1) % 128);
       base_key.Append(random);
@@ -34,19 +34,19 @@ CryptSettings::CryptSettings()
    state = false;
 }
 
-CryptSettings::CryptSettings(wxString Path)
+CryptSettings::CryptSettings(const wxString &Path)
 {
 	wxFile key_file;
 	key_file.Open(Path);
 	int filelenght = (int)key_file.SeekEnd();
 	key_file.Seek(0);
-	char * key_buff = new char[filelenght];
+	char *key_buff = new char[filelenght];
 	key_file.Read(key_buff, filelenght);
-	base_key = wxString::From8BitData(key_buff,filelenght); 
-	delete key_buff;
-	this->Path = Path;
-	key_file.Close(); 
-	key_file.Detach(); 
+	base_key = wxString::From8BitData(key_buff, filelenght);
+	delete[] key_buff;
+	this->localPath = Path;
+	key_file.Close();
+	key_file.Detach();
 	state = false;
 }
 
@@ -55,16 +55,16 @@ void CryptSettings::WriteKey(wxString Path)
 	wxFile key_file;
 	key_file.Open(Path,wxFile::write);
 	key_file.Write(base_key.To8BitData(),base_key.Length());
-	key_file.Close(); 
-	this->Path = Path;
+	key_file.Close();
+	this->localPath = Path;
 }
-	
+
 void CryptSettings::create_context_simple()
 {
-	BYTE * key = (BYTE *)base_key.GetData(); 
+	BYTE_L * key = (BYTE_L *)base_key.GetData();
 	int keylen = 256;
-	BYTE Sbox[256];
-	BYTE temp;
+	BYTE_L Sbox[256];
+	BYTE_L temp;
 	for (int i = 0; i < 256; i ++)
 	{
 		Sbox[i] = i;
@@ -95,10 +95,10 @@ void CryptSettings::create_context_simple()
 void CryptSettings::create_context_aes()
 {
 	unsigned int keygen[] = {20000, 30000}; //{12345, 54321};
-	
+
 	int i, nrounds = 5;
 	unsigned char key[32], iv[32];
-  
+
 	i = EVP_BytesToKey(EVP_aes_256_cbc(), EVP_sha1(), (unsigned char *)&keygen, (unsigned char *)base_key.GetData(), 256, nrounds, key, iv);
 	if (i != 32)
 	{
@@ -121,7 +121,7 @@ char * CryptSettings::SimpleCryptData(char * data, int * len)
 	unsigned char * returndata = (unsigned char *)malloc(_len);
 	for (int i = 0; i < _len; i ++)
 	{
-		unsigned char tmp = (BYTE)data[i];
+		unsigned char tmp = (BYTE_L)data[i];
 		tmp ^= real_key[i % 256];
 		returndata[i] = tmp;
 	}
@@ -131,7 +131,7 @@ char * CryptSettings::SimpleCryptData(char * data, int * len)
 char * CryptSettings::AESEncryptData(char * data, int * len)
 {
 	if (!len || data == NULL || !state) return NULL;
-	
+
 	int c_len = *len + AES_BLOCK_SIZE, f_len = 0;
 	unsigned char *returndata = (unsigned char *)malloc(c_len);
 	EVP_EncryptInit_ex(&en_aes, NULL, NULL, NULL, NULL);
@@ -166,7 +166,7 @@ int Benc::generate_uniq_name(base_conn * bc)
 	}
 	else
 	{
-		BOOL ok = FALSE;
+		BOOL_L ok = FALSE;
 		while(!ok)
 		{
 			ok = TRUE;
@@ -182,7 +182,7 @@ int Benc::generate_uniq_name(base_conn * bc)
 			for (int i = 0; i < lc ; i++)
 			{
 				RDPConn rdpc = Get(bc,i);
-				if (rdpc.uniq_name == temp) 
+				if (rdpc.uniq_name == temp)
 				{
 					ok = FALSE;
 				}
@@ -206,7 +206,7 @@ int Benc::generate_uniq_name()
 void Benc::Add(base_conn * bc, const RDPConn rdpconn)
 {
 	int lc = (int)bc->Count();
-	BOOL find = FALSE;
+	BOOL_L find = FALSE;
 	for (int i = 0; i < lc; i++)
 	{
 		if (rdpconn.uniq_name == bc->Item(i).uniq_name)
@@ -219,23 +219,23 @@ void Benc::Add(base_conn * bc, const RDPConn rdpconn)
 	}
 	if (!find)
 	{
-		bc->Add(rdpconn); 
+		bc->Add(rdpconn);
 	}
 }
 
 void Benc::Delete(base_conn * bc, int num)
 {
-	bc->RemoveAt(num); 
+	bc->RemoveAt(num);
 }
 
 void Benc::Delete(base_conn * bc, RDPConn rdpc)
 {
-	
+
 }
 
 int Benc::Count(base_conn * bc)
 {
-	return (int)bc->Count(); 
+	return (int)bc->Count();
 }
 
 RDPConn Benc::Get(base_conn * bc, int line_number)
@@ -264,20 +264,20 @@ bool Benc::Save(base_conn * bc)
 	programsettings ps = load_main_settings();
 	if (!ps.bAutosave)
 	{
-		wxMessageDialog dialog(NULL, _T("Rewrite base?"),_T("Program closing..."), wxNO_DEFAULT|wxYES_NO|wxICON_INFORMATION);
-		if (dialog.ShowModal() != wxID_YES) return false; 
+		wxMessageDialog dialog(NULL, _("Rewrite base?"),_("Program closing..."), wxNO_DEFAULT|wxYES_NO|wxICON_INFORMATION);
+		if (dialog.ShowModal() != wxID_YES) return false;
 	}
 
-	wxBusyInfo wait(wxT("Please wait"));
+	//wxBusyInfo wait(wxT("Please wait"));
 	GETBASEPATH();
 	wxString filename = BASEPATH;
-	
+
 	wxFile * ftemp = new wxFile();
 	ftemp->Create(filename,true);
 	ftemp->Close();
 	ftemp->Detach();
 	delete ftemp;
-	
+
 	int lc = (int)bc->Count();
 
 	for (int i = 0; i < lc; i++)
@@ -295,12 +295,12 @@ bool Benc::Save(Connections_List *all_connection_records)
    programsettings ps = load_main_settings();
    if (!ps.bAutosave)
    {
-      wxMessageDialog dialog(NULL, wxT("Rewrite base?"),wxT("Program closing..."),
+      wxMessageDialog dialog(NULL, _("Rewrite base?"),_("Program closing..."),
 			     wxNO_DEFAULT|wxYES_NO|wxICON_INFORMATION);
-      if (dialog.ShowModal() != wxID_YES) return false; 
+      if (dialog.ShowModal() != wxID_YES) return false;
    }
 
-   wxBusyInfo wait(wxT("Please wait"));
+   //wxBusyInfo wait(wxT("Please wait"));
    GETBASEPATH();
    wxString filename = BASEPATH;
    wxFile * ftemp = new wxFile();
@@ -308,7 +308,7 @@ bool Benc::Save(Connections_List *all_connection_records)
    ftemp->Close();
    ftemp->Detach();
    delete ftemp;
-   for (int i = 0; i < all_connection_records->Count(); i++)
+   for (int i = 0; i < (int)all_connection_records->Count(); i++)
    {
 
       wxString str = GetString(&(all_connection_records->Item(i)));
@@ -320,11 +320,11 @@ bool Benc::Save(Connections_List *all_connection_records)
 
 bool Benc::Load(base_conn * bc)
 {
-	wxBusyInfo wait(wxT("Please wait"));
+	//wxBusyInfo wait(wxT("Please wait"));
 
 
 	programsettings ps = load_main_settings();
-	if (ps.bUseCrypt) 
+	if (ps.bUseCrypt)
 	{
 		GETKEYPATH()
 		if (!wxFileExists(KEYPATH))
@@ -342,7 +342,7 @@ bool Benc::Load(base_conn * bc)
 	{
 		return true;
 	}
-	
+
 	int lc = FileCount(filename);
 
 	for (int i = 0; i < lc ; i++)
@@ -373,13 +373,13 @@ wxString Benc::FileGetString(wxString filename, int num)
 	if ((dwFileSize == 0) || (dwFileSize == wxInvalidOffset))
 	{
 		fBase.Close();
-		fBase.Detach(); 
+		fBase.Detach();
 		return wxEmptyString;
 	}
-	
+
 	fBase.Seek(0);
 	char buff[8];
-		
+
 	int CurrentLine = 0;
 	for (int i = 0; i < (int)dwFileSize; i++)
 	{
@@ -395,15 +395,15 @@ wxString Benc::FileGetString(wxString filename, int num)
 					strSize.Empty();
 					int iCurrPos = i + 1;
 					wxString temp;
-			
+
 					memset(buff,0,8);
-					BOOL read = TRUE;
+					BOOL_L read = TRUE;
 					while(read)
 					{
 						fBase.Seek(iCurrPos);
 						fBase.Read(buff,1);
 						temp = wxString::Format(wxT("%s"),buff);
-						
+
 						if (temp.IsNumber())
 						{
 							strSize += temp;
@@ -414,22 +414,22 @@ wxString Benc::FileGetString(wxString filename, int num)
 							read = FALSE;
 						}
 					}
-								
+
 					int iSize = wxAtoi(strSize);
-					
+
 					iCurrPos = i + NumberCount(iSize) + 2;
-					
+
 					char * tempbuffer = new char[iSize + 1];
 					memset(tempbuffer,0,(iSize + 1));
 					fBase.Seek(iCurrPos);
 					fBase.Read(tempbuffer,iSize);
-					
+
 					char * decrypt_data = NULL;
 					int crypt_len = iSize;
 
 					CryptSettings * cr = NULL;
 					programsettings ps = load_main_settings();
-					if (ps.bUseCrypt) 
+					if (ps.bUseCrypt)
 					{
 						GETKEYPATH()
 						if (!wxFileExists(KEYPATH))
@@ -470,7 +470,7 @@ wxString Benc::FileGetString(wxString filename, int num)
 							result += tempbuffer[i];
 						}
 					}
-					delete tempbuffer;
+					delete [] tempbuffer;
 					fBase.Close();
 					fBase.Detach();
 					if (decrypt_data != NULL)
@@ -496,7 +496,7 @@ wxString Benc::FileGetString(wxString filename, int num)
 	}
 	fBase.Detach();
 	return wxT("");
-	
+
 }
 
 int Benc::FileCount(wxString filename)
@@ -533,27 +533,27 @@ int Benc::FileCount(wxString filename)
    if (fBase.IsOpened())
    {
       fBase.Close();
-		 
+
    }
    fBase.Detach();
    return iResult;
 }
 
-BOOL Benc::isNormalLine(wxFile * fBase, int pos)
+BOOL_L Benc::isNormalLine(wxFile * fBase, int pos)
 {
 	wxString strSize;
 	strSize.Empty();
 	int iCurrPos = pos + 1;
 	wxString temp;
-	
+
 	char buff[8];
 	memset(buff,0,8);
-	BOOL read = TRUE;
+	BOOL_L read = TRUE;
 	while(read)
 	{
 		fBase->Seek(iCurrPos);
 		fBase->Read(buff,1);
-		temp = wxString::Format(wxT("%s"),buff); 
+		temp = wxString::Format(wxT("%s"),buff);
 		if (temp.IsNumber())
 		{
 			strSize += temp;
@@ -564,14 +564,14 @@ BOOL Benc::isNormalLine(wxFile * fBase, int pos)
 			read = FALSE;
 		}
 	}
-	if (strSize.IsEmpty()) 
+	if (strSize.IsEmpty())
 	{
 		return FALSE;
 	}
-	
+
 	int iSize = wxAtoi(strSize);
 	int iEndPos = pos + 2 + NumberCount(iSize) + iSize;
-			
+
 	fBase->Seek(iEndPos);
 	fBase->Read(buff,2);
 	wxString str_end;
@@ -591,7 +591,7 @@ wxString Benc::GetString(const RDPConn rdpc)
 	RDPConn lrdpconn = rdpc;
 	wxString result;
 	wxString temp;
-	
+
 	iCurrSize = 0;
 	result.Empty();
 	result += GetParamInt (wxT("uniq_name"), (int)(rdpc.uniq_name));
@@ -612,22 +612,22 @@ wxString Benc::GetString(const RDPConn rdpc)
 	result += GetParamStr (wxT("directory"), (rdpc.directory));
 	result += GetParamInt (wxT("bUseProgram"), (rdpc.bUseProgram));
 	result += GetParamInt (wxT("bProgramMaximized"), (rdpc.bProgramMaximized));
-	result += GetParamStr (wxT("keyboard_map"), (rdpc.keyboard_map)); 
+	result += GetParamStr (wxT("keyboard_map"), (rdpc.keyboard_map));
 	result += GetParamInt (wxT("keyboard"), (rdpc.keyboard));
 	result += GetParamInt (wxT("bEnableBitmapCaching"), (rdpc.bEnableBitmapCaching));
 	result += GetParamInt (wxT("bEnableWallpaper"), (rdpc.bEnableWallpaper));
 	result += GetParamInt (wxT("bEnableFullWindowDrag"), (rdpc.bEnableFullWindowDrag));
 	result += GetParamInt (wxT("bEnableAnimation"), (rdpc.bEnableAnimation));
 	result += GetParamInt (wxT("bEnableThemes"), (rdpc.bEnableThemes));
-	result += GetParamInt (wxT("bandwidth"),(int) (rdpc.bandwidth)); 
+	result += GetParamInt (wxT("bandwidth"),(int) (rdpc.bandwidth));
 	result += GetParamInt (wxT("backing_store"), (rdpc.backing_store));
-	result += GetParamInt (wxT("encription_enable_french"), (rdpc.encription_enable_french)); 
+	result += GetParamInt (wxT("encription_enable_french"), (rdpc.encription_enable_french));
 	result += GetParamInt (wxT("encription_enable_new"), (rdpc.encription_enable_new));
-	result += GetParamInt (wxT("use_rdp_version"), (int)(rdpc.use_rdp_version)); 
-	result += GetParamInt (wxT("send_mouse_event"), (rdpc.send_mouse_event)); 
-	result += GetParamInt (wxT("private_color_map"), (rdpc.private_color_map)); 
-	result += GetParamInt (wxT("single_mode"), (int)(rdpc.single_mode)); 
-	result += GetParamInt (wxT("numlock_sync"), (rdpc.numlock_sync)); 
+	result += GetParamInt (wxT("use_rdp_version"), (int)(rdpc.use_rdp_version));
+	result += GetParamInt (wxT("send_mouse_event"), (rdpc.send_mouse_event));
+	result += GetParamInt (wxT("private_color_map"), (rdpc.private_color_map));
+	result += GetParamInt (wxT("single_mode"), (int)(rdpc.single_mode));
+	result += GetParamInt (wxT("numlock_sync"), (rdpc.numlock_sync));
 	result += GetParamInt (wxT("enable_compres"), (rdpc.enable_compres));
 	result += GetParamStr (wxT("group_name"), (rdpc.group_name));
 	result += GetParamStr (wxT("connection_name"), (rdpc.connection_name));
@@ -720,8 +720,8 @@ wxString Benc::GetString(const RDPConn rdpc)
 	fBase.Flush();
 	fBase.Close();
 	fBase.Detach();
-	
-	delete buff_for_write;
+
+	delete [] buff_for_write;
 	if (encrypt_data != NULL)
 	{
 		free(encrypt_data);
@@ -733,18 +733,18 @@ wxString Benc::GetString(const RDPConn rdpc)
 wxString Benc::GetString(const Options_HashMap *all_options)
 {
 //   std::cout << __LINE__ <<  " "<< __func__ << std::endl;
-   
+
    wxString result;
    wxString temp;
    Options_HashMap local_options;
-   
+
    Options_HashMap::iterator it;
 
    local_options = *all_options;
-   
+
    iCurrSize = 0;
    result.Empty();
-   
+
    for (it = local_options.begin(); it != local_options.end(); ++it)
    {
       wxString key = it->first, value = it->second;
@@ -787,7 +787,7 @@ wxString Benc::GetString(const Options_HashMap *all_options)
 
    GETBASEPATH()
       wxFile fBase(BASEPATH);
-   fBase.Open(BASEPATH,wxFile::write_append);	
+   fBase.Open(BASEPATH,wxFile::write_append);
 
    char str_temp[128];
    memset(str_temp,0,128);
@@ -808,7 +808,7 @@ wxString Benc::GetString(const Options_HashMap *all_options)
    fBase.Flush();
    fBase.Close();
    fBase.Detach();
-   delete buff_for_write;
+   delete [] buff_for_write;
    if (encrypt_data != NULL)
    {
       free(encrypt_data);
@@ -828,18 +828,18 @@ int Benc::ByteLen(wxString str)
 		if (str.GetChar(i) < 256 )
 		{
 			result++;
-		} 
+		}
 		else
 		{
 			result += 2;
 		}
-		
+
 	}
-	
+
 	return result;
 #endif
 #ifdef __WXMSW__
-	return (int)strlen(str.To8BitData()); 
+	return (int)strlen(str.To8BitData());
 #endif
 }
 
@@ -857,16 +857,14 @@ wxString Benc::ConvertToUTF8(wxString str)
 
 	wxString result;
 	result.Empty();
-	
+
 	int len = ByteLen(str);
-	char * temp = new char[len];
+	char temp[len];
 
 	strncpy(temp,str.utf8_str().data(),len);
 	for (int i = 0; i < len; i ++)
-	{
 		result += temp[i];
-	}
-	delete temp;
+
 	return result;
 
 #endif
@@ -898,16 +896,16 @@ wxString Benc::GetParamStr(wxString name, wxString param)
 {
 	wxString result;
 	result.Empty();
-	wxString temp_name = wxString::Format(wxT("%s"), (ConvertToUTF8(name)).data()); 
+	wxString temp_name = wxString::Format(wxT("%s"), (ConvertToUTF8(name)).data());
 	int iNameSize = ByteLen(temp_name);
 	wxString temp_param = wxString::Format(wxT("%s"), (ConvertToUTF8(param)).data());
 	int iParamSize = ByteLen(temp_param);
 	iCurrSize += (NumberCount(iNameSize) + iNameSize + NumberCount(iParamSize) + iParamSize + 6);
-	result = wxString::Format(wxT("d%i:%ss%i:%see"),iNameSize,temp_name.data(),iParamSize,temp_param.data()); 
+	result = wxString::Format(wxT("d%i:%ss%i:%see"),iNameSize,temp_name.data(),iParamSize,temp_param.data());
 	//wxMessageBox(result);
-	
+
 	return result;
-	
+
 }
 
 wxString Benc::GetParamInt(wxString name, int param)
@@ -916,17 +914,17 @@ wxString Benc::GetParamInt(wxString name, int param)
 	result.Empty();
 	wxString temp;
 	temp = wxString::Format(wxT("%i"),param);
-	wxString temp_name = wxString::Format(wxT("%s"), (ConvertToUTF8(name)).data()); 
+	wxString temp_name = wxString::Format(wxT("%s"), (ConvertToUTF8(name)).data());
 	int iNameSize = ByteLen(temp_name);
 	wxString temp_param = wxString::Format(wxT("%s"), (ConvertToUTF8(temp)).data());
 	int iParamSize = ByteLen(temp_param);
-	
+
 	iCurrSize += (NumberCount(iNameSize) + iNameSize + NumberCount(iParamSize) + iParamSize + 6);
-	result = wxString::Format(wxT("d%i:%ss%i:%see"),iNameSize,temp_name.data(),iParamSize,temp_param.data()); 
+	result = wxString::Format(wxT("d%i:%ss%i:%see"),iNameSize,temp_name.data(),iParamSize,temp_param.data());
 	return result;
 }
 
-BOOL Benc::GetOptions(wxString str, int pos, RDPConn * rdp_conn)
+BOOL_L Benc::GetOptions(wxString str, int pos, RDPConn * rdp_conn)
 {
    wxString strSize;
    strSize.Empty();
@@ -936,12 +934,12 @@ BOOL Benc::GetOptions(wxString str, int pos, RDPConn * rdp_conn)
    temp.Empty();
    char buff[8];
    memset(buff,0,8);
-   BOOL read = TRUE;
+   BOOL_L read = TRUE;
    while(read)
    {
-      temp.Empty(); 
-      tmp = str.GetChar(iCurrPos); 
-      temp += tmp;  
+      temp.Empty();
+      tmp = str.GetChar(iCurrPos);
+      temp += tmp;
       if (temp.IsNumber())
       {
 	 strSize += temp;
@@ -952,23 +950,23 @@ BOOL Benc::GetOptions(wxString str, int pos, RDPConn * rdp_conn)
 	 read = FALSE;
       }
    }
-   if (strSize.IsEmpty()) 
+   if (strSize.IsEmpty())
    {
       return FALSE;
    }
    int iSize = wxAtoi(strSize);
-   int iSize_ = iSize;	
+   int iSize_ = iSize;
 
-   wxString param_name = str.Mid(pos + 2 + NumberCount(iSize),iSize); 
-	
-   iSize_ = iSize;		
+   wxString param_name = str.Mid(pos + 2 + NumberCount(iSize),iSize);
+
+   iSize_ = iSize;
    int iEndPos = pos + 2 + NumberCount(iSize) + iSize;
-   strSize.Empty(); 
+   strSize.Empty();
    iCurrPos = iEndPos + 1;
    read = TRUE;
    while(read)
    {
-      temp = str.GetChar(iCurrPos); 
+      temp = str.GetChar(iCurrPos);
       if (temp.IsNumber())
       {
 	 strSize += temp;
@@ -979,7 +977,7 @@ BOOL Benc::GetOptions(wxString str, int pos, RDPConn * rdp_conn)
 	 read = FALSE;
       }
    }
-   if (strSize.IsEmpty()) 
+   if (strSize.IsEmpty())
    {
       return FALSE;
    }
@@ -996,12 +994,12 @@ BOOL Benc::GetOptions(wxString str, int pos, RDPConn * rdp_conn)
       rdp_conn->hostname = ConvertFromUTF8(param_value.To8BitData());
       status = true;
    }
-   else if (param_name == wxT("username")) 
+   else if (param_name == wxT("username"))
    {
       rdp_conn->username = ConvertFromUTF8(param_value.To8BitData());
       status = true;
-   } 
-   else if (param_name == wxT("password"))	
+   }
+   else if (param_name == wxT("password"))
    {
       rdp_conn->password = ConvertFromUTF8(param_value.To8BitData());
       status = true;
@@ -1011,12 +1009,12 @@ BOOL Benc::GetOptions(wxString str, int pos, RDPConn * rdp_conn)
       rdp_conn->domain = ConvertFromUTF8(param_value.To8BitData());
       status = true;
    }
-   else if (param_name == wxT("port")) 
+   else if (param_name == wxT("port"))
    {
       rdp_conn->port = ConvertFromUTF8(param_value.To8BitData());
       status = true;
-   } 
-   else if (param_name == wxT("attach_to_console")) 
+   }
+   else if (param_name == wxT("attach_to_console"))
    {
       if (param_value == wxT("0"))
       {
@@ -1029,7 +1027,7 @@ BOOL Benc::GetOptions(wxString str, int pos, RDPConn * rdp_conn)
 	 status = true;
       }
    }
-   else if (param_name == wxT("width")) 
+   else if (param_name == wxT("width"))
    {
       rdp_conn->width = wxAtoi(param_value);
       if (rdp_conn->width <= 0 )
@@ -1038,7 +1036,7 @@ BOOL Benc::GetOptions(wxString str, int pos, RDPConn * rdp_conn)
       }
       status = true;
    }
-   else if (param_name == wxT("heigth")) 
+   else if (param_name == wxT("heigth"))
    {
       rdp_conn->heigth = wxAtoi(param_value);
       if (rdp_conn->heigth <= 0 )
@@ -1047,7 +1045,7 @@ BOOL Benc::GetOptions(wxString str, int pos, RDPConn * rdp_conn)
       }
       status = true;
    }
-   else if (param_name == wxT("color_depth")) 
+   else if (param_name == wxT("color_depth"))
    {
       rdp_conn->color_depth = wxAtoi(param_value);
       if ((rdp_conn->color_depth != 8 ) && (rdp_conn->color_depth != 15 ) && (rdp_conn->color_depth != 16 ) &&
@@ -1057,7 +1055,7 @@ BOOL Benc::GetOptions(wxString str, int pos, RDPConn * rdp_conn)
       }
       status = true;
    }
-   else if (param_name == wxT("bSmartSizing")) 
+   else if (param_name == wxT("bSmartSizing"))
    {
       if (param_value == wxT("0"))
       {
@@ -1083,7 +1081,7 @@ BOOL Benc::GetOptions(wxString str, int pos, RDPConn * rdp_conn)
 	 status = true;
       }
    }
-   else if (param_name == wxT("bFullScreen")) 
+   else if (param_name == wxT("bFullScreen"))
    {
       if (param_value == wxT("0"))
       {
@@ -1096,7 +1094,7 @@ BOOL Benc::GetOptions(wxString str, int pos, RDPConn * rdp_conn)
 	 status = true;
       }
    }
-   else if (param_name == wxT("force_update_screen")) 
+   else if (param_name == wxT("force_update_screen"))
    {
       if (param_value == wxT("0"))
       {
@@ -1109,30 +1107,30 @@ BOOL Benc::GetOptions(wxString str, int pos, RDPConn * rdp_conn)
 	 status = true;
       }
    }
-   else if (param_name == wxT("shell")) 
+   else if (param_name == wxT("shell"))
    {
       rdp_conn->shell = ConvertFromUTF8(param_value.To8BitData());
       status = true;
    }
-   else if (param_name == wxT("directory")) 
+   else if (param_name == wxT("directory"))
    {
       rdp_conn->directory = ConvertFromUTF8(param_value.To8BitData());
       status = true;
    }
-   else if (param_name == wxT("bUseProgram")) 
+   else if (param_name == wxT("bUseProgram"))
    {
       if (param_value == wxT("0"))
       {
 	 rdp_conn->bUseProgram = FALSE;
 	 status = true;
-      } 
+      }
       else if (param_value == wxT("1"))
       {
 	 rdp_conn->bUseProgram = TRUE;
 	 status = true;
       }
    }
-   else if (param_name == wxT("bProgramMaximized")) 
+   else if (param_name == wxT("bProgramMaximized"))
    {
       if (param_value == wxT("0"))
       {
@@ -1145,12 +1143,12 @@ BOOL Benc::GetOptions(wxString str, int pos, RDPConn * rdp_conn)
 	 status = true;
       }
    }
-   else if (param_name == wxT("keyboard_map")) 
+   else if (param_name == wxT("keyboard_map"))
    {
       rdp_conn->keyboard_map = ConvertFromUTF8(param_value.To8BitData());
       status = true;
    }
-   else if (param_name == wxT("keyboard")) 
+   else if (param_name == wxT("keyboard"))
    {
       if (param_value == wxT("0"))
       {
@@ -1168,7 +1166,7 @@ BOOL Benc::GetOptions(wxString str, int pos, RDPConn * rdp_conn)
 	 status = true;
       }
    }
-   else if (param_name == wxT("bEnableBitmapCaching")) 
+   else if (param_name == wxT("bEnableBitmapCaching"))
    {
       if (param_value == wxT("0"))
       {
@@ -1181,7 +1179,7 @@ BOOL Benc::GetOptions(wxString str, int pos, RDPConn * rdp_conn)
 	 status = true;
       }
    }
-   else if (param_name == wxT("bEnableWallpaper")) 
+   else if (param_name == wxT("bEnableWallpaper"))
    {
       if (param_value == wxT("0"))
       {
@@ -1194,7 +1192,7 @@ BOOL Benc::GetOptions(wxString str, int pos, RDPConn * rdp_conn)
 	 status = true;
       }
    }
-   else if (param_name == wxT("bEnableFullWindowDrag")) 
+   else if (param_name == wxT("bEnableFullWindowDrag"))
    {
       if (param_value == wxT("0"))
       {
@@ -1207,7 +1205,7 @@ BOOL Benc::GetOptions(wxString str, int pos, RDPConn * rdp_conn)
 	 status = true;
       }
    }
-   else if (param_name == wxT("bEnableAnimation")) 
+   else if (param_name == wxT("bEnableAnimation"))
    {
       if (param_value == wxT("0"))
       {
@@ -1220,52 +1218,52 @@ BOOL Benc::GetOptions(wxString str, int pos, RDPConn * rdp_conn)
 	 status = true;
       }
    }
-   else if (param_name == wxT("bEnableThemes")) 
+   else if (param_name == wxT("bEnableThemes"))
    {
       if (param_value == wxT("0"))
       {
 	 rdp_conn->bEnableThemes = FALSE;
 	 status = true;
-      } 
+      }
       else if (param_value == wxT("1"))
       {
 	 rdp_conn->bEnableThemes = TRUE;
 	 status = true;
       }
-   } 
+   }
    else if (param_name == wxT("bShareDrives"))
    {
-		
+
       if (param_value == wxT("0"))
       {
 	 rdp_conn->bShareDrives = FALSE;
 	 status = true;
-      } 
+      }
       else if (param_value == wxT("1"))
       {
 	 rdp_conn->bShareDrives = TRUE;
 	 status = true;
       }
-		
-   } 
+
+   }
    else if (param_name == wxT("bSharePrinters"))
    {
-		
+
       if (param_value == wxT("0"))
       {
 	 rdp_conn->bSharePrinters = FALSE;
 	 status = true;
-      } 
+      }
       else if (param_value == wxT("1"))
       {
 	 rdp_conn->bSharePrinters = TRUE;
 	 status = true;
       }
-		
-   } 
-   else if (param_name == wxT("bShareComPorts")) 
+
+   }
+   else if (param_name == wxT("bShareComPorts"))
    {
-		
+
       if (param_value == wxT("0"))
       {
 	 rdp_conn->bShareComPorts = FALSE;
@@ -1276,11 +1274,11 @@ BOOL Benc::GetOptions(wxString str, int pos, RDPConn * rdp_conn)
 	 rdp_conn->bShareComPorts = TRUE;
 	 status = true;
       }
-		
+
    }
-   else if (param_name == wxT("bShareSmartCards")) 
+   else if (param_name == wxT("bShareSmartCards"))
    {
-		
+
       if (param_value == wxT("0"))
       {
 	 rdp_conn->bShareSmartCards = FALSE;
@@ -1291,11 +1289,11 @@ BOOL Benc::GetOptions(wxString str, int pos, RDPConn * rdp_conn)
 	 rdp_conn->bShareSmartCards = TRUE;
 	 status = true;
       }
-		
+
    }
-   else if (param_name == wxT("SoundType")) 
+   else if (param_name == wxT("SoundType"))
    {
-		
+
       if (param_value == wxT("0"))
       {
 	 rdp_conn->SoundType = 0;
@@ -1311,13 +1309,13 @@ BOOL Benc::GetOptions(wxString str, int pos, RDPConn * rdp_conn)
 	 rdp_conn->SoundType = 2;
 	 status = true;
       }
-      else 
+      else
       {
 	 status = false;
       }
-		
+
    }
-   else if (param_name == wxT("bandwidth")) 
+   else if (param_name == wxT("bandwidth"))
    {
       rdp_conn->bandwidth = wxAtoi(param_value);
       if (rdp_conn->bandwidth <= 0 )
@@ -1326,32 +1324,32 @@ BOOL Benc::GetOptions(wxString str, int pos, RDPConn * rdp_conn)
       }
       status = true;
    }
-   else if (param_name == wxT("backing_store")) 
+   else if (param_name == wxT("backing_store"))
    {
       if (param_value == wxT("0"))
       {
 	 rdp_conn->backing_store = FALSE;
 	 status = true;
-      } 
+      }
       else if (param_value == wxT("1"))
       {
 	 rdp_conn->backing_store = TRUE;
 	 status = true;
       }
-   } 
+   }
    else if (param_name == wxT("encription_enable_french"))
    {
       if (param_value == wxT("0"))
       {
 	 rdp_conn->encription_enable_french = FALSE;
 	 status = true;
-      } 
+      }
       else if (param_value == wxT("1"))
       {
 	 rdp_conn->encription_enable_french = TRUE;
 	 status = true;
       }
-   } 
+   }
    else if (param_name == wxT("encription_enable_new"))
    {
       if (param_value == wxT("0"))
@@ -1365,7 +1363,7 @@ BOOL Benc::GetOptions(wxString str, int pos, RDPConn * rdp_conn)
 	 status = true;
       }
    }
-   else if (param_name == wxT("use_rdp_version")) 
+   else if (param_name == wxT("use_rdp_version"))
    {
       rdp_conn->use_rdp_version = wxAtoi(param_value);
       if ((rdp_conn->use_rdp_version != 0 ) && (rdp_conn->use_rdp_version != 1 ) && (rdp_conn->use_rdp_version != 2 ))
@@ -1374,7 +1372,7 @@ BOOL Benc::GetOptions(wxString str, int pos, RDPConn * rdp_conn)
 	 status = true;
       }
    }
-   else if (param_name == wxT("send_mouse_event")) 
+   else if (param_name == wxT("send_mouse_event"))
    {
       if (param_value == wxT("0"))
       {
@@ -1387,7 +1385,7 @@ BOOL Benc::GetOptions(wxString str, int pos, RDPConn * rdp_conn)
 	 status = true;
       }
    }
-   else if (param_name == wxT("private_color_map")) 
+   else if (param_name == wxT("private_color_map"))
    {
       if (param_value == wxT("0"))
       {
@@ -1401,7 +1399,7 @@ BOOL Benc::GetOptions(wxString str, int pos, RDPConn * rdp_conn)
       }
 
    }
-   else if (param_name == wxT("single_mode")) 
+   else if (param_name == wxT("single_mode"))
    {
       rdp_conn->single_mode = wxAtoi(param_value);
       if ((rdp_conn->single_mode <= 0 ) && (rdp_conn->single_mode >= 255 ))
@@ -1410,7 +1408,7 @@ BOOL Benc::GetOptions(wxString str, int pos, RDPConn * rdp_conn)
 	 status = true;
       }
    }
-   else if (param_name == wxT("numlock_sync")) 
+   else if (param_name == wxT("numlock_sync"))
    {
       if (param_value == wxT("0"))
       {
@@ -1423,31 +1421,31 @@ BOOL Benc::GetOptions(wxString str, int pos, RDPConn * rdp_conn)
 	 status = true;
       }
    }
-   else if (param_name == wxT("enable_compres")) 
+   else if (param_name == wxT("enable_compres"))
    {
       if (param_value == wxT("0"))
       {
 	 rdp_conn->enable_compres = FALSE;
 	 status = true;
-      } 
+      }
       else if (param_value == wxT("1"))
       {
 	 rdp_conn->enable_compres = TRUE;
 	 status = true;
       }
-   } 
+   }
    else if (param_name == wxT("uniq_name"))
    {
       rdp_conn->uniq_name = wxAtoi(param_value);
       if (rdp_conn->uniq_name > 0)
       {
 	 status = true;
-      } 
-      else 
+      }
+      else
       {
 	 status = false;
       }
-   } 
+   }
    else if (param_name == wxT("group_name"))
    {
       rdp_conn->group_name = ConvertFromUTF8(param_value.To8BitData());
@@ -1457,41 +1455,41 @@ BOOL Benc::GetOptions(wxString str, int pos, RDPConn * rdp_conn)
    {
       rdp_conn->connection_name = ConvertFromUTF8(param_value.To8BitData());
       status = true;
-   } 
+   }
    else if (param_name == wxT("connection_count"))
    {
       rdp_conn->dwConnectionCount = wxAtoi(param_value);
       status = true;
-   }	
-   else if (param_name == wxT("linux_devices")) 
+   }
+   else if (param_name == wxT("linux_devices"))
    {
       rdp_conn->redirect_devices_nix = ConvertFromUTF8(param_value.To8BitData());
       status = true;
    }
-   else if (param_name == wxT("ica_server_ini")) 
+   else if (param_name == wxT("ica_server_ini"))
    {
       rdp_conn->server_ini = ConvertFromUTF8(param_value.To8BitData());
       status = true;
    }
-   else if (param_name == wxT("ica_client_ini")) 
+   else if (param_name == wxT("ica_client_ini"))
    {
       rdp_conn->client_ini = ConvertFromUTF8(param_value.To8BitData());
       status = true;
    }
-   else if (param_name == wxT("ICASound")) 
+   else if (param_name == wxT("ICASound"))
    {
       if (param_value == wxT("0"))
       {
 	 rdp_conn->bIcaSound = FALSE;
 	 status = true;
-      } 
+      }
       else if (param_value == wxT("1"))
       {
 	 rdp_conn->bIcaSound = TRUE;
 	 status = true;
       }
    }
-   else if (param_name == wxT("ICASoundType")) 
+   else if (param_name == wxT("ICASoundType"))
    {
       rdp_conn->bIcaSoundType = wxAtoi(param_value);
       if ((rdp_conn->bIcaSoundType < 0 ) && (rdp_conn->bIcaSoundType >= 3 ))
@@ -1500,20 +1498,20 @@ BOOL Benc::GetOptions(wxString str, int pos, RDPConn * rdp_conn)
 	 status = true;
       }
    }
-   else if (param_name == wxT("ICAEncryption")) 
+   else if (param_name == wxT("ICAEncryption"))
    {
       if (param_value == wxT("0"))
       {
 	 rdp_conn->bIcaEncryption = FALSE;
 	 status = true;
-      } 
+      }
       else if (param_value == wxT("1"))
       {
 	 rdp_conn->bIcaEncryption = TRUE;
 	 status = true;
       }
    }
-   else if (param_name == wxT("ICAEncryptionType")) 
+   else if (param_name == wxT("ICAEncryptionType"))
    {
       rdp_conn->ica_encryption = wxAtoi(param_value);
       if ((rdp_conn->ica_encryption < 0 ) || (rdp_conn->ica_encryption >= 5 ))
@@ -1522,30 +1520,30 @@ BOOL Benc::GetOptions(wxString str, int pos, RDPConn * rdp_conn)
 	 status = true;
       }
    }
-   else if (param_name == wxT("ica_connection_file")) 
+   else if (param_name == wxT("ica_connection_file"))
    {
       rdp_conn->ica_file = ConvertFromUTF8(param_value.To8BitData());
       status = true;
    }
-   else if (param_name == wxT("bUseApplication")) 
+   else if (param_name == wxT("bUseApplication"))
    {
       if (param_value == wxT("0"))
       {
 	 rdp_conn->bUseApplication = FALSE;
 	 status = true;
-      } 
+      }
       else if (param_value == wxT("1"))
       {
 	 rdp_conn->bUseApplication = TRUE;
 	 status = true;
       }
    }
-   else if (param_name == wxT("ICAApplication")) 
+   else if (param_name == wxT("ICAApplication"))
    {
       rdp_conn->IcaApplication = ConvertFromUTF8(param_value.To8BitData());
       status = true;
    }
-   else if (param_name == wxT("bProxyType")) 
+   else if (param_name == wxT("bProxyType"))
    {
       rdp_conn->bProxyType = wxAtoi(param_value);
       if ((rdp_conn->bProxyType < 0 ) && (rdp_conn->bProxyType >= 2 ))
@@ -1554,27 +1552,27 @@ BOOL Benc::GetOptions(wxString str, int pos, RDPConn * rdp_conn)
 	 status = true;
       }
    }
-   else if (param_name == wxT("ProxyAddr")) 
+   else if (param_name == wxT("ProxyAddr"))
    {
       rdp_conn->ProxyAddr = ConvertFromUTF8(param_value.To8BitData());
       status = true;
    }
-   else if (param_name == wxT("ProxyPort")) 
+   else if (param_name == wxT("ProxyPort"))
    {
       rdp_conn->ProxyPort = ConvertFromUTF8(param_value.To8BitData());
       status = true;
    }
-   else if (param_name == wxT("ProxyUserId")) 
+   else if (param_name == wxT("ProxyUserId"))
    {
       rdp_conn->ProxyUserId = ConvertFromUTF8(param_value.To8BitData());
       status = true;
    }
-   else if (param_name == wxT("ProxyPassword")) 
+   else if (param_name == wxT("ProxyPassword"))
    {
       rdp_conn->ProxyPassword = ConvertFromUTF8(param_value.To8BitData());
       status = true;
    }
-   else if (param_name == wxT("Protocol")) 
+   else if (param_name == wxT("Protocol"))
    {
       //rdp_conn->conn_type = wxAtoi(param_value);
       int conn_type_int = wxAtoi(param_value);
@@ -1592,22 +1590,22 @@ BOOL Benc::GetOptions(wxString str, int pos, RDPConn * rdp_conn)
    return TRUE;
 }
 
-BOOL Benc::isNormalParam(wxString str, int pos)
+BOOL_L Benc::isNormalParam(wxString str, int pos)
 {
 	wxString strSize;
 	strSize.Empty();
 	int iCurrPos = pos + 1;
 	wxChar tmp;
 	wxString temp;
-	
+
 	char buff[8];
 	memset(buff,0,8);
-	BOOL read = TRUE;
+	BOOL_L read = TRUE;
 	while(read)
 	{
-		temp.Empty(); 
-		tmp = str.GetChar(iCurrPos); 
-		temp += tmp;  
+		temp.Empty();
+		tmp = str.GetChar(iCurrPos);
+		temp += tmp;
 		if (temp.IsNumber())
 		{
 			strSize += temp;
@@ -1618,21 +1616,21 @@ BOOL Benc::isNormalParam(wxString str, int pos)
 			read = FALSE;
 		}
 	}
-	if (strSize.IsEmpty()) 
+	if (strSize.IsEmpty())
 	{
 		return FALSE;
 	}
-	
+
 	int iSize = wxAtoi(strSize);
-	int iSize_ = iSize;		
+	int iSize_ = iSize;
 	int iEndPos = pos + 2 + NumberCount(iSize) + iSize;
 
-	strSize.Empty(); 
+	strSize.Empty();
 	iCurrPos = iEndPos + 1;
 	read = TRUE;
 	while(read)
 	{
-		temp = str.GetChar(iCurrPos); 
+		temp = str.GetChar(iCurrPos);
 		if (temp.IsNumber())
 		{
 			strSize += temp;
@@ -1643,15 +1641,15 @@ BOOL Benc::isNormalParam(wxString str, int pos)
 			read = FALSE;
 		}
 	}
-	if (strSize.IsEmpty()) 
+	if (strSize.IsEmpty())
 	{
 		return FALSE;
 	}
 
 	iSize = wxAtoi(strSize);
 	iEndPos = pos + NumberCount(iSize_) + iSize_ + NumberCount(iSize) + iSize + 4;
-	
-	wxString str_end = str.Mid(iEndPos,2); 
+
+	wxString str_end = str.Mid(iEndPos,2);
 	if (str_end == wxT("ee"))
 	{
 		return TRUE;
@@ -1663,10 +1661,10 @@ BOOL Benc::isNormalParam(wxString str, int pos)
 }
 
 RDPConn Benc::GetRDPConn(wxString str)
-{	
+{
 	RDPConn rdpc;
 	int strSize = ByteLen(str);
-		
+
 	for (int i = 0; i < strSize; i ++)
 	{
 		wxChar curr = str.GetChar(i);
@@ -1681,7 +1679,7 @@ RDPConn Benc::GetRDPConn(wxString str)
 	return rdpc;
 }
 
-BOOL Benc::LoadProgramSettings(programsettings * ps)
+BOOL_L Benc::LoadProgramSettings(programsettings * ps)
 {
    if (!ps) return FALSE;
 
@@ -1711,10 +1709,10 @@ BOOL Benc::LoadProgramSettings(programsettings * ps)
       ps->lang = wxT("Default");
       return FALSE;
    }
-	
+
 #ifdef __WXMSW__
    settings_path += wxT("\\");
-#endif	
+#endif
 #ifdef __WXGTK__
    settings_path += wxT("/.");
 #endif
@@ -1724,7 +1722,7 @@ BOOL Benc::LoadProgramSettings(programsettings * ps)
       wxMkdir(settings_path);
    }
    wxString file_path;
-   file_path.Empty(); 
+   file_path.Empty();
    file_path = settings_path;
 #ifdef __WXMSW__
    file_path += wxT("\\");
@@ -1755,11 +1753,11 @@ BOOL Benc::LoadProgramSettings(programsettings * ps)
 
    fset.Open(file_path);
    if (!fset.IsOpened()) return FALSE;
-	
+
    fset.SeekEnd();
    DWORD dwFileSize = fset.Tell();
    fset.Seek(0);
-   if ((dwFileSize == wxInvalidOffset) || (dwFileSize == 0)) 
+   if ((dwFileSize == wxInvalidOffset) || (dwFileSize == 0))
    {
       fset.Detach();
       ps->rdpbasepath = settings_path;
@@ -1775,7 +1773,7 @@ BOOL Benc::LoadProgramSettings(programsettings * ps)
       ps->bFocusPage = TRUE;
       ps->bAutosave = TRUE;
       ps->lang = wxT("Default");
-		
+
       SaveProgramSettings(ps);
       return TRUE;
    }
@@ -1785,14 +1783,14 @@ BOOL Benc::LoadProgramSettings(programsettings * ps)
    fset.Read(tempbuff,dwFileSize);
    wxString str_set;
    str_set.Empty();
-	
+
    for (int i = 0; i < (int)dwFileSize; i ++)
    {
       str_set += tempbuff[i];
-		
+
    }
-	
-   BOOL read = GetProgramSettings(str_set, ps);
+
+   BOOL_L read = GetProgramSettings(str_set, ps);
    if(!read)
    {
       ps->rdpbasepath = settings_path;
@@ -1808,7 +1806,7 @@ BOOL Benc::LoadProgramSettings(programsettings * ps)
       ps->bFocusPage = TRUE;
       ps->bAutosave = TRUE;
       ps->lang = wxT("Default");
-		
+
       SaveProgramSettings(ps);
       return TRUE;
    }
@@ -1822,12 +1820,12 @@ BOOL Benc::LoadProgramSettings(programsettings * ps)
    return TRUE;
 }
 
-BOOL Benc::GetProgramSettings(const wxString str_set, programsettings * ps)
+BOOL_L Benc::GetProgramSettings(const wxString str_set, programsettings * ps)
 {
 
    wxChar tmp = str_set.GetChar(0);
    if (tmp != wxT('k')) return FALSE;
-   BOOL read = TRUE;
+   BOOL_L read = TRUE;
    int iCurrPos = 1;
    wxString temp;
    wxString strSize;
@@ -1836,7 +1834,7 @@ BOOL Benc::GetProgramSettings(const wxString str_set, programsettings * ps)
    {
       wxChar t;
       wxString str_t;
-      str_t.Empty(); 
+      str_t.Empty();
       t = str_set.GetChar(iCurrPos);
       str_t.assign(1,t);
       if (str_t.IsNumber())
@@ -1853,7 +1851,7 @@ BOOL Benc::GetProgramSettings(const wxString str_set, programsettings * ps)
    {
       return FALSE;
    }
-   
+
    int lc = wxAtoi(strSize);
    iCurrPos = lc + 2 + NumberCount(lc);
 
@@ -1862,7 +1860,7 @@ BOOL Benc::GetProgramSettings(const wxString str_set, programsettings * ps)
    {
       return FALSE;
    }
-   
+
    wxString res = str_set.Mid(2 + NumberCount(lc),lc);
    for (int i = 0; i < lc; i ++)
    {
@@ -1875,7 +1873,7 @@ BOOL Benc::GetProgramSettings(const wxString str_set, programsettings * ps)
 	    {
 	       return FALSE;
 	    }
-	    
+
 	 }
       }
    }
@@ -1883,7 +1881,7 @@ BOOL Benc::GetProgramSettings(const wxString str_set, programsettings * ps)
    return TRUE;
 }
 
-BOOL Benc::GetProgramOptions(wxString str, int pos, programsettings * ps)
+BOOL_L Benc::GetProgramOptions(wxString str, int pos, programsettings * ps)
 {
    wxString strSize;
    strSize.Empty();
@@ -1893,12 +1891,12 @@ BOOL Benc::GetProgramOptions(wxString str, int pos, programsettings * ps)
    temp.Empty();
    char buff[8];
    memset(buff,0,8);
-   BOOL read = TRUE;
+   BOOL_L read = TRUE;
    while(read)
    {
-      temp.Empty(); 
-      tmp = str.GetChar(iCurrPos); 
-      temp += tmp;  
+      temp.Empty();
+      tmp = str.GetChar(iCurrPos);
+      temp += tmp;
       if (temp.IsNumber())
       {
 	 strSize += temp;
@@ -1909,23 +1907,23 @@ BOOL Benc::GetProgramOptions(wxString str, int pos, programsettings * ps)
 	 read = FALSE;
       }
    }
-   if (strSize.IsEmpty()) 
+   if (strSize.IsEmpty())
    {
       return FALSE;
    }
 
    int iSize = wxAtoi(strSize);
-   int iSize_ = iSize;	
-   wxString param_name = str.Mid(pos + 2 + NumberCount(iSize),iSize); 
+   int iSize_ = iSize;
+   wxString param_name = str.Mid(pos + 2 + NumberCount(iSize),iSize);
 
    iSize_ = iSize;
    int iEndPos = pos + 2 + NumberCount(iSize) + iSize;
-   strSize.Empty(); 
+   strSize.Empty();
    iCurrPos = iEndPos + 1;
    read = TRUE;
    while(read)
    {
-      temp = str.GetChar(iCurrPos); 
+      temp = str.GetChar(iCurrPos);
       if (temp.IsNumber())
       {
 	 strSize += temp;
@@ -1936,7 +1934,7 @@ BOOL Benc::GetProgramOptions(wxString str, int pos, programsettings * ps)
 	 read = FALSE;
       }
    }
-   if (strSize.IsEmpty()) 
+   if (strSize.IsEmpty())
    {
       return FALSE;
    }
@@ -1950,40 +1948,40 @@ BOOL Benc::GetProgramOptions(wxString str, int pos, programsettings * ps)
       ps->rdpbasepath = ConvertFromUTF8(param_value.To8BitData()) ;
       status = true;
    }
-   else if (param_name == wxT("rdpkey")) 
+   else if (param_name == wxT("rdpkey"))
    {
       ps->rdpkeypath =  ConvertFromUTF8(param_value.To8BitData());
       status = true;
-   } 
-   else if (param_name == wxT("rdesktop"))	
+   }
+   else if (param_name == wxT("rdesktop"))
    {
       ps->rdesktoppath =  ConvertFromUTF8(param_value.To8BitData());
       status = true;
    }
-   else if (param_name == wxT("rdesktop_keymap"))	
+   else if (param_name == wxT("rdesktop_keymap"))
    {
       ps->rdesktop_key_path =  ConvertFromUTF8(param_value.To8BitData());
       status = true;
    }
-   else if (param_name == wxT("language"))	
+   else if (param_name == wxT("language"))
    {
       ps->lang =  ConvertFromUTF8(param_value.To8BitData());
       status = true;
    }
-   else if (param_name == wxT("showicon")) 
+   else if (param_name == wxT("showicon"))
    {
       if (param_value == wxT("0"))
       {
 	 ps->bIcon = FALSE;
 	 status = true;
       }
-      else if (param_value == wxT("0"))
+      else if (param_value != wxT("0"))
       {
 	 ps->bIcon = TRUE;
 	 status = true;
       }
    }
-   else if (param_name == wxT("showframe")) 
+   else if (param_name == wxT("showframe"))
    {
       if (param_value == wxT("0"))
       {
@@ -1996,7 +1994,7 @@ BOOL Benc::GetProgramOptions(wxString str, int pos, programsettings * ps)
 	 status = true;
       }
    }
-   else if (param_name == wxT("usecrypt")) 
+   else if (param_name == wxT("usecrypt"))
    {
       if (param_value == wxT("0"))
       {
@@ -2009,7 +2007,7 @@ BOOL Benc::GetProgramOptions(wxString str, int pos, programsettings * ps)
 	 status = true;
       }
    }
-   else if (param_name == wxT("focuspage")) 
+   else if (param_name == wxT("focuspage"))
    {
       if (param_value == wxT("0"))
       {
@@ -2022,7 +2020,7 @@ BOOL Benc::GetProgramOptions(wxString str, int pos, programsettings * ps)
 	 status = true;
       }
    }
-   else if (param_name == wxT("autosave")) 
+   else if (param_name == wxT("autosave"))
    {
       if (param_value == wxT("0"))
       {
@@ -2035,22 +2033,22 @@ BOOL Benc::GetProgramOptions(wxString str, int pos, programsettings * ps)
 	 status = true;
       }
    }
-   else if (param_name == wxT("fcount")) 
+   else if (param_name == wxT("fcount"))
    {
       ps->favorites_count = wxAtoi(ConvertFromUTF8(param_value.To8BitData()));
       status = true;
    }
-   else if (param_name == wxT("fmax")) 
+   else if (param_name == wxT("fmax"))
    {
       ps->favorites_max = wxAtoi(ConvertFromUTF8(param_value.To8BitData()));
       status = true;
    }
-   else if (param_name == wxT("typecrypt")) 
+   else if (param_name == wxT("typecrypt"))
    {
       ps->iTypeCrypt = wxAtoi(ConvertFromUTF8(param_value.To8BitData()));
       status = true;
    }
-   else if (param_name == wxT("grabkbd")) 
+   else if (param_name == wxT("grabkbd"))
    {
       ps->grabkbd = wxAtoi(ConvertFromUTF8(param_value.To8BitData()));
       status = true;
@@ -2064,7 +2062,7 @@ BOOL Benc::GetProgramOptions(wxString str, int pos, programsettings * ps)
    return status;
 }
 
-BOOL Benc::SaveProgramSettings(programsettings * ps)
+BOOL_L Benc::SaveProgramSettings(programsettings * ps)
 {
 	if (!ps) return FALSE;
 	wxString str_set;
@@ -2084,9 +2082,9 @@ BOOL Benc::SaveProgramSettings(programsettings * ps)
 	str_set += GetParamInt (wxT("fmax"), (int)(ps->favorites_max));
 	str_set += GetParamStr (wxT("language"), (ps->lang));
 	str_set += GetParamInt (wxT("grabkbd"), (int)(ps->grabkbd));
-	
+
 	wxString main_result;
-	main_result = wxString::Format(wxT("k%i:%szz"),iCurrSize,str_set.data()); 
+	main_result = wxString::Format(wxT("k%i:%szz"),iCurrSize,str_set.data());
 	iCurrSize += NumberCount(iCurrSize) + 4;
 
 	wxString settings_path;
@@ -2100,7 +2098,7 @@ BOOL Benc::SaveProgramSettings(programsettings * ps)
 
 	if (settings_path.IsEmpty())
 	{
-		return FALSE; 
+		return FALSE;
 	}
 
 #ifdef __WXMSW__
@@ -2130,16 +2128,16 @@ BOOL Benc::SaveProgramSettings(programsettings * ps)
 	fset.Write(main_result.To8BitData(),iCurrSize);
 	fset.Close();
 	fset.Detach();
-	return TRUE;	
-	
-}
-
-
-
-Options_HashMap Benc::Get_Options(Options_HashMap *all_options, int line_number)
-{
+	return TRUE;
 
 }
+
+
+
+// Options_HashMap Benc::Get_Options(Options_HashMap *all_options, int line_number)
+// {
+
+// }
 
 Options_HashMap Benc::Get_Tree_Options(wxString str)
 {
@@ -2165,7 +2163,7 @@ Options_HashMap Benc::Get_Tree_Options(wxString str)
 	       {
 		  wxString key = it->first, value = it->second;
 		  options[key] = value;
-		  
+
 		  // do something useful with key and value
 	       }
 	       //options.find
@@ -2178,7 +2176,7 @@ Options_HashMap Benc::Get_Tree_Options(wxString str)
       options_str.clear();
    }
    //std::cout << options_str.GetCount() << std::endl;
-   //std::cout << options.size() << std::endl; 
+   //std::cout << options.size() << std::endl;
    return options;
 }
 
@@ -2198,14 +2196,14 @@ Options_HashMap Benc::Get_Parsed_Options(wxString str, int pos)
    temp.Empty();
    char buff[8];
    memset(buff,0,8);
-   BOOL read = TRUE;
+   BOOL_L read = TRUE;
    local_options.clear();
-   
+
    while(read)
    {
-      temp.Empty(); 
-      tmp = str.GetChar(iCurrPos); 
-      temp += tmp;  
+      temp.Empty();
+      tmp = str.GetChar(iCurrPos);
+      temp += tmp;
       if (temp.IsNumber())
       {
 	 strSize += temp;
@@ -2216,7 +2214,7 @@ Options_HashMap Benc::Get_Parsed_Options(wxString str, int pos)
 	 read = FALSE;
       }
    }
-   if (strSize.IsEmpty()) 
+   if (strSize.IsEmpty())
    {
       return local_options;
    }
@@ -2224,7 +2222,7 @@ Options_HashMap Benc::Get_Parsed_Options(wxString str, int pos)
    int iSize_ = iSize;
    key.Clear();
    value.Clear();
-   
+
    //temp_options.name.Clear();
    //temp_options.name = str.Mid(pos + 2 + NumberCount(iSize),iSize);
    key = str.Mid(pos + 2 + NumberCount(iSize),iSize);
@@ -2250,7 +2248,7 @@ Options_HashMap Benc::Get_Parsed_Options(wxString str, int pos)
    {
       return local_options;
    }
-   
+
    iSize = wxAtoi(strSize);
 
    iCurrPos = iEndPos + 2 + NumberCount(iSize);
@@ -2261,10 +2259,10 @@ Options_HashMap Benc::Get_Parsed_Options(wxString str, int pos)
    //if (param_name == wxT("hostname"))
    //{
 //   temp_options.value.Clear();
-   
+
    value = ConvertFromUTF8(param_value.To8BitData());
    //wxMessageBox(temp_options.value);
-   
+
    //	status = true;
    //}
    //temp_options_array.Index(0).type = wxT("s");
@@ -2274,19 +2272,19 @@ Options_HashMap Benc::Get_Parsed_Options(wxString str, int pos)
    //std::cout << temp_options_array.GetCount() << std::endl;
    //wxMessageBox(key, local_options[key]);
    local_options[key] = value;
-   
+
    return local_options;
 }
 
 Connections_List Benc::Load()
 {
-   wxBusyInfo wait(wxT("Please wait"));
+   //wxBusyInfo wait(wxT("Please wait"));
    Connections_List connections_lst;
    Options_HashMap local_options;
    connections_lst.Clear();
    programsettings ps = load_main_settings();
 
-   if (ps.bUseCrypt) 
+   if (ps.bUseCrypt)
    {
       GETKEYPATH()
 	 if (!wxFileExists(KEYPATH))

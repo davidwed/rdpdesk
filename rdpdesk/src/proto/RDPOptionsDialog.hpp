@@ -34,15 +34,14 @@ enum ERRORS
 #define SHIFT_H 4
 #endif
 
-const int ID_RDP_CHECKBOX_CUSTOMPORT = 123;
-const int ID_RDP_TEXTCTRL_PASSWORD = 124;
-const int ID_RDP_CHECKBOX_AUTOLOGON = 125;
-const int ID_RDP_CHK_CONTROLSIZE = 126;
-const int ID_RDP_CHECKBOX_USE_PROGRAM = 127;
-const int ID_RDP_COMBOBOX_SPEED = 128;
-
-
-
+enum {
+	ID_RDP_CHECKBOX_CUSTOMPORT  = 123,
+	ID_RDP_TEXTCTRL_PASSWORD    = 124,
+	ID_RDP_CHECKBOX_AUTOLOGON   = 125,
+	ID_RDP_CHK_CONTROLSIZE      = 126,
+	ID_RDP_CHECKBOX_USE_PROGRAM = 127,
+	ID_RDP_COMBOBOX_SPEED       = 128,
+};
 
 class RDPOptions
 {
@@ -64,8 +63,8 @@ public:
    virtual ~RDPOptionsDialog_General();
    int Build();
    Options_HashMap Get_Options();
-   bool Set_Options(const Options_HashMap *all_options);
-   void Set_Group_List(wxArrayString group_list);
+   bool SetOptions(const Options_HashMap *all_options);
+   void SetGroupList(const wxArrayString &group_list);
 private:
    RDPOptionsDialog *parent;
 
@@ -126,7 +125,7 @@ public:
    virtual ~RDPOptionsDialog_Display();
    int Build();
    Options_HashMap Get_Options();
-   bool Set_Options(const Options_HashMap *all_options);
+   bool SetOptions(const Options_HashMap *all_options);
 private:
    RDPOptionsDialog *parent;
    int error;
@@ -180,7 +179,7 @@ public:
    virtual ~RDPOptionsDialog_Share();
    int Build();
    Options_HashMap Get_Options();
-   bool Set_Options(const Options_HashMap *all_options);
+   bool SetOptions(const Options_HashMap *all_options);
    wxString Get_Options_String();
 
 private:
@@ -219,7 +218,7 @@ public:
    virtual ~RDPOptionsDialog_Program();
    int Build();
    Options_HashMap Get_Options();
-   bool Set_Options(const Options_HashMap *all_options);
+   bool SetOptions(const Options_HashMap *all_options);
 private:
    RDPOptionsDialog *parent;
    int error;
@@ -247,7 +246,7 @@ public:
    virtual ~RDPOptionsDialog_Performance();
    int Build();
    Options_HashMap Get_Options();
-   bool Set_Options(const Options_HashMap *all_options);
+   bool SetOptions(const Options_HashMap *all_options);
 private:
    RDPOptionsDialog *parent;
    int error;
@@ -294,7 +293,7 @@ public:
    virtual ~RDPOptionsDialog_Advanced();
    int Build();
    Options_HashMap Get_Options();
-   bool Set_Options(const Options_HashMap *all_options);
+   bool SetOptions(const Options_HashMap *all_options);
    wxString Get_Options_String();
    
    
@@ -320,10 +319,7 @@ private:
 
    wxStaticText *m_static_keyboard_map;
    wxComboBox *m_combobox_keyboard_map;
-
 };
-
-
 
 class RDPOptionsDialog : public wxNotebook
 {
@@ -332,8 +328,8 @@ public:
    RDPOptionsDialog(wxWindow *parent_element);
    ~RDPOptionsDialog();
    int Build();
-   bool Set_Options(const Options_HashMap *options);
-   void Set_Group_List(wxArrayString group_list);
+   bool SetOptions(const Options_HashMap *options);
+   void SetGroupList(const wxArrayString &group_list);
    Options_HashMap Get_Options();
 private:
    wxWindow *parent;

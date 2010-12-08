@@ -1,12 +1,12 @@
 ///////////////////////////////////////////////////////////////////////////////
 // File name:   ICAConnection_nix.hpp
 // Version:     0.0
-// Purpose: 
-// Time-stamp:  "2010-03-11 19:20:52" 
+// Purpose:
+// Time-stamp:  "2010-11-24 17:49:44"
 // E-mail:      rdpdesk@rdpdesk.com
-// $Id$ 
-// Copyright:   (c) 2009-2010 RDPDesk <rdpdesk@rdpdesk.com> 
-// Licence:     GPL v3 
+// $Id$
+// Copyright:   (c) 2009-2010 RDPDesk <rdpdesk@rdpdesk.com>
+// Licence:     GPL v3
 ///////////////////////////////////////////////////////////////////////////////
 
 #ifndef ICACONNECTION_NIX_HPP
@@ -86,13 +86,13 @@ DECLARE_EVENT_TABLE()
 class ICAConnection : public BasicConnection
 {
 public:
-   // ICAConnection(Main_Frame * m_frame, RDPConn rdpsettings ,wxWindow *parent, wxWindowID id = -1,
+   // ICAConnection(MainFrame * m_frame, RDPConn rdpsettings ,wxWindow *parent, wxWindowID id = -1,
    // 		 const wxPoint& pos = wxDefaultPosition,
    // 		 const wxSize& size = wxDefaultSize,
    // 		 long style = 0,
    // 		 const wxString& name = wxPanelNameStr);
 
-   ICAConnection(Main_Frame * m_frame, Options_HashMap options,wxWindow *parent, wxWindowID id = -1,
+   ICAConnection(MainFrame * m_frame, Options_HashMap options,wxWindow *parent, wxWindowID id = -1,
 		 const wxPoint& pos = wxDefaultPosition,
 		 const wxSize& size = wxDefaultSize,
 		 long style = 0,
@@ -106,7 +106,7 @@ public:
    virtual void Disconnect();
    virtual bool DisconnectClose();
 //	bool DoRdp();
-   void FullScreen(BOOL bRestore);
+   void FullScreen(BOOL_L bRestore);
    void photo();
 
    void close_rdesktop_prg(wxCommandEvent& event);
@@ -114,7 +114,7 @@ public:
    void event_dispatcher(wxCommandEvent& event);
    void OnIdle(wxIdleEvent& event);
 //	void OnTimer(wxTimerEvent& event);
-   bool request_close(BOOL bDetach = FALSE);
+   bool request_close(BOOL_L bDetach = FALSE);
    bool get_state();
    void set_state(bool state_to_set);
    bool get_proc_state();
@@ -127,17 +127,17 @@ public:
    void on_set_focus(wxFocusEvent& event);
    void on_leave_focus(wxFocusEvent& event);
    void on_any_mouse_event(wxMouseEvent& event);
-   void EnableFocus(BOOL state);
+   void EnableFocus(BOOL_L state);
    void CheckFocus();
-	
+
 
    void CentreRDP();
    void CheckWindow();
-	
 
-   virtual void SendKey(BOOL cad = FALSE);
+
+   virtual void SendKey(BOOL_L cad = FALSE);
    void SendXKeyEvent(XKeyEvent * event);
-   virtual void GrabAll(BOOL state);
+   virtual void GrabAll(BOOL_L state);
 
 
    virtual void CentreConnection();
@@ -145,25 +145,20 @@ public:
 
    ICAFullScreen * fullscreen_frame;
 
-   BOOL bClosing;
-	
+   BOOL_L bClosing;
+
 //	RDPConn rdpconn;
    Options_HashMap local_options;
    wxString Info;
-	
+
    int info_uniq_name;
-
-//	Main_Frame * main_frame;
-//	bool bConnected;
-//	BOOL bFullScreen;
-
 //	wxSplitterRDP * splitter_rdp;
    wxWindowUpdateLocker * lock;
    wxWindowUpdateLocker * lock_cnt;
-	
+
 
    static void  wait_exit(GPid pid, gint status, gpointer data);
-	
+
 
    GtkWidget *  sock;
    int sock_id;
@@ -171,10 +166,10 @@ public:
    int output_fd;
    int error_fd;
 
-	
+
 private:
-	
-	
+
+
    ConnSplitter *m_parent;
 
    wxInputStream* m_in;
@@ -185,7 +180,7 @@ private:
    XID xid;
 
    Window ica_window;
-public:	
+public:
    Window GetICAWindowId();
 private:
    bool InjectWindow();

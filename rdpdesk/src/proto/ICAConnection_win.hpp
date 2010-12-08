@@ -45,7 +45,7 @@ public:
 class ICAConnection : public BasicConnection
 {
 public:
-	 ICAConnection(Main_Frame * main,Options_HashMap options ,wxWindow * parent , wxWindowID id = -1,
+	 ICAConnection(MainFrame * main,Options_HashMap options ,wxWindow * parent , wxWindowID id = -1,
         const wxPoint& pos = wxDefaultPosition,
         const wxSize& size = wxDefaultSize,
         long style = 0,

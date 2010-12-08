@@ -1,12 +1,12 @@
 ///////////////////////////////////////////////////////////////////////////////
 // File name:   small_shoot.hpp
 // Version:     0.0
-// Purpose: 
-// Time-stamp:  "2010-03-03 18:23:47" 
+// Purpose:
+// Time-stamp:  "2010-11-30 21:21:21"
 // E-mail:      rdpdesk@rdpdesk.com
-// $Id$ 
-// Copyright:   (c) 2009-2010 RDPDesk <rdpdesk@rdpdesk.com> 
-// Licence:     GPL v3 
+// $Id$
+// Copyright:   (c) 2009-2010 RDPDesk <rdpdesk@rdpdesk.com>
+// Licence:     GPL v3
 ///////////////////////////////////////////////////////////////////////////////
 
 #ifndef SMALL_SHOOT_HPP
@@ -26,7 +26,7 @@ public:
 	PanelBitmapBtn(wxWindow * parent, wxWindowID id,const wxPoint& point,const wxSize& size,
 				   long style = 0);
 	~PanelBitmapBtn();
-	Main_Frame * main_frame;
+	MainFrame * main_frame;
 	wxBitmapButton * bmpbtn;
 	void bmpbtn_func(wxCommandEvent& event);
 
