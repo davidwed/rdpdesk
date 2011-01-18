@@ -2,9 +2,7 @@
 // File name:   proto.hpp
 // Version:     0.0
 // Purpose:
-// Time-stamp:  "2010-03-21 21:39:17"
 // E-mail:      rdpdesk@rdpdesk.com
-// $Id$
 // Copyright:   (c) 2009-2010 RDPDesk <rdpdesk@rdpdesk.com>
 // Licence:     GPL v3
 ///////////////////////////////////////////////////////////////////////////////

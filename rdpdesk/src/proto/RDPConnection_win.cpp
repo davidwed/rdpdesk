@@ -2,9 +2,7 @@
 // File name:   RDPConnection_win.cpp
 // Version:     0.0
 // Purpose:
-// Time-stamp:  "2010-12-08 19:14:59"
 // E-mail:      rdpdesk@rdpdesk.com
-// $Id$
 // Copyright:   (c) 2009-2010 RDPDesk <rdpdesk@rdpdesk.com>
 // Licence:     GPL v3
 ///////////////////////////////////////////////////////////////////////////////
@@ -434,8 +432,9 @@ void RDPConnection::Disconnect()
 		hres = pUnknown->QueryInterface(__uuidof(MSTSCLib::IMsRdpClientPtr),(void**)&refRDP);
 		if (FAILED(hres)) return;
 		refRDP->RequestClose();
-//		refRDP->Disconnect();
+		refRDP->Disconnect();
 		refRDP->Release();
+		
 	}
 	catch(...)
 	{
@@ -451,7 +450,7 @@ void RDPConnection::OnConfirmCloseSuccess()
 		HRESULT hres;
 		hres = pUnknown->QueryInterface(__uuidof(MSTSCLib::IMsRdpClientPtr),(void**)&refRDP);
 		if (FAILED(hres)) return;
-//		refRDP->RequestClose();
+		//refRDP->RequestClose();
 		refRDP->Disconnect();
 		refRDP->Release();
 	}
@@ -463,6 +462,7 @@ void RDPConnection::OnConfirmCloseSuccess()
 
 bool RDPConnection::DoConnection()
 {
+
 	DWORD thId;
 	hTestHostThread = CreateThread(NULL,0,(LPTHREAD_START_ROUTINE)this->TestHost, this,0,&thId);
 
@@ -473,10 +473,11 @@ bool RDPConnection::DoConnection()
 
 	wxString conn_text(_("Try establish connection"));
 	refRDP->put_ConnectingText(SysAllocString( conn_text.wc_str(*wxConvCurrent) ));
-
-	refRDP->put_Server(SysAllocString(AnsiToUnicode(local_options[wxT("hostname")])));
+	if (refRDP->put_Server(SysAllocString(AnsiToUnicode(local_options[wxT("hostname")]))))
+		return false;
+	//wxMessageBox(wxT("TEST31"));
 	refRDP->put_UserName(SysAllocString(AnsiToUnicode(local_options[wxT("username")])));
-
+	//wxMessageBox(wxT("TEST3"));
 	if (local_options[wxT("password")] != wxT(""))
 	{
 		refRDP->GetAdvancedSettings2()->put_ClearTextPassword(SysAllocString(AnsiToUnicode(local_options[wxT("password")])));
@@ -503,7 +504,7 @@ bool RDPConnection::DoConnection()
 
 	wxString Choises[] = {wxT("8"),wxT("15"),wxT("16"),wxT("24")};
 	refRDP->put_ColorDepth(wxAtoi(Choises[wxAtoi(local_options[wxT("color_depth")])]));
-
+	//wxMessageBox(wxT("TEST4"));
 	if (wxAtoi(local_options[wxT("control_size")]))
 	{
 		refRDP->put_DesktopWidth(0);
@@ -533,7 +534,7 @@ bool RDPConnection::DoConnection()
 	}
 
 
-
+	//wxMessageBox(wxT("TEST5"));
 
 
 
@@ -601,6 +602,7 @@ bool RDPConnection::DoConnection()
 	refRDP->Connect();
 
 	refRDP->Release();
+//wxMessageBox(wxT("TEST6"));
 	return TRUE;
 }
 
@@ -631,5 +633,6 @@ void RDPConnection::CentreConnection()
 bool RDPConnection::DisconnectClose()
 {
 	Disconnect();
+
 	return true;
 }

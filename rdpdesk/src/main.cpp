@@ -2,9 +2,7 @@
 // File name:   main.cpp
 // Version:     0.0
 // Purpose:
-// Time-stamp:  "2010-12-02 15:30:16"
 // E-mail:      rdpdesk@rdpdesk.com
-// $Id$
 // Copyright:   (c) 2009-2010 RDPDesk <rdpdesk@rdpdesk.com>
 // Licence:     GPL v3
 ///////////////////////////////////////////////////////////////////////////////
@@ -149,9 +147,14 @@ bool RDP_Core::OnInit()
 												wxSIMPLE_BORDER|wxSTAY_ON_TOP);
 	splash->GetTimeout();
 	wxYield();
-
-	main_frame = new MainFrame(TS_NAME ,wxPoint(50,50), wxSize(frame_width,frame_heigth),
-								wxMINIMIZE_BOX | wxMAXIMIZE_BOX | wxRESIZE_BORDER | wxSYSTEM_MENU | wxCAPTION | wxCLOSE_BOX | wxCLIP_CHILDREN );
+	main_frame = new MainFrame(wxString::Format(wxT("%s - %s %i.%i"),
+						    TS_NAME,
+						    _("Remote Network and Desktop Administration v"),
+						    TS_VERSION_MAJOR,
+						    TS_VERSION_MINOR)
+				   ,wxPoint(50,50),
+				   wxSize(frame_width,frame_heigth),
+				   wxMINIMIZE_BOX | wxMAXIMIZE_BOX | wxRESIZE_BORDER | wxSYSTEM_MENU | wxCAPTION | wxCLOSE_BOX | wxCLIP_CHILDREN );
 	main_frame->Show(true);
 	Autoupdate *auto_update_thread = new Autoupdate(main_frame);
 	wxThreadError err = auto_update_thread->Create();

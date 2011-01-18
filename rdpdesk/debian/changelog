@@ -1,3 +1,14 @@
+rdpdesk (3.2-0) unstable; urgency=low
+
+  * Fix "Fast connection" dialog
+  * Fix translation
+  * Fix Windows RDP connection
+  * Fix update notification
+  
+
+ -- rdpdesk <rdpdesk@rdpdesk.com>  Mon, 17 Jan 2011 19:13:45 +0400
+
+
 rdpdesk (3.1-0) unstable; urgency=low
 
   * Add support FreeRDP (only linux)

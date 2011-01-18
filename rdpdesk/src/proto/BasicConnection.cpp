@@ -2,9 +2,7 @@
 // File name:   BasicConnection.cpp
 // Version:     0.0
 // Purpose:
-// Time-stamp:  "2010-12-06 15:31:53"
 // E-mail:      rdpdesk@rdpdesk.com
-// $Id$
 // Copyright:   (c) 2009-2010 RDPDesk <rdpdesk@rdpdesk.com>
 // Licence:     GPL v3
 ///////////////////////////////////////////////////////////////////////////////

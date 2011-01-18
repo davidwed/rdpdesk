@@ -6,9 +6,9 @@
 ##, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: 3.1\n"
+"Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-12-08 19:16+0300\n"
+"POT-Creation-Date: 2011-01-17 14:46+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -169,7 +169,7 @@ msgstr "Предупреждение %s"
 msgid "%s did not fit the tar header for entry '%s'"
 msgstr ""
 
-#: ../src/main.cpp:61
+#: ../src/main.cpp:61 ../src/main.cpp:59
 #, c-format
 msgid "%s error"
 msgstr ""
@@ -211,6 +211,7 @@ msgid "&About..."
 msgstr "О &программе"
 
 #: ../src/gui/main_window.cpp:387 ../src/gui/main_window.cpp:390
+#: ../src/gui/main_window.cpp:388
 msgid "&About...\tF1"
 msgstr "&О программе\tF1"
 
@@ -230,6 +231,7 @@ msgstr "Выровнять влево"
 
 #: ../src/proto/RDPOptionsDialog.cpp:1931
 #: ../src/proto/RDPOptionsDialog.cpp:1935
+#: ../src/proto/RDPOptionsDialog.cpp:1933
 msgid "&Animation"
 msgstr "&Анимация"
 
@@ -248,16 +250,20 @@ msgstr "&Упорядочить значки"
 
 #: ../src/proto/FRDPOptionsDialog.cpp:461
 #: ../src/proto/RDPOptionsDialog.cpp:511 ../src/proto/RDPOptionsDialog.cpp:512
+#: ../src/proto/FRDPOptionsDialog.cpp:459
+#: ../src/proto/RDPOptionsDialog.cpp:510
 msgid "&Attach to console"
 msgstr "&Присоединиться к консоли"
 
 #: ../src/proto/FRDPOptionsDialog.cpp:448
 #: ../src/proto/ICAOptionsDialog.cpp:456 ../src/proto/RDPOptionsDialog.cpp:498
 #: ../src/proto/RDPOptionsDialog.cpp:499
+#: ../src/proto/FRDPOptionsDialog.cpp:446
+#: ../src/proto/ICAOptionsDialog.cpp:454 ../src/proto/RDPOptionsDialog.cpp:497
 msgid "&Auto logon"
 msgstr "Входить &автоматически"
 
-#: ../src/gui/settings_dialog.cpp:199
+#: ../src/gui/settings_dialog.cpp:199 ../src/gui/settings_dialog.cpp:197
 msgid "&Auto saving"
 msgstr "&Автосохранение"
 
@@ -275,6 +281,7 @@ msgstr ""
 
 #: ../src/proto/RDPOptionsDialog.cpp:1924
 #: ../src/proto/RDPOptionsDialog.cpp:1928
+#: ../src/proto/RDPOptionsDialog.cpp:1926
 msgid "&Bitmap caching"
 msgstr "Кэширование текстур"
 
@@ -283,7 +290,12 @@ msgid "&Bold"
 msgstr "&Жирный"
 
 #: ../src/gui/main_window.cpp:391 ../src/gui/main_window.cpp:394
+#, fuzzy
 msgid "&Build-in documentation"
+msgstr "&Встроенная документация"
+
+#: ../src/gui/main_window.cpp:392
+msgid "&Built-in Documentation"
 msgstr "&Встроенная документация"
 
 #: ../src/richtext/richtextliststylepage.cpp:209
@@ -301,7 +313,7 @@ msgstr "&Отмена"
 msgid "&Cascade"
 msgstr "&Каскад"
 
-#: ../src/gui/tree_group.cpp:730
+#: ../src/gui/tree_group.cpp:730 ../src/gui/tree_group.cpp:728
 msgid "&Change"
 msgstr "И&зменить"
 
@@ -315,6 +327,7 @@ msgstr "О&чистить"
 
 #: ../src/proto/FRDPOptionsDialog.cpp:2182
 #: ../src/proto/FRDPOptionsDialog.cpp:2183
+#: ../src/proto/FRDPOptionsDialog.cpp:2181
 msgid "&Clipboard sync"
 msgstr "Общий &буфер обмена"
 
@@ -328,31 +341,36 @@ msgstr "&Закрыть"
 msgid "&Colour:"
 msgstr "&Цвет:"
 
-#: ../src/gui/tree_group.cpp:729
+#: ../src/gui/tree_group.cpp:729 ../src/gui/tree_group.cpp:727
 msgid "&Connect"
 msgstr "&Соединить"
 
 #: ../src/gui/main_window.cpp:371 ../src/gui/main_window.cpp:374
+#: ../src/gui/main_window.cpp:372
 msgid "&Connect...\tAlt-C"
 msgstr "&Соединить...\tAlt-C"
 
 #: ../src/gui/main_window.cpp:401 ../src/gui/main_window.cpp:404
+#: ../src/gui/main_window.cpp:402
 msgid "&Connection"
 msgstr "&Соединение"
 
 #: ../src/gui/main_window.cpp:363 ../src/gui/main_window.cpp:366
+#: ../src/gui/main_window.cpp:364
 msgid "&Connections tree...\tCtrl-T"
 msgstr "&Панель соединений...\tCtrl-T"
 
 #: ../src/proto/FRDPOptionsDialog.cpp:828
 #: ../src/proto/ICAOptionsDialog.cpp:877 ../src/proto/RDPOptionsDialog.cpp:878
 #: ../src/proto/RDPOptionsDialog.cpp:879
+#: ../src/proto/FRDPOptionsDialog.cpp:826
+#: ../src/proto/ICAOptionsDialog.cpp:875 ../src/proto/RDPOptionsDialog.cpp:877
 msgid "&Control size"
 msgstr "Управлять размером"
 
 #: ../src/common/stockitem.cpp:117 ../src/richtext/richtextctrl.cpp:2582
 #: ../src/msw/textctrl.cpp:2304 ../src/mac/carbon/textctrl.cpp:1043
-#: ../src/gui/tree_group.cpp:731
+#: ../src/gui/tree_group.cpp:731 ../src/gui/tree_group.cpp:729
 msgid "&Copy"
 msgstr "&Копировать"
 
@@ -367,6 +385,8 @@ msgstr "&Копировать"
 #: ../src/proto/FRDPOptionsDialog.cpp:837
 #: ../src/proto/ICAOptionsDialog.cpp:882 ../src/proto/RFBOptionsDialog.cpp:468
 #: ../src/proto/RDPOptionsDialog.cpp:887 ../src/proto/RDPOptionsDialog.cpp:888
+#: ../src/proto/FRDPOptionsDialog.cpp:835
+#: ../src/proto/ICAOptionsDialog.cpp:880 ../src/proto/RDPOptionsDialog.cpp:886
 msgid "&Custom geometry"
 msgstr "&Задать разрешение"
 
@@ -377,7 +397,8 @@ msgstr "Предварительный просмотр отчета &отладки:"
 #: ../src/common/stockitem.cpp:119 ../src/richtext/richtextctrl.cpp:2584
 #: ../src/richtext/richtexttabspage.cpp:141 ../src/msw/textctrl.cpp:2306
 #: ../src/mac/carbon/textctrl.cpp:1045 ../src/gui/tree_group.cpp:722
-#: ../src/gui/tree_group.cpp:732
+#: ../src/gui/tree_group.cpp:732 ../src/gui/tree_group.cpp:720
+#: ../src/gui/tree_group.cpp:730
 msgid "&Delete"
 msgstr "&Удалить"
 
@@ -389,12 +410,13 @@ msgstr "Удалить элемент"
 # #: ../src/gui/tree_group.cpp:700 ../src/gui/tree_group.cpp:714
 # msgid "&Delete"
 # msgstr ""
-#: ../src/gui/tree_group.cpp:735
+#: ../src/gui/tree_group.cpp:735 ../src/gui/tree_group.cpp:733
 msgid "&Delete from favorites"
 msgstr "&Удалить из избранного"
 
 #: ../src/proto/RDPOptionsDialog.cpp:1926
 #: ../src/proto/RDPOptionsDialog.cpp:1930
+#: ../src/proto/RDPOptionsDialog.cpp:1928
 msgid "&Desktop wallpaper"
 msgstr "&Обои рабочего стола"
 
@@ -403,14 +425,16 @@ msgid "&Details"
 msgstr "&Подробности"
 
 #: ../src/gui/main_window.cpp:384 ../src/gui/main_window.cpp:387
+#: ../src/gui/main_window.cpp:385
 msgid "&Disconnect and close...\tCtrl-W"
 msgstr "От&ключить и закныть...\tCtrl-W"
 
 #: ../src/gui/main_window.cpp:372 ../src/gui/main_window.cpp:375
+#: ../src/gui/main_window.cpp:373
 msgid "&Disconnect...\tAlt-D"
 msgstr "&Отключить...\tAlt-D"
 
-#: ../src/gui/settings_dialog.cpp:193
+#: ../src/gui/settings_dialog.cpp:193 ../src/gui/settings_dialog.cpp:191
 msgid "&Display icon in system tray"
 msgstr "&Иконка на панели задач"
 
@@ -431,33 +455,41 @@ msgstr "Редактировать элемент"
 #: ../src/proto/RDPOptionsDialog.cpp:2227
 #: ../src/proto/FRDPOptionsDialog.cpp:2186
 #: ../src/proto/RDPOptionsDialog.cpp:2232
+#: ../src/proto/FRDPOptionsDialog.cpp:2184
+#: ../src/proto/RDPOptionsDialog.cpp:2230
 msgid "&Enable compress"
 msgstr "Использовать с&жатие"
 
 #: ../src/proto/RDPOptionsDialog.cpp:2215
 #: ../src/proto/RDPOptionsDialog.cpp:2220
+#: ../src/proto/RDPOptionsDialog.cpp:2218
 msgid "&Enable encrypt for French version"
 msgstr "Включить шифрование для &французской версии"
 
 #: ../src/proto/RDPOptionsDialog.cpp:2217
 #: ../src/proto/RDPOptionsDialog.cpp:2222
+#: ../src/proto/RDPOptionsDialog.cpp:2220
 msgid "&Enable encryption"
 msgstr "Использовать &шифрование"
 
 #: ../src/gui/main_window.cpp:867 ../src/gui/main_window.cpp:870
+#: ../src/gui/main_window.cpp:872
 msgid "&Exit"
 msgstr "В&ыход"
 
 #: ../src/gui/main_window.cpp:355 ../src/gui/main_window.cpp:358
+#: ../src/gui/main_window.cpp:356
 msgid "&Export RDP File...\tCtrl-E"
-msgstr "&Экспортировать PDF...\tCtrl-E"
+msgstr "&Экспортировать RDP...\tCtrl-E"
 
 #: ../src/gui/main_window.cpp:350 ../src/gui/main_window.cpp:353
+#: ../src/gui/main_window.cpp:351
 msgid "&Fast connection...\tCtrl-F"
 msgstr "&Быстрое соединение...\tCtrl-F"
 
 #: ../src/common/stockitem.cpp:122 ../src/html/helpfrm.cpp:127
 #: ../src/gui/main_window.cpp:399 ../src/gui/main_window.cpp:402
+#: ../src/gui/main_window.cpp:400
 msgid "&File"
 msgstr "&Файл"
 
@@ -487,11 +519,12 @@ msgstr "Размер &шрифта:"
 # msgid "&File"
 # msgstr ""
 #: ../src/proto/RFBOptionsDialog.cpp:532 ../src/proto/RDPOptionsDialog.cpp:962
-#: ../src/proto/RDPOptionsDialog.cpp:963
+#: ../src/proto/RDPOptionsDialog.cpp:963 ../src/proto/RDPOptionsDialog.cpp:961
 msgid "&Force update screen"
 msgstr "Принудительно &обновлять экран"
 
 #: ../src/gui/main_window.cpp:393 ../src/gui/main_window.cpp:396
+#: ../src/gui/main_window.cpp:394
 msgid "&Forum"
 msgstr "&Форум"
 
@@ -507,10 +540,13 @@ msgstr "От:"
 #: ../src/proto/FRDPOptionsDialog.cpp:833
 #: ../src/proto/ICAOptionsDialog.cpp:880 ../src/proto/RDPOptionsDialog.cpp:883
 #: ../src/proto/RDPOptionsDialog.cpp:884
+#: ../src/proto/FRDPOptionsDialog.cpp:831
+#: ../src/proto/ICAOptionsDialog.cpp:878 ../src/proto/RDPOptionsDialog.cpp:882
 msgid "&Full screen"
 msgstr "Полный экр&ан"
 
 #: ../src/gui/main_window.cpp:374 ../src/gui/main_window.cpp:377
+#: ../src/gui/main_window.cpp:375
 msgid "&Full screen...\tAlt-F"
 msgstr "Полный экр&ан...\tAlt-F"
 
@@ -519,16 +555,18 @@ msgid "&Goto..."
 msgstr "&Перейти..."
 
 #: ../src/gui/main_window.cpp:380 ../src/gui/main_window.cpp:383
+#: ../src/gui/main_window.cpp:381
 msgid "&Grab input...\tAlt-G"
 msgstr "Перехватывать &ввод...\tAlt-G"
 
-#: ../src/gui/settings_dialog.cpp:210
+#: ../src/gui/settings_dialog.cpp:210 ../src/gui/settings_dialog.cpp:208
 msgid "&Grab keyboard keys"
 msgstr "Перехватывать &клавиатуру"
 
 #: ../src/common/stockitem.cpp:128 ../src/html/helpfrm.cpp:128
 #: ../src/generic/wizard.cpp:456 ../src/generic/wizard.cpp:463
 #: ../src/gui/main_window.cpp:403 ../src/gui/main_window.cpp:406
+#: ../src/gui/main_window.cpp:404
 msgid "&Help"
 msgstr "&Помощь"
 
@@ -536,6 +574,7 @@ msgstr "&Помощь"
 # msgid "&Help"
 # msgstr ""
 #: ../src/gui/main_window.cpp:365 ../src/gui/main_window.cpp:368
+#: ../src/gui/main_window.cpp:366
 msgid "&Hide frame...\tCtrl-H"
 msgstr "&Скрыть окно...\tCtrl-H"
 
@@ -583,14 +622,16 @@ msgid "&List level:"
 msgstr ""
 
 #: ../src/gui/main_window.cpp:353 ../src/gui/main_window.cpp:356
+#: ../src/gui/main_window.cpp:354
 msgid "&Load RDP File...\tCtrl-O"
-msgstr ""
+msgstr "&Загрузить RDP файл"
 
 #: ../src/generic/logg.cpp:516
 msgid "&Log"
 msgstr "&Журнал"
 
 #: ../src/gui/main_window.cpp:377 ../src/gui/main_window.cpp:380
+#: ../src/gui/main_window.cpp:378
 msgid "&Make screenshot...\tAlt-H"
 msgstr "&Снимок экрана"
 
@@ -598,12 +639,13 @@ msgstr "&Снимок экрана"
 msgid "&Move"
 msgstr "П&ереместить"
 
-#: ../src/gui/tree_group.cpp:750
+#: ../src/gui/tree_group.cpp:750 ../src/gui/tree_group.cpp:748
 msgid "&Move to group"
 msgstr "&Перенести в группу"
 
 #: ../src/common/stockitem.cpp:137 ../src/richtext/richtexttabspage.cpp:135
 #: ../src/gui/main_window.cpp:864 ../src/gui/main_window.cpp:867
+#: ../src/gui/main_window.cpp:869
 msgid "&New"
 msgstr "&Новый"
 
@@ -611,10 +653,11 @@ msgstr "&Новый"
 # msgid "&New"
 # msgstr ""
 #: ../src/gui/main_window.cpp:347 ../src/gui/main_window.cpp:350
+#: ../src/gui/main_window.cpp:348
 msgid "&New connection...\tCtrl-N"
 msgstr "&Новое соединение...\tCtrl-N"
 
-#: ../src/gui/tree_group.cpp:737
+#: ../src/gui/tree_group.cpp:737 ../src/gui/tree_group.cpp:735
 msgid "&New group"
 msgstr "&Новая группа"
 
@@ -646,6 +689,7 @@ msgstr "&Заметки:"
 
 #: ../src/proto/RDPOptionsDialog.cpp:2225
 #: ../src/proto/RDPOptionsDialog.cpp:2230
+#: ../src/proto/RDPOptionsDialog.cpp:2228
 msgid "&Num Lock sync"
 msgstr "Синхронизировать &Num Lock"
 
@@ -659,6 +703,7 @@ msgid "&OK"
 msgstr "&OK"
 
 #: ../src/gui/main_window.cpp:389 ../src/gui/main_window.cpp:392
+#: ../src/gui/main_window.cpp:390
 msgid "&Online documentation"
 msgstr "Документация на сайте"
 
@@ -671,6 +716,7 @@ msgid "&Open..."
 msgstr "&Открыть..."
 
 #: ../src/gui/main_window.cpp:367 ../src/gui/main_window.cpp:370
+#: ../src/gui/main_window.cpp:368
 msgid "&Options...\tAlt-O"
 msgstr "&Параметры...\tAlt-O"
 
@@ -698,6 +744,8 @@ msgstr "&Параметры"
 #: ../src/proto/FRDPOptionsDialog.cpp:841
 #: ../src/proto/ICAOptionsDialog.cpp:884 ../src/proto/RFBOptionsDialog.cpp:473
 #: ../src/proto/RDPOptionsDialog.cpp:891 ../src/proto/RDPOptionsDialog.cpp:892
+#: ../src/proto/FRDPOptionsDialog.cpp:839
+#: ../src/proto/ICAOptionsDialog.cpp:882 ../src/proto/RDPOptionsDialog.cpp:890
 msgid "&Preset geometry"
 msgstr "&Предустановленное"
 
@@ -726,15 +774,20 @@ msgstr "Вы&ход"
 #: ../src/proto/ICAOptionsDialog.cpp:1900
 #: ../src/proto/RDPOptionsDialog.cpp:1467
 #: ../src/proto/RDPOptionsDialog.cpp:1468
+#: ../src/proto/FRDPOptionsDialog.cpp:1425
+#: ../src/proto/ICAOptionsDialog.cpp:1898
+#: ../src/proto/RDPOptionsDialog.cpp:1466
 msgid "&Redirect COM ports"
 msgstr ""
 
 #: ../src/proto/RDPOptionsDialog.cpp:1473
 #: ../src/proto/RDPOptionsDialog.cpp:1474
+#: ../src/proto/RDPOptionsDialog.cpp:1472
 msgid "&Redirect devices for linux (see man for rdesktop)"
 msgstr "Перенаправление устройств для Linux (см. документацию к rdesktop)"
 
 #: ../src/proto/FRDPOptionsDialog.cpp:1433
+#: ../src/proto/FRDPOptionsDialog.cpp:1431
 msgid "&Redirect devices for linux (see man for xfreerdp)"
 msgstr "Перенаправление устройств для Linux (см. документацию к xfreerdp)"
 
@@ -742,6 +795,9 @@ msgstr "Перенаправление устройств для Linux (см. документацию к xfreerdp)"
 #: ../src/proto/ICAOptionsDialog.cpp:1896
 #: ../src/proto/RDPOptionsDialog.cpp:1463
 #: ../src/proto/RDPOptionsDialog.cpp:1464
+#: ../src/proto/FRDPOptionsDialog.cpp:1421
+#: ../src/proto/ICAOptionsDialog.cpp:1894
+#: ../src/proto/RDPOptionsDialog.cpp:1462
 msgid "&Redirect drives"
 msgstr ""
 
@@ -749,6 +805,9 @@ msgstr ""
 #: ../src/proto/ICAOptionsDialog.cpp:1898
 #: ../src/proto/RDPOptionsDialog.cpp:1465
 #: ../src/proto/RDPOptionsDialog.cpp:1466
+#: ../src/proto/FRDPOptionsDialog.cpp:1423
+#: ../src/proto/ICAOptionsDialog.cpp:1896
+#: ../src/proto/RDPOptionsDialog.cpp:1464
 msgid "&Redirect printers"
 msgstr ""
 
@@ -756,6 +815,9 @@ msgstr ""
 #: ../src/proto/ICAOptionsDialog.cpp:1902
 #: ../src/proto/RDPOptionsDialog.cpp:1469
 #: ../src/proto/RDPOptionsDialog.cpp:1470
+#: ../src/proto/FRDPOptionsDialog.cpp:1427
+#: ../src/proto/ICAOptionsDialog.cpp:1900
+#: ../src/proto/RDPOptionsDialog.cpp:1468
 msgid "&Redirect smartcards"
 msgstr ""
 
@@ -782,7 +844,7 @@ msgid "&Restart numbering"
 msgstr ""
 
 #: ../src/univ/themes/win32.cpp:3733 ../src/gui/main_window.cpp:837
-#: ../src/gui/main_window.cpp:840
+#: ../src/gui/main_window.cpp:840 ../src/gui/main_window.cpp:842
 msgid "&Restore"
 msgstr "&Восстановить"
 
@@ -806,6 +868,7 @@ msgstr "&Сохранить"
 # msgid "&Restore"
 # msgstr ""
 #: ../src/gui/main_window.cpp:376 ../src/gui/main_window.cpp:379
+#: ../src/gui/main_window.cpp:377
 msgid "&Save this...\tAlt-S"
 msgstr "&Сохранить...\tAlt-S"
 
@@ -814,15 +877,17 @@ msgid "&Save..."
 msgstr "&Сохранить..."
 
 #: ../src/gui/main_window.cpp:382 ../src/gui/main_window.cpp:385
+#: ../src/gui/main_window.cpp:383
 msgid "&Send Ctrl+Alt+Del...\tAlt-Z"
 msgstr "&Послать Ctrl+Alt+Del...\tAlt-Z"
 
-#: ../src/gui/settings_dialog.cpp:197
+#: ../src/gui/settings_dialog.cpp:197 ../src/gui/settings_dialog.cpp:195
 msgid "&Set focus on new page"
 msgstr "&Фокус на новое окно"
 
 #: ../src/gui/main_window.cpp:402 ../src/gui/main_window.cpp:865
 #: ../src/gui/main_window.cpp:405 ../src/gui/main_window.cpp:868
+#: ../src/gui/main_window.cpp:403 ../src/gui/main_window.cpp:870
 msgid "&Settings"
 msgstr "&Настройки"
 
@@ -832,10 +897,11 @@ msgstr "&Общая сессия"
 
 #: ../src/proto/RDPOptionsDialog.cpp:1929
 #: ../src/proto/RDPOptionsDialog.cpp:1933
+#: ../src/proto/RDPOptionsDialog.cpp:1931
 msgid "&Show contents of window while dragging"
 msgstr "&Отображать содержимое окна при перетаскивании"
 
-#: ../src/gui/settings_dialog.cpp:195
+#: ../src/gui/settings_dialog.cpp:195 ../src/gui/settings_dialog.cpp:193
 msgid "&Show frame"
 msgstr "Показывать &фрейм"
 
@@ -855,6 +921,8 @@ msgstr "&Размер"
 #: ../src/proto/FRDPOptionsDialog.cpp:926
 #: ../src/proto/RFBOptionsDialog.cpp:535 ../src/proto/RDPOptionsDialog.cpp:966
 #: ../src/proto/RDPOptionsDialog.cpp:967
+#: ../src/proto/FRDPOptionsDialog.cpp:924
+#: ../src/proto/RDPOptionsDialog.cpp:965
 msgid "&Smart sizing"
 msgstr "&Умное масштабирование"
 
@@ -866,15 +934,19 @@ msgstr ""
 #: ../src/proto/FRDPOptionsDialog.cpp:1661
 #: ../src/proto/RDPOptionsDialog.cpp:1701
 #: ../src/proto/ICAOptionsDialog.cpp:1526
+#: ../src/proto/ICAOptionsDialog.cpp:1524
 msgid "&Start following program"
 msgstr "&Запустить программу"
 
 #: ../src/proto/RDPOptionsDialog.cpp:1702
 #: ../src/proto/RDPOptionsDialog.cpp:1703
+#: ../src/proto/RDPOptionsDialog.cpp:1701
 msgid "&Start maximized"
 msgstr "Полноэкранный режим"
 
 #: ../src/proto/RDPOptionsDialog.cpp:1702
+#: ../src/proto/FRDPOptionsDialog.cpp:1659
+#: ../src/proto/RDPOptionsDialog.cpp:1700
 msgid "&Start the following program:"
 msgstr ""
 
@@ -904,6 +976,7 @@ msgid "&Subset:"
 msgstr ""
 
 #: ../src/gui/main_window.cpp:395 ../src/gui/main_window.cpp:398
+#: ../src/gui/main_window.cpp:396
 msgid "&Support"
 msgstr "&Техподдержка"
 
@@ -915,6 +988,7 @@ msgstr "&Стиль:"
 
 #: ../src/proto/RDPOptionsDialog.cpp:1933
 #: ../src/proto/RDPOptionsDialog.cpp:1937
+#: ../src/proto/RDPOptionsDialog.cpp:1935
 msgid "&Themes"
 msgstr "&Темы"
 
@@ -947,26 +1021,31 @@ msgstr "&Вверх"
 
 #: ../src/proto/RDPOptionsDialog.cpp:2219
 #: ../src/proto/RDPOptionsDialog.cpp:2224
+#: ../src/proto/RDPOptionsDialog.cpp:2222
 msgid "&Use BackingStore"
 msgstr "Использовать &BackingStore"
 
-#: ../src/gui/settings_dialog.cpp:202
+#: ../src/gui/settings_dialog.cpp:202 ../src/gui/settings_dialog.cpp:200
 msgid "&Use crypt"
 msgstr "&Шифрование"
 
 #: ../src/proto/FRDPOptionsDialog.cpp:415
 #: ../src/proto/ICAOptionsDialog.cpp:420 ../src/proto/RFBOptionsDialog.cpp:194
 #: ../src/proto/RDPOptionsDialog.cpp:465 ../src/proto/RDPOptionsDialog.cpp:466
+#: ../src/proto/FRDPOptionsDialog.cpp:413
+#: ../src/proto/ICAOptionsDialog.cpp:418 ../src/proto/RDPOptionsDialog.cpp:464
 msgid "&Use custom port"
 msgstr "Изменить &порт"
 
 #: ../src/proto/RDPOptionsDialog.cpp:2221
 #: ../src/proto/RDPOptionsDialog.cpp:2226
+#: ../src/proto/RDPOptionsDialog.cpp:2224
 msgid "&Use mouse"
 msgstr "Использовать &мышь"
 
 #: ../src/proto/RDPOptionsDialog.cpp:2223
 #: ../src/proto/RDPOptionsDialog.cpp:2228
+#: ../src/proto/RDPOptionsDialog.cpp:2226
 msgid "&Use private color map"
 msgstr "Использовать собственную &палитру"
 
@@ -1096,6 +1175,8 @@ msgstr ""
 
 #: ../src/gui/settings_dialog.cpp:112 ../src/gui/settings_dialog.cpp:119
 #: ../src/gui/settings_dialog.cpp:126 ../src/gui/settings_dialog.cpp:133
+#: ../src/gui/settings_dialog.cpp:110 ../src/gui/settings_dialog.cpp:117
+#: ../src/gui/settings_dialog.cpp:124 ../src/gui/settings_dialog.cpp:131
 msgid "..."
 msgstr ""
 
@@ -1133,20 +1214,26 @@ msgstr "10 x 14 дюйма"
 
 #: ../src/proto/FRDPOptionsDialog.cpp:881
 #: ../src/proto/RDPOptionsDialog.cpp:930 ../src/proto/RDPOptionsDialog.cpp:931
+#: ../src/proto/FRDPOptionsDialog.cpp:879
+#: ../src/proto/RDPOptionsDialog.cpp:929
 msgid "15-bit"
 msgstr "15 бит"
 
 #: ../src/proto/ICAOptionsDialog.cpp:917
 #: ../src/proto/ICAOptionsDialog.cpp:1417
+#: ../src/proto/ICAOptionsDialog.cpp:915
+#: ../src/proto/ICAOptionsDialog.cpp:1415
 msgid "15-bit color"
 msgstr "15 бит"
 
-#: ../src/proto/ICAOptionsDialog.cpp:915
+#: ../src/proto/ICAOptionsDialog.cpp:915 ../src/proto/ICAOptionsDialog.cpp:913
 msgid "16 colors"
 msgstr "16 цветов"
 
 #: ../src/proto/FRDPOptionsDialog.cpp:882
 #: ../src/proto/RDPOptionsDialog.cpp:930 ../src/proto/RDPOptionsDialog.cpp:931
+#: ../src/proto/FRDPOptionsDialog.cpp:880
+#: ../src/proto/RDPOptionsDialog.cpp:929
 msgid "16-bit"
 msgstr "16 бит"
 
@@ -1158,14 +1245,16 @@ msgstr ""
 
 #: ../src/proto/FRDPOptionsDialog.cpp:883
 #: ../src/proto/RDPOptionsDialog.cpp:930 ../src/proto/RDPOptionsDialog.cpp:931
+#: ../src/proto/FRDPOptionsDialog.cpp:881
+#: ../src/proto/RDPOptionsDialog.cpp:929
 msgid "24-bit"
 msgstr "24 бита"
 
-#: ../src/proto/ICAOptionsDialog.cpp:918
+#: ../src/proto/ICAOptionsDialog.cpp:918 ../src/proto/ICAOptionsDialog.cpp:916
 msgid "24-bit color"
 msgstr "24 битный цвет"
 
-#: ../src/proto/ICAOptionsDialog.cpp:916
+#: ../src/proto/ICAOptionsDialog.cpp:916 ../src/proto/ICAOptionsDialog.cpp:914
 msgid "256 colors"
 msgstr "256 цветов"
 
@@ -1174,6 +1263,7 @@ msgid "3"
 msgstr ""
 
 #: ../src/proto/FRDPOptionsDialog.cpp:884
+#: ../src/proto/FRDPOptionsDialog.cpp:882
 msgid "32-bit"
 msgstr ""
 
@@ -1203,6 +1293,8 @@ msgstr ""
 
 #: ../src/proto/FRDPOptionsDialog.cpp:880
 #: ../src/proto/RDPOptionsDialog.cpp:930 ../src/proto/RDPOptionsDialog.cpp:931
+#: ../src/proto/FRDPOptionsDialog.cpp:878
+#: ../src/proto/RDPOptionsDialog.cpp:929
 msgid "8-bit"
 msgstr "8 бит"
 
@@ -1430,6 +1522,7 @@ msgid "ADD"
 msgstr ""
 
 #: ../src/gui/settings_dialog.cpp:204 ../src/gui/settings_dialog.cpp:549
+#: ../src/gui/settings_dialog.cpp:202 ../src/gui/settings_dialog.cpp:547
 msgid "AES"
 msgstr ""
 
@@ -1471,16 +1564,21 @@ msgstr "Добавление книги %s"
 
 #: ../src/proto/FRDPOptionsDialog.cpp:428
 #: ../src/proto/RDPOptionsDialog.cpp:478 ../src/proto/RDPOptionsDialog.cpp:479
+#: ../src/proto/FRDPOptionsDialog.cpp:426
+#: ../src/proto/RDPOptionsDialog.cpp:477
 msgid "Administrator"
 msgstr ""
 
 #: ../src/proto/FRDPOptionsDialog.cpp:128
 #: ../src/proto/ICAOptionsDialog.cpp:111 ../src/proto/RDPOptionsDialog.cpp:127
+#: ../src/proto/ICAOptionsDialog.cpp:109
 msgid "Advance"
 msgstr "Дополнительно"
 
 #: ../src/proto/FRDPOptionsDialog.cpp:128
 #: ../src/proto/RDPOptionsDialog.cpp:128
+#: ../src/proto/FRDPOptionsDialog.cpp:126
+#: ../src/proto/RDPOptionsDialog.cpp:126
 msgid "Advanced"
 msgstr "Дополнительно"
 
@@ -1521,11 +1619,12 @@ msgstr "Все файлы (*.*)|*.*"
 msgid "All styles"
 msgstr ""
 
-#: ../src/proto/ICAOptionsDialog.cpp:989
+#: ../src/proto/ICAOptionsDialog.cpp:989 ../src/proto/ICAOptionsDialog.cpp:987
 msgid "Allow Degraded Colors"
 msgstr "Разрешить уменьшение глубины цвета"
 
 #: ../src/proto/ICAOptionsDialog.cpp:1567
+#: ../src/proto/ICAOptionsDialog.cpp:1565
 msgid "Allow Duplicate Sessions"
 msgstr "Разрешить дублирование сессий"
 
@@ -1556,11 +1655,12 @@ msgstr "Файл изображения не относится к типу %d."
 msgid "Append log to file '%s' (choosing [No] will overwrite it)?"
 msgstr "Добавить в файл журнала '%s' (выбор [Нет] перепишет его)?"
 
-#: ../src/gui/settings_dialog.cpp:293
+#: ../src/gui/settings_dialog.cpp:293 ../src/gui/settings_dialog.cpp:291
 msgid "Apply"
 msgstr "Применить"
 
 #: ../src/proto/ICAOptionsDialog.cpp:1027
+#: ../src/proto/ICAOptionsDialog.cpp:1025
 msgid "Approximate Colors"
 msgstr ""
 
@@ -1586,14 +1686,16 @@ msgid "Attributes"
 msgstr "Атрибуты"
 
 #: ../src/proto/ICAOptionsDialog.cpp:1877
+#: ../src/proto/ICAOptionsDialog.cpp:1875
 msgid "Audio quality"
 msgstr "Качество звука"
 
 #: ../src/proto/ICAOptionsDialog.cpp:510 ../src/proto/ICAOptionsDialog.cpp:919
+#: ../src/proto/ICAOptionsDialog.cpp:508 ../src/proto/ICAOptionsDialog.cpp:917
 msgid "Auto"
 msgstr "Автоматически"
 
-#: ../src/proto/BasicConnection.cpp:163
+#: ../src/proto/BasicConnection.cpp:163 ../src/proto/BasicConnection.cpp:161
 msgid "Auto hide"
 msgstr "Скрывать автоматически"
 
@@ -1702,6 +1804,7 @@ msgid "Baltic (old) (ISO-8859-4)"
 msgstr "Балтийский (старый) (ISO-8859-4)"
 
 #: ../src/proto/ICAOptionsDialog.cpp:2048
+#: ../src/proto/ICAOptionsDialog.cpp:2046
 msgid "Basic"
 msgstr "Базовый"
 
@@ -1733,12 +1836,16 @@ msgstr "Нижнее поле (мм):"
 #: ../src/proto/FRDPOptionsDialog.cpp:1407
 #: ../src/proto/RDPOptionsDialog.cpp:1447
 #: ../src/proto/RDPOptionsDialog.cpp:1448
+#: ../src/proto/FRDPOptionsDialog.cpp:1405
+#: ../src/proto/RDPOptionsDialog.cpp:1446
 msgid "Bring to this computer"
 msgstr "Перенаправить на этот компьютер"
 
 #: ../src/proto/FRDPOptionsDialog.cpp:1870
 #: ../src/proto/RDPOptionsDialog.cpp:1912
 #: ../src/proto/RDPOptionsDialog.cpp:1913
+#: ../src/proto/FRDPOptionsDialog.cpp:1868
+#: ../src/proto/RDPOptionsDialog.cpp:1911
 msgid "Broadband 128Kbps - 1.5 Mbps"
 msgstr ""
 
@@ -1925,12 +2032,14 @@ msgstr "Не могу найти текущую позицию в файле '%s'"
 
 #: ../src/proto/RDPConnection_nix.cpp:309
 #: ../src/proto/RDPConnection_nix.cpp:308
+#: ../src/proto/RDPConnection_nix.cpp:306
 msgid ""
 "Can't found \"rdesktop\" file.\n"
 "Please press Alt+O, and edit patch to \"rdesktop\" executable file"
 msgstr ""
 
 #: ../src/proto/FRDPConnection_nix.cpp:331
+#: ../src/proto/FRDPConnection_nix.cpp:329
 msgid ""
 "Can't found \"xfreerdp\" file.\n"
 "Please press Alt+O, and edit patch to \"xfreerdp\" executable file"
@@ -2010,6 +2119,8 @@ msgstr "Невозможно записать в разжимаемый поток: %s"
 #: ../src/mac/carbon/msgdlg.cpp:68 ../contrib/src/deprecated/proplist.cpp:514
 #: ../src/gui/settings_dialog.cpp:292 ../src/gui/config/rdp_dialogs.cpp:135
 #: ../src/gui/config/fastconn_dialog.cpp:48 ../src/gui/tree_group.cpp:1296
+#: ../src/gui/settings_dialog.cpp:290 ../src/gui/config/rdp_dialogs.cpp:133
+#: ../src/gui/config/fastconn_dialog.cpp:46 ../src/gui/tree_group.cpp:1294
 msgid "Cancel"
 msgstr "Отмена"
 
@@ -2275,6 +2386,7 @@ msgstr "Выберите провайдера для набора номера"
 
 #: ../src/gui/main_window.cpp:1592 ../src/gui/main_window.cpp:1658
 #: ../src/gui/main_window.cpp:1597 ../src/gui/main_window.cpp:1663
+#: ../src/gui/main_window.cpp:1599 ../src/gui/main_window.cpp:1665
 msgid "Choose a RDP file"
 msgstr ""
 
@@ -2287,19 +2399,19 @@ msgstr "Выберите цвет"
 msgid "Choose font"
 msgstr "Выберите шрифт"
 
-#: ../src/gui/settings_dialog.cpp:706
+#: ../src/gui/settings_dialog.cpp:706 ../src/gui/settings_dialog.cpp:704
 msgid "Choose rdesktop keyboard map path"
 msgstr ""
 
-#: ../src/gui/settings_dialog.cpp:675
+#: ../src/gui/settings_dialog.cpp:675 ../src/gui/settings_dialog.cpp:673
 msgid "Choose rdesktop path"
 msgstr ""
 
-#: ../src/gui/settings_dialog.cpp:686
+#: ../src/gui/settings_dialog.cpp:686 ../src/gui/settings_dialog.cpp:684
 msgid "Choose rdpbase path"
 msgstr ""
 
-#: ../src/gui/settings_dialog.cpp:696
+#: ../src/gui/settings_dialog.cpp:696 ../src/gui/settings_dialog.cpp:694
 msgid "Choose rdpkey path"
 msgstr ""
 
@@ -2317,6 +2429,7 @@ msgid "Clear the log contents"
 msgstr "Очистить содержимое журнала"
 
 #: ../src/proto/ICAOptionsDialog.cpp:1066
+#: ../src/proto/ICAOptionsDialog.cpp:1064
 msgid "ClearType"
 msgstr ""
 
@@ -2460,10 +2573,12 @@ msgid "Close current document"
 msgstr "Закрыть документ"
 
 #: ../src/gui/main_window.cpp:384 ../src/gui/main_window.cpp:387
+#: ../src/gui/main_window.cpp:385
 msgid "Close current page"
 msgstr "Закрыть страницу"
 
 #: ../src/gui/main_window.cpp:453 ../src/gui/main_window.cpp:456
+#: ../src/gui/main_window.cpp:454
 msgid "Close program"
 msgstr "Закрыть программу"
 
@@ -2479,11 +2594,14 @@ msgid "Closes the dialog without inserting a symbol."
 msgstr ""
 
 #: ../src/gui/main_window.cpp:319 ../src/gui/main_window.cpp:322
+#: ../src/gui/main_window.cpp:320
 msgid "Closing application..."
 msgstr "Выход.."
 
 #: ../src/proto/FRDPOptionsDialog.cpp:878
 #: ../src/proto/RDPOptionsDialog.cpp:928 ../src/proto/RDPOptionsDialog.cpp:929
+#: ../src/proto/FRDPOptionsDialog.cpp:876
+#: ../src/proto/RDPOptionsDialog.cpp:927
 msgid "Color depth"
 msgstr "Глубина цвета"
 
@@ -2505,6 +2623,7 @@ msgid ""
 msgstr ""
 
 #: ../src/proto/ICAOptionsDialog.cpp:1558
+#: ../src/proto/ICAOptionsDialog.cpp:1556
 msgid "Compress"
 msgstr "Сжатие"
 
@@ -2534,7 +2653,9 @@ msgstr "Подтвердите обновление реестра"
 #: ../src/gui/config/rdp_dialogs.cpp:132
 #: ../src/gui/config/fastconn_dialog.cpp:50 ../src/gui/main_window.cpp:514
 #: ../src/gui/main_window.cpp:516 ../src/gui/main_window.cpp:574
-#: ../src/gui/main_window.cpp:576
+#: ../src/gui/main_window.cpp:576 ../src/gui/main_window.cpp:512
+#: ../src/gui/main_window.cpp:578 ../src/gui/config/rdp_dialogs.cpp:130
+#: ../src/gui/config/fastconn_dialog.cpp:48
 msgid "Connect"
 msgstr "Соединение"
 
@@ -2542,27 +2663,32 @@ msgstr "Соединение"
 msgid "Connecting..."
 msgstr "Соединение..."
 
-#: ../src/gui/settings_dialog.cpp:213
+#: ../src/gui/settings_dialog.cpp:213 ../src/gui/settings_dialog.cpp:211
 msgid "Connection count"
 msgstr "Счётчик соединений"
 
 #: ../src/proto/FRDPOptionsDialog.cpp:374
 #: ../src/proto/ICAOptionsDialog.cpp:390 ../src/proto/RFBOptionsDialog.cpp:161
 #: ../src/proto/RDPOptionsDialog.cpp:424 ../src/proto/RDPOptionsDialog.cpp:425
+#: ../src/proto/FRDPOptionsDialog.cpp:372
+#: ../src/proto/ICAOptionsDialog.cpp:388 ../src/proto/RDPOptionsDialog.cpp:423
 msgid "Connection name"
 msgstr "Имя соединения"
 
-#: ../src/gui/config/rdp_dialogs.cpp:34
+#: ../src/gui/config/rdp_dialogs.cpp:34 ../src/gui/config/rdp_dialogs.cpp:32
 msgid "Connection settings"
 msgstr "Настройки соединения"
 
 #: ../src/proto/FRDPOptionsDialog.cpp:1867
 #: ../src/proto/RDPOptionsDialog.cpp:1907
 #: ../src/proto/RDPOptionsDialog.cpp:1908
+#: ../src/proto/FRDPOptionsDialog.cpp:1865
+#: ../src/proto/RDPOptionsDialog.cpp:1906
 msgid "Connection speed"
 msgstr "Скорость соединения"
 
 #: ../src/gui/main_window.cpp:371 ../src/gui/main_window.cpp:374
+#: ../src/gui/main_window.cpp:372
 msgid "Connection with current settings"
 msgstr "Соединение с текущими настройками"
 
@@ -2742,10 +2868,12 @@ msgid "Create directory"
 msgstr "Создать каталог"
 
 #: ../src/gui/main_window.cpp:374 ../src/gui/main_window.cpp:377
+#: ../src/gui/main_window.cpp:375
 msgid "Create full screen RDP window"
 msgstr ""
 
 #: ../src/gui/main_window.cpp:348 ../src/gui/main_window.cpp:351
+#: ../src/gui/main_window.cpp:349
 msgid "Create new connection"
 msgstr ""
 
@@ -2754,6 +2882,7 @@ msgid "Create new directory"
 msgstr "Создать новый каталог"
 
 #: ../src/gui/main_window.cpp:377 ../src/gui/main_window.cpp:380
+#: ../src/gui/main_window.cpp:378
 msgid "Create screenshot and save this"
 msgstr ""
 
@@ -2773,6 +2902,7 @@ msgstr "Текущий каталог:"
 
 #: ../src/proto/RDPOptionsDialog.cpp:1914
 #: ../src/proto/RDPOptionsDialog.cpp:1915
+#: ../src/proto/RDPOptionsDialog.cpp:1913
 msgid "Custom"
 msgstr ""
 
@@ -2857,7 +2987,8 @@ msgstr "Декоративный"
 
 #: ../src/gui/settings_dialog.cpp:430 ../src/locale_helper.cpp:90
 #: ../src/locale_helper.cpp:113 ../src/locale_helper.cpp:91
-#: ../src/locale_helper.cpp:114
+#: ../src/locale_helper.cpp:114 ../src/gui/settings_dialog.cpp:428
+#: ../src/locale_helper.cpp:89 ../src/locale_helper.cpp:112
 msgid "Default"
 msgstr ""
 
@@ -2913,7 +3044,7 @@ msgstr "Удален старый файл блокировки '%s'."
 msgid "Dependency \"%s\" of module \"%s\" doesn't exist."
 msgstr ""
 
-#: ../src/proto/ICAOptionsDialog.cpp:914
+#: ../src/proto/ICAOptionsDialog.cpp:914 ../src/proto/ICAOptionsDialog.cpp:912
 msgid "Desired Color"
 msgstr "Цвета"
 
@@ -2922,10 +3053,12 @@ msgid "Desktop"
 msgstr "Рабочий стол"
 
 #: ../src/proto/ICAOptionsDialog.cpp:1562
+#: ../src/proto/ICAOptionsDialog.cpp:1560
 msgid "Desktop Restart Allowed"
 msgstr "Разрешить перезапуск"
 
 #: ../src/gui/config/fastconn_dialog.cpp:52
+#: ../src/gui/config/fastconn_dialog.cpp:50
 msgid "Details"
 msgstr "Детали"
 
@@ -2982,10 +3115,13 @@ msgstr "Каталог не существует."
 #: ../src/gui/main_window.cpp:575 ../src/gui/main_window.cpp:577
 #: ../src/gui/main_window.cpp:519 ../src/gui/main_window.cpp:521
 #: ../src/gui/main_window.cpp:578 ../src/gui/main_window.cpp:580
+#: ../src/proto/BasicConnection.cpp:183 ../src/gui/main_window.cpp:517
+#: ../src/gui/main_window.cpp:582
 msgid "Disconnect"
 msgstr "Отключиться"
 
 #: ../src/gui/main_window.cpp:372 ../src/gui/main_window.cpp:375
+#: ../src/gui/main_window.cpp:373
 msgid "Disconnect  from server or reconnect"
 msgstr ""
 
@@ -2993,12 +3129,15 @@ msgstr ""
 #: ../src/gui/main_window.cpp:602 ../src/gui/main_window.cpp:604
 #: ../src/gui/main_window.cpp:548 ../src/gui/main_window.cpp:550
 #: ../src/gui/main_window.cpp:605 ../src/gui/main_window.cpp:607
+#: ../src/gui/main_window.cpp:546 ../src/gui/main_window.cpp:609
 msgid "Disconnect and close"
 msgstr "Отключиться и закрыть"
 
 #: ../src/proto/FRDPOptionsDialog.cpp:124
 #: ../src/proto/ICAOptionsDialog.cpp:109 ../src/proto/RFBOptionsDialog.cpp:95
 #: ../src/proto/RDPOptionsDialog.cpp:123 ../src/proto/RDPOptionsDialog.cpp:124
+#: ../src/proto/FRDPOptionsDialog.cpp:122
+#: ../src/proto/ICAOptionsDialog.cpp:107 ../src/proto/RDPOptionsDialog.cpp:122
 msgid "Display"
 msgstr "Экран"
 
@@ -3020,6 +3159,7 @@ msgstr ""
 
 #: ../src/proto/RDPOptionsDialog.cpp:1447
 #: ../src/proto/RDPOptionsDialog.cpp:1448
+#: ../src/proto/RDPOptionsDialog.cpp:1446
 msgid "Do not play"
 msgstr "Не проигрывать звук"
 
@@ -3059,6 +3199,9 @@ msgstr ""
 #: ../src/proto/FRDPOptionsDialog.cpp:457
 #: ../src/proto/ICAOptionsDialog.cpp:465 ../src/proto/RDPOptionsDialog.cpp:507
 #: ../src/gui/tree_group.cpp:1285 ../src/proto/RDPOptionsDialog.cpp:508
+#: ../src/proto/FRDPOptionsDialog.cpp:455
+#: ../src/proto/ICAOptionsDialog.cpp:463 ../src/proto/RDPOptionsDialog.cpp:506
+#: ../src/gui/tree_group.cpp:1283
 msgid "Domain"
 msgstr "Домен"
 
@@ -3092,6 +3235,7 @@ msgid "E sheet, 34 x 44 in"
 msgstr "Лист E, 34 x 44 дюйма"
 
 #: ../src/gui/main_window.cpp:360 ../src/gui/main_window.cpp:363
+#: ../src/gui/main_window.cpp:361
 msgid "E&xit\tAlt-X"
 msgstr "В&ыход\tAlt-X"
 
@@ -3116,6 +3260,7 @@ msgid "EXECUTE"
 msgstr ""
 
 #: ../src/proto/ICAOptionsDialog.cpp:1577
+#: ../src/proto/ICAOptionsDialog.cpp:1575
 msgid "Echo Shift Keys"
 msgstr "Эхо клавиши SHIFT"
 
@@ -3128,30 +3273,35 @@ msgid "Elapsed time : "
 msgstr "Затраченное время : "
 
 #: ../src/gui/main_window.cpp:364 ../src/gui/main_window.cpp:367
+#: ../src/gui/main_window.cpp:365
 msgid "Enable / disable connections tree"
 msgstr "Включить/выключить панель соединений"
 
-#: ../src/proto/ICAOptionsDialog.cpp:992
+#: ../src/proto/ICAOptionsDialog.cpp:992 ../src/proto/ICAOptionsDialog.cpp:990
 msgid "Enable OSS"
 msgstr "Включить OSS"
 
-#: ../src/proto/ICAOptionsDialog.cpp:996
+#: ../src/proto/ICAOptionsDialog.cpp:996 ../src/proto/ICAOptionsDialog.cpp:994
 msgid "Enable Session Sharing Screen"
 msgstr "Включить общий доступ к сессиям"
 
 #: ../src/proto/ICAOptionsDialog.cpp:1870
+#: ../src/proto/ICAOptionsDialog.cpp:1868
 msgid "Enables audio input for a connection"
 msgstr "Включить аудио вход для соединения"
 
 #: ../src/proto/ICAOptionsDialog.cpp:1865
+#: ../src/proto/ICAOptionsDialog.cpp:1863
 msgid "Enables client audio"
 msgstr "Включить клиентское аудио"
 
 #: ../src/proto/ICAOptionsDialog.cpp:2044
+#: ../src/proto/ICAOptionsDialog.cpp:2042
 msgid "EncryptionLevelSession"
 msgstr "Уровень шифрования"
 
 #: ../src/locale_helper.cpp:114 ../src/locale_helper.cpp:115
+#: ../src/locale_helper.cpp:113
 msgid "English (U.S.)"
 msgstr ""
 
@@ -3218,7 +3368,17 @@ msgstr ""
 #: ../src/gui/tree_group.cpp:658 ../src/proto/RDPConnection_nix.cpp:685
 #: ../src/gui/main_window.cpp:1613 ../src/gui/main_window.cpp:1644
 #: ../src/gui/main_window.cpp:1678 ../src/gui/main_window.cpp:1689
-#: ../src/gui/main_window.cpp:2256
+#: ../src/gui/main_window.cpp:2256 ../src/proto/FRDPConnection_nix.cpp:682
+#: ../src/proto/ICAConnection_win.cpp:45 ../src/proto/ICAConnection_win.cpp:55
+#: ../src/proto/RDPConnection_nix.cpp:683
+#: ../src/proto/RDPConnection_win.cpp:30 ../src/proto/RDPConnection_win.cpp:44
+#: ../src/proto/ICAConnection_nix.cpp:90
+#: ../src/proto/ICAConnection_nix.cpp:492
+#: ../src/proto/ICAConnection_nix.cpp:679
+#: ../src/proto/ICAConnection_nix.cpp:716 ../src/gui/main_window.cpp:1615
+#: ../src/gui/main_window.cpp:1646 ../src/gui/main_window.cpp:1680
+#: ../src/gui/main_window.cpp:1691 ../src/gui/main_window.cpp:2258
+#: ../src/gui/tree_group.cpp:656
 msgid "Error"
 msgstr "Ошибка"
 
@@ -3248,10 +3408,13 @@ msgstr "Ошибка чтения изображения DIB."
 #: ../src/gui/main_window.cpp:1673 ../src/gui/main_window.cpp:1684
 #: ../src/gui/main_window.cpp:1613 ../src/gui/main_window.cpp:1644
 #: ../src/gui/main_window.cpp:1678 ../src/gui/main_window.cpp:1689
+#: ../src/gui/main_window.cpp:1615 ../src/gui/main_window.cpp:1646
+#: ../src/gui/main_window.cpp:1680 ../src/gui/main_window.cpp:1691
 msgid "Error rdp file"
 msgstr ""
 
 #: ../src/gui/main_window.cpp:319 ../src/gui/main_window.cpp:322
+#: ../src/gui/main_window.cpp:320
 msgid "Error read from base"
 msgstr ""
 
@@ -3272,6 +3435,7 @@ msgid "Error: "
 msgstr "Ошибка: "
 
 #: ../src/proto/ICAConnection_nix.cpp:681
+#: ../src/proto/ICAConnection_nix.cpp:679
 msgid "Error: create *.ini connection files failed"
 msgstr ""
 
@@ -3302,6 +3466,7 @@ msgid "Executive, 7 1/4 x 10 1/2 in"
 msgstr "Executive, 7 1/4 x 10 1/2 дюйма"
 
 #: ../src/gui/main_window.cpp:451 ../src/gui/main_window.cpp:454
+#: ../src/gui/main_window.cpp:452
 msgid "Exit"
 msgstr "Выход"
 
@@ -3325,10 +3490,12 @@ msgstr "Ожидалось 'char' во время разбора ресурса."
 
 #: ../src/gui/main_window.cpp:470 ../src/gui/main_window.cpp:472
 #: ../src/gui/main_window.cpp:473 ../src/gui/main_window.cpp:475
+#: ../src/gui/main_window.cpp:471
 msgid "Export RDP file"
 msgstr ""
 
 #: ../src/gui/main_window.cpp:356 ../src/gui/main_window.cpp:359
+#: ../src/gui/main_window.cpp:357
 msgid "Export WinRDP connection settings"
 msgstr ""
 
@@ -3824,15 +3991,18 @@ msgid "Failed to write to lock file '%s'"
 msgstr "Не удалось записать файл блокировки '%s'"
 
 #: ../src/gui/config/fastconn_dialog.cpp:43
+#: ../src/gui/config/fastconn_dialog.cpp:41
 msgid "Fast RDP Connection"
 msgstr "Быстрое соединение по RDP"
 
 #: ../src/gui/main_window.cpp:460 ../src/gui/main_window.cpp:462
 #: ../src/gui/main_window.cpp:463 ../src/gui/main_window.cpp:465
+#: ../src/gui/main_window.cpp:461
 msgid "Fast connection"
 msgstr "Быстрое соединение"
 
 #: ../src/gui/main_window.cpp:351 ../src/gui/main_window.cpp:354
+#: ../src/gui/main_window.cpp:352
 msgid "Fast connection or open saved connection"
 msgstr ""
 
@@ -3844,12 +4014,14 @@ msgstr "Критическая ошибка"
 msgid "Fatal error: "
 msgstr "Критическая ошибка: "
 
-#: ../src/main.cpp:47
+#: ../src/main.cpp:47 ../src/main.cpp:45
 msgid "Fatal exception. Application will be closed."
 msgstr "Фатальная ошибка. Приложение будет закрыто."
 
 #: ../src/gui/tree_group.cpp:108 ../src/gui/tree_group.cpp:195
 #: ../src/gui/tree_group.cpp:1227 ../src/gui/tree_group.cpp:1229
+#: ../src/gui/tree_group.cpp:106 ../src/gui/tree_group.cpp:193
+#: ../src/gui/tree_group.cpp:1225
 msgid "Favorites"
 msgstr "Избранное"
 
@@ -3929,6 +4101,7 @@ msgid "Font &weight:"
 msgstr "Толщина шрифта."
 
 #: ../src/proto/ICAOptionsDialog.cpp:1059
+#: ../src/proto/ICAOptionsDialog.cpp:1057
 msgid "Font Smoothing Type"
 msgstr "Сглаживание шрифтов"
 
@@ -3978,6 +4151,7 @@ msgstr "От:"
 #: ../src/gui/main_window.cpp:579 ../src/gui/main_window.cpp:581
 #: ../src/gui/main_window.cpp:524 ../src/gui/main_window.cpp:526
 #: ../src/gui/main_window.cpp:582 ../src/gui/main_window.cpp:584
+#: ../src/gui/main_window.cpp:522 ../src/gui/main_window.cpp:586
 msgid "Full Screen"
 msgstr "Полный экран"
 
@@ -4013,6 +4187,9 @@ msgstr "Тема GTK+"
 #: ../src/proto/ICAOptionsDialog.cpp:108 ../src/proto/RFBOptionsDialog.cpp:94
 #: ../src/proto/RDPOptionsDialog.cpp:122 ../src/gui/settings_dialog.cpp:189
 #: ../src/gui/tree_group.cpp:1217 ../src/proto/RDPOptionsDialog.cpp:123
+#: ../src/proto/FRDPOptionsDialog.cpp:121
+#: ../src/proto/ICAOptionsDialog.cpp:106 ../src/proto/RDPOptionsDialog.cpp:121
+#: ../src/gui/settings_dialog.cpp:187 ../src/gui/tree_group.cpp:1215
 msgid "General"
 msgstr "Основное"
 
@@ -4066,11 +4243,13 @@ msgstr "Перейти к странице"
 
 #: ../src/proto/BasicConnection.cpp:175 ../src/gui/main_window.cpp:539
 #: ../src/gui/main_window.cpp:596 ../src/gui/main_window.cpp:542
-#: ../src/gui/main_window.cpp:599
+#: ../src/gui/main_window.cpp:599 ../src/proto/BasicConnection.cpp:173
+#: ../src/gui/main_window.cpp:540 ../src/gui/main_window.cpp:601
 msgid "Grab Input"
 msgstr "Перехватывать ввод"
 
 #: ../src/gui/main_window.cpp:380 ../src/gui/main_window.cpp:383
+#: ../src/gui/main_window.cpp:381
 msgid "Grab keyboard input"
 msgstr ""
 
@@ -4083,12 +4262,15 @@ msgid "Greek (ISO-8859-7)"
 msgstr "Греческий (ISO-8859-7)"
 
 #: ../src/gui/tree_group.cpp:263 ../src/gui/tree_group.cpp:1164
+#: ../src/gui/tree_group.cpp:261 ../src/gui/tree_group.cpp:1162
 msgid "Group deleting"
 msgstr ""
 
 #: ../src/proto/FRDPOptionsDialog.cpp:378
 #: ../src/proto/ICAOptionsDialog.cpp:394 ../src/proto/RFBOptionsDialog.cpp:165
 #: ../src/proto/RDPOptionsDialog.cpp:428 ../src/proto/RDPOptionsDialog.cpp:429
+#: ../src/proto/FRDPOptionsDialog.cpp:376
+#: ../src/proto/ICAOptionsDialog.cpp:392 ../src/proto/RDPOptionsDialog.cpp:427
 msgid "Group name"
 msgstr "Имя группы"
 
@@ -4168,6 +4350,7 @@ msgid "Help: %s"
 msgstr "Помощь: %s"
 
 #: ../src/gui/main_window.cpp:366 ../src/gui/main_window.cpp:369
+#: ../src/gui/main_window.cpp:367
 msgid "Hide frame"
 msgstr ""
 
@@ -4184,10 +4367,12 @@ msgid "I64"
 msgstr "I64"
 
 #: ../src/proto/ICAConnection_win.cpp:522
+#: ../src/proto/ICAConnection_win.cpp:520
 msgid "ICA Citrix connection"
 msgstr ""
 
 #: ../src/proto/ICAConnection_nix.cpp:718
+#: ../src/proto/ICAConnection_nix.cpp:716
 msgid ""
 "ICA Connection failed.\n"
 "Closing..."
@@ -4195,10 +4380,13 @@ msgstr ""
 
 #: ../src/gui/config/rdp_dialogs.cpp:62
 #: ../src/gui/config/fastconn_dialog.cpp:80
+#: ../src/gui/config/rdp_dialogs.cpp:60
+#: ../src/gui/config/fastconn_dialog.cpp:81
 msgid "ICA Protocol"
 msgstr ""
 
 #: ../src/proto/ICAConnection_win.cpp:47 ../src/proto/ICAConnection_win.cpp:57
+#: ../src/proto/ICAConnection_win.cpp:45 ../src/proto/ICAConnection_win.cpp:55
 msgid ""
 "ICA connection is not available. Please install ICA client from http://www."
 "citrix.com"
@@ -4353,6 +4541,8 @@ msgstr "Невозможно установить разрешения файлу '%s'"
 #: ../src/proto/FRDPOptionsDialog.cpp:1417
 #: ../src/proto/RDPOptionsDialog.cpp:1457
 #: ../src/proto/RDPOptionsDialog.cpp:1458
+#: ../src/proto/FRDPOptionsDialog.cpp:1415
+#: ../src/proto/RDPOptionsDialog.cpp:1456
 msgid "In full screen only"
 msgstr "Только в полноэкранном режиме"
 
@@ -4373,6 +4563,7 @@ msgid "Indian (ISO-8859-12)"
 msgstr "Индийский (ISO-8859-12)"
 
 #: ../src/proto/ICAOptionsDialog.cpp:1533
+#: ../src/proto/ICAOptionsDialog.cpp:1531
 msgid "Initial Program"
 msgstr "Программа"
 
@@ -4405,7 +4596,7 @@ msgstr ""
 msgid "Inserts the chosen symbol."
 msgstr ""
 
-#: ../src/main.cpp:51
+#: ../src/main.cpp:51 ../src/main.cpp:49
 msgid "Internal Error. Application will be closed."
 msgstr ""
 
@@ -4640,12 +4831,14 @@ msgstr ""
 
 #: ../src/proto/FRDPOptionsDialog.cpp:2187
 #: ../src/proto/FRDPOptionsDialog.cpp:2188
+#: ../src/proto/FRDPOptionsDialog.cpp:2186
 #, fuzzy
 msgid "Keyboard layout"
 msgstr "Раскладка клавиатуры"
 
 #: ../src/proto/RDPOptionsDialog.cpp:2229
 #: ../src/proto/RDPOptionsDialog.cpp:2234
+#: ../src/proto/RDPOptionsDialog.cpp:2232
 msgid "Keyboard map"
 msgstr "Раскладка клавиатуры"
 
@@ -4656,6 +4849,8 @@ msgstr ""
 #: ../src/proto/FRDPOptionsDialog.cpp:1871
 #: ../src/proto/RDPOptionsDialog.cpp:1913
 #: ../src/proto/RDPOptionsDialog.cpp:1914
+#: ../src/proto/FRDPOptionsDialog.cpp:1869
+#: ../src/proto/RDPOptionsDialog.cpp:1912
 msgid "LAN 10 Mbps or higher"
 msgstr ""
 
@@ -4670,10 +4865,13 @@ msgstr "Альбом"
 #: ../src/proto/FRDPOptionsDialog.cpp:1408
 #: ../src/proto/RDPOptionsDialog.cpp:1448
 #: ../src/proto/RDPOptionsDialog.cpp:1449
+#: ../src/proto/FRDPOptionsDialog.cpp:1406
+#: ../src/proto/RDPOptionsDialog.cpp:1447
 msgid "Leave at remote computer"
 msgstr "Оставить на удалённом компьютере"
 
 #: ../src/proto/BasicConnection.cpp:181 ../src/proto/BasicConnection.cpp:183
+#: ../src/proto/BasicConnection.cpp:179
 msgid "Leave full screen"
 msgstr ""
 
@@ -4794,6 +4992,7 @@ msgstr "Загрузить файл %s"
 
 #: ../src/gui/main_window.cpp:466 ../src/gui/main_window.cpp:468
 #: ../src/gui/main_window.cpp:469 ../src/gui/main_window.cpp:471
+#: ../src/gui/main_window.cpp:467
 msgid "Load RDP file"
 msgstr ""
 
@@ -4817,6 +5016,7 @@ msgid "Log saved to the file '%s'."
 msgstr "Журнал записан в файл '%s'."
 
 #: ../src/proto/ICAOptionsDialog.cpp:1541
+#: ../src/proto/ICAOptionsDialog.cpp:1539
 msgid "Long Command Line"
 msgstr "Командная строка"
 
@@ -4855,6 +5055,7 @@ msgid "Ma&ximize"
 msgstr "&Развернуть"
 
 #: ../src/gui/tree_group.cpp:112 ../src/gui/tree_group.cpp:199
+#: ../src/gui/tree_group.cpp:110 ../src/gui/tree_group.cpp:197
 msgid "Main"
 msgstr ""
 
@@ -4862,11 +5063,12 @@ msgstr ""
 #: ../src/gui/main_window.cpp:532 ../src/gui/main_window.cpp:587
 #: ../src/gui/main_window.cpp:589 ../src/gui/main_window.cpp:533
 #: ../src/gui/main_window.cpp:535 ../src/gui/main_window.cpp:590
-#: ../src/gui/main_window.cpp:592
+#: ../src/gui/main_window.cpp:592 ../src/proto/BasicConnection.cpp:165
+#: ../src/gui/main_window.cpp:531 ../src/gui/main_window.cpp:594
 msgid "Make screenshot"
 msgstr "Снимок экрана"
 
-#: ../src/proto/BasicConnection.cpp:169
+#: ../src/proto/BasicConnection.cpp:169 ../src/proto/BasicConnection.cpp:167
 msgid "Make screnshot"
 msgstr "Снимок экрана"
 
@@ -4874,7 +5076,7 @@ msgstr "Снимок экрана"
 msgid "Match case"
 msgstr "С учетом регистра"
 
-#: ../src/gui/settings_dialog.cpp:218
+#: ../src/gui/settings_dialog.cpp:218 ../src/gui/settings_dialog.cpp:216
 msgid "Maximum favorites"
 msgstr "Максимум избранных"
 
@@ -4887,7 +5089,7 @@ msgstr "Память VFS уже содержит файл '%s'!"
 msgid "Menu"
 msgstr "Меню"
 
-#: ../src/gui/main_window.hpp:115
+#: ../src/gui/main_window.hpp:115 ../src/gui/main_window.hpp:113
 msgid "Message"
 msgstr ""
 
@@ -4906,12 +5108,15 @@ msgstr "Режим %ix%i-%i недоступен."
 
 #: ../src/proto/RDPOptionsDialog.cpp:1910
 #: ../src/proto/RDPOptionsDialog.cpp:1911
+#: ../src/proto/RDPOptionsDialog.cpp:1909
 msgid "Modem 28.8 Kbps"
 msgstr ""
 
 #: ../src/proto/FRDPOptionsDialog.cpp:1869
 #: ../src/proto/RDPOptionsDialog.cpp:1911
 #: ../src/proto/RDPOptionsDialog.cpp:1912
+#: ../src/proto/FRDPOptionsDialog.cpp:1867
+#: ../src/proto/RDPOptionsDialog.cpp:1910
 msgid "Modem 56 Kbps"
 msgstr ""
 
@@ -4933,6 +5138,7 @@ msgid "Monarch Envelope, 3 7/8 x 7 1/2 in"
 msgstr "Monarch Envelope, 3 7/8 x 7 1/2 дюйма"
 
 #: ../src/proto/ICAOptionsDialog.cpp:1571
+#: ../src/proto/ICAOptionsDialog.cpp:1569
 msgid "Mouse Sends Control+V"
 msgstr "Отправлять Ctrl+V мышкой"
 
@@ -4952,7 +5158,7 @@ msgstr ""
 msgid "Name"
 msgstr "Имя"
 
-#: ../src/gui/tree_group.cpp:529
+#: ../src/gui/tree_group.cpp:529 ../src/gui/tree_group.cpp:527
 msgid "Name of new group"
 msgstr ""
 
@@ -4982,6 +5188,7 @@ msgstr "Новый элемент"
 
 #: ../src/gui/main_window.cpp:456 ../src/gui/main_window.cpp:458
 #: ../src/gui/main_window.cpp:459 ../src/gui/main_window.cpp:461
+#: ../src/gui/main_window.cpp:457
 msgid "New connection"
 msgstr "Новое соединение"
 
@@ -5033,6 +5240,10 @@ msgstr "Не определено обработчика для изображения типа %d."
 #: ../src/gui/main_window.cpp:412 ../src/gui/main_window.cpp:640
 #: ../src/gui/main_window.cpp:1138 ../src/gui/main_window.cpp:1273
 #: ../src/gui/main_window.cpp:1333 ../src/gui/main_window.cpp:1865
+#: ../src/gui/main_window.cpp:222 ../src/gui/main_window.cpp:410
+#: ../src/gui/main_window.cpp:642 ../src/gui/main_window.cpp:1140
+#: ../src/gui/main_window.cpp:1275 ../src/gui/main_window.cpp:1335
+#: ../src/gui/main_window.cpp:1867
 msgid "No connections"
 msgstr ""
 
@@ -5122,6 +5333,8 @@ msgstr ""
 
 #: ../src/proto/ICAOptionsDialog.cpp:509
 #: ../src/proto/ICAOptionsDialog.cpp:2047
+#: ../src/proto/ICAOptionsDialog.cpp:507
+#: ../src/proto/ICAOptionsDialog.cpp:2045
 msgid "None"
 msgstr "Нет"
 
@@ -5162,6 +5375,7 @@ msgstr ""
 #: ../src/msw/dialog.cpp:180 ../src/mac/carbon/msgdlg.cpp:67
 #: ../contrib/src/deprecated/proplist.cpp:502
 #: ../src/gui/settings_dialog.cpp:291 ../src/gui/tree_group.cpp:1295
+#: ../src/gui/settings_dialog.cpp:289 ../src/gui/tree_group.cpp:1293
 msgid "OK"
 msgstr "OK"
 
@@ -5173,18 +5387,23 @@ msgstr "Объекты должны иметь атрибут id"
 # msgid "OK"
 # msgstr ""
 #: ../src/gui/main_window.cpp:2372 ../src/gui/main_window.cpp:2377
+#: ../src/gui/main_window.cpp:2379
 msgid "Ok"
 msgstr ""
 
 #: ../src/proto/FRDPOptionsDialog.cpp:1416
 #: ../src/proto/RDPOptionsDialog.cpp:1456
 #: ../src/proto/RDPOptionsDialog.cpp:1457
+#: ../src/proto/FRDPOptionsDialog.cpp:1414
+#: ../src/proto/RDPOptionsDialog.cpp:1455
 msgid "On local computer"
 msgstr "На локальном компьютере"
 
 #: ../src/proto/FRDPOptionsDialog.cpp:1416
 #: ../src/proto/RDPOptionsDialog.cpp:1456
 #: ../src/proto/RDPOptionsDialog.cpp:1457
+#: ../src/proto/FRDPOptionsDialog.cpp:1414
+#: ../src/proto/RDPOptionsDialog.cpp:1455
 msgid "On remote computer"
 msgstr "На удалённом компьютере"
 
@@ -5197,10 +5416,12 @@ msgid "Open HTML document"
 msgstr "Открыть документ HTML"
 
 #: ../src/gui/main_window.cpp:392 ../src/gui/main_window.cpp:395
+#: ../src/gui/main_window.cpp:393
 msgid "Open documentation"
 msgstr ""
 
 #: ../src/gui/main_window.cpp:390 ../src/gui/main_window.cpp:393
+#: ../src/gui/main_window.cpp:391
 msgid "Open documentation from web site"
 msgstr ""
 
@@ -5210,10 +5431,12 @@ msgid "Open file \"%s\""
 msgstr "Открыть файл \"%s\""
 
 #: ../src/gui/main_window.cpp:394 ../src/gui/main_window.cpp:397
+#: ../src/gui/main_window.cpp:395
 msgid "Open forum web page"
 msgstr ""
 
 #: ../src/gui/main_window.cpp:396 ../src/gui/main_window.cpp:399
+#: ../src/gui/main_window.cpp:397
 msgid "Open support web page"
 msgstr ""
 
@@ -5240,6 +5463,7 @@ msgstr "Параметр '%s': '%s' не может быть сконвертирована в дату."
 #: ../src/generic/prntdlgg.cpp:616 ../src/generic/dirdlgg.cpp:185
 #: ../src/gui/main_window.cpp:496 ../src/gui/main_window.cpp:498
 #: ../src/gui/main_window.cpp:499 ../src/gui/main_window.cpp:501
+#: ../src/gui/main_window.cpp:497
 msgid "Options"
 msgstr "Параметры"
 
@@ -5487,6 +5711,9 @@ msgstr "Передача неизвестного объекта в GetObject"
 #: ../src/proto/ICAOptionsDialog.cpp:452 ../src/proto/RFBOptionsDialog.cpp:218
 #: ../src/proto/RDPOptionsDialog.cpp:494 ../src/gui/tree_group.cpp:1283
 #: ../src/proto/RDPOptionsDialog.cpp:495
+#: ../src/proto/FRDPOptionsDialog.cpp:442
+#: ../src/proto/ICAOptionsDialog.cpp:450 ../src/proto/RDPOptionsDialog.cpp:493
+#: ../src/gui/tree_group.cpp:1281
 msgid "Password"
 msgstr "Пароль"
 
@@ -5500,33 +5727,36 @@ msgstr "Вст&авить"
 msgid "Paste selection"
 msgstr "Разделы"
 
-#: ../src/gui/settings_dialog.cpp:129
+#: ../src/gui/settings_dialog.cpp:129 ../src/gui/settings_dialog.cpp:127
 msgid "Path for key map files"
 msgstr "Путь к раскладкам клав."
 
-#: ../src/gui/settings_dialog.cpp:122
+#: ../src/gui/settings_dialog.cpp:122 ../src/gui/settings_dialog.cpp:120
 msgid "Path for rdesktop"
 msgstr "Путь к rdesktop"
 
-#: ../src/gui/settings_dialog.cpp:108
+#: ../src/gui/settings_dialog.cpp:108 ../src/gui/settings_dialog.cpp:106
 msgid "Path for rdp base"
 msgstr "Домашний каталог"
 
-#: ../src/gui/settings_dialog.cpp:115
+#: ../src/gui/settings_dialog.cpp:115 ../src/gui/settings_dialog.cpp:113
 msgid "Path for rdp key"
 msgstr "Путь к ssl-ключам rdpdesk"
 
-#: ../src/gui/settings_dialog.cpp:101
+#: ../src/gui/settings_dialog.cpp:101 ../src/gui/settings_dialog.cpp:99
 msgid "Paths"
 msgstr "Пути"
 
 #: ../src/proto/FRDPOptionsDialog.cpp:127
 #: ../src/proto/RDPOptionsDialog.cpp:126 ../src/proto/RDPOptionsDialog.cpp:127
+#: ../src/proto/FRDPOptionsDialog.cpp:125
+#: ../src/proto/RDPOptionsDialog.cpp:125
 msgid "Perfomance"
 msgstr "Производительность"
 
 #: ../src/proto/RDPOptionsDialog.cpp:1923
 #: ../src/proto/RDPOptionsDialog.cpp:1924
+#: ../src/proto/RDPOptionsDialog.cpp:1922
 msgid "Performance settings"
 msgstr "Настройки производительности"
 
@@ -5540,6 +5770,7 @@ msgid "Permissions"
 msgstr "Разрешения"
 
 #: ../src/proto/ICAOptionsDialog.cpp:1574
+#: ../src/proto/ICAOptionsDialog.cpp:1572
 msgid "Persistent Cache Enabled"
 msgstr "Использовать кэш"
 
@@ -5563,7 +5794,7 @@ msgstr "Пожалуйста, выберите страницу для отображения:"
 msgid "Please choose which ISP do you want to connect to"
 msgstr "Пожалуйста, выберите ISP, к которому вы хотите подключиться"
 
-#: ../src/gui/tree_group.cpp:529
+#: ../src/gui/tree_group.cpp:529 ../src/gui/tree_group.cpp:527
 msgid "Please enter a group name"
 msgstr "Введите имя группы"
 
@@ -5579,6 +5810,7 @@ msgstr ""
 "или эта программа не будет корректно работать."
 
 #: ../src/gui/main_window.cpp:189 ../src/gui/main_window.cpp:192
+#: ../src/gui/main_window.cpp:190
 msgid "Please wait"
 msgstr "Подождите"
 
@@ -5589,6 +5821,8 @@ msgstr "Пожалуйста, подождите, пока идет печать\n"
 #: ../src/proto/FRDPOptionsDialog.cpp:431
 #: ../src/proto/ICAOptionsDialog.cpp:433 ../src/proto/RFBOptionsDialog.cpp:211
 #: ../src/proto/RDPOptionsDialog.cpp:481 ../src/proto/RDPOptionsDialog.cpp:482
+#: ../src/proto/FRDPOptionsDialog.cpp:429
+#: ../src/proto/ICAOptionsDialog.cpp:431 ../src/proto/RDPOptionsDialog.cpp:480
 msgid "Port"
 msgstr "Порт"
 
@@ -5706,6 +5940,8 @@ msgstr ""
 
 #: ../src/proto/FRDPOptionsDialog.cpp:126
 #: ../src/proto/RDPOptionsDialog.cpp:125 ../src/proto/RDPOptionsDialog.cpp:126
+#: ../src/proto/FRDPOptionsDialog.cpp:124
+#: ../src/proto/RDPOptionsDialog.cpp:124
 msgid "Program"
 msgstr "Программы"
 
@@ -5713,58 +5949,63 @@ msgstr "Программы"
 msgid "Program aborted."
 msgstr "Выполнение программы прервано."
 
-#: ../src/bencoded.cpp:267 ../src/bencoded.cpp:298
+#: ../src/bencoded.cpp:267 ../src/bencoded.cpp:298 ../src/bencoded.cpp:265
+#: ../src/bencoded.cpp:296
 msgid "Program closing..."
 msgstr "Завершение приложения..."
 
 #: ../src/proto/FRDPOptionsDialog.cpp:1655
 #: ../src/proto/RDPOptionsDialog.cpp:1695
 #: ../src/proto/RDPOptionsDialog.cpp:1696
+#: ../src/proto/FRDPOptionsDialog.cpp:1653
+#: ../src/proto/RDPOptionsDialog.cpp:1694
 msgid "Program path"
 msgstr "Путь к программе"
 
 #: ../src/gui/main_window.cpp:368 ../src/gui/settings_dialog.cpp:90
-#: ../src/gui/main_window.cpp:371
+#: ../src/gui/main_window.cpp:371 ../src/gui/main_window.cpp:369
+#: ../src/gui/settings_dialog.cpp:88
 msgid "Program settings"
 msgstr "Настройки программы"
 
 #: ../src/gui/config/fastconn_dialog.cpp:78
+#: ../src/gui/config/fastconn_dialog.cpp:79
 msgid "Protocol "
 msgstr "Протокол "
 
-#: ../src/gui/config/rdp_dialogs.cpp:60
+#: ../src/gui/config/rdp_dialogs.cpp:60 ../src/gui/config/rdp_dialogs.cpp:58
 msgid "Protocol     "
 msgstr "Протокол     "
 
-#: ../src/proto/ICAOptionsDialog.cpp:483
+#: ../src/proto/ICAOptionsDialog.cpp:483 ../src/proto/ICAOptionsDialog.cpp:481
 msgid "Proxy AutoConfig URL"
 msgstr "Автонастройка прокси"
 
-#: ../src/proto/ICAOptionsDialog.cpp:535
+#: ../src/proto/ICAOptionsDialog.cpp:535 ../src/proto/ICAOptionsDialog.cpp:533
 msgid "Proxy Bypass List"
 msgstr "Без прокси для"
 
-#: ../src/proto/ICAOptionsDialog.cpp:490
+#: ../src/proto/ICAOptionsDialog.cpp:490 ../src/proto/ICAOptionsDialog.cpp:488
 msgid "Proxy Host"
 msgstr "Адрес прокси"
 
-#: ../src/proto/ICAOptionsDialog.cpp:526
+#: ../src/proto/ICAOptionsDialog.cpp:526 ../src/proto/ICAOptionsDialog.cpp:524
 msgid "Proxy Password"
 msgstr "Пароль"
 
-#: ../src/proto/ICAOptionsDialog.cpp:542
+#: ../src/proto/ICAOptionsDialog.cpp:542 ../src/proto/ICAOptionsDialog.cpp:540
 msgid "Proxy Timeout"
 msgstr "Таймаут"
 
-#: ../src/proto/ICAOptionsDialog.cpp:506
+#: ../src/proto/ICAOptionsDialog.cpp:506 ../src/proto/ICAOptionsDialog.cpp:504
 msgid "Proxy Type"
 msgstr "Тип прокси-сервера"
 
-#: ../src/proto/ICAOptionsDialog.cpp:562
+#: ../src/proto/ICAOptionsDialog.cpp:562 ../src/proto/ICAOptionsDialog.cpp:560
 msgid "Proxy Use Default"
 msgstr "По умолчанию через прокси"
 
-#: ../src/proto/ICAOptionsDialog.cpp:497
+#: ../src/proto/ICAOptionsDialog.cpp:497 ../src/proto/ICAOptionsDialog.cpp:495
 msgid "Proxy Username"
 msgstr "Имя пользователя"
 
@@ -5785,24 +6026,28 @@ msgid "Question"
 msgstr "Вопрос"
 
 #: ../src/common/stockitem.cpp:208 ../src/gui/main_window.cpp:360
-#: ../src/gui/main_window.cpp:363
+#: ../src/gui/main_window.cpp:363 ../src/gui/main_window.cpp:361
 #, fuzzy
 msgid "Quit this program"
 msgstr "Напечатать эту страницу"
 
 #: ../src/proto/ICAOptionsDialog.cpp:2049
+#: ../src/proto/ICAOptionsDialog.cpp:2047
 msgid "RC5 (128 bit 0 Login Only)"
 msgstr ""
 
 #: ../src/proto/ICAOptionsDialog.cpp:2052
+#: ../src/proto/ICAOptionsDialog.cpp:2050
 msgid "RC5 (128 bit)"
 msgstr ""
 
 #: ../src/proto/ICAOptionsDialog.cpp:2050
+#: ../src/proto/ICAOptionsDialog.cpp:2048
 msgid "RC5 (40 bit)"
 msgstr ""
 
 #: ../src/proto/ICAOptionsDialog.cpp:2051
+#: ../src/proto/ICAOptionsDialog.cpp:2049
 msgid "RC5 (56 bit)"
 msgstr ""
 
@@ -5811,23 +6056,28 @@ msgstr ""
 # msgstr ""
 #: ../src/gui/config/rdp_dialogs.cpp:61
 #: ../src/gui/config/fastconn_dialog.cpp:79
+#: ../src/gui/config/rdp_dialogs.cpp:59
+#: ../src/gui/config/fastconn_dialog.cpp:80
 msgid "RDP Protocol"
 msgstr ""
 
-#: ../src/gui/config/rdp_dialogs.cpp:65
+#: ../src/gui/config/rdp_dialogs.cpp:65 ../src/gui/config/rdp_dialogs.cpp:63
+#: ../src/gui/config/fastconn_dialog.cpp:84
 msgid "RDP Protocol (freerdp)"
 msgstr ""
 
 #: ../src/proto/RDPConnection_win.cpp:32 ../src/proto/RDPConnection_win.cpp:46
+#: ../src/proto/RDPConnection_win.cpp:30 ../src/proto/RDPConnection_win.cpp:44
 msgid "RDP connection is not available."
 msgstr "RDP соединение недоступно"
 
 #: ../src/proto/RDPOptionsDialog.cpp:2207
 #: ../src/proto/RDPOptionsDialog.cpp:2212
+#: ../src/proto/RDPOptionsDialog.cpp:2210
 msgid "RDP version"
 msgstr "Версия RDP протокола"
 
-#: ../src/defineds.hpp:100
+#: ../src/defineds.hpp:100 ../src/defineds.hpp:98
 msgid "RDPDesk"
 msgstr ""
 
@@ -5851,6 +6101,8 @@ msgstr "Готов"
 #: ../src/proto/FRDPOptionsDialog.cpp:1405
 #: ../src/proto/RDPOptionsDialog.cpp:1445
 #: ../src/proto/RDPOptionsDialog.cpp:1446
+#: ../src/proto/FRDPOptionsDialog.cpp:1403
+#: ../src/proto/RDPOptionsDialog.cpp:1444
 msgid "Redirect sound"
 msgstr "Перенаправить звук"
 
@@ -5906,8 +6158,12 @@ msgstr "Подходящие записи:"
 msgid "Remaining time : "
 msgstr "Оставшееся время : "
 
-#: ../src/defineds.hpp:102
+#: ../src/defineds.hpp:102 ../src/defineds.hpp:100
 msgid "Remote Desktop Protocol Infrastructure"
+msgstr ""
+
+#: ../src/gui/main_window.cpp:561 ../src/main.cpp:153
+msgid "Remote Network and Desktop Administration v 3.1"
 msgstr ""
 
 #: ../src/common/stockitem.cpp:149
@@ -5950,6 +6206,7 @@ msgid "Replace with:"
 msgstr "Заменить на:"
 
 #: ../src/proto/ICAOptionsDialog.cpp:1087
+#: ../src/proto/ICAOptionsDialog.cpp:1085
 msgid "Resize Session"
 msgstr "Изменять пропорционально"
 
@@ -5961,7 +6218,8 @@ msgstr "Файлы ресурсов должны иметь одинаковые номера версий!"
 msgid "Revert to Saved"
 msgstr "Откатить к сохраненному"
 
-#: ../src/bencoded.cpp:267 ../src/bencoded.cpp:298
+#: ../src/bencoded.cpp:267 ../src/bencoded.cpp:298 ../src/bencoded.cpp:265
+#: ../src/bencoded.cpp:296
 msgid "Rewrite base?"
 msgstr ""
 
@@ -6019,11 +6277,11 @@ msgstr ""
 msgid "SPECIAL"
 msgstr ""
 
-#: ../src/proto/ICAOptionsDialog.cpp:558
+#: ../src/proto/ICAOptionsDialog.cpp:558 ../src/proto/ICAOptionsDialog.cpp:556
 msgid "SSL Enable"
 msgstr "Включить SSL"
 
-#: ../src/proto/ICAOptionsDialog.cpp:551
+#: ../src/proto/ICAOptionsDialog.cpp:551 ../src/proto/ICAOptionsDialog.cpp:549
 msgid "SSL Proxy Host"
 msgstr "SSL прокси"
 
@@ -6032,6 +6290,7 @@ msgid "SUBTRACT"
 msgstr ""
 
 #: ../src/common/sizer.cpp:2093 ../src/gui/config/rdp_dialogs.cpp:136
+#: ../src/gui/config/rdp_dialogs.cpp:134
 msgid "Save"
 msgstr "Сохранить"
 
@@ -6052,6 +6311,7 @@ msgstr "Сохранить как"
 #: ../src/gui/main_window.cpp:583 ../src/gui/main_window.cpp:585
 #: ../src/gui/main_window.cpp:529 ../src/gui/main_window.cpp:531
 #: ../src/gui/main_window.cpp:586 ../src/gui/main_window.cpp:588
+#: ../src/gui/main_window.cpp:527 ../src/gui/main_window.cpp:590
 msgid "Save connection"
 msgstr "Сохранить соединение"
 
@@ -6071,37 +6331,49 @@ msgstr "Сохранить содержание журнала в файл"
 #: ../src/proto/BasicConnection.cpp:55 ../src/proto/FRDPConnection_nix.cpp:385
 #: ../src/proto/RDPConnection_nix.cpp:387
 #: ../src/proto/ICAConnection_nix.cpp:178
-#: ../src/proto/RDPConnection_nix.cpp:386
+#: ../src/proto/RDPConnection_nix.cpp:386 ../src/proto/BasicConnection.cpp:53
+#: ../src/proto/FRDPConnection_nix.cpp:383
+#: ../src/proto/RDPConnection_nix.cpp:384
+#: ../src/proto/ICAConnection_nix.cpp:176
 msgid "Save screenshot"
 msgstr "Сохранить снимок экрана"
 
 #: ../src/gui/main_window.cpp:376 ../src/gui/main_window.cpp:379
+#: ../src/gui/main_window.cpp:377
 msgid "Save this connection settings"
 msgstr "Сохранить настройки соединения"
 
 #: ../src/proto/ICAOptionsDialog.cpp:1079
+#: ../src/proto/ICAOptionsDialog.cpp:1077
 msgid "Screen Percent"
 msgstr "Масштаб экрана"
 
 #: ../src/proto/FRDPOptionsDialog.cpp:873
 #: ../src/proto/ICAOptionsDialog.cpp:908 ../src/proto/RFBOptionsDialog.cpp:504
 #: ../src/proto/RDPOptionsDialog.cpp:923 ../src/proto/RDPOptionsDialog.cpp:924
+#: ../src/proto/FRDPOptionsDialog.cpp:871
+#: ../src/proto/ICAOptionsDialog.cpp:906 ../src/proto/RDPOptionsDialog.cpp:922
 msgid "Screen height"
 msgstr "Высота экрана"
 
 #: ../src/proto/FRDPOptionsDialog.cpp:856
 #: ../src/proto/ICAOptionsDialog.cpp:894 ../src/proto/RFBOptionsDialog.cpp:488
 #: ../src/proto/RDPOptionsDialog.cpp:906 ../src/proto/RDPOptionsDialog.cpp:907
+#: ../src/proto/FRDPOptionsDialog.cpp:854
+#: ../src/proto/ICAOptionsDialog.cpp:892 ../src/proto/RDPOptionsDialog.cpp:905
 msgid "Screen resolution"
 msgstr "Разрешение экрана"
 
 #: ../src/proto/FRDPOptionsDialog.cpp:869
 #: ../src/proto/ICAOptionsDialog.cpp:903 ../src/proto/RFBOptionsDialog.cpp:501
 #: ../src/proto/RDPOptionsDialog.cpp:919 ../src/proto/RDPOptionsDialog.cpp:920
+#: ../src/proto/FRDPOptionsDialog.cpp:867
+#: ../src/proto/ICAOptionsDialog.cpp:901 ../src/proto/RDPOptionsDialog.cpp:918
 msgid "Screen width"
 msgstr "Ширина экрана"
 
 #: ../src/generic/fontdlgg.cpp:232 ../src/proto/ICAOptionsDialog.cpp:515
+#: ../src/proto/ICAOptionsDialog.cpp:513
 msgid "Script"
 msgstr "Сценарий"
 
@@ -6136,15 +6408,16 @@ msgstr "Идет поиск..."
 msgid "Sections"
 msgstr "Разделы"
 
-#: ../src/proto/ICAOptionsDialog.cpp:514
+#: ../src/proto/ICAOptionsDialog.cpp:514 ../src/proto/ICAOptionsDialog.cpp:512
 msgid "Secure"
 msgstr "Безопасный"
 
 #: ../src/proto/ICAOptionsDialog.cpp:2065
+#: ../src/proto/ICAOptionsDialog.cpp:2063
 msgid "SecureChannelProtocol"
 msgstr "Протокол шифрования"
 
-#: ../src/proto/ICAOptionsDialog.cpp:112
+#: ../src/proto/ICAOptionsDialog.cpp:112 ../src/proto/ICAOptionsDialog.cpp:110
 msgid "Security"
 msgstr "Безопасность"
 
@@ -6180,7 +6453,7 @@ msgstr "Выберите файл"
 msgid "Select all"
 msgstr "Выделить вс&е"
 
-#: ../src/gui/settings_dialog.cpp:222
+#: ../src/gui/settings_dialog.cpp:222 ../src/gui/settings_dialog.cpp:220
 msgid "Select language"
 msgstr "Выбрать язык"
 
@@ -6200,6 +6473,7 @@ msgid "Select underlining or no underlining."
 msgstr ""
 
 #: ../src/gui/tree_group.cpp:262 ../src/gui/tree_group.cpp:1163
+#: ../src/gui/tree_group.cpp:260 ../src/gui/tree_group.cpp:1161
 msgid ""
 "Selected group is not empty\n"
 " Detete this ?"
@@ -6219,10 +6493,13 @@ msgstr ""
 #: ../src/gui/main_window.cpp:541 ../src/gui/main_window.cpp:543
 #: ../src/gui/main_window.cpp:600 ../src/gui/main_window.cpp:544
 #: ../src/gui/main_window.cpp:546 ../src/gui/main_window.cpp:603
+#: ../src/proto/BasicConnection.cpp:175 ../src/gui/main_window.cpp:542
+#: ../src/gui/main_window.cpp:605
 msgid "Send Ctrl+Alt+Del"
 msgstr ""
 
 #: ../src/gui/main_window.cpp:382 ../src/gui/main_window.cpp:385
+#: ../src/gui/main_window.cpp:383
 msgid "Send Ctrl+Alt+Del to remote host"
 msgstr "Отправить Ctrl+Alt+Del удалённому компьютеру"
 
@@ -6234,14 +6511,17 @@ msgstr "После параметра '%s' ожидался разделитель."
 #: ../src/proto/FRDPOptionsDialog.cpp:410
 #: ../src/proto/ICAOptionsDialog.cpp:415 ../src/proto/RFBOptionsDialog.cpp:189
 #: ../src/proto/RDPOptionsDialog.cpp:460 ../src/proto/RDPOptionsDialog.cpp:461
+#: ../src/proto/FRDPOptionsDialog.cpp:408
+#: ../src/proto/ICAOptionsDialog.cpp:413 ../src/proto/RDPOptionsDialog.cpp:459
 msgid "Server"
 msgstr "Сервер"
 
 #: ../src/gui/config/fastconn_dialog.cpp:55
+#: ../src/gui/config/fastconn_dialog.cpp:53
 msgid "Server name or IP address"
 msgstr "Имя сервера или IP адрес"
 
-#: ../src/gui/tree_group.cpp:763
+#: ../src/gui/tree_group.cpp:763 ../src/gui/tree_group.cpp:761
 #, c-format
 msgid "Set credentials for group <%s>"
 msgstr ""
@@ -6252,7 +6532,9 @@ msgstr "SetProperty вызвано без правильного setter"
 
 #: ../src/gui/tree_group.cpp:65 ../src/gui/tree_group.cpp:107
 #: ../src/gui/tree_group.cpp:110 ../src/gui/tree_group.cpp:194
-#: ../src/gui/tree_group.cpp:198
+#: ../src/gui/tree_group.cpp:198 ../src/gui/tree_group.cpp:63
+#: ../src/gui/tree_group.cpp:105 ../src/gui/tree_group.cpp:108
+#: ../src/gui/tree_group.cpp:192 ../src/gui/tree_group.cpp:196
 msgid "Settings"
 msgstr "Настройки"
 
@@ -6268,6 +6550,8 @@ msgstr ""
 #: ../src/proto/FRDPOptionsDialog.cpp:125
 #: ../src/proto/ICAOptionsDialog.cpp:110 ../src/proto/RDPOptionsDialog.cpp:124
 #: ../src/proto/RDPOptionsDialog.cpp:125
+#: ../src/proto/FRDPOptionsDialog.cpp:123
+#: ../src/proto/ICAOptionsDialog.cpp:108 ../src/proto/RDPOptionsDialog.cpp:123
 msgid "Share"
 msgstr "Ресурсы"
 
@@ -6287,11 +6571,12 @@ msgid "Show &hidden files"
 msgstr "Показать скрытые файлы"
 
 #: ../src/gui/main_window.cpp:494 ../src/gui/main_window.cpp:497
+#: ../src/gui/main_window.cpp:495
 msgid "Show / Hide connections tree"
 msgstr "Показать/скрыть панель соединений"
 
 #: ../src/common/stockitem.cpp:202 ../src/gui/main_window.cpp:388
-#: ../src/gui/main_window.cpp:391
+#: ../src/gui/main_window.cpp:391 ../src/gui/main_window.cpp:389
 msgid "Show about dialog"
 msgstr "О программе"
 
@@ -6345,6 +6630,7 @@ msgstr "Показать предварительный просмотр шрифта"
 # msgid "Show about dialog"
 # msgstr ""
 #: ../src/gui/settings_dialog.cpp:204 ../src/gui/settings_dialog.cpp:549
+#: ../src/gui/settings_dialog.cpp:202 ../src/gui/settings_dialog.cpp:547
 msgid "Simple"
 msgstr ""
 
@@ -6379,19 +6665,19 @@ msgstr "Пропустить"
 msgid "Slant"
 msgstr "Наклонный"
 
-#: ../src/proto/ICAOptionsDialog.cpp:511
+#: ../src/proto/ICAOptionsDialog.cpp:511 ../src/proto/ICAOptionsDialog.cpp:509
 msgid "Socks"
 msgstr ""
 
-#: ../src/proto/ICAOptionsDialog.cpp:512
+#: ../src/proto/ICAOptionsDialog.cpp:512 ../src/proto/ICAOptionsDialog.cpp:510
 msgid "SocksV4"
 msgstr ""
 
-#: ../src/proto/ICAOptionsDialog.cpp:513
+#: ../src/proto/ICAOptionsDialog.cpp:513 ../src/proto/ICAOptionsDialog.cpp:511
 msgid "SocksV5"
 msgstr ""
 
-#: ../src/defineds.hpp:104
+#: ../src/defineds.hpp:104 ../src/defineds.hpp:102
 msgid "SolveITLabs, 2009-2010. All rights reserved."
 msgstr ""
 
@@ -6539,6 +6825,7 @@ msgstr ""
 
 #: ../src/proto/FRDPOptionsDialog.cpp:2183
 #: ../src/proto/FRDPOptionsDialog.cpp:2184
+#: ../src/proto/FRDPOptionsDialog.cpp:2182
 msgid ""
 "Synchronize client and server clipboard data. Plain text, Unicode text, HTML "
 "content and images are supported."
@@ -6602,7 +6889,7 @@ msgstr "Шаблоны"
 msgid "Thai (ISO-8859-11)"
 msgstr "Тайский (ISO-8859-11)"
 
-#: ../src/gui/config/rdp_dialogs.cpp:372
+#: ../src/gui/config/rdp_dialogs.cpp:372 ../src/gui/config/rdp_dialogs.cpp:370
 msgid "The \"Server\" cannot be empty"
 msgstr "Значение поля \"Сервер\" не должно быть пустым"
 
@@ -6868,6 +7155,8 @@ msgstr ""
 
 #: ../src/proto/ICAConnection_win.cpp:893
 #: ../src/proto/RDPConnection_win.cpp:231
+#: ../src/proto/ICAConnection_win.cpp:891
+#: ../src/proto/RDPConnection_win.cpp:229
 msgid ""
 "This computer can't connect to the remote server. Type the server name or IP "
 "address again, and then try connecting. If the problem continues, contact "
@@ -6877,7 +7166,7 @@ msgstr ""
 "адреса сервера и попробуйте снова, или чуть позже. Если эта пороблема будет "
 "повторятся обратитесь к Ващему системному администратору."
 
-#: ../src/gui/tree_group.cpp:658
+#: ../src/gui/tree_group.cpp:658 ../src/gui/tree_group.cpp:656
 msgid ""
 "This note is invalid.\n"
 "Deleting note..."
@@ -7195,24 +7484,29 @@ msgstr "Использование: %s"
 
 #: ../src/proto/RDPOptionsDialog.cpp:2209
 #: ../src/proto/RDPOptionsDialog.cpp:2214
+#: ../src/proto/RDPOptionsDialog.cpp:2212
 msgid "Use RDP 4"
 msgstr "Использовать RDP 4"
 
 #: ../src/proto/RDPOptionsDialog.cpp:2209
 #: ../src/proto/RDPOptionsDialog.cpp:2214
+#: ../src/proto/RDPOptionsDialog.cpp:2212
 msgid "Use RDP 5"
 msgstr "Использовать RDP 5"
 
 #: ../src/proto/RDPOptionsDialog.cpp:2209
 #: ../src/proto/RDPOptionsDialog.cpp:2214
+#: ../src/proto/RDPOptionsDialog.cpp:2212
 msgid "Use RDP 6"
 msgstr "Использовать RDP 6"
 
 #: ../src/proto/ICAOptionsDialog.cpp:1032
+#: ../src/proto/ICAOptionsDialog.cpp:1030
 msgid "Use SDLVB"
 msgstr "Использовать SDLVB"
 
 #: ../src/gui/main_window.cpp:354 ../src/gui/main_window.cpp:357
+#: ../src/gui/main_window.cpp:355
 msgid "Use saved connection settings"
 msgstr "Использовать сохранённые настройки"
 
@@ -7226,17 +7520,24 @@ msgstr ""
 #: ../src/proto/FRDPOptionsDialog.cpp:426
 #: ../src/proto/ICAOptionsDialog.cpp:429 ../src/proto/RDPOptionsDialog.cpp:476
 #: ../src/gui/tree_group.cpp:1281 ../src/proto/RDPOptionsDialog.cpp:477
+#: ../src/proto/FRDPOptionsDialog.cpp:424
+#: ../src/proto/ICAOptionsDialog.cpp:427 ../src/proto/RDPOptionsDialog.cpp:475
+#: ../src/gui/tree_group.cpp:1279
 msgid "Username"
 msgstr "Имя пользователя"
 
 #: ../src/proto/FRDPOptionsDialog.cpp:1414
 #: ../src/proto/RDPOptionsDialog.cpp:1454
 #: ../src/proto/RDPOptionsDialog.cpp:1455
+#: ../src/proto/FRDPOptionsDialog.cpp:1412
+#: ../src/proto/RDPOptionsDialog.cpp:1453
 msgid "Using windows key combinations"
 msgstr "Использовать комбинации клавиш windows"
 
 #: ../src/gui/config/rdp_dialogs.cpp:63
 #: ../src/gui/config/fastconn_dialog.cpp:81
+#: ../src/gui/config/rdp_dialogs.cpp:61
+#: ../src/gui/config/fastconn_dialog.cpp:82
 msgid "VNC Protocol"
 msgstr ""
 
@@ -7433,12 +7734,15 @@ msgid "Windows/DOS OEM (CP 437)"
 msgstr "Windows/DOS OEM (CP 437)"
 
 #: ../src/proto/ICAOptionsDialog.cpp:1548
+#: ../src/proto/ICAOptionsDialog.cpp:1546
 msgid "Work Directory"
 msgstr "Рабочий каталог"
 
 #: ../src/proto/FRDPOptionsDialog.cpp:1659
 #: ../src/proto/RDPOptionsDialog.cpp:1699
 #: ../src/proto/RDPOptionsDialog.cpp:1700
+#: ../src/proto/FRDPOptionsDialog.cpp:1657
+#: ../src/proto/RDPOptionsDialog.cpp:1698
 msgid "Working dir"
 msgstr "Рабочий каталог"
 
@@ -7826,6 +8130,7 @@ msgid "delegate has no type info"
 msgstr "делегат не имеет информации о типе"
 
 #: ../src/proto/ICAOptionsDialog.cpp:2070
+#: ../src/proto/ICAOptionsDialog.cpp:2068
 msgid "detect"
 msgstr "автоопределение"
 
@@ -7955,6 +8260,7 @@ msgid "generate verbose log messages"
 msgstr "генерировать подробные сообщения отладки"
 
 #: ../src/proto/ICAOptionsDialog.cpp:1881
+#: ../src/proto/ICAOptionsDialog.cpp:1879
 msgid "high"
 msgstr "высокое"
 
@@ -8015,10 +8321,12 @@ msgid "looking for catalog '%s' in path '%s'."
 msgstr "поиск каталога '%s' в пути '%s'."
 
 #: ../src/proto/ICAOptionsDialog.cpp:1883
+#: ../src/proto/ICAOptionsDialog.cpp:1881
 msgid "low"
 msgstr "низкое"
 
 #: ../src/proto/ICAOptionsDialog.cpp:1882
+#: ../src/proto/ICAOptionsDialog.cpp:1880
 msgid "medium"
 msgstr "среднее"
 
@@ -8043,6 +8351,7 @@ msgid "no error"
 msgstr "нет ошибки"
 
 #: ../src/proto/ICAOptionsDialog.cpp:1064
+#: ../src/proto/ICAOptionsDialog.cpp:1062
 msgid "no smoothing"
 msgstr ""
 
@@ -8103,6 +8412,7 @@ msgstr "ошибка сдвига"
 #: ../src/proto/ICAConnection_win.cpp:940
 #: ../src/proto/ICAConnection_win.cpp:942
 #: ../src/proto/ICAConnection_win.cpp:941
+#: ../src/proto/ICAConnection_win.cpp:939
 msgid "send ica cad"
 msgstr ""
 
@@ -8139,6 +8449,7 @@ msgid "specify the theme to use"
 msgstr "укажите тему для использования"
 
 #: ../src/proto/ICAOptionsDialog.cpp:1065
+#: ../src/proto/ICAOptionsDialog.cpp:1063
 msgid "standard smoothing"
 msgstr ""
 
@@ -8260,7 +8571,7 @@ msgstr "неподдерживаемый метод сжатия Zip"
 msgid "using catalog '%s' from '%s'."
 msgstr "используется каталог '%s' из '%s'."
 
-#: ../src/proto/ICAConnection_nix.cpp:92
+#: ../src/proto/ICAConnection_nix.cpp:92 ../src/proto/ICAConnection_nix.cpp:90
 msgid ""
 "wfica (ICA client for Linux) not found.\n"
 "Please install ICA Citrix receiver (www.citrix.com)"

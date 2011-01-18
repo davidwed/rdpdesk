@@ -2,9 +2,7 @@
 // File name:   FRDPConnection_nix.cpp
 // Version:     0.0
 // Purpose:
-// Time-stamp:  "2010-12-07 20:18:01"
 // E-mail:      rdpdesk@rdpdesk.com
-// $Id$
 // Copyright:   (c) 2009-2010 RDPDesk <rdpdesk@rdpdesk.com>
 // Licence:     GPL v3
 ///////////////////////////////////////////////////////////////////////////////
@@ -18,7 +16,7 @@ EVT_IDLE(FRDPConnection::OnIdle)
 EVT_TIMER(wxID_ANY, FRDPConnection::OnTimer)
 EVT_SET_FOCUS(FRDPConnection::on_set_focus)
 EVT_MOUSE_EVENTS(FRDPConnection::on_any_mouse_event)
-EVT_COMMAND(wxID_ANY, ID_XRDP_FINDED_WINDOW, FRDPConnection::ReparetnClientWindow)
+EVT_COMMAND(wxID_ANY, ID_XRDP_FINDED_WINDOW, FRDPConnection::ReparentClientWindow)
 END_EVENT_TABLE()
 
 BEGIN_EVENT_TABLE(wxContFRDP,wxWindow)
@@ -759,7 +757,6 @@ bool FRDPConnection::DoFRdp()
    gchar *argv[50];
    int argc = 0;
 
-//FIXME: change to real path to rdesktop
    GETFREERDPPATH();
    wxDir temp(FREERDPPATH);
    if (!FREERDPPATH.IsEmpty())
@@ -1171,16 +1168,29 @@ void FRDPConnection::CentreConnection()
 
 }
 
-void FRDPConnection::ReparetnClientWindow(wxCommandEvent& event)
+void FRDPConnection::ReparentClientWindow(wxCommandEvent& event)
 {
    Display * dpy = XOpenDisplay(NULL);
+   const XErrorHandler old_handler = XSetErrorHandler(FRDPConnection::BadWindowHandler);
    XReparentWindow(dpy, event.GetExtraLong(), gtk_socket_get_id((GtkSocket *)sock), 0, 0);
    XMapWindow(dpy,event.GetExtraLong());
    XSync(dpy,0);
    XCloseDisplay(dpy);
+   (void) XSetErrorHandler(old_handler);
 }
 
 
+/**
+ * @name BadWindowHandler -
+ * Runing if some X* from FRDPConnection::ReparetnClientWindow return BadWindow
+ * @param disp - pointer to open display
+ * @param err - error event;
+ * @return int
+ */
+int FRDPConnection::BadWindowHandler(Display *disp, XErrorEvent *err)
+{
+    return 0;
+}
 
 
 

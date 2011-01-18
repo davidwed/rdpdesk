@@ -2,9 +2,7 @@
 // File name:   settings_dialog.cpp
 // Version:     0.0
 // Purpose:
-// Time-stamp:  "2010-12-01 19:06:57"
 // E-mail:      rdpdesk@rdpdesk.com
-// $Id$
 // Copyright:   (c) 2009-2010 RDPDesk <rdpdesk@rdpdesk.com>
 // Licence:     GPL v3
 ///////////////////////////////////////////////////////////////////////////////

@@ -2,9 +2,7 @@
 // File name:   fastconn_dialog.cpp
 // Version:     0.0
 // Purpose:
-// Time-stamp:  "2010-11-24 17:08:18"
 // E-mail:      rdpdesk@rdpdesk.com
-// $Id$
 // Copyright:   (c) 2009-2010 RDPDesk <rdpdesk@rdpdesk.com>
 // Licence:     GPL v3
 ///////////////////////////////////////////////////////////////////////////////
@@ -59,9 +57,12 @@ FastConnDialog::FastConnDialog(MainFrame* parent,
 	                              ID_COMBOBOX_FAST,
 	                              wxT(""),
 	                              wxDefaultPosition,
-	                              wxSize(170, -1))), // TODO: magic numbers
-   mainFrame(parent)
+	                              wxSize(170, -1),
+				      NULL,
+				      wxCB_READONLY)), // TODO: magic numbers
+  mainFrame(parent)
 {
+
 	GETBASEPATH();
 	const wxString temp = BASEPATH; // WTF?? what does 'temp' mean?
 	BaseFile = new wxTextFile(temp);
@@ -78,12 +79,16 @@ FastConnDialog::FastConnDialog(MainFrame* parent,
 	m_static_protocol = new wxStaticText(this, wxID_ANY, _("Protocol "));
 	const wxString arrProto[] = { _("RDP Protocol"),
 	                              _("ICA Protocol"),
-	                              _("VNC Protocol") };
+	                              _("VNC Protocol")
+#ifdef __WXGTK__
+				      ,_("RDP Protocol (freerdp)")
+#endif
+				      };
 	m_combobox_protocol = new wxComboBox(this,
 	                                     ID_COMBOBOX_PROTOCOL,
 	                                     wxT(""),
 	                                     wxDefaultPosition,
-	                                     wxSize(120, -1),
+	                                     wxSize(160, -1),
 	                                     WXSIZEOF(arrProto),
 	                                     arrProto,
 	                                     wxCB_READONLY);
@@ -115,6 +120,7 @@ FastConnDialog::FastConnDialog(MainFrame* parent,
 	sizer_top->Fit(this);
 
 	btnDetails->Enable(false);
+	btnConnect->Enable(false);
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -307,14 +313,41 @@ void FastConnDialog::dialog_hotkeys(wxKeyEvent &event) {
 //! \brief Process connections list change
 ///////////////////////////////////////////////////////////////////////////////
 void FastConnDialog::OnComboboxChange(wxCommandEvent &event) {
-	for (size_t i = 0; i < servers.Count(); ++i) {
-		if (comboboxServer->GetValue()     == servers[i] &&
-		    (size_t)comboboxServer->GetSelection() == i) {
-			btnDetails->Enable(true);
-			return;
-		}
-	}
-	btnDetails->Enable(false);
+
+  //Set proto from chose object
+  Options_HashMap
+    localOptions(mainFrame->all_connection_records.Item(comboboxServer->GetSelection()));
+  if (localOptions[wxT("proto")] == wxT("rdp")) {
+    m_combobox_protocol->SetSelection(0);
+  }
+  else if (localOptions[wxT("proto")] == wxT("ica")) {
+    m_combobox_protocol->SetSelection(1);
+  }
+  else if (localOptions[wxT("proto")] == wxT("rfb")) {
+    m_combobox_protocol->SetSelection(2);
+  }
+
+  else if (localOptions[wxT("proto")] == wxT("frdp")) {
+    m_combobox_protocol->SetSelection(3);
+  }
+  else {
+    m_combobox_protocol->SetSelection(0);
+  }
+
+  for (size_t i = 0; i < servers.Count(); ++i) {
+    if (comboboxServer->GetValue()     == servers[i] &&
+	(size_t)comboboxServer->GetSelection() == i) {
+      btnDetails->Enable(true);
+      btnConnect->Enable(true);
+      return;
+    }
+  }
+  if (comboboxServer->GetValue().IsEmpty())
+    { btnConnect->Enable(false); }
+  else { btnConnect->Enable(true); }
+  btnDetails->Enable(false);
+  //wxMessageBox();
+
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -325,10 +358,15 @@ void FastConnDialog::OnComboboxText(wxCommandEvent &event) {
 		if (comboboxServer->GetValue() == servers[i] &&
 		    (size_t)comboboxServer->GetSelection() == i) {
 			btnDetails->Enable(true);
+			btnConnect->Enable(true);
 			return;
 		}
 	}
+	if (comboboxServer->GetValue().IsEmpty())
+	  { btnConnect->Enable(false); }
+	else { btnConnect->Enable(true); }
 	btnDetails->Enable(false);
+
 }
 
 ///////////////////////////////////////////////////////////////////////////////

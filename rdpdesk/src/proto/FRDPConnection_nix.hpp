@@ -1,9 +1,7 @@
 ///////////////////////////////////////////////////////////////////////////////
 // File name:   FRDPConnection_nix.hpp
 // Version:     0.0
-// Time-stamp:  "2010-11-30 17:48:06"
 // E-mail:      rdpdesk@rdpdesk.com
-// $Id$
 // Copyright:   (c) 2009-2010 RDPDesk <rdpdesk@rdpdesk.com>
 // Licence:     GPL v3
 ///////////////////////////////////////////////////////////////////////////////
@@ -110,7 +108,7 @@ public:
    void close_rdesktop_prg(wxCommandEvent& event);
    void rdesktop_not_found(wxCommandEvent& event);
    void event_dispatcher(wxCommandEvent& event);
-   void ReparetnClientWindow(wxCommandEvent& event);
+   void ReparentClientWindow(wxCommandEvent& event);
    void OnIdle(wxIdleEvent& event);
    void OnTimer(wxTimerEvent& event);
    bool request_close(BOOL_L bDetach = FALSE);
@@ -181,6 +179,9 @@ private:
 
    int wxrdp_status;
    CatcherWindowID *windowSercherThread;
+
+
+   static int BadWindowHandler(Display *disp, XErrorEvent *err);
 
    DECLARE_EVENT_TABLE();
 };

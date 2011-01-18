@@ -2,9 +2,7 @@
 // File name:   ICAConnection_win.cpp
 // Version:     0.0
 // Purpose:
-// Time-stamp:  "2010-12-08 19:14:55"
 // E-mail:      rdpdesk@rdpdesk.com
-// $Id$
 // Copyright:   (c) 2009-2010 RDPDesk <rdpdesk@rdpdesk.com>
 // Licence:     GPL v3
 ///////////////////////////////////////////////////////////////////////////////

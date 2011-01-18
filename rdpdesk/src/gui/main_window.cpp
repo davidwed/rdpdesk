@@ -2,9 +2,7 @@
 // File name:   main_window.cpp
 // Version:     0.0
 // Purpose:
-// Time-stamp:  "2010-12-06 18:36:58"
 // E-mail:      rdpdesk@rdpdesk.com
-// $Id$
 // Copyright:   (c) 2009-2010 RDPDesk <rdpdesk@rdpdesk.com>
 // Licence:     GPL v3
 ///////////////////////////////////////////////////////////////////////////////
@@ -391,7 +389,7 @@ MainFrame::MainFrame(const wxString& title, const wxPoint& pos, const wxSize& si
                                       _("Show about dialog"));
    helpMenu->Append(ID_DOCUMENTATION, _("&Online documentation"),
                                       _("Open documentation from web site"));
-   helpMenu->Append(ID_BUILDIN_DOC,   _("&Build-in documentation"),
+   helpMenu->Append(ID_BUILDIN_DOC,   _("&Built-in Documentation"),
                                       _("Open documentation"));
    helpMenu->Append(ID_FORUM,         _("&Forum"),
                                       _("Open forum web page"));
@@ -556,7 +554,12 @@ MainFrame::MainFrame(const wxString& title, const wxPoint& pos, const wxSize& si
 		wxIcon icon;
 		//icon.CopyFromBitmap(LOAD_XPM(utilities_terminal));
 		icon.CopyFromBitmap(wxGetBitmapFromMemory(rdcm_png));
-		m_hideframe->SetIcon(icon, TS_NAME);
+		m_hideframe->SetIcon(icon,
+				     wxString::Format(wxT("%s %s %i.%i"),
+						      TS_NAME,
+						      _("Remote Network and Desktop Administration v"),
+						      TS_VERSION_MAJOR,
+						      TS_VERSION_MINOR));
 	} else {
         mainAUIToolbarSettings->EnableTool(ID_AUITOOLBAR_HIDEFRAME, false);
 		settingsMenu->Enable(ID_HIDEFRAME, false);
@@ -2327,8 +2330,8 @@ void MainFrame::ParseUpdateFile(wxCommandEvent& event)
 {
 //	FUNC_AND_LINE;
 	wxXmlNode *rootNode;
-	wxString caption, message;
-	int major = 0, minor = 0;
+	wxString caption,url;
+	int major = 0, minor = 0, width = 0, height = 0;
 	wxStandardPaths sp;
 	std::auto_ptr<wxXmlDocument> xmlFile(new wxXmlDocument());
 	const wxString updateXmlFile(wxString::Format(wxT("%s/rdcm_update.xml"), sp.GetTempDir().data()));
@@ -2356,31 +2359,39 @@ void MainFrame::ParseUpdateFile(wxCommandEvent& event)
 				delete (child_vers);
 			} else if (child->GetName() == wxT("caption")) {
 				caption = child->GetNodeContent();
-			} else if (child->GetName() == wxT("message")) {
-				message = child->GetNodeContent();
+			} else if (child->GetName() == wxT("width")) {
+			  width = wxAtoi(child->GetNodeContent());
+			} else if (child->GetName() == wxT("height")) {
+			  height = wxAtoi(child->GetNodeContent());
+			} else if (child->GetName() == wxT("url")) {
+			  url = child->GetNodeContent();
 			}
+
 			child = child->GetNext();
 		}
 		delete (child);
 	}
 
-	if (caption.Len() > 0 && message.Len() > 0)
+	if (caption.Len() > 0 && url.Len() > 0 && width > 0 && height > 0)
 		if (major > TS_VERSION_MAJOR ||
 		   (major == TS_VERSION_MAJOR && minor > TS_VERSION_MINOR)) {
 			wxDialog dlg(this, wxID_ANY, caption);
 			wxBoxSizer *sizer = new wxBoxSizer(wxVERTICAL);
+			wxInitAllImageHandlers();
 			HtmlMessageViewer *html = new HtmlMessageViewer(&dlg, -1, wxDefaultPosition,
-		                                                  wxSize(380, 160), wxHW_SCROLLBAR_NEVER);
-			html->SetPage(message);
-			html->SetBackgroundColour(wxSystemSettings::GetColour(wxSYS_COLOUR_WINDOWFRAME));
-			sizer->Add(html, 1, wxALL, 10);
+									wxSize(width, height),
+									wxHW_SCROLLBAR_AUTO);
+			html->LoadPage(url);
+			sizer->Add(html, 1, wxALL, 0);
 			sizer->Add(new wxButton(&dlg, wxID_OK, _("Ok")),
-		                        0, wxALL | wxALIGN_RIGHT, 15);
+		                        0, wxALL | wxALIGN_RIGHT, 5);
 			dlg.SetAutoLayout(true);
 			dlg.SetSizer(sizer);
 			sizer->Fit(&dlg);
 			dlg.Centre();
 			dlg.ShowModal();
+
+
 		}
 	wxRemoveFile(updateXmlFile);
 }

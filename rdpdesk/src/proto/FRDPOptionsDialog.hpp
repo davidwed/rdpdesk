@@ -2,9 +2,7 @@
 // File name:   FRDPOptionsDialog.hpp
 // Version:     0.0
 // Purpose:
-// Time-stamp:  "2010-11-29 20:17:23"
 // E-mail:      rdpdesk@rdpdesk.com
-// $Id$
 // Copyright:   (c) 2009-2010 RDPDesk <rdpdesk@rdpdesk.com>
 // Licence:     GPL v3
 ///////////////////////////////////////////////////////////////////////////////

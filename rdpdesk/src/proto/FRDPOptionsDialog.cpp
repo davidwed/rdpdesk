@@ -2,9 +2,7 @@
 // File name:   FRDPOptionsDialog.cpp
 // Version:     0.0
 // Purpose:
-// Time-stamp:  "2010-12-08 14:31:17"
 // E-mail:      rdpdesk@rdpdesk.com
-// $Id$
 // Copyright:   (c) 2009-2010 RDPDesk <rdpdesk@rdpdesk.com>
 // Licence:     GPL v3
 ///////////////////////////////////////////////////////////////////////////////
@@ -1658,7 +1656,7 @@ int FRDPOptionsDialog_Program::Build()
 					  wxTE_PROCESS_ENTER);
 	 m_static_workdir  = new wxStaticText(this, wxID_ANY, _("Working dir"), wxDefaultPosition, wxDefaultSize);
 	 m_text_workdir = new wxTextCtrl( this, wxID_ANY, wxT(""),  wxDefaultPosition, wxDefaultSize, wxTE_PROCESS_ENTER);
-	 m_checkbox_program = new wxCheckBox( this, ID_FRDP_CHECKBOX_USE_PROGRAM, _("&Start thefollowing program:"),  wxDefaultPosition, wxDefaultSize );
+	 m_checkbox_program = new wxCheckBox( this, ID_FRDP_CHECKBOX_USE_PROGRAM, _("&Start the following program:"),  wxDefaultPosition, wxDefaultSize );
 	 //m_checkbox_maximized = new wxCheckBox( this, wxID_ANY, _("&Start maximized"),  wxDefaultPosition, wxDefaultSize);
 
 
