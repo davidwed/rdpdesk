@@ -2,9 +2,7 @@
 // File name:   defineds.hpp
 // Version:     0.0
 // Purpose:
-// Time-stamp:  "2010-12-09 00:17:43"
 // E-mail:      rdpdesk@rdpdesk.com
-// $Id$
 // Copyright:   (c) 2009-2010 RDPDesk <rdpdesk@rdpdesk.com>
 // Licence:     GPL v3
 ///////////////////////////////////////////////////////////////////////////////
@@ -95,7 +93,7 @@ const int ID_UPFATE_FILE = 600;
 
 
 #define TS_VERSION_MAJOR 3
-#define TS_VERSION_MINOR 1
+#define TS_VERSION_MINOR 2
 
 #define TS_NAME _("RDPDesk")
 

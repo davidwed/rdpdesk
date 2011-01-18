@@ -2,9 +2,7 @@
 // File name:   rdp_dialogs.hpp
 // Version:     0.0
 // Purpose:
-// Time-stamp:  "2010-11-29 18:11:18"
 // E-mail:      rdpdesk@rdpdesk.com
-// $Id$
 // Copyright:   (c) 2009-2010 RDPDesk <rdpdesk@rdpdesk.com>
 // Licence:     GPL v3
 ///////////////////////////////////////////////////////////////////////////////

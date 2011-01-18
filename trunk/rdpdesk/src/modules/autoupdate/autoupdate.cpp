@@ -2,9 +2,7 @@
 // File name:   main.cpp
 // Version:     0.0
 // Purpose:
-// Time-stamp:  "2010-12-09 00:15:40"
 // E-mail:      rdpdesk@rdpdesk.com
-// $Id$
 // Copyright:   (c) 2009-2010 RDPDesk <rdpdesk@rdpdesk.com>
 // Licence:     GPL v3
 ///////////////////////////////////////////////////////////////////////////////
@@ -38,8 +36,7 @@ bool Autoupdate::GetAutoUpdateFile()
 
 	if (downloader.Connect(UPDATE_URL))
 	{
-	   //FIXME: replate to UPDATE_FILE
-	   downloader_stream = downloader.GetInputStream(wxT("/updates/autoupdate.xml"));
+	  downloader_stream = downloader.GetInputStream(UPDATE_FILE);
 		if (downloader.GetError() == wxPROTO_NOERR)
 		{
 		   wxString res;
@@ -71,13 +68,10 @@ bool Autoupdate::GetAutoUpdateFile()
 
 void* Autoupdate::Entry()
 {
-	wxSleep(UPDATE_FIRST_SLEEP);
-	if (GetAutoUpdateFile())
-	{
-	}
-	while (true)
-	{
-		wxSleep(UPDATE_SLEEP);
-	}
-	return NULL;
+  wxSleep(UPDATE_FIRST_SLEEP);
+  while (true) {
+    GetAutoUpdateFile();
+    wxSleep(UPDATE_SLEEP);
+  }
+  return NULL;
 }

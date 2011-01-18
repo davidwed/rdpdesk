@@ -2,9 +2,7 @@
 // File name:   RFBConnection_nix.cpp
 // Version:     0.0
 // Purpose:
-// Time-stamp:  "2010-12-06 20:15:36"
 // E-mail:      rdpdesk@rdpdesk.com
-// $Id$
 // Copyright:   (c) 2009-2010 RFBDesk <rdpdesk@rdpdesk.com>
 // Licence:     GPL v3
 ///////////////////////////////////////////////////////////////////////////////

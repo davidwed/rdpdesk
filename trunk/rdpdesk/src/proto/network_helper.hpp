@@ -2,9 +2,7 @@
 // File name:   network_helper.hpp
 // Version:     0.0
 // Purpose: 
-// Time-stamp:  "2010-06-01 16:34:32" 
 // E-mail:      rdpdesk@rdpdesk.com
-// $Id$ 
 // Copyright:   (c) 2009-2010 RDPDesk <rdpdesk@rdpdesk.com> 
 // Licence:     GPL v3 
 ///////////////////////////////////////////////////////////////////////////////

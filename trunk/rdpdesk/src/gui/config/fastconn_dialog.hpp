@@ -2,9 +2,7 @@
 // File name:   fastconn_dialog.hpp
 // Version:     0.0
 // Purpose:
-// Time-stamp:  "2010-11-24 17:46:21"
 // E-mail:      rdpdesk@rdpdesk.com
-// $Id$
 // Copyright:   (c) 2009-2010 RDPDesk <rdpdesk@rdpdesk.com>
 // Licence:     GPL v3
 ///////////////////////////////////////////////////////////////////////////////

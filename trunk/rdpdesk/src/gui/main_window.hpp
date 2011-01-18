@@ -2,9 +2,7 @@
 // File name:   main_window.hpp
 // Version:     0.0
 // Purpose:
-// Time-stamp:  "2010-11-30 21:18:15"
 // E-mail:      rdpdesk@rdpdesk.com
-// $Id$
 // Copyright:   (c) 2009-2010 RDPDesk <rdpdesk@rdpdesk.com>
 // Licence:     GPL v3
 ///////////////////////////////////////////////////////////////////////////////

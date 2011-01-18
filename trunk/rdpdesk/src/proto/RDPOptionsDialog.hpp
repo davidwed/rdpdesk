@@ -2,9 +2,7 @@
 // File name:   RDPOptionsDialog.hpp
 // Version:     0.0
 // Purpose: 
-// Time-stamp:  "2010-03-07 13:09:11" 
 // E-mail:      rdpdesk@rdpdesk.com
-// $Id$ 
 // Copyright:   (c) 2009-2010 RDPDesk <rdpdesk@rdpdesk.com> 
 // Licence:     GPL v3 
 ///////////////////////////////////////////////////////////////////////////////
